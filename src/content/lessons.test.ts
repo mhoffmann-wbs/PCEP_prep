@@ -43,6 +43,10 @@ function checkSnippet(s: Snippet): string[] {
   return problems
 }
 
+it('every objective has a lesson', () => {
+  expect([...OBJECTIVE_BY_ID.keys()].filter((id) => !LESSONS.has(id))).toEqual([])
+})
+
 describe.each(Object.entries(SOURCES))('lesson %s', (fileId, source) => {
   const lesson = LESSONS.get(fileId)
 

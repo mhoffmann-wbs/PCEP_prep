@@ -1,0 +1,262 @@
+export const meta = {
+  objectiveId: '2.2.3',
+  updated: '2026-11-20',
+  tldr: '`range(stop)`, `range(start, stop)` and `range(start, stop, step)` produce whole numbers for a `for` loop. The stop value is never included, start defaults to 0, step defaults to 1, and a negative step counts down.',
+  subpointsCovered: ['2.2.3.1', '2.2.3.2', '2.2.3.3', '2.2.3.4'],
+  links: [
+    { title: 'Python tutorial: The range() function', url: 'https://docs.python.org/3/tutorial/controlflow.html#the-range-function' },
+    { title: 'Ranges', url: 'https://docs.python.org/3/library/stdtypes.html#ranges' },
+  ],
+}
+
+## Big idea
+
+Often you want to repeat something a set number of times, or walk through numbers like 1, 2, 3. The built-in function `range()` produces a row of whole numbers (integers), and a `for` loop takes them one at a time:
+
+```python
+for i in range(3):
+    print("Lap", i)
+```
+
+```output
+Lap 0
+Lap 1
+Lap 2
+```
+
+`range(3)` gives **three** numbers: 0, 1 and 2. It starts at 0 and stops **before** 3. That one rule, "the stop number is never included", explains most `range()` questions.
+
+## Walkthrough
+
+### `range(stop)`: repeat a number of times
+
+With one argument (one value inside the brackets), `range(n)` gives the numbers from 0 up to `n - 1`. That is exactly `n` numbers, so it is the usual way to say "do this `n` times":
+
+```python
+for i in range(4):
+    print("Stir the soup")
+```
+
+```output
+Stir the soup
+Stir the soup
+Stir the soup
+Stir the soup
+```
+
+A range is not a list, but you can turn it into one with `list()` to see all its numbers at once. That is handy when you want to check what a range contains:
+
+```python
+print(list(range(5)))
+print(list(range(0)))
+```
+
+```output
+[0, 1, 2, 3, 4]
+[]
+```
+
+### `range(start, stop)`: choose where to begin
+
+With two arguments, the first is the **start** (included) and the second is the **stop** (not included):
+
+```python
+for day in range(1, 4):
+    print("Day", day)
+```
+
+```output
+Day 1
+Day 2
+Day 3
+```
+
+To count from 1 to 10 you need `range(1, 11)`, not `range(1, 10)`.
+
+### `range(start, stop, step)`: jump by more than 1
+
+The third argument, the **step**, says how much to add each time. It defaults to 1:
+
+```python
+print(list(range(0, 10, 2)))
+print(list(range(1, 10, 3)))
+print(list(range(5, 50, 10)))
+```
+
+```output
+[0, 2, 4, 6, 8]
+[1, 4, 7]
+[5, 15, 25, 35, 45]
+```
+
+The range keeps adding the step while the number is still **below** the stop. It does not have to land exactly on the stop.
+
+### Counting down with a negative step
+
+A negative step counts down. Now the start must be **bigger** than the stop, and the range keeps going while the number is still **above** the stop:
+
+```python
+for n in range(5, 0, -1):
+    print(n)
+print("Lift-off!")
+```
+
+```output
+5
+4
+3
+2
+1
+Lift-off!
+```
+
+The stop (0) is still not included. To count down to 0, write `range(5, -1, -1)`.
+
+If the start and stop point the wrong way for the step, the range is simply **empty**, and the loop body never runs. There is no error:
+
+```python
+print(list(range(5, 1)))
+print(list(range(1, 5, -1)))
+print(list(range(3, 3)))
+```
+
+```output
+[]
+[]
+[]
+```
+
+`range()` only accepts whole numbers. A step of 0 is not allowed, because the numbers would never move:
+
+```python
+r = range(1, 5, 0)
+```
+
+```error
+ValueError: range() arg 3 must not be zero
+```
+
+### Tracing a `range()` loop
+
+To trace a loop, write down each value the range produces, then what the body does with it. Here the loop adds up the even numbers below 10:
+
+```python
+total = 0
+for k in range(2, 10, 2):
+    total = total + k
+    print(k, total)
+print("k after the loop:", k)
+```
+
+```output
+2 2
+4 6
+6 12
+8 20
+k after the loop: 8
+```
+
+| Round | `k` | `total` |
+|---|---|---|
+| 1 | 2 | 2 |
+| 2 | 4 | 6 |
+| 3 | 6 | 12 |
+| 4 | 8 | 20 |
+
+After the loop, `k` holds 8, the **last number the range produced**, not 10 (the stop).
+
+A quick way to count how many numbers a range gives, for a positive step of 1: `stop - start`. So `range(3, 8)` gives 5 numbers. You can check with `len()`:
+
+```python
+print(len(range(3, 8)), len(range(0, 10, 3)))
+```
+
+```output
+5 4
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+for i in range(2, 8, 3):
+    print(i, end="-")
+```
+
+```output
+2-5-
+```
+
+</Predict>
+
+<Predict>
+
+```python
+print(list(range(10, 0, -3)))
+```
+
+```output
+[10, 7, 4, 1]
+```
+
+</Predict>
+
+<Predict>
+
+```python
+count = 0
+for i in range(4, 1):
+    count = count + 1
+print(count)
+```
+
+```output
+0
+```
+
+</Predict>
+
+## Common mistakes
+
+**Expecting the stop to be included.** `range(1, 5)` gives 1, 2, 3, 4. Add one to the stop if you want it in.
+
+**Forgetting the negative step when counting down.** `range(5, 0)` is empty, because the default step is +1 and you can't count up from 5 to 0. Write `range(5, 0, -1)`.
+
+**Passing a float.** `range()` works with integers only:
+
+```python
+for x in range(0, 1, 0.5):
+    print(x)
+```
+
+```error
+TypeError: 'float' object cannot be interpreted as an integer
+```
+
+**Thinking `print(range(3))` shows the numbers.** It prints the range itself, not its contents. Use `list()` to see them:
+
+```python
+print(range(3))
+print(list(range(3)))
+```
+
+```output
+range(0, 3)
+[0, 1, 2]
+```
+
+## Exam traps
+
+- **The stop is excluded.** `range(5)` ends at 4, and `range(1, 5)` has 4 numbers, not 5.
+- **One argument means stop, not start.** `range(5)` is `range(0, 5)`, not "start at 5".
+- **Negative steps need start greater than stop.** `range(1, 5, -1)` and `range(5, 1)` are both empty and raise no error.
+- **Steps that skip the stop.** `range(0, 10, 4)` gives 0, 4, 8; it never reaches 10, and 12 is past the stop.
+- **The loop variable after the loop** holds the last number produced, for example 8 after `for k in range(2, 10, 2)`, not 10.
+- **Counting rounds.** Questions ask how many times a body runs or how many `*` are printed; count the numbers in the range carefully.
+
+## Try it
+
+In the [Playground](/playground), print the 7 times table from `7 x 1` to `7 x 10` with one `range()` loop. Then print a countdown from 10 to 0 with a negative step, and print every third number from 1 to 30. Check each first and last number against what you expected.
+
+When you're ready, [practise this objective](/practice?objective=2.2.3). See also [looping with `for` and `in`](/learn/2.2.2).

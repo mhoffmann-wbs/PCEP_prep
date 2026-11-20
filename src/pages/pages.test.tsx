@@ -5,6 +5,7 @@ import { RouterProvider, createMemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { routes } from '../app/routes'
 import { ITEMS } from '../content/bank'
+import { LESSONS } from '../content/lessons'
 import type { Item } from '../content/schema'
 import { getProgress, resetProgress } from '../progress/store'
 
@@ -160,9 +161,19 @@ describe('learn and progress', () => {
     expect(screen.getByRole('navigation', { name: 'Lesson navigation' })).toBeInTheDocument()
   })
 
+  it('renders every lesson with its predict checks', async () => {
+    for (const [id, lesson] of LESSONS) {
+      const { unmount } = await renderAt(`/learn/${id}`)
+      expect(screen.getByRole('heading', { name: 'Exam traps' }), id).toBeInTheDocument()
+      expect(screen.getAllByText('What does this print?').length, `${id} predict blocks`).toBeGreaterThanOrEqual(2)
+      expect(screen.getByText('In short:').parentElement?.textContent, id).toContain(lesson.meta.tldr.replaceAll('`', ''))
+      unmount()
+    }
+  }, 60_000)
+
   it('shows an objective with its syllabus sub-points', async () => {
     await renderAt('/learn/2.2.1')
-    expect(screen.getByText(/walrus operator/)).toBeInTheDocument()
+    expect(screen.getAllByText(/walrus operator/).length).toBeGreaterThan(0)
     expect(screen.getByText('(PCEP-30-03 only)')).toBeInTheDocument()
   })
 

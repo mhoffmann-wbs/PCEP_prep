@@ -1,0 +1,338 @@
+export const meta = {
+  objectiveId: '4.1.4',
+  updated: '2026-11-20',
+  tldr: '`*args` collects any extra positional arguments into a tuple, and `**kwargs` collects any extra keyword arguments into a dictionary. In a definition the order is: normal parameters, parameters with defaults, `*args`, keyword-only parameters, then `**kwargs` last.',
+  subpointsCovered: ['4.1.4.1', '4.1.4.2', '4.1.4.3', '4.1.4.4', '4.1.4.5', '4.1.4.6', '4.1.4.7'],
+  links: [
+    { title: 'Python tutorial: Arbitrary argument lists', url: 'https://docs.python.org/3/tutorial/controlflow.html#arbitrary-argument-lists' },
+    { title: 'Python tutorial: Keyword arguments', url: 'https://docs.python.org/3/tutorial/controlflow.html#keyword-arguments' },
+  ],
+}
+
+## Big idea
+
+So far every function had a fixed number of parameters. But `print()` takes one value, or three, or ten. You can write functions like that too.
+
+```python
+def total(*prices):
+    return sum(prices)
+
+print(total(2, 3))
+print(total(1.5, 2.5, 4, 2))
+print(total())
+```
+
+```output
+5
+10.0
+0
+```
+
+The star `*` in front of a parameter says: "collect **all** the extra positional arguments here, however many there are". By tradition this parameter is called `args` (short for arguments), but any name works, like `prices` above. A double star `**` does the same for keyword arguments, and is traditionally called `kwargs` (keyword arguments).
+
+## Walkthrough
+
+### Collecting positional arguments with `*args`
+
+Put a `*` before a parameter name, and every positional argument that has no other parameter to go to is collected into it:
+
+```python
+def shopping_list(*items):
+    print("Items:", items)
+
+shopping_list("milk", "eggs", "bread")
+shopping_list("apples")
+```
+
+```output
+Items: ('milk', 'eggs', 'bread')
+Items: ('apples',)
+```
+
+### `*args` is a tuple
+
+The round brackets in that output show that `items` is a **tuple**: an ordered group of values that can't be changed. It works like a read-only list. You can use `len()`, indexes and slices on it:
+
+```python
+def show(*args):
+    print(type(args))
+    print(len(args), args[0], args[-1])
+
+show("a", "b", "c")
+show()
+```
+
+```error
+IndexError: tuple index out of range
+```
+
+The first call works, but the second fails: with no arguments, `args` is the empty tuple `()`, so there is no `args[0]`. Here is the safe version:
+
+```python
+def show(*args):
+    print(type(args), len(args), args)
+
+show("a", "b", "c")
+show()
+```
+
+```output
+<class 'tuple'> 3 ('a', 'b', 'c')
+<class 'tuple'> 0 ()
+```
+
+A tuple with one item is written with a trailing comma, like `('apples',)`, so it isn't mistaken for a value in brackets.
+
+### Looping over `*args`
+
+Because `args` is a tuple, a `for` loop walks through the values one by one:
+
+```python
+def average_temp(*temps):
+    total = 0
+    for t in temps:
+        total += t
+    return total / len(temps)
+
+print(average_temp(18, 21, 24))
+```
+
+```output
+21.0
+```
+
+### Collecting keyword arguments with `**kwargs`
+
+Two stars before a parameter collect every extra **keyword** argument:
+
+```python
+def order(**kwargs):
+    print(kwargs)
+
+order(size="large", milk="oat", sugar=1)
+order()
+```
+
+```output
+{'size': 'large', 'milk': 'oat', 'sugar': 1}
+{}
+```
+
+### `**kwargs` is a dictionary
+
+The curly brackets show that `kwargs` is a **dictionary** (dict for short): a collection of **key: value** pairs. Each argument's name becomes a key, written as a string, and its value becomes the value. The pairs keep the order in which they were passed.
+
+```python
+def profile(**info):
+    print(type(info))
+    print(info["name"], len(info))
+
+profile(name="Milo", species="cat")
+```
+
+```output
+<class 'dict'>
+Milo 2
+```
+
+### Working with the keys and values
+
+Use the usual dictionary tools on `kwargs`: square brackets to read one value, `in` to check a key, `.keys()`, `.values()` and `.items()` to loop.
+
+```python
+def recipe(**ingredients):
+    for name, amount in ingredients.items():
+        print(name, "->", amount)
+    print("Uses eggs?", "eggs" in ingredients)
+
+recipe(flour="200 g", eggs=2, milk="300 ml")
+```
+
+```output
+flour -> 200 g
+eggs -> 2
+milk -> 300 ml
+Uses eggs? True
+```
+
+Looping over the dict directly gives you the keys:
+
+```python
+def settings(**options):
+    for key in options:
+        print(key, options[key])
+
+settings(volume=7, theme="dark")
+```
+
+```output
+volume 7
+theme dark
+```
+
+### Combining everything in one definition
+
+A definition may use all kinds of parameters, but only in this order:
+
+1. normal parameters, such as `a`,
+2. parameters with defaults, such as `b=2`,
+3. `*args`,
+4. parameters after `*args`, which can **only** be passed by keyword (with or without defaults),
+5. `**kwargs`, always last.
+
+```python
+def plan_trip(city, nights=1, *stops, travel="train", **extras):
+    print("city:", city)
+    print("nights:", nights)
+    print("stops:", stops)
+    print("travel:", travel)
+    print("extras:", extras)
+
+plan_trip("Vienna", 3, "Munich", "Salzburg", travel="bus", hotel="central", pets=True)
+```
+
+```output
+city: Vienna
+nights: 3
+stops: ('Munich', 'Salzburg')
+travel: bus
+extras: {'hotel': 'central', 'pets': True}
+```
+
+Here is how Python sorted the arguments:
+
+- `"Vienna"` and `3` filled `city` and `nights` by position.
+- The leftover positional arguments went into the tuple `stops`.
+- `travel="bus"` matched the named parameter `travel`.
+- The leftover keyword arguments went into the dict `extras`.
+
+With fewer arguments, the defaults and empty collections fill the gaps:
+
+```python
+def plan_trip(city, nights=1, *stops, travel="train", **extras):
+    print(city, nights, stops, travel, extras)
+
+plan_trip("Porto")
+```
+
+```output
+Porto 1 () train {}
+```
+
+Only one `*` parameter and one `**` parameter are allowed, and `**kwargs` must be last:
+
+```python
+def broken(**kwargs, *args):
+    pass
+```
+
+```error
+SyntaxError: arguments cannot follow var-keyword argument
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+def count_pets(*pets):
+    print(len(pets), pets)
+
+count_pets("cat", "dog")
+count_pets("fish")
+```
+
+```output
+2 ('cat', 'dog')
+1 ('fish',)
+```
+
+</Predict>
+
+<Predict>
+
+```python
+def weather(day, *temps, **notes):
+    print(day, max(temps), list(notes.keys()))
+
+weather("Mon", 14, 19, 17, wind="strong", rain=False)
+```
+
+```output
+Mon 19 ['wind', 'rain']
+```
+
+</Predict>
+
+<Predict>
+
+```python
+def f(a, b=5, *args, **kwargs):
+    print(a, b, args, kwargs)
+
+f(1, 2, 3, x=4)
+```
+
+```output
+1 2 (3,) {'x': 4}
+```
+
+</Predict>
+
+## Common mistakes
+
+**Treating `args` like a list.** A tuple can't be changed, so methods like `.append()` don't exist:
+
+```python
+def collect(*args):
+    args.append("extra")
+
+collect("a", "b")
+```
+
+```error
+AttributeError: 'tuple' object has no attribute 'append'
+```
+
+**Passing a keyword argument to a function that has only `*args`.** `*args` collects positional arguments only:
+
+```python
+def total(*prices):
+    return sum(prices)
+
+total(1, 2, tip=3)
+```
+
+```error
+TypeError: total() got an unexpected keyword argument 'tip'
+```
+
+**Passing a positional argument to a function that has only `**kwargs`.** It collects keyword arguments only:
+
+```python
+def order(**kwargs):
+    print(kwargs)
+
+order("tea")
+```
+
+```error
+TypeError: order() takes 0 positional arguments but 1 was given
+```
+
+**Forgetting that parameters after `*args` are keyword-only.** In `def f(*args, unit):`, the value for `unit` can never come from position; all positional values go into `args`. A call like `f(1, 2)` fails because `unit` is missing.
+
+## Exam traps
+
+- **This objective is PCEP-30-03 only.** It is not part of the PCEP-30-02 exam.
+- **`args` is a tuple, `kwargs` is a dict.** Expect questions on `type(args)`, `len(kwargs)` and what printing them looks like: `('a',)` with a trailing comma, `()` and `{}` when empty.
+- **Parameter order in a definition.** Normal parameters, then defaults, then `*args`, then keyword-only parameters, then `**kwargs` last. Anything after `**kwargs` is a `SyntaxError`.
+- **Who gets which argument.** Fill named parameters first by position, then put the leftover positional values in `args` and the leftover keyword values in `kwargs`. A keyword argument that matches a named parameter goes to that parameter, not to `kwargs`.
+- **The names don't matter, the stars do.** `*values` and `**options` work exactly like `*args` and `**kwargs`.
+- **Keys are strings.** `vol=7` arrives as the key `'vol'`, so you read it with `kwargs["vol"]`.
+
+## Try it
+
+In the [Playground](/playground), write a function `receipt(shop, *prices, **extras)` that prints the shop name, the number of items, the total of `prices`, and then one line for each pair in `extras` (for example `discount` or `cashier`). Call it with different numbers of prices and extras, including none at all.
+
+When you're ready, [practise this objective](/practice?objective=4.1.4).

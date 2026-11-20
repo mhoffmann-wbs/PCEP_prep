@@ -1,0 +1,245 @@
+export const meta = {
+  objectiveId: '3.5.3',
+  updated: '2026-11-20',
+  tldr: 'An f-string is a string with an `f` in front, where any expression inside `{}` is worked out and placed into the text. You should also recognise the older `"...{}...".format(...)` method and the `%` operator, which do the same job.',
+  subpointsCovered: ['3.5.3.1', '3.5.3.2', '3.5.3.3', '3.5.3.4'],
+  links: [
+    { title: 'Python tutorial: Fancier output formatting', url: 'https://docs.python.org/3/tutorial/inputoutput.html#fancier-output-formatting' },
+    { title: 'Formatted string literals', url: 'https://docs.python.org/3/reference/lexical_analysis.html#f-strings' },
+  ],
+}
+
+## Big idea
+
+Programs often need to mix fixed text with changing values: "Your total is 12.5 euros", "Hi Sam, it's 18 degrees". You could glue the pieces together with `+`, but then every number must first be turned into a string with `str()`, and the code gets messy:
+
+```python
+city = "Oslo"
+temp = 18
+print("It is " + str(temp) + " degrees in " + city)
+```
+
+```output
+It is 18 degrees in Oslo
+```
+
+**Formatting** means building a string from a template with gaps that get filled in. Python's modern way is the **f-string**:
+
+```python
+city = "Oslo"
+temp = 18
+print(f"It is {temp} degrees in {city}")
+```
+
+```output
+It is 18 degrees in Oslo
+```
+
+The `f` before the opening quote turns on formatting, and each pair of curly braces marks a gap.
+
+## Walkthrough
+
+### Writing an f-string
+
+An **f-string** (short for "formatted string literal") is an ordinary string with the letter `f` (or `F`) right before the opening quote. All the quote styles work: `f'...'`, `f"..."` and `f"""..."""`.
+
+```python
+pet = "Biscuit"
+print(f"Good morning, {pet}!")
+print(F'{pet} wants breakfast.')
+```
+
+```output
+Good morning, Biscuit!
+Biscuit wants breakfast.
+```
+
+Without the `f`, the braces are just ordinary characters and nothing gets filled in:
+
+```python
+pet = "Biscuit"
+print("Good morning, {pet}!")
+```
+
+```output
+Good morning, {pet}!
+```
+
+The result of an f-string is a normal `str`. You can store it in a variable, measure it with `len()` and so on.
+
+### Variables and expressions in the braces
+
+Each pair of braces, `{` and `}`, is a **replacement field**. Python works out whatever is inside it and puts the result into the text, converted to a string automatically. It can be a variable, but also any **expression**: a calculation, a method call, an index:
+
+```python
+item = "notebook"
+price = 2.5
+qty = 4
+print(f"{qty} x {item} = {qty * price} euros")
+print(f"Shouting: {item.upper()}, first letter: {item[0]}")
+print(f"Is it cheap? {price < 3}")
+```
+
+```output
+4 x notebook = 10.0 euros
+Shouting: NOTEBOOK, first letter: n
+Is it cheap? True
+```
+
+After the expression you may add a colon and a **format spec**, a short code that controls how the value looks. The most common one is `.2f`, which means "a float with exactly 2 digits after the decimal point":
+
+```python
+total = 7 / 3
+print(f"Total: {total}")
+print(f"Total: {total:.2f}")
+```
+
+```output
+Total: 2.3333333333333335
+Total: 2.33
+```
+
+To print an actual curly brace in an f-string, double it: `{{` gives `{` and `}}` gives `}`.
+
+```python
+n = 3
+print(f"{{n}} is {n}")
+```
+
+```output
+{n} is 3
+```
+
+### The `format()` method
+
+Before f-strings existed, people used the string method `format()`. The template has empty `{}` gaps, and the values are passed as arguments, filling the gaps from left to right:
+
+```python
+print("{} likes {}".format("Ana", "hiking"))
+print("{1} likes {0}".format("hiking", "Ana"))
+print("{name} is {age}".format(name="Leo", age=7))
+print("Price: {:.2f}".format(3.14159))
+```
+
+```output
+Ana likes hiking
+Ana likes hiking
+Leo is 7
+Price: 3.14
+```
+
+A number inside the braces picks an argument by its position (counting from 0), and a name picks a **keyword argument** (an argument passed as `name=value`). Format specs like `:.2f` work the same way as in f-strings.
+
+### The legacy `%` operator
+
+The oldest style uses the `%` operator on a string. Here `%` does not mean remainder: when its left side is a string, it means "fill in this template". Each **placeholder** starts with `%`: `%s` takes any value as a string, `%d` a whole number, and `%f` a float (`%.1f` for one decimal place). Several values go in a tuple, in brackets:
+
+```python
+fruit = "plums"
+kilos = 3
+cost = 4.5
+print("I bought %d kg of %s." % (kilos, fruit))
+print("That cost %.1f euros." % cost)
+print("%s!" % "Done")
+```
+
+```output
+I bought 3 kg of plums.
+That cost 4.5 euros.
+Done!
+```
+
+You only need to **recognise** `format()` and `%` formatting for the exam. For your own code, f-strings are the clearest choice.
+
+## Predict the output
+
+<Predict>
+
+```python
+a = 5
+b = 2
+print(f"{a} / {b} = {a / b}, {a} // {b} = {a // b}")
+```
+
+```output
+5 / 2 = 2.5, 5 // 2 = 2
+```
+
+</Predict>
+
+<Predict>
+
+```python
+print("{2}-{0}-{1}".format("x", "y", "z"))
+```
+
+```output
+z-x-y
+```
+
+</Predict>
+
+<Predict>
+
+```python
+dish = "curry"
+print("dish: {dish}", f"len: {len(dish)}")
+```
+
+```output
+dish: {dish} len: 5
+```
+
+</Predict>
+
+## Common mistakes
+
+**Forgetting the `f`.** `"Hello {name}"` prints the braces and the word `name` literally. Python raises no error, so this is easy to miss.
+
+**Gluing numbers with `+`.** Without formatting you must convert first:
+
+```python
+age = 9
+print("Age: " + age)
+```
+
+```error
+TypeError: can only concatenate str (not "int") to str
+```
+
+An f-string such as `f"Age: {age}"` avoids the problem.
+
+**Too few values for `format()`.** Each `{}` needs a value:
+
+```python
+print("{} and {}".format("salt"))
+```
+
+```error
+IndexError: Replacement index 1 out of range for positional args tuple
+```
+
+**Too few values for `%`.** The same goes for `%` placeholders:
+
+```python
+print("%s and %s" % ("salt",))
+```
+
+```error
+TypeError: not enough arguments for format string
+```
+
+## Exam traps
+
+- **PCEP-30-03 only.** This objective is part of PCEP-30-03 and not of PCEP-30-02, as the badge on this page shows.
+- **Missing `f`.** A string with `{x}` but no `f` prefix prints the braces as they are.
+- **Expressions are worked out.** `f"{2 + 3}"` gives `"5"`, while `f"2 + 3"` (no braces) gives `"2 + 3"`.
+- **`/` always gives a float.** `f"{6 / 2}"` shows `3.0`, not `3`.
+- **Numbered fields in `format()`.** `"{1}{0}".format("a", "b")` is `"ba"`: the numbers are positions in the argument list, starting at 0.
+- **`%` with a string on the left** is formatting, not remainder: `"%d%%" % 50` gives `"50%"` (a doubled `%%` prints one `%`).
+
+## Try it
+
+In the [Playground](/playground), store a product name, a price and a quantity in three variables. Print a receipt line with an f-string that shows the total price with exactly 2 decimals. Then print the same line using `format()` and once more using `%`, and check that all three agree.
+
+When you're ready, [practise this objective](/practice?objective=3.5.3).

@@ -1,0 +1,362 @@
+export const meta = {
+  objectiveId: '1.2.1',
+  updated: '2026-11-20',
+  tldr: 'Keywords such as `if`, `for` and `True` are reserved, so you cannot use them as names. Expressions produce values; statements are complete instructions. A line ending in a colon starts a block, and the block is the indented lines below it. A `#` starts a comment that Python ignores.',
+  subpointsCovered: ['1.2.1.1', '1.2.1.2', '1.2.1.3', '1.2.1.4', '1.2.1.5'],
+  links: [
+    { title: 'Keywords', url: 'https://docs.python.org/3/reference/lexical_analysis.html#keywords' },
+    { title: 'Indentation', url: 'https://docs.python.org/3/reference/lexical_analysis.html#indentation' },
+    { title: 'Comments', url: 'https://docs.python.org/3/reference/lexical_analysis.html#comments' },
+  ],
+}
+
+## Big idea
+
+A Python program is a list of **statements**, instructions that Python carries out from top to bottom. A few structural rules decide how Python reads them:
+
+- Some words are **keywords** with a fixed meaning, so you can't use them as names.
+- **Indentation**, the spaces at the start of a line, groups lines into **blocks**.
+- Anything after a `#` is a **comment**, a note for people that Python ignores.
+
+```python
+# Decide what to wear
+temperature = 12
+if temperature < 15:
+    print("Take a jacket")
+    print("Maybe a scarf too")
+print("Have a nice day")
+```
+
+```output
+Take a jacket
+Maybe a scarf too
+Have a nice day
+```
+
+The two indented lines form a block that belongs to the `if`. The last line isn't indented, so it always runs.
+
+## Walkthrough
+
+### Keywords
+
+A **keyword** (or **reserved word**) is a word that is part of Python's own grammar, like `if`, `while` or `def`. An **identifier** is a name you choose for a variable or a function, like `price` or `total_cost`.
+
+Keywords are reserved: Python uses them to understand the structure of your code, so it can't let them mean anything else. If you could write `if = 5`, Python couldn't tell whether a line starting with `if` is a condition or an assignment. That's why using a keyword as a name is a `SyntaxError`:
+
+```python
+class = "Year 7"
+```
+
+```error
+SyntaxError: invalid syntax
+```
+
+These are Python's keywords. Notice that `True`, `False` and `None` start with a capital letter, and all the others are lowercase:
+
+```text
+False    await     else      import    pass
+None     break     except    in        raise
+True     class     finally   is        return
+and      continue  for       lambda    try
+as       def       from      nonlocal  while
+assert   del       global    not       with
+async    elif      if        or        yield
+```
+
+The `keyword` module can list them and check a word for you:
+
+```python
+import keyword
+print(len(keyword.kwlist))
+print(keyword.iskeyword("for"), keyword.iskeyword("For"), keyword.iskeyword("print"))
+```
+
+```output
+35
+True False False
+```
+
+Python is **case-sensitive**, so `For` isn't a keyword (but it would be a confusing name). And `print` isn't a keyword either: it's the name of a **built-in function**. You *can* use it as a variable name, but then the function is hidden and calling it fails:
+
+```python
+print = "hello"
+print("Is this working?")
+```
+
+```error
+TypeError: 'str' object is not callable
+```
+
+### Expressions, statements and keywords
+
+These three words describe different things:
+
+- An **expression** is a piece of code that **produces a value**: `3 + 4`, `price * 2`, `"tea"`, `len(items)`, `age >= 18`. You could put any expression on the right of an `=`.
+- A **statement** is a **complete instruction** that Python carries out: an assignment like `total = 3 + 4`, a call like `print(total)`, or an `if` with its block. A simple statement usually takes one line.
+- A **keyword** is a single reserved **word**. Many statements start with one (`if`, `for`, `while`, `def`, `return`, `import`), and some keywords are used inside expressions (`and`, `or`, `not`, `in`, `is`, `True`, `False`, `None`).
+
+```python
+apples = 3 + 4
+if apples > 5 and apples < 10:
+    print("A good handful:", apples * 2)
+```
+
+```output
+A good handful: 14
+```
+
+Here `3 + 4`, `apples > 5 and apples < 10` and `apples * 2` are expressions. `apples = 3 + 4` is an assignment statement, and the `if` with its block is an `if` statement. `if` and `and` are keywords.
+
+An expression is only a part of a statement, so you can't put a statement where Python expects a value. An assignment is a statement, so it can't sit inside brackets on the right of another `=`:
+
+```python
+size = (width = 5)
+```
+
+```error
+SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+```
+
+### Indentation defines blocks
+
+Many languages use brackets to group lines. Python uses **indentation**. A line that ends with a **colon** (`if`, `elif`, `else`, `for`, `while`, `def`, `try`, `except` and others) starts a **block**: the lines below it that are indented further. The block ends at the first line that goes back to the outer level.
+
+```python
+for day in ["Sat", "Sun"]:
+    print("Weekend:", day)
+    if day == "Sun":
+        print("  Pack for Monday")
+print("Week ahead")
+```
+
+```output
+Weekend: Sat
+Weekend: Sun
+  Pack for Monday
+Week ahead
+```
+
+Blocks can sit inside other blocks: the inner `print` belongs to the `if`, which belongs to the `for`. The standard style (PEP 8) is **4 spaces** for each level. Python accepts any number, as long as all lines of one block use the same amount.
+
+A block can't be empty. If you need a block that does nothing yet, write `pass`:
+
+```python
+budget = 20
+if budget > 100:
+    pass  # plan this later
+print("Budget:", budget)
+```
+
+```output
+Budget: 20
+```
+
+### Indentation errors
+
+Wrong indentation is so common that Python has a special error for it, `IndentationError`. Python finds it before running anything, just like a `SyntaxError`.
+
+**Missing indentation** after a colon:
+
+```python
+if 7 > 3:
+print("seven wins")
+```
+
+```error
+IndentationError: expected an indented block after 'if' statement on line 1
+```
+
+**Unexpected indentation** where no block was started:
+
+```python
+name = "Maya"
+    print(name)
+```
+
+```error
+IndentationError: unexpected indent
+```
+
+**Inconsistent indentation**: a line goes back out to a level that doesn't match any outer block:
+
+```python
+for fruit in ["kiwi", "plum"]:
+        print(fruit)
+    print("done")
+```
+
+```error
+IndentationError: unindent does not match any outer indentation level
+```
+
+Mixing **tabs** and **spaces** can also give errors, because a tab and four spaces can look the same on screen but are different characters. Use spaces only.
+
+A line at the **wrong level** may not cause an error at all, but it changes the meaning. Compare where `"Shopping done"` is printed:
+
+```python
+for item in ["eggs", "rice"]:
+    print("Buy", item)
+    print("Shopping done")
+```
+
+```output
+Buy eggs
+Shopping done
+Buy rice
+Shopping done
+```
+
+Because it's indented, the last line is part of the loop and runs twice. Without the indentation it would run once, after the loop.
+
+### Comments
+
+A **comment** starts with `#` and runs to the end of the line. Python ignores it completely. Use comments to explain **why** the code does something:
+
+```python
+# Prices are in euros
+coffee = 3.20
+cake = 4.50  # today's special
+print(coffee + cake)
+```
+
+```output
+7.7
+```
+
+A comment can also **disable** a line without deleting it. This is called "commenting out" code, and is handy while testing:
+
+```python
+print("Preheat the oven")
+# print("Add salt")
+print("Bake for 20 minutes")
+```
+
+```output
+Preheat the oven
+Bake for 20 minutes
+```
+
+A `#` inside a string is just a character, not a comment:
+
+```python
+print("Room #12")  # this part is a comment
+```
+
+```output
+Room #12
+```
+
+Python has no special syntax for multi-line comments: put a `#` at the start of every line. You may also see a string in triple quotes (`"""..."""`) used as a note. That's a string that isn't used for anything, not a real comment.
+
+## Predict the output
+
+<Predict>
+
+```python
+rain = False
+print("Morning")
+if rain:
+    print("Umbrella")
+    print("Boots")
+print("Leave the house")
+```
+
+```output
+Morning
+Leave the house
+```
+
+</Predict>
+
+<Predict>
+
+```python
+total = 0
+for price in [2, 3, 5]:
+    total = total + price
+    # print("Running total:", total)
+print("Total:", total)  # print("Done")
+```
+
+```output
+Total: 10
+```
+
+</Predict>
+
+<Predict>
+
+```python
+print("Start")
+def greet():
+    print("Hi")
+  print("Bye")
+```
+
+```error
+IndentationError: unindent does not match any outer indentation level
+```
+
+</Predict>
+
+## Common mistakes
+
+**Forgetting the colon** at the end of an `if`, `for`, `while`, `def` or `else` line:
+
+```python
+for pet in ["cat", "dog"]
+    print(pet)
+```
+
+```error
+SyntaxError: expected ':'
+```
+
+**Using a keyword as a name.** Common slips are `class`, `from`, `pass`, `global` and `lambda`:
+
+```python
+from = "Berlin"
+```
+
+```error
+SyntaxError: invalid syntax
+```
+
+**Writing keywords with the wrong capital letters.** `true` is not `True`. Python treats `true` as an ordinary name, and since no variable has that name, you get a `NameError`:
+
+```python
+is_open = true
+```
+
+```error
+NameError: name 'true' is not defined
+```
+
+**Leaving a block empty**, for example after commenting out its only line. A comment doesn't count as a statement:
+
+```python
+if 3 > 1:
+    # print("yes")
+print("after")
+```
+
+```error
+IndentationError: expected an indented block after 'if' statement on line 1
+```
+
+Put `pass` in the block to fix it.
+
+## Exam traps
+
+- **Keyword or not?** `True`, `False`, `None`, `pass`, `global`, `nonlocal`, `lambda`, `in`, `is` are keywords. `print`, `input`, `len`, `int`, `list` and `true` are **not**: they can be used as names (even if that's a bad idea).
+- **Case matters.** `True` is a keyword; `TRUE` and `true` are ordinary identifiers.
+- **Indentation is part of the syntax.** A wrongly indented line either raises `IndentationError` or quietly moves into (or out of) a block and changes what runs.
+- **`IndentationError` before anything runs.** Like other syntax errors, it stops the whole program, so nothing is printed even if the faulty line is near the end.
+- **Commented-out lines don't run**, even if they look like code. A `#` inside quotes is just text.
+- **Expression vs. statement.** An expression has a value (`x + 1`); a statement does something (`x = x + 1`). Questions may ask which of several lines is an expression.
+
+## Try it
+
+In the [Playground](/playground), write an `if`/`else` that prints different advice for warm and cold weather. Then break it on purpose, one way at a time: remove a colon, remove the indentation of one line, indent one line by 2 spaces instead of 4, and use `if` as a variable name. Read each error message, fix it, and finally comment out one `print` line with `#`.
+
+When you're ready, [practise this objective](/practice?objective=1.2.1).

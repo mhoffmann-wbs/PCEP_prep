@@ -201,8 +201,8 @@ export const lessonMetaSchema = z.object({
   tldr: nonEmpty,
   /** Sub-point ids the lesson teaches; a content test requires all of the objective's. */
   subpointsCovered: z.array(z.string()).min(1),
-  /** Optional links to the official Python documentation. */
-  links: z.array(z.object({ title: nonEmpty, url: z.url().startsWith('https://docs.python.org/') })).default([]),
+  /** Optional links to the official Python documentation or PEPs. */
+  links: z.array(z.object({ title: nonEmpty, url: z.url().regex(/^https:\/\/(docs|peps)\.python\.org\//) })).default([]),
 })
 
 export type LessonMeta = z.infer<typeof lessonMetaSchema>

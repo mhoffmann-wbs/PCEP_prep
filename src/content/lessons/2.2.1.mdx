@@ -1,0 +1,356 @@
+export const meta = {
+  objectiveId: '2.2.1',
+  updated: '2026-11-20',
+  tldr: 'A `while` loop repeats its block as long as its condition is true. Set up the loop variable before the loop and change it inside, or the loop never ends. On PCEP-30-03, the walrus operator `:=` lets you assign and test in one condition.',
+  subpointsCovered: ['2.2.1.1', '2.2.1.2', '2.2.1.3', '2.2.1.4', '2.2.1.5'],
+  links: [
+    { title: 'The while statement (reference)', url: 'https://docs.python.org/3/reference/compound_stmts.html#the-while-statement' },
+    { title: 'Assignment expressions (walrus operator)', url: 'https://docs.python.org/3/reference/expressions.html#assignment-expressions' },
+  ],
+}
+
+## Big idea
+
+A **loop** repeats code. A **`while` loop** repeats its block **as long as** its condition stays true, like "while the kettle isn't boiling, keep waiting".
+
+```python
+count = 1
+while count <= 3:
+    print("Reminder", count)
+    count = count + 1
+print("Finished")
+```
+
+```output
+Reminder 1
+Reminder 2
+Reminder 3
+Finished
+```
+
+Each pass through the block is called an **iteration**. Before every iteration, Python checks the condition again. As soon as it is false, the loop ends and the program continues after the block.
+
+## Walkthrough
+
+### Repeating while a condition is true
+
+A `while` loop looks like an `if`: the keyword, a condition, a colon and an indented block. The difference is that after the block runs, Python **goes back up** and tests the condition again.
+
+```python
+water_ml = 1000
+glasses = 0
+while water_ml >= 250:
+    water_ml = water_ml - 250
+    glasses = glasses + 1
+print("Glasses poured:", glasses)
+print("Left in the jug:", water_ml)
+```
+
+```output
+Glasses poured: 4
+Left in the jug: 0
+```
+
+If the condition is false at the very start, the block runs **zero times**:
+
+```python
+lives = 0
+while lives > 0:
+    print("Still playing")
+print("Game over")
+```
+
+```output
+Game over
+```
+
+### Loop-control variables and sentinel values
+
+The variable that the condition checks is the **loop-control variable**. A working `while` loop needs three things:
+
+1. **Initialize** it: give it a starting value **before** the loop.
+2. **Test** it: the condition in the `while` line.
+3. **Update** it: change it **inside** the loop, so that one day the condition becomes false.
+
+`x += 1` is a short way to write `x = x + 1`. Likewise `x -= 1` means `x = x - 1`.
+
+```python
+seconds = 3
+while seconds > 0:
+    print(seconds)
+    seconds -= 1
+print("Lift-off!")
+```
+
+```output
+3
+2
+1
+Lift-off!
+```
+
+Sometimes you don't know in advance how many times to repeat. Then you can stop at a **sentinel value**: a special value that means "stop", such as an empty line or `0`. Here the user types prices until they type `0`:
+
+```python
+total = 0.0
+price = float(input("Price (0 to stop): "))
+while price != 0:
+    total += price
+    price = float(input("Price (0 to stop): "))
+print("Total:", total)
+```
+
+```input
+2.5
+4.0
+0
+```
+
+```output
+Price (0 to stop): Price (0 to stop): Price (0 to stop): Total: 6.5
+```
+
+(The typed numbers do not appear in the output above, only the prompts. That is how this app shows `input()`.) Note the pattern: read once **before** the loop, then read again at the **end** of the block, so the condition always tests the newest value.
+
+### Tracing a `while` loop
+
+To trace a loop, make a table with one row per check of the condition:
+
+```python
+n = 10
+steps = 0
+while n > 1:
+    n = n // 2
+    steps += 1
+print(n, steps)
+```
+
+```output
+1 3
+```
+
+| `n` before check | `n > 1`? | `n` after `n // 2` | `steps` |
+|---|---|---|---|
+| 10 | `True` | 5 | 1 |
+| 5 | `True` | 2 | 2 |
+| 2 | `True` | 1 | 3 |
+| 1 | `False` | loop ends | 3 |
+
+The condition is checked **one more time** than the block runs: the last check is the one that comes out `False`.
+
+The loop variable **keeps its last value** after the loop. Here `n` is 1, the first value that made the condition false.
+
+### Infinite loops
+
+An **infinite loop** is a loop whose condition never becomes false, so it runs forever and the program hangs. The usual causes:
+
+- forgetting to update the loop-control variable,
+- updating it in the wrong direction,
+- a condition that skips over its stopping point.
+
+```text
+stock = 5
+while stock > 0:
+    print("Selling one item")
+    # forgot: stock -= 1   -> stock stays 5 forever
+```
+
+```text
+i = 1
+while i != 10:
+    i += 2     # 1, 3, 5, 7, 9, 11, ... never exactly 10
+```
+
+`while True:` is an infinite loop on purpose. It is only safe if the block contains a `break`, which jumps straight out of the loop (more on this in the [lesson on `break` and `continue`](/learn/2.2.5)):
+
+```python
+guesses = 0
+while True:
+    guesses += 1
+    if guesses == 3:
+        break
+print("Stopped after", guesses, "guesses")
+```
+
+```output
+Stopped after 3 guesses
+```
+
+A safer habit is to use `<` or `>` in a condition instead of `!=`, so the loop still stops even if the variable jumps past the target.
+
+### The walrus operator `:=` (PCEP-30-03 only)
+
+This subsection is only on the **PCEP-30-03** exam. If you are preparing for PCEP-30-02, you can skip it.
+
+The **walrus operator** `:=` (it looks like a walrus's eyes and tusks) is an **assignment expression**: it stores a value in a variable **and** gives that value back, so you can use it inside a condition. Its real name is "assignment expression"; "walrus" is a nickname.
+
+It removes the "read once before the loop, read again at the end" repetition from the sentinel pattern:
+
+```python
+total = 0.0
+while (price := float(input("Price (0 to stop): "))) != 0:
+    total += price
+print("Total:", total)
+```
+
+```input
+2.5
+4.0
+0
+```
+
+```output
+Price (0 to stop): Price (0 to stop): Price (0 to stop): Total: 6.5
+```
+
+On each check, Python reads a value, stores it in `price`, and then compares it with `0`. The **brackets** around `price := ...` matter: without them, `!=` would be worked out first and `price` would end up holding `True` or `False`.
+
+```python
+words = ["sun", "rain", "", "snow"]
+i = 0
+while (word := words[i]) != "":
+    print(word.upper())
+    i += 1
+print("Stopped at index", i)
+```
+
+```output
+SUN
+RAIN
+Stopped at index 2
+```
+
+Rules to remember:
+
+- `:=` works inside an expression, such as a `while` or `if` condition. `=` is a statement on its own line.
+- A plain `x := 5` on its own line is a `SyntaxError`. Write `x = 5` instead.
+- The variable keeps its value after the loop, like any other variable.
+
+```python
+x := 5
+```
+
+```error
+SyntaxError: invalid syntax
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+i = 0
+while i < 3:
+    i += 1
+print(i)
+```
+
+```output
+3
+```
+
+</Predict>
+
+<Predict>
+
+```python
+total = 0
+k = 5
+while k > 0:
+    total += k
+    k -= 2
+print(total, k)
+```
+
+```output
+9 -1
+```
+
+</Predict>
+
+<Predict>
+
+```python
+n = 5
+while n < 5:
+    print("inside")
+    n += 1
+print("n is", n)
+```
+
+```output
+n is 5
+```
+
+</Predict>
+
+## Common mistakes
+
+**Forgetting to update the loop variable.** The condition then stays true forever. Always check: which line inside the loop moves the variable towards the stop?
+
+**Using the variable before giving it a value.** The loop-control variable must exist before the `while` line checks it:
+
+```python
+while count < 3:
+    count += 1
+```
+
+```error
+NameError: name 'count' is not defined
+```
+
+**Off by one.** `<` and `<=` differ by one iteration. `while i < 5` starting from 0 runs 5 times; `while i <= 5` runs 6 times.
+
+```python
+i = 0
+runs = 0
+while i <= 5:
+    runs += 1
+    i += 1
+print(runs)
+```
+
+```output
+6
+```
+
+**Updating in the wrong place.** If the update line is not indented, it is outside the loop. It never runs while the loop is going, so the loop never ends:
+
+```text
+page = 1
+while page <= 3:
+    print("Reading page", page)
+page += 1      # not indented: outside the loop, never reached
+```
+
+Indent the update so it is part of the block:
+
+```python
+page = 1
+while page <= 3:
+    print("Reading page", page)
+    page += 1
+```
+
+```output
+Reading page 1
+Reading page 2
+Reading page 3
+```
+
+**Forgetting the brackets around `:=`.** In `while x := f() != 0`, `x` gets the result of the comparison (`True` or `False`), not the value of `f()`.
+
+## Exam traps
+
+- **Count the iterations exactly.** Watch the starting value, `<` vs `<=`, and whether the update comes before or after the `print`. These decide whether the first or last value is printed.
+- **The value after the loop.** Questions ask what the loop variable holds once the loop ends: it is the first value that made the condition false, not the last one printed.
+- **Zero iterations.** If the condition is false at the start, the block never runs.
+- **Spot the infinite loop.** A missing update, an update in the wrong direction (`i -= 1` with `while i < 10`), or `!=` with a step that jumps over the target. "The program runs forever" can be a correct answer.
+- **`while True` with `break`.** Not infinite if a `break` is always reached; trace when it happens.
+- **Walrus (30-03).** `x := 5` alone is a syntax error; check the brackets in `(x := ...) != ...`.
+
+## Try it
+
+In the [Playground](/playground), write a savings planner: start with `savings = 0` and a weekly amount of 15, and use a `while` loop to count how many weeks it takes to reach at least 100. Print the number of weeks and the final savings. Then change the condition from `<` to `<=` and see whether the answer changes.
+
+When you're ready, [practise this objective](/practice?objective=2.2.1).

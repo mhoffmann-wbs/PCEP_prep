@@ -1,0 +1,395 @@
+export const meta = {
+  objectiveId: '1.4.1',
+  updated: '2026-11-20',
+  tldr: 'Operators combine values into expressions: arithmetic (`+ - * / // % **`), string `+` and `*`, assignment (`=`, `+=`…), comparisons (`== != > >= < <=`) and Boolean logic (`not and or`). Precedence decides what happens first, and `**` is the one that works right to left.',
+  subpointsCovered: ['1.4.1.1', '1.4.1.2', '1.4.1.3', '1.4.1.4', '1.4.1.5', '1.4.1.6', '1.4.1.7', '1.4.1.8'],
+  links: [
+    { title: 'Python tutorial: Numbers', url: 'https://docs.python.org/3/tutorial/introduction.html#numbers' },
+    { title: 'Operator precedence', url: 'https://docs.python.org/3/reference/expressions.html#operator-precedence' },
+  ],
+}
+
+## Big idea
+
+An **operator** is a symbol that does something with values, like `+` adds two numbers. The values it works on are called **operands**. A combination of values, variables and operators that Python can work out to a single value is an **expression**:
+
+```python
+apples = 3
+pears = 4
+print(apples + pears * 2)
+```
+
+```output
+11
+```
+
+Working out an expression is called **evaluating** it. Here Python did the multiplication first, then the addition, just like in school maths. Most of this lesson is about knowing which operator does what, and in which order Python applies them.
+
+## Walkthrough
+
+### Numeric operators
+
+| Operator | Meaning | Example | Result |
+|---|---|---|---|
+| `+` | add | `7 + 2` | `9` |
+| `-` | subtract | `7 - 2` | `5` |
+| `*` | multiply | `7 * 2` | `14` |
+| `/` | divide | `7 / 2` | `3.5` |
+| `//` | floor divide | `7 // 2` | `3` |
+| `%` | remainder (modulo) | `7 % 2` | `1` |
+| `**` | power | `7 ** 2` | `49` |
+
+```python
+print(7 + 2, 7 - 2, 7 * 2)
+print(7 / 2, 7 // 2, 7 % 2)
+print(2 ** 3, 9 ** 0.5)
+```
+
+```output
+9 5 14
+3.5 3 1
+8 3.0
+```
+
+Three details matter a lot:
+
+- `/` **always** gives a float (a number with a decimal point), even when the division is exact: `8 / 4` is `2.0`.
+- `//` is **floor division**: it divides and then rounds **down** to the nearest whole number. `%` gives what is left over. If either operand is a float, the result is a float too.
+- When you mix an `int` (whole number) and a `float` in `+`, `-`, `*` or `**`, the result is a float.
+
+```python
+print(8 / 4, 7.0 // 2, 7 % 2.0, 3 + 1.0)
+```
+
+```output
+2.0 3.0 1.0 4.0
+```
+
+"Rounding down" means "towards minus infinity", which surprises people with negative numbers. `-7 / 2` is `-3.5`, and rounding that down gives `-4`, not `-3`. The remainder then takes the sign of the right-hand number, so that `(a // b) * b + a % b` always equals `a`:
+
+```python
+print(-7 // 2, -7 % 2)
+print(7 // -2, 7 % -2)
+```
+
+```output
+-4 1
+-4 -1
+```
+
+Dividing by zero is an error for `/`, `//` and `%` alike:
+
+```python
+print(5 // 0)
+```
+
+```error
+ZeroDivisionError: division by zero
+```
+
+### `+` and `*` with strings
+
+Two operators also work on strings. `+` **concatenates** (joins) two strings, and `*` with a whole number **repeats** a string:
+
+```python
+print("sun" + "flower")
+print("ha" * 3)
+print(3 * "-")
+print("ab" * 0)
+```
+
+```output
+sunflower
+hahaha
+---
+
+```
+
+`"ab" * 0` is the empty string, so the last line is blank. Mixing a string and a number with `+` is an error, and so is multiplying two strings:
+
+```python
+print("Room " + 5)
+```
+
+```error
+TypeError: can only concatenate str (not "int") to str
+```
+
+Note that `"2" + "3"` is `"23"`, not `5`: digits in quotes are text, not numbers.
+
+### Assignment and augmented assignment
+
+The single `=` is the **assignment operator**: it stores the value on the right under the name on the left. It does not mean "is equal to".
+
+An **augmented assignment** combines an operator with `=` to update a variable using its own current value. `x += 3` is short for `x = x + 3`. Every numeric operator has one: `+=`, `-=`, `*=`, `/=`, `//=`, `%=`, `**=`.
+
+```python
+balance = 100
+balance += 20
+balance -= 50
+balance *= 2
+print(balance)
+balance /= 4
+print(balance)
+greeting = "hi"
+greeting *= 2
+print(greeting)
+```
+
+```output
+140
+35.0
+hihi
+```
+
+Notice that `/=` turned the `int` into a float, just like `/` does.
+
+### Unary and binary operators
+
+A **binary operator** sits between **two** operands, as in `5 - 2`. A **unary operator** works on just **one** operand. Python has three unary operators you need: minus `-x` (flip the sign), plus `+x` (keep the sign) and `not x`.
+
+```python
+t = 4
+print(-t, +t, - -t, 10 - -t)
+```
+
+```output
+-4 4 4 14
+```
+
+The same symbol `-` is binary in `10 - t` and unary in `-t`. In `10 - -t`, the first `-` is binary and the second is unary.
+
+### Precedence, associativity and binding
+
+**Precedence** is the order in which Python applies different operators. Operators higher in this table **bind** more tightly: they grab their operands first.
+
+| Order | Operators |
+|---|---|
+| 1 (first) | `**` |
+| 2 | unary `+`, unary `-` |
+| 3 | `*`, `/`, `//`, `%` |
+| 4 | binary `+`, `-` |
+| 5 | comparisons `==`, `!=`, `>`, `>=`, `<`, `<=`, `in`, `not in` |
+| 6 | `not` |
+| 7 | `and` |
+| 8 (last) | `or` |
+
+Brackets `( )` always come first, so use them whenever you want a different order.
+
+**Associativity** decides the order when several operators of the **same** level appear in a row. Almost all of them go **left to right**. The exception is `**`, which goes **right to left**:
+
+```python
+print(20 - 5 - 3)
+print(64 / 4 / 2)
+print(2 ** 3 ** 2)
+print((2 ** 3) ** 2)
+```
+
+```output
+12
+8.0
+512
+64
+```
+
+`2 ** 3 ** 2` means `2 ** (3 ** 2)`, which is `2 ** 9`.
+
+One more special case: `**` binds more tightly than a unary minus **on its left**, but less tightly than one **on its right**:
+
+```python
+print(-3 ** 2)
+print((-3) ** 2)
+print(2 ** -1)
+```
+
+```output
+-9
+9
+0.5
+```
+
+`-3 ** 2` means `-(3 ** 2)`. And `*`, `/`, `//` and `%` share one level, so they simply go left to right:
+
+```python
+print(10 - 4 * 2 + 1)
+print(7 // 2 * 2)
+print(12 % 5 * 3)
+```
+
+```output
+3
+6
+6
+```
+
+### Relational operators
+
+A **relational operator** (also called a **comparison operator**) compares two values and gives a **Boolean**: one of the two values `True` or `False`.
+
+| Operator | Meaning |
+|---|---|
+| `==` | equal to |
+| `!=` | not equal to |
+| `>` | greater than |
+| `>=` | greater than or equal to |
+| `<` | less than |
+| `<=` | less than or equal to |
+
+```python
+temp = 18
+print(temp == 18, temp != 18)
+print(temp > 20, temp >= 18)
+print(temp < 18, temp <= 18)
+```
+
+```output
+True False
+False True
+False True
+```
+
+Numbers of different types compare by value, so `2 == 2.0` is `True`. Strings compare letter by letter, and `"10" == 10` is `False` because text never equals a number. Comparisons can also be **chained**: `0 < temp < 25` means `0 < temp and temp < 25`.
+
+```python
+temp = 18
+print(2 == 2.0, "10" == 10, 0 < temp < 25)
+```
+
+```output
+True False True
+```
+
+### Boolean operators: `not`, `and`, `or`
+
+The **Boolean operators** combine `True`/`False` values:
+
+- `not x` flips the value: `not True` is `False`.
+- `x and y` is `True` only if **both** sides are `True`.
+- `x or y` is `True` if **at least one** side is `True`.
+
+| `a` | `b` | `a and b` | `a or b` | `not a` |
+|---|---|---|---|---|
+| `True` | `True` | `True` | `True` | `False` |
+| `True` | `False` | `False` | `True` | `False` |
+| `False` | `True` | `False` | `True` | `True` |
+| `False` | `False` | `False` | `False` | `True` |
+
+```python
+sunny = True
+windy = False
+print(sunny and windy, sunny or windy, not windy)
+```
+
+```output
+False True True
+```
+
+### Building and evaluating Boolean expressions
+
+A **Boolean expression** is any expression whose value is `True` or `False`. You build bigger ones by joining comparisons with `and`, `or` and `not`. To evaluate one by hand, follow precedence: arithmetic, then comparisons, then `not`, then `and`, then `or`.
+
+```python
+age = 15
+has_ticket = True
+with_adult = False
+print(age >= 12 and has_ticket)
+print(age >= 18 or with_adult)
+print(not age > 10 or has_ticket and with_adult)
+```
+
+```output
+True
+False
+False
+```
+
+The last line reads as `(not (age > 10)) or (has_ticket and with_adult)`, which is `False or False`.
+
+Python also stops early when it already knows the answer. This is called **short-circuit evaluation**: in `False and ...` the right side is never evaluated, and the same goes for `True or ...`. That is why this line does not crash, even though it contains a division by zero:
+
+```python
+print(False and 1 / 0, True or 1 / 0)
+```
+
+```output
+False True
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+print(2 + 3 * 4 ** 2 // 5)
+```
+
+```output
+11
+```
+
+</Predict>
+
+<Predict>
+
+```python
+print(-11 // 4, -11 % 4, 11 % -4)
+```
+
+```output
+-3 1 -1
+```
+
+</Predict>
+
+<Predict>
+
+```python
+x = 5
+x *= 2 + 1
+print(x, not x > 10 and x != 15)
+```
+
+```output
+15 False
+```
+
+</Predict>
+
+## Common mistakes
+
+**Using `=` when you mean `==`.** A single `=` stores a value, so it cannot compare two things. Inside `print()` it even gets a different meaning:
+
+```python
+x = 3
+print(x = 3)
+```
+
+```error
+TypeError: print() got an unexpected keyword argument 'x'
+```
+
+Here Python thought you were passing a named argument `x` to `print()`. Use `x == 3` to compare.
+
+**Expecting `/` to give a whole number.** `10 / 5` is `2.0`. Use `//` when you want an `int`.
+
+**Thinking `//` cuts off the decimals.** It rounds **down**: `-7 // 2` is `-4`, not `-3`.
+
+**Forgetting that `x += 2 * 3` multiplies first.** The whole right side is worked out before the update: it means `x = x + (2 * 3)`.
+
+**Adding a number to a string.** `"Total: " + 5` raises a `TypeError`. Convert with `str(5)` first.
+
+## Exam traps
+
+- **`**` is right-associative.** `2 ** 2 ** 3` is `2 ** 8`, which is `256`, not `64`.
+- **Unary minus vs. `**`.** `-2 ** 2` is `-4`, but `(-2) ** 2` is `4`.
+- **Negative `//` and `%`.** `//` rounds towards minus infinity, and `%` takes the sign of the right operand: `-5 % 3` is `1`, `5 % -3` is `-1`.
+- **Float results.** `/` always returns a float, and any float operand makes `//` and `%` return a float: `9.0 // 2` is `4.0`.
+- **Augmented assignment works on the whole right side.** `x *= 2 + 3` multiplies `x` by `5`.
+- **`not` binds loosely.** `not 1 == 2` means `not (1 == 2)`, which is `True`. And `and` is applied before `or`.
+- **String operators.** `"3" * 3` is `"333"`, and `"3" + "3"` is `"33"`.
+
+## Try it
+
+In the [Playground](/playground), pick two numbers, one of them negative, and print the results of all seven numeric operators on them. Predict each answer before you run the code. Then write a Boolean expression that is `True` when a temperature is between 15 and 25 and it is not raining, and test it with a few values.
+
+When you're ready, [practise this objective](/practice?objective=1.4.1).

@@ -1,0 +1,333 @@
+export const meta = {
+  objectiveId: '4.1.3',
+  updated: '2026-11-20',
+  tldr: 'Parameters are the names in a function definition; arguments are the values you pass in a call. Pass arguments by position or by keyword (positional ones first), give parameters default values to make them optional, and use keyword arguments like `sep` and `end` with `print()`.',
+  subpointsCovered: ['4.1.3.1', '4.1.3.2', '4.1.3.3', '4.1.3.4', '4.1.3.5', '4.1.3.6'],
+  links: [
+    { title: 'Python tutorial: More on defining functions', url: 'https://docs.python.org/3/tutorial/controlflow.html#more-on-defining-functions' },
+    { title: 'Built-in functions: print()', url: 'https://docs.python.org/3/library/functions.html#print' },
+  ],
+}
+
+## Big idea
+
+A function becomes much more useful when you can hand it some information each time you call it. A coffee machine always makes coffee, but you choose the size.
+
+```python
+def order_coffee(size):
+    print("One", size, "coffee, please")
+
+order_coffee("small")
+order_coffee("large")
+```
+
+```output
+One small coffee, please
+One large coffee, please
+```
+
+The name in the definition, `size`, is a **parameter**. The values in the calls, `"small"` and `"large"`, are **arguments**. When the function is called, the parameter becomes a variable holding the argument.
+
+## Walkthrough
+
+### Parameters versus arguments
+
+- A **parameter** is a name written inside the brackets of the `def` line. It's like an empty box with a label.
+- An **argument** is the actual value you put in the brackets of a call. It fills the box for that one call.
+
+```python
+def area(width, height):
+    return width * height
+
+print(area(3, 4))
+print(area(10, 2))
+```
+
+```output
+12
+20
+```
+
+`width` and `height` are parameters. `3`, `4`, `10` and `2` are arguments. An easy way to remember it: **p**arameters are in the **p**lan (the definition), **a**rguments are in the **a**ction (the call).
+
+### Positional arguments
+
+By default, arguments are matched to parameters **by position**: the first argument goes to the first parameter, the second to the second, and so on.
+
+```python
+def describe_pet(animal, name):
+    print(name, "is a", animal)
+
+describe_pet("dog", "Rex")
+describe_pet("Rex", "dog")
+```
+
+```output
+Rex is a dog
+dog is a Rex
+```
+
+Swapping the arguments swaps the meaning, and Python can't tell that you meant otherwise.
+
+### Keyword arguments
+
+You can also name the parameter in the call, written `name=value`. These are **keyword arguments**, and their order doesn't matter:
+
+```python
+def describe_pet(animal, name):
+    print(name, "is a", animal)
+
+describe_pet(animal="cat", name="Luna")
+describe_pet(name="Luna", animal="cat")
+```
+
+```output
+Luna is a cat
+Luna is a cat
+```
+
+### Mixing positional and keyword arguments
+
+You can use both kinds in one call, but **all positional arguments must come first**, and then the keyword arguments:
+
+```python
+def book_trip(city, nights, people):
+    print(city, nights, "nights for", people)
+
+book_trip("Lisbon", 3, people=2)
+book_trip("Oslo", people=4, nights=2)
+```
+
+```output
+Lisbon 3 nights for 2
+Oslo 2 nights for 4
+```
+
+A positional argument after a keyword argument is a syntax error, so the program does not even start:
+
+```python
+def book_trip(city, nights, people):
+    print(city, nights, people)
+
+book_trip(city="Rome", 3, 2)
+```
+
+```error
+SyntaxError: positional argument follows keyword argument
+```
+
+### Default values
+
+A parameter can have a **default value**, written `name=value` in the definition. If the call doesn't give that argument, the default is used, so the argument becomes optional:
+
+```python
+def make_tea(kind, sugar=0):
+    print(kind, "tea with", sugar, "sugar")
+
+make_tea("green")
+make_tea("black", 2)
+make_tea("mint", sugar=1)
+```
+
+```output
+green tea with 0 sugar
+black tea with 2 sugar
+mint tea with 1 sugar
+```
+
+The first call **uses** the default. The second and third calls **override** it: they replace the default with their own value, by position or by keyword.
+
+In the definition, parameters **with** defaults must come after parameters **without** defaults:
+
+```python
+def make_tea(sugar=0, kind):
+    print(kind, sugar)
+```
+
+```error
+SyntaxError: parameter without a default follows parameter with a default
+```
+
+With several defaults, keywords let you override just the one you want:
+
+```python
+def pizza(size="medium", crust="thin", cheese=True):
+    print(size, crust, cheese)
+
+pizza()
+pizza("large")
+pizza(cheese=False)
+```
+
+```output
+medium thin True
+large thin True
+medium thin False
+```
+
+### Keyword arguments in `print()`
+
+Built-in functions take keyword arguments too. `print()` has two you'll see a lot:
+
+- `sep` is what goes **between** the values. The default is one space `" "`.
+- `end` is what goes **after** the last value. The default is a newline `"\n"`, which is why each `print()` normally starts a new line.
+
+```python
+print("apples", "pears", "plums")
+print("apples", "pears", "plums", sep=", ")
+print("2026", "11", "20", sep="-")
+print("Loading", end="...")
+print("done")
+print("a", "b", sep="", end="!\n")
+```
+
+```output
+apples pears plums
+apples, pears, plums
+2026-11-20
+Loading...done
+ab!
+```
+
+`print()` accepts any number of values, so `sep` and `end` must be passed **by keyword**. If you just added `", "` as another value, it would be printed as one more item.
+
+### Invalid calls
+
+Python checks every call against the definition. These are the usual problems:
+
+**Missing an argument** that has no default:
+
+```python
+def greet(name, greeting):
+    print(greeting, name)
+
+greet("Ana")
+```
+
+```error
+TypeError: greet() missing 1 required positional argument: 'greeting'
+```
+
+**Too many arguments:**
+
+```python
+def greet(name):
+    print("Hi", name)
+
+greet("Ana", "Ben")
+```
+
+```error
+TypeError: greet() takes 1 positional argument but 2 were given
+```
+
+**The same parameter twice**, once by position and once by keyword:
+
+```python
+def greet(name, greeting="Hi"):
+    print(greeting, name)
+
+greet("Ana", name="Ben")
+```
+
+```error
+TypeError: greet() got multiple values for argument 'name'
+```
+
+**A keyword that doesn't exist:**
+
+```python
+def greet(name):
+    print("Hi", name)
+
+greet(name="Ana", mood="happy")
+```
+
+```error
+TypeError: greet() got an unexpected keyword argument 'mood'
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+def shipping(weight, rate=2, fee=1):
+    return weight * rate + fee
+
+print(shipping(3), shipping(3, 4), shipping(3, fee=0))
+```
+
+```output
+7 13 6
+```
+
+</Predict>
+
+<Predict>
+
+```python
+print("x", "y", "z", sep="+", end="=")
+print("?")
+```
+
+```output
+x+y+z=?
+```
+
+</Predict>
+
+<Predict>
+
+```python
+def label(item, price):
+    print(item, "costs", price)
+
+label(price=4, item="bread")
+label("jam", 3)
+```
+
+```output
+bread costs 4
+jam costs 3
+```
+
+</Predict>
+
+## Common mistakes
+
+**Mixing up the order of positional arguments.** Python matches by position only, so `describe_pet("Rex", "dog")` happily prints nonsense. Use keyword arguments when the order is easy to confuse.
+
+**Putting a keyword argument before a positional one.** `f(a=1, 2)` is a `SyntaxError`. Positional arguments always come first.
+
+**Passing a value for a parameter twice.** If you pass the first parameter by position, you can't also pass it by keyword. That's a `TypeError: ... got multiple values for argument ...`.
+
+**Writing defaults in the wrong order in the definition.** `def f(a=1, b):` is a `SyntaxError`. Parameters without defaults go first.
+
+**Forgetting that `sep` needs a keyword.** Without `sep=`, the separator is just printed as another value:
+
+```python
+print("red", "blue", "-")
+print("red", "blue", sep="-")
+```
+
+```output
+red blue -
+red-blue
+```
+
+## Exam traps
+
+- **Parameter or argument?** Questions ask which word fits: parameters live in the `def` line, arguments in the call.
+- **Positional first, then keyword.** `f(1, b=2)` is fine; `f(a=1, 2)` is a `SyntaxError` before anything runs.
+- **Multiple values for one parameter.** `f(1, a=2)` when `a` is the first parameter raises `TypeError`.
+- **Defaults are used only when the argument is missing.** Track which defaults a call overrides, especially when it skips one with a keyword, like `pizza(cheese=False)`.
+- **Default order in the definition.** A parameter without a default can't follow one with a default.
+- **`sep` and `end`.** `sep` goes only between values, never at the end; `end` replaces the newline, so the next `print()` continues on the same line.
+- **Counting arguments.** Read the error carefully: "missing 1 required positional argument" versus "takes 1 positional argument but 2 were given".
+
+## Try it
+
+In the [Playground](/playground), write a function `invite(name, day="Saturday", time="7pm")` that prints an invitation. Call it with only a name, then override just the time with a keyword argument, then pass all three by position. Finally, print a date as `20/11/2026` using one `print()` call with three values and `sep`.
+
+When you're ready, [practise this objective](/practice?objective=4.1.3).

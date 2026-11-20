@@ -1,0 +1,352 @@
+export const meta = {
+  objectiveId: 'x.6',
+  updated: '2026-11-20',
+  tldr: 'Exceptions form a family tree: `BaseException` at the top, then `Exception`, `SystemExit` and `KeyboardInterrupt`, with groups like `ArithmeticError` and `LookupError` below. An `except` for a parent also catches its children, so list `except` branches from most specific to most general. An exception not handled in a function travels up to the code that called it.',
+  subpointsCovered: ['x.6.1', 'x.6.2', 'x.6.3', 'x.6.4', 'x.6.5'],
+  links: [
+    { title: 'Built-in exceptions and their hierarchy', url: 'https://docs.python.org/3/library/exceptions.html#exception-hierarchy' },
+    { title: 'Python tutorial: Handling exceptions', url: 'https://docs.python.org/3/tutorial/errors.html#handling-exceptions' },
+  ],
+}
+
+## Big idea
+
+This topic is only on the older PCEP-30-02 exam; the current PCEP-30-03 exam dropped it.
+
+An **exception** is Python's way of saying "something went wrong" while a program runs. Each kind of exception has a name, such as `ZeroDivisionError` or `KeyError`. These names are not a loose pile: they form a **family tree** (a **hierarchy**), where general kinds of error have more specific kinds below them.
+
+This matters because an `except` branch for a general kind also catches every kind below it:
+
+```python
+try:
+    print(10 / 0)
+except ArithmeticError:
+    print("Some kind of maths problem")
+```
+
+```output
+Some kind of maths problem
+```
+
+`ZeroDivisionError` is a kind of `ArithmeticError`, so this `except` catches it. If you are new to `try` and `except`, start with [the lesson on handling exceptions](/learn/4.2.2).
+
+## Walkthrough
+
+### The top of the tree
+
+Here is the part of the tree you need to know. Each name is a kind of the name above it:
+
+```
+BaseException
+├── SystemExit
+├── KeyboardInterrupt
+└── Exception
+    ├── ArithmeticError
+    │   ├── ZeroDivisionError
+    │   └── OverflowError
+    ├── LookupError
+    │   ├── IndexError
+    │   └── KeyError
+    ├── TypeError
+    ├── ValueError
+    └── NameError
+```
+
+- **`BaseException`** is the root: every exception is a kind of `BaseException`.
+- **`SystemExit`** is raised when the program is asked to end, for example by calling `exit()`.
+- **`KeyboardInterrupt`** is raised when the user presses Ctrl+C to stop a running program.
+- **`Exception`** is the parent of all the ordinary errors that programs normally deal with.
+
+`SystemExit` and `KeyboardInterrupt` sit **beside** `Exception`, not under it. That is on purpose: a plain `except Exception:` catches ordinary errors but still lets the user stop the program.
+
+The built-in function `issubclass(A, B)` answers the question "is `A` a kind of `B`?":
+
+```python
+print(issubclass(ZeroDivisionError, ArithmeticError))
+print(issubclass(KeyError, LookupError))
+print(issubclass(KeyboardInterrupt, Exception))
+print(issubclass(KeyboardInterrupt, BaseException))
+```
+
+```output
+True
+True
+False
+True
+```
+
+### Abstract and concrete exceptions
+
+Some exceptions are **abstract**: Python never raises them directly. They exist only to group related errors, so you can catch the whole group with one `except`. Two important ones:
+
+| Abstract exception | Concrete exceptions below it | Typical cause |
+|---|---|---|
+| `ArithmeticError` | `ZeroDivisionError`, `OverflowError` | a maths operation fails |
+| `LookupError` | `IndexError`, `KeyError` | looking up a position or key that isn't there |
+
+The **concrete** exceptions are the ones Python actually raises:
+
+```python
+menu = {"soup": 4, "salad": 6}
+for dish in ["soup", "cake"]:
+    try:
+        print(dish, menu[dish])
+    except LookupError:
+        print(dish, "is not on the menu")
+```
+
+```output
+soup 4
+cake is not on the menu
+```
+
+The missing key raised a `KeyError`, and `except LookupError` caught it, because `KeyError` is a kind of `LookupError`. The same `except` would catch an `IndexError` from a list.
+
+### Ordering except branches
+
+A `try` can have several `except` branches. Python checks them **from top to bottom** and runs only the **first** one that matches. So the most **specific** exceptions must come first, and the most **general** last:
+
+```python
+def share(bill, people):
+    try:
+        print(bill / people)
+    except ZeroDivisionError:
+        print("Nobody to share with")
+    except ArithmeticError:
+        print("Some other maths problem")
+    except Exception:
+        print("Something else went wrong")
+
+share(30, 3)
+share(30, 0)
+share(30, "two")
+```
+
+```output
+10.0
+Nobody to share with
+Something else went wrong
+```
+
+The third call raised a `TypeError` (you can't divide by text). It isn't an `ArithmeticError`, so it fell through to `except Exception`.
+
+Now watch what happens with the branches in the **wrong** order:
+
+```python
+try:
+    print(5 / 0)
+except ArithmeticError:
+    print("general branch")
+except ZeroDivisionError:
+    print("specific branch")
+```
+
+```output
+general branch
+```
+
+The general branch catches the error first, so the specific branch can **never** run. It is **unreachable** code. Python doesn't complain; it just never uses it.
+
+### How exceptions travel through function calls
+
+When an exception happens inside a function and the function doesn't handle it, the function stops at once and the exception is passed **up** to the line that called the function. If that code doesn't handle it either, it goes up again, and so on. This is called **propagation**. If nobody handles it, the program stops with the error message.
+
+```python
+def average(marks):
+    return sum(marks) / len(marks)
+
+def report(marks):
+    print("Working out the average...")
+    result = average(marks)
+    print("Average:", result)
+
+try:
+    report([])
+except ZeroDivisionError:
+    print("No marks yet")
+print("Program continues")
+```
+
+```output
+Working out the average...
+No marks yet
+Program continues
+```
+
+The error happened in `average()`. It went up into `report()`, which stopped before printing "Average:", and then up to the `try` in the main code, which handled it.
+
+With no `try` anywhere, the exception reaches the top and ends the program:
+
+```python
+def average(marks):
+    return sum(marks) / len(marks)
+
+def report(marks):
+    print("Average:", average(marks))
+
+report([])
+```
+
+```error
+ZeroDivisionError: division by zero
+```
+
+### Letting the caller handle it
+
+Because exceptions travel upwards, a function does not have to handle every error itself. It can leave the job to its **caller**, the code that called it, which often knows better what to do. This is called **delegating** the responsibility.
+
+A function can also check its input and **raise** an exception on purpose with the `raise` statement, leaving the caller to decide how to react:
+
+```python
+def ticket_price(age):
+    if age < 0:
+        raise ValueError("age cannot be negative")
+    return 5 if age < 12 else 10
+
+for age in [8, -1, 30]:
+    try:
+        print(age, ticket_price(age))
+    except ValueError as e:
+        print(age, "rejected:", e)
+```
+
+```output
+8 5
+-1 rejected: age cannot be negative
+30 10
+```
+
+`ticket_price()` only reports the problem; the loop that calls it decides to print a message and carry on.
+
+A function can also handle an error partly and pass it on. A `raise` with nothing after it, inside an `except` branch, raises the same exception again:
+
+```python
+def load_settings(data):
+    try:
+        return data["volume"]
+    except KeyError:
+        print("load_settings: volume missing")
+        raise
+
+try:
+    load_settings({"theme": "dark"})
+except KeyError:
+    print("caller: using default volume 5")
+```
+
+```output
+load_settings: volume missing
+caller: using default volume 5
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+try:
+    shelf = ["jam", "honey"]
+    print(shelf[5])
+except KeyError:
+    print("A")
+except LookupError:
+    print("B")
+except Exception:
+    print("C")
+```
+
+```output
+B
+```
+
+</Predict>
+
+<Predict>
+
+```python
+def inner():
+    print("inner start")
+    x = int("ten")
+    print("inner end")
+
+def outer():
+    try:
+        inner()
+    except ValueError:
+        print("outer caught it")
+
+outer()
+print("done")
+```
+
+```output
+inner start
+outer caught it
+done
+```
+
+</Predict>
+
+<Predict>
+
+```python
+try:
+    print(1 / 0)
+except Exception:
+    print("one")
+except ZeroDivisionError:
+    print("two")
+```
+
+```output
+one
+```
+
+</Predict>
+
+## Common mistakes
+
+**Putting a general `except` before a specific one.** The specific branch becomes unreachable, as shown above. Always go from child to parent.
+
+**Thinking `except Exception` catches everything.** It doesn't catch `SystemExit` or `KeyboardInterrupt`, because they are not under `Exception`:
+
+```python
+try:
+    raise KeyboardInterrupt
+except Exception:
+    print("caught")
+```
+
+```error
+KeyboardInterrupt
+```
+
+**Catching the wrong branch of the tree.** `IndexError` is a `LookupError`, not an `ArithmeticError`, so this `except` doesn't match and the error goes on:
+
+```python
+try:
+    print([1, 2][7])
+except ArithmeticError:
+    print("caught")
+```
+
+```error
+IndexError: list index out of range
+```
+
+**Thinking the rest of a function still runs after an exception.** The function stops at the line that failed. Nothing after it in that function runs, unless the error is handled inside the function.
+
+## Exam traps
+
+- **Most specific first.** If a broad `except` (like `Exception` or `LookupError`) comes before a narrow one (like `KeyError`), the narrow one is unreachable.
+- **Only the first matching branch runs.** Even if several branches would match, Python runs just one.
+- **Know the parents.** `ZeroDivisionError` is under `ArithmeticError`; `IndexError` and `KeyError` are under `LookupError`; all of these are under `Exception`.
+- **`KeyboardInterrupt` and `SystemExit` are not under `Exception`.** They are direct children of `BaseException`, so only `except BaseException:` or a bare `except:` catches them.
+- **Propagation.** An exception in a function that has no handler travels to the caller; code after the failing line, in every function it passes through, is skipped.
+- **A bare `except:` must be last.** It catches everything, and Python refuses to run code where it comes before other `except` branches.
+
+## Try it
+
+In the [Playground](/playground), write a function `price_per_person(prices, item, people)` that looks up `prices[item]` in a dictionary and divides it by `people`, without any `try` inside. Call it from a `try` with branches for `KeyError`, `ZeroDivisionError` and `Exception`, in that order, and test it with a missing item, with 0 people and with a valid order. Then move `except Exception` to the top and see which branches stop working.
+
+When you're ready, [practise this objective](/practice?objective=x.6).

@@ -1,0 +1,273 @@
+export const meta = {
+  objectiveId: '2.2.2',
+  updated: '2026-11-20',
+  tldr: 'A `for` loop takes the items of a string, list or tuple one at a time, puts each into the loop variable, and runs its body once per item. After the loop, the variable keeps the last value it was given.',
+  subpointsCovered: ['2.2.2.1', '2.2.2.2', '2.2.2.3', '2.2.2.4', '2.2.2.5'],
+  links: [
+    { title: 'Python tutorial: for statements', url: 'https://docs.python.org/3/tutorial/controlflow.html#for-statements' },
+    { title: 'The for statement', url: 'https://docs.python.org/3/reference/compound_stmts.html#the-for-statement' },
+  ],
+}
+
+## Big idea
+
+A **loop** repeats a block of code. A `for` loop repeats it once for **each item** in a collection, like reading a shopping list from top to bottom and ticking off one item at a time:
+
+```python
+for item in ["milk", "eggs", "bread"]:
+    print("Buy", item)
+```
+
+```output
+Buy milk
+Buy eggs
+Buy bread
+```
+
+The name after `for` (here `item`) is the **loop variable**. Each time round the loop, Python puts the next item into it. The indented lines under the colon are the **body** of the loop: they run once per item.
+
+## Walkthrough
+
+### The shape of a `for` loop
+
+Every `for` loop has the same parts:
+
+```text
+for <loop variable> in <collection>:
+    <body, indented>
+```
+
+- `for` and `in` are keywords, words with a fixed meaning in Python.
+- The line ends with a colon `:`.
+- The body is indented, usually by 4 spaces. The first line that is no longer indented is **after** the loop and runs only once, when the loop has finished.
+
+```python
+for city in ["Paris", "Lisbon"]:
+    print("Visiting", city)
+print("Trip over")
+```
+
+```output
+Visiting Paris
+Visiting Lisbon
+Trip over
+```
+
+### `in` hands out the items one by one
+
+Something you can loop over is called an **iterable**. Strings, lists and tuples are all iterables. In a `for` line, `in` means "take the next item from this iterable". Python keeps asking for the next item until there are none left, then the loop stops on its own.
+
+If the iterable is empty, there is no first item, so the body never runs:
+
+```python
+for task in []:
+    print("Doing", task)
+print("Nothing to do")
+```
+
+```output
+Nothing to do
+```
+
+### Strings, lists and tuples
+
+Looping over a **string** gives you one character at a time, including spaces:
+
+```python
+for letter in "cat":
+    print(letter)
+```
+
+```output
+c
+a
+t
+```
+
+Looping over a **list** or a **tuple** gives you one item at a time, in order. A tuple is like a list written with round brackets, and it cannot be changed after it is made:
+
+```python
+for temp in [18, 21, 19]:
+    print(temp, "degrees")
+for day in ("Sat", "Sun"):
+    print(day, "is a weekend day")
+```
+
+```output
+18 degrees
+21 degrees
+19 degrees
+Sat is a weekend day
+Sun is a weekend day
+```
+
+### Doing something with each item
+
+The body can do any work with the current item. A common pattern is to start a **running total** before the loop and add to it inside:
+
+```python
+prices = [2.5, 4.0, 1.5]
+total = 0
+for price in prices:
+    total = total + price
+print("Total:", total)
+```
+
+```output
+Total: 8.0
+```
+
+You can also count things that match a test, using an `if` inside the loop:
+
+```python
+word = "banana"
+count = 0
+for letter in word:
+    if letter == "a":
+        count = count + 1
+print(count)
+```
+
+```output
+3
+```
+
+### Tracing the loop variable
+
+To **trace** a loop means to follow it step by step on paper, writing down the value of each variable after every round. Here is a loop and its trace:
+
+```python
+total = 0
+for n in [4, 1, 5]:
+    total = total + n
+    print("n =", n, "total =", total)
+print("after the loop n is", n)
+```
+
+```output
+n = 4 total = 4
+n = 1 total = 5
+n = 5 total = 10
+after the loop n is 5
+```
+
+| Round | `n` | `total` after the body |
+|---|---|---|
+| 1 | 4 | 4 |
+| 2 | 1 | 5 |
+| 3 | 5 | 10 |
+
+Notice the last line: **the loop variable still exists after the loop**, and it holds the last item it was given.
+
+Changing the loop variable inside the body does not change the list. On the next round, Python simply puts the next item into it again:
+
+```python
+marks = [1, 2, 3]
+for m in marks:
+    m = m * 10
+print(marks, m)
+```
+
+```output
+[1, 2, 3] 30
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+for ch in "hi!":
+    print(ch * 2)
+```
+
+```output
+hh
+ii
+!!
+```
+
+</Predict>
+
+<Predict>
+
+```python
+result = ""
+for word in ("red", "sky", "at", "night"):
+    result = result + word[0]
+print(result, word)
+```
+
+```output
+rsan night
+```
+
+</Predict>
+
+<Predict>
+
+```python
+pets = ["dog", "cat"]
+for pet in pets:
+    print(pet)
+print(pet)
+```
+
+```output
+dog
+cat
+cat
+```
+
+</Predict>
+
+## Common mistakes
+
+**Forgetting the colon.** The `for` line must end with `:`.
+
+```python
+for fruit in ["apple", "pear"]
+    print(fruit)
+```
+
+```error
+SyntaxError: expected ':'
+```
+
+**Forgetting to indent the body.** The body must be indented under the `for` line:
+
+```python
+for fruit in ["apple", "pear"]:
+print(fruit)
+```
+
+```error
+IndentationError: expected an indented block after 'for' statement on line 1
+```
+
+**Looping over a number.** A whole number is not an iterable, so you can't loop over it directly. To repeat something a number of times, use `range()` (see [the `range()` lesson](/learn/2.2.3)).
+
+```python
+for i in 3:
+    print(i)
+```
+
+```error
+TypeError: 'int' object is not iterable
+```
+
+**Putting the total inside the loop.** If `total = 0` is inside the body, it is reset on every round and you only keep the last item.
+
+## Exam traps
+
+- **The loop variable after the loop.** It keeps the last value it was given. Questions often print it after the loop has ended.
+- **Indentation decides what repeats.** A `print` indented under the `for` runs once per item; the same `print` not indented runs once, after the loop.
+- **Strings are looped character by character.** `for c in "a b":` runs three times: `"a"`, `" "` and `"b"`.
+- **Empty iterables.** Looping over `""`, `[]` or `()` runs the body zero times, with no error.
+- **Changing the loop variable does not change the list.** `m = m * 10` inside the loop only changes the name `m`, not the item in the list.
+
+## Try it
+
+In the [Playground](/playground), make a list of the prices of four things you bought this week. Use a `for` loop to print each price, add them up into a total, and count how many cost more than 5. Print the loop variable after the loop and check it holds the last price.
+
+When you're ready, [practise this objective](/practice?objective=2.2.2).

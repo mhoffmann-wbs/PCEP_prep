@@ -1,0 +1,253 @@
+export const meta = {
+  objectiveId: '5.2.1',
+  updated: '2026-11-20',
+  tldr: 'A module is a file of ready-made Python code. `import math` loads it and you use its contents as `math.sqrt`; `from math import sqrt` brings just that name in; `as` gives a shorter name. Importing saves you from writing and testing the same code yourself.',
+  subpointsCovered: ['5.2.1.1', '5.2.1.2', '5.2.1.3'],
+  links: [
+    { title: 'Python tutorial: Modules', url: 'https://docs.python.org/3/tutorial/modules.html' },
+    { title: 'The import statement', url: 'https://docs.python.org/3/reference/simple_stmts.html#the-import-statement' },
+    { title: 'The Python Standard Library', url: 'https://docs.python.org/3/library/index.html' },
+  ],
+}
+
+## Big idea
+
+A **module** is a file full of Python code that someone has already written and tested: functions, values and other tools. Instead of writing everything yourself, you **import** the module and use what's inside.
+
+Think of a kitchen. You could grind your own flour, but usually you buy a bag and get on with baking. Modules are the bags of flour of programming.
+
+Python comes with a large collection of modules called the **standard library**. Two of them, `math` and `random`, have their own lessons: [the math module](/learn/5.2.2) and [the random module](/learn/5.2.3).
+
+```python
+import math
+print(math.sqrt(49))
+```
+
+```output
+7.0
+```
+
+`import math` loads the module. `math.sqrt` is the square root function that lives inside it.
+
+## Walkthrough
+
+### Why import existing code?
+
+Importing code has some clear benefits:
+
+- **You save time.** Someone already wrote it, so you don't have to.
+- **It's reliable.** Standard library modules are used by millions of programs and are well tested.
+- **Your program stays short and readable.** `math.sqrt(x)` says what it does in one word.
+- **Code is organised.** Related tools are grouped in one module, so names from different modules don't get mixed up.
+
+A module is only loaded when you ask for it. That keeps Python itself small and fast to start.
+
+### The `import` keyword
+
+The simplest form is `import` followed by the module's name. Put imports at the top of your program, before you use anything from them:
+
+```python
+import math
+import random
+
+print(math.pi)
+print(random.__name__)
+```
+
+```output
+3.141592653589793
+random
+```
+
+You can import several modules on one line, separated by commas: `import math, random`. Separate lines are easier to read, though.
+
+Importing the same module twice is harmless. Python loads it only once and reuses it.
+
+### Accessing a module's contents with a dot
+
+After `import math`, the module is available under the name `math`. To reach something inside it, write the module name, a **dot**, and the name of the thing. This is called **dot notation**:
+
+```python
+import math
+
+print(math.floor(7.8))
+print(math.pi * 2 ** 2)
+```
+
+```output
+7
+12.566370614359172
+```
+
+`math.floor` is a function, so you call it with brackets. `math.pi` is a plain value (a constant), so there are no brackets.
+
+Without the module name in front, Python doesn't know where the name comes from:
+
+```python
+import math
+print(sqrt(16))
+```
+
+```error
+NameError: name 'sqrt' is not defined
+```
+
+### Importing names directly with `from`
+
+If you only need one or two things, `from ... import ...` copies those names straight into your program. Then you use them without the module name and without a dot:
+
+```python
+from math import sqrt, pi
+
+print(sqrt(81))
+print(round(pi, 2))
+```
+
+```output
+9.0
+3.14
+```
+
+With this form, the module's own name is **not** defined. Only the names you listed are:
+
+```python
+from math import sqrt
+print(math.sqrt(4))
+```
+
+```error
+NameError: name 'math' is not defined. Did you forget to import 'math'?
+```
+
+You might also see `from math import *`, which brings in **every** public name from the module. It's legal, but it makes it hard to tell where a name came from, and it can silently overwrite your own variables. Avoid it in real code.
+
+### Renaming with `as`
+
+The keyword `as` gives an imported module or name a different name, usually a shorter one:
+
+```python
+import math as m
+from random import choice as pick
+
+print(m.ceil(2.1))
+print(pick(["tea"]))
+```
+
+```output
+3
+tea
+```
+
+After `import math as m`, you must use `m`. The name `math` is not defined, because only the new name was created.
+
+### Seeing what a module holds
+
+The built-in function `dir()` lists the names inside a module. It's handy for exploring:
+
+```python
+import math
+names = dir(math)
+print("sqrt" in names, "ceil" in names, "banana" in names)
+```
+
+```output
+True True False
+```
+
+If you ask for something a module doesn't have, you get an `AttributeError`:
+
+```python
+import math
+print(math.square(3))
+```
+
+```error
+AttributeError: module 'math' has no attribute 'square'
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+from math import pi
+pi = 3
+import math
+print(pi, math.pi > 3)
+```
+
+```output
+3 True
+```
+
+</Predict>
+
+<Predict>
+
+```python
+import math as m
+print(m.floor(5.9) + m.ceil(5.1))
+```
+
+```output
+11
+```
+
+</Predict>
+
+<Predict>
+
+```python
+import math as m
+print(math.sqrt(9))
+```
+
+```error
+NameError: name 'math' is not defined. Did you forget to import 'math'?
+```
+
+</Predict>
+
+## Common mistakes
+
+**Using a module before importing it.** The `import` line must run first:
+
+```python
+print(math.ceil(1.2))
+import math
+```
+
+```error
+NameError: name 'math' is not defined. Did you forget to import 'math'?
+```
+
+**Mixing up the two forms.** After `import math`, write `math.sqrt(...)`. After `from math import sqrt`, write `sqrt(...)`. Each form creates different names.
+
+**Misspelling the module name.** Module names are case-sensitive. `import Math` fails:
+
+```python
+import Math
+```
+
+```error
+ModuleNotFoundError: No module named 'Math'
+```
+
+**Naming your own file after a module.** If you save your program as `math.py` or `random.py` on your own computer, `import math` may load your file instead of the real module. Choose other file names.
+
+**Overwriting an imported name.** After `from math import pi`, a line like `pi = 3` replaces the imported value. The module itself is unchanged, so `math.pi` would still be the real value.
+
+## Exam traps
+
+- **This whole section is PCEP-30-03 only.** It's not part of PCEP-30-02.
+- **`import math` vs. `from math import sqrt`.** The first defines only `math` (use `math.sqrt`). The second defines only `sqrt` (no `math`). Questions show one form and then use the other name, expecting a `NameError`.
+- **`as` replaces the name.** After `import math as m`, `math` is not defined.
+- **`ModuleNotFoundError` vs. `AttributeError`.** A module that doesn't exist raises `ModuleNotFoundError`; a missing name inside a real module raises `AttributeError`.
+- **Functions vs. constants.** `math.pi` has no brackets; `math.pi()` raises a `TypeError` because a number can't be called.
+- **Several names in one line.** `from math import ceil, floor` imports both names.
+
+## Try it
+
+In the [Playground](/playground), import `math` three ways: `import math`, `from math import ceil, floor`, and `import math as m`. Use each one to round `4.3` up and down. Then print `dir(math)` and pick one name you don't recognise to look up in the Python documentation.
+
+When you're ready, [practise this objective](/practice?objective=5.2.1).

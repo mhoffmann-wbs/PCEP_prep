@@ -1,0 +1,348 @@
+export const meta = {
+  objectiveId: '4.1.2',
+  updated: '2026-11-20',
+  tldr: '`return` hands a value back to whoever called the function and ends the call at once. You can store that value, use it in expressions or pass it on. `print()` only shows text; a function with no `return` value gives back `None`.',
+  subpointsCovered: ['4.1.2.1', '4.1.2.2', '4.1.2.3', '4.1.2.4', '4.1.2.5', '4.1.2.6', '4.1.2.7', '4.1.2.8'],
+  links: [
+    { title: 'Python tutorial: Defining functions', url: 'https://docs.python.org/3/tutorial/controlflow.html#defining-functions' },
+    { title: 'Language reference: The return statement', url: 'https://docs.python.org/3/reference/simple_stmts.html#the-return-statement' },
+  ],
+}
+
+## Big idea
+
+Some functions just do something, like printing a message. Others work something out and **give the answer back**. They do that with the `return` statement.
+
+```python
+def pizza_slices():
+    return 8
+
+slices = pizza_slices()
+print(slices)
+```
+
+```output
+8
+```
+
+Think of a function as a shop counter: you ask for something (the call), and `return` is the moment the shopkeeper hands it over. The value that comes back is called the **return value**, and the call `pizza_slices()` is replaced by it.
+
+## Walkthrough
+
+### Returning a result with `return`
+
+Write `return` followed by an expression. Python works out the expression and sends its value back to the place where the function was called:
+
+```python
+def weekly_budget():
+    daily = 15
+    return daily * 7
+
+print(weekly_budget())
+```
+
+```output
+105
+```
+
+### Storing a returned value in a variable
+
+A returned value is just a value. You can assign it to a variable and use it later, as many times as you like:
+
+```python
+def room_area():
+    return 4 * 5
+
+area = room_area()
+print("Area:", area)
+print("Paint for two coats:", area * 2)
+```
+
+```output
+Area: 20
+Paint for two coats: 40
+```
+
+### Using returned values in expressions and calls
+
+You don't have to store the value first. A call can sit anywhere a value can: in arithmetic, in a comparison, or as the argument of another call.
+
+```python
+def ticket_price():
+    return 12
+
+total = ticket_price() * 3 + 5
+print(total)
+print(ticket_price() > 10)
+print(str(ticket_price()) + " euros")
+print(ticket_price(), ticket_price())
+```
+
+```output
+41
+True
+12 euros
+12 12
+```
+
+### `return` versus `print()`
+
+These two are easy to confuse because both seem to "produce" something.
+
+- `print()` **shows** text on the screen. The rest of the program can't use what was shown.
+- `return` **gives a value back** to the code that called the function. Nothing appears on the screen unless that code prints it.
+
+```python
+def shown():
+    print(30)
+
+def given():
+    return 30
+
+a = shown()
+b = given()
+print("a is", a)
+print("b is", b)
+```
+
+```output
+30
+a is None
+b is 30
+```
+
+`shown()` printed `30` while it ran, but it gave nothing back, so `a` is `None`. `given()` printed nothing, but `b` received the value `30`.
+
+### `return` ends the function
+
+As soon as a `return` runs, the function stops. Any lines after it in the body are skipped:
+
+```python
+def check_milk():
+    print("Opening fridge")
+    return "fresh"
+    print("This line never runs")
+
+print(check_milk())
+```
+
+```output
+Opening fridge
+fresh
+```
+
+This is handy with `if`: the first `return` that is reached decides the answer.
+
+```python
+def grade(points):
+    if points >= 90:
+        return "A"
+    if points >= 75:
+        return "B"
+    return "C"
+
+print(grade(95), grade(80), grade(40))
+```
+
+```output
+A B C
+```
+
+(The name `points` in brackets is a **parameter**: a value handed to the function. [The next lesson](/learn/4.1.3) explains parameters in full.)
+
+A `return` inside a loop also ends the whole function, not just the loop:
+
+```python
+def first_even():
+    for n in [3, 7, 8, 10]:
+        if n % 2 == 0:
+            return n
+    return None
+
+print(first_even())
+```
+
+```output
+8
+```
+
+### Returning several values
+
+Write several values after `return`, separated by commas. Python packs them into one **tuple** (an ordered, unchangeable group of values, written with round brackets):
+
+```python
+def min_max():
+    temps = [12, 18, 9, 21]
+    return min(temps), max(temps)
+
+result = min_max()
+print(result)
+low, high = min_max()
+print(low, high)
+```
+
+```output
+(9, 21)
+9 21
+```
+
+The line `low, high = min_max()` **unpacks** the tuple: the first value goes into `low`, the second into `high`.
+
+### When a function returns `None` by itself
+
+`None` is a special value that means "nothing here". A function gives back `None` when:
+
+- it has no `return` at all,
+- it uses `return` with nothing after it, or
+- it reaches the end of its body without meeting a `return`.
+
+```python
+def no_return():
+    x = 5
+
+def bare_return():
+    return
+
+def maybe(flag):
+    if flag:
+        return "yes"
+
+print(no_return(), bare_return(), maybe(True), maybe(False))
+```
+
+```output
+None None yes None
+```
+
+This is called returning `None` **implicitly**: you didn't write it, but Python does it for you.
+
+### Using `None` on purpose
+
+`None` is also useful when you want to say "there is no answer". For example, a search that finds nothing can return `None`, and the caller checks for it with `is None`:
+
+```python
+def find_pet(name):
+    for pet in ["Rex", "Milo", "Luna"]:
+        if pet == name:
+            return pet
+    return None
+
+found = find_pet("Bella")
+if found is None:
+    print("No pet with that name")
+```
+
+```output
+No pet with that name
+```
+
+Writing `return None` at the end is the same as leaving it out, but it makes your intention clear to a reader.
+
+## Predict the output
+
+<Predict>
+
+```python
+def double():
+    print("doubling")
+    return 2 * 4
+
+x = double() + 1
+print(x)
+```
+
+```output
+doubling
+9
+```
+
+</Predict>
+
+<Predict>
+
+```python
+def shout():
+    print("HEY")
+
+result = shout()
+print(result)
+```
+
+```output
+HEY
+None
+```
+
+</Predict>
+
+<Predict>
+
+```python
+def stats():
+    return 3, 4
+    return 5
+
+print(stats())
+```
+
+```output
+(3, 4)
+```
+
+</Predict>
+
+## Common mistakes
+
+**Printing instead of returning.** A function that prints its answer gives back `None`, so you can't calculate with it:
+
+```python
+def price():
+    print(10)
+
+total = price() + 5
+```
+
+```error
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
+```
+
+The `10` is printed first, then the addition fails because `price()` gave back `None`.
+
+**Putting code after `return` and expecting it to run.** Anything after a `return` that runs is skipped. Put the work before the `return`.
+
+**Calling `return` outside a function.** `return` only makes sense inside a function body:
+
+```python
+return 5
+```
+
+```error
+SyntaxError: 'return' outside function
+```
+
+**Unpacking into the wrong number of names.** If a function returns two values, you need exactly two names on the left:
+
+```python
+def size():
+    return 3, 4
+
+a, b, c = size()
+```
+
+```error
+ValueError: not enough values to unpack (expected 3, got 2)
+```
+
+## Exam traps
+
+- **`print` vs `return`.** If a function prints instead of returning, then `print(f())` shows the printed text **and** then `None`.
+- **Implicit `None`.** No `return`, a bare `return`, or a path through an `if` that misses every `return` all give `None`.
+- **`return` ends the call.** Lines after a `return` never run, and a `return` inside a loop stops the whole function on that pass.
+- **Several values make a tuple.** `return a, b` gives back `(a, b)`. Printing it shows round brackets.
+- **Order of output.** When a function both prints and returns, the printed text appears while the call runs, before anything the caller prints with the result.
+
+## Try it
+
+In the [Playground](/playground), write a function `discount_price()` that returns 80 percent of 50. Print the result, and then use the call inside a bigger expression, such as adding a 3 euro delivery fee. Next, change `return` to `print` and see what your expression does now.
+
+When you're ready, [practise this objective](/practice?objective=4.1.2).

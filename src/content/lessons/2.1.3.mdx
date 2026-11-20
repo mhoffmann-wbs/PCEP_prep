@@ -1,0 +1,311 @@
+export const meta = {
+  objectiveId: '2.1.3',
+  updated: '2026-11-20',
+  tldr: 'A program can hold many `if` statements, one after another or one inside another. Nested blocks are chosen by indentation, and `and`, `or`, `not` let one condition test several facts at once. Trace from the outside in.',
+  subpointsCovered: ['2.1.3.1', '2.1.3.2', '2.1.3.3', '2.1.3.4', '2.1.3.5'],
+  links: [
+    { title: 'Python tutorial: if statements', url: 'https://docs.python.org/3/tutorial/controlflow.html#if-statements' },
+    { title: 'Boolean operations: and, or, not', url: 'https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not' },
+  ],
+}
+
+## Big idea
+
+Real decisions come in layers. "If it's the weekend, then: if it's sunny, go to the park, otherwise watch a film." In Python you can put an `if` **inside** another `if`. This is called **nesting**.
+
+```python
+weekend = True
+sunny = False
+if weekend:
+    if sunny:
+        print("Go to the park")
+    else:
+        print("Watch a film")
+else:
+    print("Go to work")
+```
+
+```output
+Watch a film
+```
+
+**Indentation** (the spaces at the start of each line) shows which `else` belongs to which `if`: an `else` always pairs with the `if` that sits at the same indentation level directly above it.
+
+## Walkthrough
+
+### Several `if` statements in one program
+
+A program can contain any number of separate `if` statements. Each one is checked on its own, one after the other, so several of their blocks can run:
+
+```python
+basket_total = 64
+member = True
+discount = 0
+if basket_total > 50:
+    discount = discount + 5
+if member:
+    discount = discount + 10
+print("Discount:", discount, "percent")
+```
+
+```output
+Discount: 15 percent
+```
+
+Here both conditions are true, so both blocks run. Compare this with `if-elif` ([previous lesson](/learn/2.1.2)), where at most one block runs.
+
+### Nesting: an `if` inside a branch
+
+Any block can contain another `if`, including an `elif` or `else` block. Each level is indented 4 more spaces:
+
+```python
+has_ticket = True
+bag_weight = 26
+if has_ticket:
+    print("Welcome aboard")
+    if bag_weight > 23:
+        print("Extra fee for heavy bag")
+else:
+    print("Please buy a ticket")
+print("Next passenger")
+```
+
+```output
+Welcome aboard
+Extra fee for heavy bag
+Next passenger
+```
+
+The inner `if` is only checked when the outer condition is true. If `has_ticket` were `False`, Python would never look at `bag_weight` at all.
+
+### Combining conditions with `and`, `or`, `not`
+
+The **logical operators** join several conditions into one:
+
+| Operator | True when... |
+|---|---|
+| `a and b` | both `a` and `b` are true |
+| `a or b` | at least one of them is true |
+| `not a` | `a` is false |
+
+A nested `if` can often be written as one condition with `and`:
+
+```python
+age = 16
+has_permission = True
+if age >= 18 or (age >= 14 and has_permission):
+    print("You can join the hiking trip")
+if not has_permission:
+    print("Ask a parent first")
+```
+
+```output
+You can join the hiking trip
+```
+
+`not` is applied first, then `and`, then `or`. So `a or b and c` means `a or (b and c)`. Use brackets to make your intent clear.
+
+Python can also chain comparisons: `0 <= hour < 12` means `0 <= hour and hour < 12`.
+
+```python
+hour = 9
+if 0 <= hour < 12:
+    print("Good morning")
+```
+
+```output
+Good morning
+```
+
+### Tracing compound structures
+
+Trace from the outside in. Work out the outer condition, go into the chosen block only, and repeat there:
+
+```python
+rain = False
+wind = 40
+if rain:
+    print("Take an umbrella")
+    if wind > 30:
+        print("A strong one!")
+elif wind > 30:
+    print("Hold on to your hat")
+else:
+    print("Nice weather")
+if not rain and wind < 50:
+    print("Bike is fine")
+```
+
+```output
+Hold on to your hat
+Bike is fine
+```
+
+1. `rain` is `False`, so the whole first block, nested `if` included, is skipped.
+2. `elif wind > 30`: `40 > 30` is `True`, so `"Hold on to your hat"` prints.
+3. The second `if` is separate, so it is always checked: `not rain` is `True` and `40 < 50` is `True`, so `"Bike is fine"` prints.
+
+### Unreachable, redundant and badly ordered branches
+
+Nesting makes it easy to write tests that can never be true or that repeat themselves.
+
+**Unreachable**: an inner condition contradicts the outer one.
+
+```python
+price = 3
+if price > 10:
+    if price < 5:
+        print("This never prints")
+    print("Expensive")
+print("Checked")
+```
+
+```output
+Checked
+```
+
+Inside a block where `price > 10` is true, `price < 5` can never be true.
+
+**Redundant**: an inner test repeats what the outer one already checked, so it adds nothing. `if age >= 18:` followed by an inner `if age >= 18:` is the same as just the outer one.
+
+**Badly ordered**: a broad test placed before a narrow one swallows it. In this example, a VIP is also a member, so the VIP branch is unreachable:
+
+```python
+member = True
+vip = True
+if member:
+    print("5% off")
+elif member and vip:
+    print("20% off")
+```
+
+```output
+5% off
+```
+
+Test the narrower case first: `if member and vip:` and then `elif member:`.
+
+## Predict the output
+
+<Predict>
+
+```python
+a = 3
+b = 7
+if a > 5:
+    if b > 5:
+        print("both")
+else:
+    print("not a")
+```
+
+```output
+not a
+```
+
+</Predict>
+
+<Predict>
+
+```python
+x = 0
+y = 5
+if x or y:
+    print("one")
+if x and y:
+    print("two")
+if not x:
+    print("three")
+```
+
+```output
+one
+three
+```
+
+</Predict>
+
+<Predict>
+
+```python
+n = 12
+if n > 10:
+    if n % 2 == 1:
+        print("big odd")
+    elif n % 3 == 0:
+        print("big, divisible by 3")
+    else:
+        print("big")
+print("end")
+```
+
+```output
+big, divisible by 3
+end
+```
+
+</Predict>
+
+## Common mistakes
+
+**Mixing up which `else` belongs to which `if`.** The `else` pairs with the `if` at the **same** indentation. Move it 4 spaces and the meaning changes completely:
+
+```python
+logged_in = False
+if logged_in:
+    if True:
+        print("Inner if")
+    else:
+        print("Inner else")
+print("Done")
+```
+
+```output
+Done
+```
+
+Here the `else` belongs to the inner `if`, so when `logged_in` is `False` nothing in the block runs.
+
+**Uneven indentation.** Lines in the same block must line up exactly.
+
+```python
+mark = 8
+if mark > 5:
+    print("Pass")
+      print("Well done")
+```
+
+```error
+IndentationError: unexpected indent
+```
+
+**Writing `x == 1 or 2`.** This does not mean "x is 1 or 2". It means `(x == 1) or 2`, and `2` is always truthy, so the condition is always true:
+
+```python
+x = 7
+if x == 1 or 2:
+    print("Always runs!")
+if x == 1 or x == 2:
+    print("Only for 1 or 2")
+```
+
+```output
+Always runs!
+```
+
+**Forgetting brackets with mixed `and`/`or`.** `and` binds tighter than `or`, so `a or b and c` is `a or (b and c)`, not `(a or b) and c`.
+
+## Exam traps
+
+- **Dangling `else`.** Read the indentation to see which `if` an `else` belongs to. The same lines with a different indent give a different answer.
+- **Skipped outer block skips everything inside.** If the outer condition is false, none of the nested `if`s are evaluated.
+- **Separate `if`s all get checked.** After an `if-elif-else`, a new `if` at the left edge starts a new decision and is always tested.
+- **`x == a or b`.** Always true when `b` is truthy. The correct form is `x == a or x == b`.
+- **Operator precedence.** `not` before `and` before `or`. `True or False and False` is `True`.
+- **Contradicting nested tests.** An inner `if price < 5` inside `if price > 10` never runs.
+
+## Try it
+
+In the [Playground](/playground), write a small cinema ticket checker. Store an `age` and a `has_student_card` value. If the age is under 12, print `"Child ticket"`. Otherwise, use a nested `if` to print `"Student ticket"` for card holders and `"Adult ticket"` for everyone else. Then rewrite it as one flat `if-elif-else` using `and`, and check that both versions agree for several ages.
+
+When you're ready, [practise this objective](/practice?objective=2.1.3).

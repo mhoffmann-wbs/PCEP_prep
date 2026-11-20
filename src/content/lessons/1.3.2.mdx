@@ -1,0 +1,325 @@
+export const meta = {
+  objectiveId: '1.3.2',
+  updated: '2026-11-20',
+  tldr: 'A variable is a name that refers to a value, created with `=`. Names may use letters, digits and underscores, must not start with a digit, must not be a keyword, and are case-sensitive. PEP 8 style: `snake_case` names and one space on each side of `=`.',
+  subpointsCovered: ['1.3.2.1', '1.3.2.2', '1.3.2.3', '1.3.2.4', '1.3.2.5'],
+  links: [
+    { title: 'Python tutorial: Using Python as a calculator', url: 'https://docs.python.org/3/tutorial/introduction.html#using-python-as-a-calculator' },
+    { title: 'Identifiers and keywords', url: 'https://docs.python.org/3/reference/lexical_analysis.html#identifiers' },
+    { title: 'PEP 8: naming conventions', url: 'https://peps.python.org/pep-0008/#naming-conventions' },
+  ],
+}
+
+## Big idea
+
+A **variable** is a name you give to a value so you can use it later. Think of a sticky label you put on a jar: the label is the name, and the jam inside is the value. You create a variable with `=`:
+
+```python
+city = "Lisbon"
+nights = 3
+print(city, nights)
+```
+
+```output
+Lisbon 3
+```
+
+The `=` sign here does **not** mean "is equal to" as in maths. It means "make this name refer to this value". It is called the **assignment** operator.
+
+## Walkthrough
+
+### Creating variables and assigning values
+
+The name goes on the left of `=`, and the value goes on the right. Python first works out the right side, then attaches the name on the left to the result:
+
+```python
+price = 4.5
+quantity = 2
+total = price * quantity
+print(total)
+```
+
+```output
+9.0
+```
+
+A variable exists from the moment it is first assigned. Using a name before that is an error:
+
+```python
+print(budget)
+budget = 100
+```
+
+```error
+NameError: name 'budget' is not defined
+```
+
+You can give a variable a new value at any time; the old one is simply forgotten. The new value doesn't even need the same type:
+
+```python
+score = 10
+score = score + 5
+print(score)
+score = "fifteen"
+print(score)
+```
+
+```output
+15
+fifteen
+```
+
+`score = score + 5` looks odd as maths, but it makes sense in Python: take the current value of `score` (10), add 5, and make `score` refer to the result (15).
+
+Python also lets you assign several names in one line:
+
+```python
+width, height = 3, 4
+a = b = 0
+print(width, height, a, b)
+width, height = height, width
+print(width, height)
+```
+
+```output
+3 4 0 0
+4 3
+```
+
+The last assignment **swaps** two values: the right side is worked out first (`4, 3`), and only then are the names updated.
+
+### Names refer to values
+
+A variable doesn't hold the value inside itself. It **refers to** (points at) a value stored somewhere in memory. Two names can point at the same value:
+
+```python
+first = 25
+second = first
+first = 30
+print(first, second)
+```
+
+```output
+30 25
+```
+
+Step by step:
+
+| Line | `first` points at | `second` points at |
+|---|---|---|
+| `first = 25` | 25 | (does not exist yet) |
+| `second = first` | 25 | 25 |
+| `first = 30` | 30 | 25 |
+
+`second = first` does not link the two names forever. It makes `second` point at whatever `first` points at **at that moment**. Moving `first` to a new value later leaves `second` where it was.
+
+The order of lines matters too. Python runs them from top to bottom, and each name has the value from the most recent assignment:
+
+```python
+x = 1
+y = x + 1
+x = 10
+print(x, y)
+```
+
+```output
+10 2
+```
+
+### Choosing good names
+
+A good name tells the reader what the value means. Compare:
+
+```python
+a = 12
+b = 3
+print(a * b)
+eggs_per_box = 12
+boxes = 3
+print(eggs_per_box * boxes)
+```
+
+```output
+36
+36
+```
+
+Both work, but the second version explains itself. Use names like `total_price`, `user_age` or `is_open` rather than `x`, `tmp` or `thing`. Short names like `i` are fine for simple counters in loops.
+
+### Valid and invalid identifiers
+
+A name in Python is called an **identifier**. Python's rules for identifiers are:
+
+1. It may contain letters, digits (0–9) and the underscore `_`.
+2. It must **not start with a digit**.
+3. It must not contain spaces or symbols such as `-`, `!`, `$` or `.`.
+4. It must not be a **keyword**. Keywords are words Python reserves for itself, such as `if`, `for`, `while`, `True`, `None`, `class`, `def` and `import`.
+5. Upper and lower case are **different**: `Age`, `age` and `AGE` are three separate names.
+
+| Name | Valid? | Why |
+|---|---|---|
+| `price` | yes | letters only |
+| `price_2` | yes | digits are fine after the start |
+| `_hidden` | yes | may start with an underscore |
+| `2nd_place` | no | starts with a digit |
+| `my-pet` | no | `-` means minus |
+| `my pet` | no | contains a space |
+| `class` | no | keyword |
+| `Class` | yes | keywords are case-sensitive too |
+
+Case sensitivity in action:
+
+```python
+color = "red"
+Color = "blue"
+print(color, Color)
+```
+
+```output
+red blue
+```
+
+Names of **built-in functions** such as `print`, `len` or `input` are not keywords, so Python lets you use them as variable names. Don't: you would hide the function.
+
+```python
+len = 5
+print(len("cat"))
+```
+
+```error
+TypeError: 'int' object is not callable
+```
+
+### PEP 8: the style guide
+
+**PEP 8** is the official style guide for Python code. Python doesn't force it, but following it makes your code easy for others to read. For variables, it recommends:
+
+- **`snake_case`** for variable names: all lower case, with words joined by underscores, such as `max_speed` or `shopping_list`. Not `maxSpeed` or `MaxSpeed`.
+- **`UPPER_CASE`** for **constants**, values you mean never to change, such as `MAX_GUESTS = 8`.
+- **One space on each side of `=`** in an assignment: `count = 0`, not `count=0` or `count  =  0`.
+- Avoid single-letter names `l` (lower-case L), `O` (capital o) and `I` (capital i), because they look like the digits 1 and 0.
+
+```python
+MAX_GUESTS = 8
+guests_invited = 5
+free_seats = MAX_GUESTS - guests_invited
+print(free_seats)
+```
+
+```output
+3
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+n = 5
+m = n
+n = n * 2
+print(n, m)
+```
+
+```output
+10 5
+```
+
+</Predict>
+
+<Predict>
+
+```python
+fruit = "kiwi"
+Fruit = "plum"
+fruit = Fruit
+print(fruit, Fruit)
+```
+
+```output
+plum plum
+```
+
+</Predict>
+
+<Predict>
+
+```python
+a, b = 1, 2
+a, b = b, a + b
+print(a, b)
+```
+
+```output
+2 3
+```
+
+</Predict>
+
+## Common mistakes
+
+**Starting a name with a digit.**
+
+```python
+2nd_place = 1
+```
+
+```error
+SyntaxError: invalid decimal literal
+```
+
+**Using a hyphen instead of an underscore.** Python reads `my-pet` as `my` minus `pet`, and you can't assign to a subtraction:
+
+```python
+my-pet = "cat"
+```
+
+```error
+SyntaxError: cannot assign to expression here. Maybe you meant '==' instead of '='?
+```
+
+**Using a keyword as a name.**
+
+```python
+class = "Year 2"
+```
+
+```error
+SyntaxError: invalid syntax
+```
+
+**Putting the value on the left.** The name must be on the left of `=`:
+
+```python
+10 = apples
+```
+
+```error
+SyntaxError: cannot assign to literal here. Maybe you meant '==' instead of '='?
+```
+
+**Mixing up case.** `Total` and `total` are different names, so a typo in case gives a `NameError`:
+
+```python
+total = 20
+print(Total)
+```
+
+```error
+NameError: name 'Total' is not defined
+```
+
+## Exam traps
+
+- **Which names are valid?** Watch for a leading digit (`1st`), hyphens (`first-name`), spaces, symbols like `$`, and keywords (`for`, `if`, `None`, `True`). An underscore at the start (`_count`) is fine.
+- **Case sensitivity.** `True` is a keyword but `true` is a valid variable name; `Name` and `name` are different variables.
+- **Built-in names are not keywords.** `print = 3` or `len = 5` is allowed, but it breaks the function afterwards.
+- **Assignment copies the reference, not a live link.** After `b = a` and then `a = 7`, `b` keeps its old value.
+- **Assignment order.** Every line uses the values from the lines above it; later changes do not go back and update earlier results.
+- **PEP 8 is style, not a rule.** `myVar=1` runs fine, but PEP 8 prefers `my_var = 1`.
+
+## Try it
+
+In the [Playground](/playground), plan a small trip: create variables for the destination, the number of nights, the price per night and whether breakfast is included. Print the total cost. Then try a few names that break the rules, such as `3days` or `trip-cost`, and read the error messages. Finally, rename everything to follow PEP 8.
+
+When you're ready, [practise this objective](/practice?objective=1.3.2). For the kinds of values you can store, see [the literals lesson](/learn/1.3.1).

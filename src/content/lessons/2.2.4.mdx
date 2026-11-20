@@ -1,0 +1,290 @@
+export const meta = {
+  objectiveId: '2.2.4',
+  updated: '2026-11-20',
+  tldr: 'A loop can sit inside another loop: the inner loop runs all the way through for every single round of the outer loop. Loops and `if` statements can be combined freely, and indentation shows which block each line belongs to.',
+  subpointsCovered: ['2.2.4.1', '2.2.4.2', '2.2.4.3', '2.2.4.4'],
+  links: [
+    { title: 'Python tutorial: More control flow tools', url: 'https://docs.python.org/3/tutorial/controlflow.html' },
+  ],
+}
+
+## Big idea
+
+The body of a loop can contain any code, including **another loop**. This is called a **nested loop**: one loop inside another. Think of a clock. For each hour (the outer loop), the minute hand goes all the way round (the inner loop).
+
+```python
+for meal in ["breakfast", "lunch"]:
+    for drink in ["tea", "juice"]:
+        print(meal, "with", drink)
+```
+
+```output
+breakfast with tea
+breakfast with juice
+lunch with tea
+lunch with juice
+```
+
+The **outer** loop picks `"breakfast"`, then the **inner** loop runs completely (tea, juice). Only then does the outer loop move on to `"lunch"`, and the inner loop runs completely again.
+
+## Walkthrough
+
+### Putting one loop inside another
+
+The inner loop is indented one level deeper than the outer loop, because it is part of the outer loop's body. Lines can also sit before or after the inner loop, still inside the outer one:
+
+```python
+for table in range(1, 3):
+    print("Table", table)
+    for seat in range(1, 4):
+        print("  seat", seat)
+    print("Table", table, "is full")
+```
+
+```output
+Table 1
+  seat 1
+  seat 2
+  seat 3
+Table 1 is full
+Table 2
+  seat 1
+  seat 2
+  seat 3
+Table 2 is full
+```
+
+The lines at the outer loop's level run **once per outer round**. The line inside the inner loop runs **once per inner round**, so here 2 × 3 = 6 times.
+
+### Loops and `if` together
+
+You can put an `if` inside a loop to act only on some items, and a loop inside an `if` to repeat only in some cases. Each block is shown by its indentation:
+
+```python
+temps = [12, 25, 31, 18]
+for t in temps:
+    if t > 30:
+        print(t, "hot")
+    elif t > 20:
+        print(t, "warm")
+    else:
+        print(t, "cool")
+```
+
+```output
+12 cool
+25 warm
+31 hot
+18 cool
+```
+
+Here the `if` sits inside the inner loop, which sits inside the outer loop. It only prints pairs where the first number is smaller than the second:
+
+```python
+for a in range(1, 4):
+    for b in range(1, 4):
+        if a < b:
+            print(a, b)
+```
+
+```output
+1 2
+1 3
+2 3
+```
+
+The inner loop can also **depend on** the outer loop's variable. Here the inner loop runs once in the first row, twice in the second, and so on:
+
+```python
+for row in range(1, 5):
+    line = ""
+    for col in range(row):
+        line = line + "*"
+    print(line)
+```
+
+```output
+*
+**
+***
+****
+```
+
+### Tracing the order
+
+To trace a nested loop, keep two columns, one for each loop variable. The inner variable changes fastest; the outer variable only changes when the inner loop is finished.
+
+```python
+for x in range(2):
+    for y in range(3):
+        print(x, y)
+```
+
+```output
+0 0
+0 1
+0 2
+1 0
+1 1
+1 2
+```
+
+| Step | `x` | `y` |
+|---|---|---|
+| 1 | 0 | 0 |
+| 2 | 0 | 1 |
+| 3 | 0 | 2 |
+| 4 | 1 | 0 |
+| 5 | 1 | 1 |
+| 6 | 1 | 2 |
+
+The body of the inner loop runs (outer rounds) × (inner rounds) times. Counting how often a line runs is a common question, so a quick check helps:
+
+```python
+count = 0
+for i in range(3):
+    for j in range(4):
+        count = count + 1
+print(count)
+```
+
+```output
+12
+```
+
+### Grouped data: lists inside lists
+
+A list can hold other lists. This is how you store **grouped** or **two-dimensional** data, such as a table with rows and columns. The outer loop takes one row at a time, and the inner loop takes each value in that row:
+
+```python
+grades = [
+    [7, 9, 8],
+    [5, 6, 10],
+]
+for student in grades:
+    total = 0
+    for mark in student:
+        total = total + mark
+    print(student, "total:", total)
+```
+
+```output
+[7, 9, 8] total: 24
+[5, 6, 10] total: 21
+```
+
+Notice where `total = 0` sits: inside the outer loop but before the inner one, so every student starts again from 0.
+
+The same works with a list of strings, because each string is itself something you can loop over:
+
+```python
+for word in ["cat", "owl"]:
+    for letter in word:
+        print(letter.upper(), end="")
+    print()
+```
+
+```output
+CAT
+OWL
+```
+
+`end=""` keeps letters on the same line, and the empty `print()` after the inner loop ends the line.
+
+## Predict the output
+
+<Predict>
+
+```python
+for i in range(1, 3):
+    for j in range(i):
+        print(i, j)
+```
+
+```output
+1 0
+2 0
+2 1
+```
+
+</Predict>
+
+<Predict>
+
+```python
+total = 0
+for row in [[1, 2], [3, 4], [5]]:
+    for n in row:
+        if n % 2 == 1:
+            total = total + n
+print(total)
+```
+
+```output
+9
+```
+
+</Predict>
+
+<Predict>
+
+```python
+for a in "ab":
+    for b in "xy":
+        pass
+    print(a + b)
+```
+
+```output
+ay
+by
+```
+
+</Predict>
+
+## Common mistakes
+
+**Wrong indentation.** Moving a line one level left or right changes which loop it belongs to. A `print` meant for the end of each row, indented one level too deep, will run on every inner round instead.
+
+**Resetting a total in the wrong place.** Put `total = 0` before the outer loop to add up everything, or inside the outer loop (before the inner loop) to start again for each group.
+
+**Reusing the same variable name for both loops.** The inner loop then overwrites the outer variable, and the result is confusing:
+
+```python
+for i in range(2):
+    for i in range(3):
+        pass
+    print(i)
+```
+
+```output
+2
+2
+```
+
+The outer loop still runs twice, but `print(i)` shows the inner loop's last value. Give each loop its own name.
+
+**Indexing too far into grouped data.** `grades[1][3]` asks for the fourth mark of the second student, which doesn't exist:
+
+```python
+grades = [[7, 9, 8], [5, 6, 10]]
+print(grades[1][3])
+```
+
+```error
+IndexError: list index out of range
+```
+
+## Exam traps
+
+- **How many times does it run?** The inner body runs outer × inner times; a line in the outer body runs only outer times.
+- **Inner loops that depend on the outer variable.** `for j in range(i)` runs 0 times when `i` is 0; add up the rounds one by one.
+- **Order of output.** The inner variable changes fastest: `(0, 0), (0, 1), (1, 0), (1, 1)`, not `(0, 0), (1, 0), ...`.
+- **Loop variables after the loops.** Both variables keep their last values, and a line after the inner loop sees the inner variable's last value.
+- **Indentation of `if`/`else`.** Check which `if` an `else` lines up with, and whether a `print` is inside the `if`, the inner loop or the outer loop.
+
+## Try it
+
+In the [Playground](/playground), print a small multiplication table for 1 to 4, one row per line, using two `range()` loops. Then make a list of three shopping baskets, each a list of prices, and print the total of each basket and the grand total of all baskets.
+
+When you're ready, [practise this objective](/practice?objective=2.2.4). For a refresher on `range()`, see [the `range()` lesson](/learn/2.2.3).

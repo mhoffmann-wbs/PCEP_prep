@@ -1,0 +1,270 @@
+export const meta = {
+  objectiveId: '2.1.1',
+  updated: '2026-11-20',
+  tldr: 'An `if` statement runs its indented block only when its condition is true. Add `else` to get a second path that runs when the condition is false, so exactly one of the two blocks runs.',
+  subpointsCovered: ['2.1.1.1', '2.1.1.2', '2.1.1.3', '2.1.1.4', '2.1.1.5'],
+  links: [
+    { title: 'Python tutorial: if statements', url: 'https://docs.python.org/3/tutorial/controlflow.html#if-statements' },
+    { title: 'Truth value testing', url: 'https://docs.python.org/3/library/stdtypes.html#truth-value-testing' },
+  ],
+}
+
+## Big idea
+
+So far, a program runs its lines one after another, top to bottom. An **`if` statement** lets a program make a choice: it runs some lines **only when** something is true, like "if it is raining, take an umbrella".
+
+```python
+raining = True
+if raining:
+    print("Take an umbrella")
+print("Leave the house")
+```
+
+```output
+Take an umbrella
+Leave the house
+```
+
+The part after `if` is the **condition**: a question whose answer is `True` or `False`. The indented lines under it form the **block** (also called the body). The block runs only when the condition is `True`. The last line is not indented, so it is not part of the block and always runs.
+
+## Walkthrough
+
+### The `if` statement
+
+An `if` statement has three parts:
+
+1. the keyword `if`,
+2. a condition, followed by a **colon** `:`,
+3. one or more lines below it, all **indented** by the same amount (4 spaces is the usual choice).
+
+**Indentation** means the spaces at the start of a line. In Python it is not decoration: it tells Python which lines belong to the block.
+
+```python
+temperature = 31
+if temperature > 30:
+    print("It's hot today.")
+    print("Drink plenty of water.")
+print("Have a nice day!")
+```
+
+```output
+It's hot today.
+Drink plenty of water.
+Have a nice day!
+```
+
+Both indented lines belong to the `if`. The last line is back at the left edge, so the block ended before it.
+
+### Two paths with `if-else`
+
+Often you want one thing to happen when the condition is true and **something else** when it is false. Add an `else:` line at the same indentation as `if`, with its own indented block:
+
+```python
+balance = 12.50
+price = 15.00
+if balance >= price:
+    print("Payment accepted")
+else:
+    print("Not enough money")
+print("Thank you for shopping")
+```
+
+```output
+Not enough money
+Thank you for shopping
+```
+
+With `if-else`, **exactly one** of the two blocks runs, never both and never neither. `else` has no condition of its own: it simply catches every case the `if` did not.
+
+### Building conditions
+
+A condition is a **Boolean expression**: a piece of code that works out to `True` or `False` (these two values are called **Booleans**, of type `bool`). You usually build one with a **comparison operator**:
+
+| Operator | Meaning |
+|---|---|
+| `==` | equal to |
+| `!=` | not equal to |
+| `<` and `>` | less than, greater than |
+| `<=` and `>=` | less than or equal, greater than or equal |
+
+You can join conditions with `and`, `or` and `not`:
+
+```python
+age = 15
+with_adult = True
+print(age >= 18)
+print(age >= 18 or with_adult)
+print(not with_adult)
+if age >= 12 and with_adult:
+    print("You may watch this film.")
+```
+
+```output
+False
+True
+False
+You may watch this film.
+```
+
+A condition does not have to be a comparison. Python can treat **any** value as true or false. This is called **truthiness**. The values `0`, `0.0`, `""` (an empty string), `[]` (an empty list) and `None` count as false. Almost everything else counts as true.
+
+```python
+message = ""
+if message:
+    print("You have a message:", message)
+else:
+    print("No message")
+items = 3
+if items:
+    print("Your basket is not empty")
+```
+
+```output
+No message
+Your basket is not empty
+```
+
+### Tracing which branch runs
+
+Each possible block is called a **branch**. To **trace** a program means to follow it by hand, line by line, writing down the values. For an `if`, work out the condition first, then pick the branch:
+
+```python
+score = 70
+passed = score >= 75
+if passed:
+    print("Well done!")
+else:
+    print("Try again next week.")
+print("passed =", passed)
+```
+
+```output
+Try again next week.
+passed = False
+```
+
+Trace: `score` is 70. `70 >= 75` is `False`, so `passed` is `False`. The `if` block is skipped and the `else` block runs.
+
+### When a block is skipped
+
+An `if` without `else` can do **nothing at all**. If the condition is false, Python jumps over the whole block and carries on with the next unindented line:
+
+```python
+cups_of_coffee = 1
+if cups_of_coffee > 3:
+    print("That's a lot of coffee!")
+    cups_of_coffee = 0
+print("Cups:", cups_of_coffee)
+```
+
+```output
+Cups: 1
+```
+
+Neither indented line ran, so `cups_of_coffee` was not reset. The same thing happens when a condition can never be true: `if 0:` or `if False:` always skips its block.
+
+## Predict the output
+
+<Predict>
+
+```python
+x = 5
+if x > 10:
+    print("big")
+print("done")
+```
+
+```output
+done
+```
+
+</Predict>
+
+<Predict>
+
+```python
+pets = []
+if pets:
+    print("You have", len(pets), "pets")
+else:
+    print("No pets yet")
+```
+
+```output
+No pets yet
+```
+
+</Predict>
+
+<Predict>
+
+```python
+n = 4
+if n % 2 == 0:
+    n = n + 1
+    print("even", n)
+else:
+    print("odd", n)
+```
+
+```output
+even 5
+```
+
+</Predict>
+
+## Common mistakes
+
+**Forgetting the colon.** Every `if` and `else` line ends with `:`.
+
+```python
+rain = True
+if rain
+    print("Umbrella!")
+```
+
+```error
+SyntaxError: expected ':'
+```
+
+**Forgetting to indent the block.** Python needs at least one indented line after the colon.
+
+```python
+rain = True
+if rain:
+print("Umbrella!")
+```
+
+```error
+IndentationError: expected an indented block after 'if' statement on line 2
+```
+
+**Using `=` instead of `==`.** One `=` stores a value; two `==` compare. Writing `if x = 5:` is a syntax error.
+
+```python
+x = 5
+if x = 5:
+    print("five")
+```
+
+```error
+SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
+```
+
+**Giving `else` a condition.** `else` never takes a condition: `else x < 5:` is an error. If you need a second condition, that is what `elif` is for ([next lesson](/learn/2.1.2)).
+
+**Indenting a line by accident.** A line indented under `if` becomes part of the block and is skipped when the condition is false, even if you meant it to always run.
+
+## Exam traps
+
+- **Is the last line inside the block?** Check the indentation of every line after the `if`. Only lines indented under it are skipped when the condition is false.
+- **Truthiness.** `if 0:`, `if "":`, `if []:` and `if None:` all skip their block. But `if "0":`, `if " ":` and `if [0]:` run it, because those are non-empty values.
+- **`if` without `else` may print nothing.** When asked "what is printed", the answer can be only the lines after the block.
+- **Variables changed inside a skipped block keep their old value.** Trace the assignments that really ran, not every assignment you see.
+- **`=` vs `==`.** A question showing `if x = 3:` is asking you to spot a `SyntaxError`.
+
+## Try it
+
+In the [Playground](/playground), store a temperature in a variable. Use `if-else` to print `"Wear a coat"` when it is below 10 degrees and `"No coat needed"` otherwise. Change the number a few times, including exactly 10, and predict each result before you run it.
+
+When you're ready, [practise this objective](/practice?objective=2.1.1).

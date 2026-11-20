@@ -1,0 +1,386 @@
+export const meta = {
+  objectiveId: 'x.5',
+  updated: '2026-11-20',
+  tldr: 'A recursive function calls itself on a smaller problem and needs a base case that stops it; without one, Python stops it with `RecursionError`. A generator function uses `yield` to hand out values one at a time, lazily, and can be looped over only once.',
+  subpointsCovered: ['x.5.1', 'x.5.2', 'x.5.3', 'x.5.4', 'x.5.5'],
+  links: [
+    { title: 'Python tutorial: Generators', url: 'https://docs.python.org/3/tutorial/classes.html#generators' },
+    { title: 'The yield expression', url: 'https://docs.python.org/3/reference/expressions.html#yield-expressions' },
+  ],
+}
+
+## Big idea
+
+This topic is only on the older PCEP-30-02 exam; the current PCEP-30-03 exam dropped it.
+
+This lesson covers two special kinds of function.
+
+A **recursive** function is one that **calls itself**. It solves a big problem by solving a slightly smaller copy of the same problem, again and again, until the problem is so small that the answer is obvious:
+
+```python
+def countdown(n):
+    if n == 0:
+        print("Lift-off!")
+    else:
+        print(n)
+        countdown(n - 1)
+
+countdown(3)
+```
+
+```output
+3
+2
+1
+Lift-off!
+```
+
+A **generator** function hands out its values **one at a time** instead of building them all at once. It uses the keyword `yield` instead of `return`:
+
+```python
+def weekend():
+    yield "Saturday"
+    yield "Sunday"
+
+for day in weekend():
+    print(day)
+```
+
+```output
+Saturday
+Sunday
+```
+
+## Walkthrough
+
+### Recursion and the base case
+
+Every recursive function needs two parts:
+
+- a **base case**: a simple situation where the function returns an answer **without** calling itself, and
+- a **recursive case**: the function calls itself with a **smaller** problem, one step closer to the base case.
+
+The classic example is the **factorial**. The factorial of 4, written 4!, is 4 × 3 × 2 × 1 = 24. Notice that 4! is just 4 × 3!, and 3! is 3 × 2!, and so on, down to 1! which is simply 1:
+
+```python
+def factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+print(factorial(4))
+print(factorial(1))
+```
+
+```output
+24
+1
+```
+
+`n <= 1` is the base case. `n * factorial(n - 1)` is the recursive case, and `n - 1` makes the problem smaller each time.
+
+### Tracing recursive calls
+
+To trace a recursive function, write down each call, going deeper, until you reach the base case. Then work back **up**, filling in each answer:
+
+```
+factorial(4) = 4 * factorial(3)
+               factorial(3) = 3 * factorial(2)
+                              factorial(2) = 2 * factorial(1)
+                                             factorial(1) = 1      <- base case
+                              factorial(2) = 2 * 1 = 2
+               factorial(3) = 3 * 2 = 6
+factorial(4) = 4 * 6 = 24
+```
+
+Each call waits for the call below it to finish. Printing inside the function shows this order clearly. Watch where each message appears:
+
+```python
+def stairs(n):
+    print("going down", n)
+    if n > 0:
+        stairs(n - 1)
+    print("coming up", n)
+
+stairs(2)
+```
+
+```output
+going down 2
+going down 1
+going down 0
+coming up 0
+coming up 1
+coming up 2
+```
+
+Code **before** the recursive call runs on the way down. Code **after** it runs on the way back up, in the opposite order.
+
+Here is another example, adding up the digits of a number:
+
+```python
+def digit_sum(n):
+    if n < 10:
+        return n
+    return n % 10 + digit_sum(n // 10)
+
+print(digit_sum(2026))
+```
+
+```output
+10
+```
+
+`digit_sum(2026)` is `6 + digit_sum(202)`, which is `6 + 2 + digit_sum(20)`, which is `6 + 2 + 0 + digit_sum(2)`, and `digit_sum(2)` is the base case: 2. In total 6 + 2 + 0 + 2 = 10.
+
+### Infinite recursion and RecursionError
+
+If the base case is missing, or the problem never gets smaller, the function keeps calling itself forever. Python keeps track of every unfinished call, and to protect the computer it allows only about a thousand of them at once. When there are too many, it stops the program with a **`RecursionError`**:
+
+```python
+def echo(word):
+    return echo(word)
+
+echo("hello")
+```
+
+```error
+RecursionError: maximum recursion depth exceeded
+```
+
+A base case that can never be reached causes the same error. Here `n` grows instead of shrinking, so it never gets to 0:
+
+```python
+def bad_countdown(n):
+    if n == 0:
+        return "done"
+    return bad_countdown(n + 1)
+
+print(bad_countdown(5))
+```
+
+```error
+RecursionError: maximum recursion depth exceeded
+```
+
+### Generator functions and yield
+
+Any function that contains the keyword **`yield`** is a **generator function**. Calling it does **not** run its body. Instead, it gives you a **generator object**: something that will produce the values when you ask for them.
+
+```python
+def even_numbers(limit):
+    n = 0
+    while n < limit:
+        yield n
+        n += 2
+
+gen = even_numbers(7)
+print(type(gen).__name__)
+print(next(gen))
+print(next(gen))
+```
+
+```output
+generator
+0
+2
+```
+
+Each time you ask for a value with `next()`, the function runs until it reaches a `yield`, hands out that value, and **pauses** there, remembering all its variables. The next request continues from that exact spot. This is called **lazy** evaluation: values are only made when they are needed.
+
+`return` ends a function once. `yield` can hand out many values, one per request.
+
+### Iterating over a generator
+
+The usual way to use a generator is a `for` loop, which asks for value after value until the generator is finished. You can also pass a generator to `list()` to collect all its values:
+
+```python
+def even_numbers(limit):
+    n = 0
+    while n < limit:
+        yield n
+        n += 2
+
+for e in even_numbers(7):
+    print("even:", e)
+print(list(even_numbers(5)))
+```
+
+```output
+even: 0
+even: 2
+even: 4
+even: 6
+[0, 2, 4]
+```
+
+A generator can only be gone through **once**. When it runs out, it stays empty:
+
+```python
+def pantry():
+    yield "rice"
+    yield "beans"
+
+stock = pantry()
+print(list(stock))
+print(list(stock))
+```
+
+```output
+['rice', 'beans']
+[]
+```
+
+Asking for one more value with `next()` after the end raises `StopIteration`. A `for` loop handles this for you and simply stops.
+
+```python
+def one_item():
+    yield "only"
+
+g = one_item()
+print(next(g))
+next(g)
+```
+
+```error
+StopIteration
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+def total(n):
+    if n == 0:
+        return 0
+    return n + total(n - 1)
+
+print(total(4))
+```
+
+```output
+10
+```
+
+</Predict>
+
+<Predict>
+
+```python
+def ticks():
+    print("start")
+    yield 1
+    print("middle")
+    yield 2
+
+t = ticks()
+print(next(t))
+print("between")
+print(next(t))
+```
+
+```output
+start
+1
+between
+middle
+2
+```
+
+</Predict>
+
+<Predict>
+
+```python
+def squares(n):
+    for i in range(n):
+        yield i * i
+
+g = squares(4)
+print(sum(g), sum(g))
+```
+
+```output
+14 0
+```
+
+</Predict>
+
+## Common mistakes
+
+**Forgetting to return the recursive result.** If the recursive case calls itself but doesn't `return` the answer, the function returns `None`:
+
+```python
+def factorial(n):
+    if n <= 1:
+        return 1
+    n * factorial(n - 1)
+
+print(factorial(2))
+```
+
+```output
+None
+```
+
+One level deeper, that `None` gets used in a multiplication, and the program crashes:
+
+```python
+def factorial(n):
+    if n <= 1:
+        return 1
+    n * factorial(n - 1)
+
+print(factorial(3))
+```
+
+```error
+TypeError: unsupported operand type(s) for *: 'int' and 'NoneType'
+```
+
+**Making the problem bigger instead of smaller**, so the base case is never reached. You get a `RecursionError`, as shown above.
+
+**Expecting a generator to run when it is called.** Calling a generator function only creates the generator. Nothing inside runs, and nothing is printed, until you ask for a value:
+
+```python
+def greet():
+    print("Hello!")
+    yield 1
+
+g = greet()
+print("created")
+```
+
+```output
+created
+```
+
+**Trying to index a generator.** A generator is not a list; you can only ask for the next value:
+
+```python
+def colors():
+    yield "red"
+    yield "green"
+
+print(colors()[0])
+```
+
+```error
+TypeError: 'generator' object is not subscriptable
+```
+
+## Exam traps
+
+- **No base case, or one that is never reached,** means `RecursionError`, not an endless program.
+- **Tracing order.** Code after the recursive call runs in reverse order, on the way back up.
+- **Missing `return` in the recursive case** gives `None`, or a `TypeError` if the `None` is then used in arithmetic.
+- **Generators are lazy.** Calling a generator function runs none of its code; printing the generator shows something like `<generator object ...>`, not the values.
+- **Generators are single-use.** A second `list(g)` or `for` loop over the same generator gives nothing.
+- **`yield` vs `return`.** A function with even one `yield` is a generator, and `return` inside it just ends the generator.
+
+## Try it
+
+In the [Playground](/playground), write a recursive function `power(base, exp)` that returns `base` to the power `exp`, using `exp == 0` as the base case. Check that `power(2, 5)` gives 32, and print a message inside it to watch the calls go down and come back up. Then write a generator `countdown(n)` that yields `n`, `n - 1`, ... down to 1, and loop over it with `for`. Try looping over the same generator object twice and see what happens. For a refresher on functions, see [the lesson on returning values](/learn/4.1.2).
+
+When you're ready, [practise this objective](/practice?objective=x.5).

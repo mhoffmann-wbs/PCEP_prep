@@ -1,0 +1,267 @@
+export const meta = {
+  objectiveId: 'x.2',
+  updated: '2026-11-20',
+  tldr: 'Bitwise operators work on the individual 0s and 1s of integers: `&` (and), `|` (or), `^` (xor), `~` (not, where `~x == -x - 1`), and the shifts `<<` and `>>`, which multiply or divide by powers of 2. Do not confuse them with the Boolean `and`, `or` and `not`.',
+  subpointsCovered: ['x.2.1', 'x.2.2', 'x.2.3', 'x.2.4'],
+  links: [
+    { title: 'Bitwise operations on integer types', url: 'https://docs.python.org/3/library/stdtypes.html#bitwise-operations-on-integer-types' },
+    { title: 'Operator precedence', url: 'https://docs.python.org/3/reference/expressions.html#operator-precedence' },
+  ],
+}
+
+## Big idea
+
+This topic is only on the older PCEP-30-02 exam; the current PCEP-30-03 exam dropped it.
+
+Inside the computer, every integer is stored as a row of **bits**: binary digits, each either 0 or 1. The number 12 is stored as `1100`, and 10 as `1010`. **Bitwise operators** take two integers, line up their bits column by column, and combine each pair of bits on its own:
+
+```python
+print(12 & 10)
+print(12 | 10)
+print(12 ^ 10)
+```
+
+```output
+8
+14
+6
+```
+
+To understand the answers, you write the numbers in binary (see [the lesson on numeral systems](/learn/x.1)), work column by column, and turn the result back into decimal.
+
+## Walkthrough
+
+### And, or, xor: `&`, `|` and `^`
+
+Each operator has a simple rule for one pair of bits:
+
+| Bits | `&` (and) | `\|` (or) | `^` (xor) |
+|---|---|---|---|
+| 0 and 0 | 0 | 0 | 0 |
+| 0 and 1 | 0 | 1 | 1 |
+| 1 and 0 | 0 | 1 | 1 |
+| 1 and 1 | 1 | 1 | 0 |
+
+- `&` gives 1 only where **both** bits are 1.
+- `|` gives 1 where **at least one** bit is 1.
+- `^` (say "exclusive or", or "xor") gives 1 where the bits are **different**.
+
+Here is `12 & 10`, `12 | 10` and `12 ^ 10` worked out:
+
+```
+  12 = 1100        1100        1100
+  10 = 1010        1010        1010
+       ---- &      ---- |      ---- ^
+        1000        1110        0110
+        = 8         = 14        = 6
+```
+
+You can check the bits with `bin()`:
+
+```python
+print(bin(12), bin(10))
+print(bin(12 & 10), bin(12 | 10), bin(12 ^ 10))
+```
+
+```output
+0b1100 0b1010
+0b1000 0b1110 0b110
+```
+
+A common everyday use is a set of on/off switches packed into one number. Say a smart lamp stores its settings in bits: 1 means "on", 2 means "dimmed", 4 means "timer set":
+
+```python
+ON, DIMMED, TIMER = 1, 2, 4
+lamp = ON | TIMER
+print(lamp)
+print(lamp & TIMER)
+print(lamp & DIMMED)
+```
+
+```output
+5
+4
+0
+```
+
+`|` switches settings on, and `&` checks whether a setting is on: a non-zero answer means yes.
+
+### Not: `~`
+
+The **bitwise not** `~` takes just one number and flips every bit. Because of how Python stores negative numbers, the result always follows one rule: **`~x` equals `-x - 1`**.
+
+```python
+print(~5)
+print(~0)
+print(~-3)
+```
+
+```output
+-6
+-1
+2
+```
+
+So `~5` is `-5 - 1 = -6`, and `~-3` is `3 - 1 = 2`. You don't need to work through the bits; just use the rule.
+
+### Shifts: `<<` and `>>`
+
+The **shift** operators slide all the bits left or right by a number of places.
+
+- `x << n` shifts left by `n` places, adding zeros on the right. Each place doubles the number, so it equals `x * 2**n`.
+- `x >> n` shifts right by `n` places, dropping bits off the right. Each place halves the number, rounding down, so it equals `x // 2**n`.
+
+```python
+print(3 << 1, 3 << 2, 3 << 4)
+print(40 >> 1, 40 >> 3)
+print(7 >> 1)
+```
+
+```output
+6 12 48
+20 5
+3
+```
+
+`3 << 4` is 3 × 16 = 48. `7 >> 1` is 7 // 2 = 3, because the last bit just falls off: `111` becomes `11`.
+
+### Precedence: which operator goes first
+
+When several operators appear in one expression, **precedence** decides the order. From first to last:
+
+| Order | Operators |
+|---|---|
+| 1 | `**` |
+| 2 | `~` (and unary `+`, `-`) |
+| 3 | `*`, `/`, `//`, `%` |
+| 4 | `+`, `-` |
+| 5 | `<<`, `>>` |
+| 6 | `&` |
+| 7 | `^` |
+| 8 | `\|` |
+| 9 | comparisons such as `==` and `<` |
+| 10 | `not`, then `and`, then `or` |
+
+So arithmetic happens before shifts, shifts before `&`, `&` before `^`, and `^` before `|`:
+
+```python
+print(1 + 2 << 1)
+print(6 | 1 & 3)
+print(8 >> 1 + 1)
+```
+
+```output
+6
+7
+2
+```
+
+`1 + 2 << 1` is `3 << 1`, which is 6. `6 | 1 & 3` does `1 & 3` first, which is 1, and then `6 | 1`, which is 7. `8 >> 1 + 1` adds first, so it is `8 >> 2`, which is 2. When in doubt, add brackets.
+
+### Bitwise vs. Boolean operators
+
+`and`, `or` and `not` are **Boolean** (logical) operators. They look at whole values as true or false and never look at the bits. Their bitwise cousins `&`, `|` and `~` work bit by bit and give a number:
+
+```python
+print(6 and 3, 6 & 3)
+print(6 or 3, 6 | 3)
+print(not 6, ~6)
+```
+
+```output
+3 2
+6 7
+False -7
+```
+
+- `6 and 3` gives `3`: since 6 counts as true, `and` returns its second value. `6 & 3` compares bits: `110` and `011` share only the middle bit, so it is 2.
+- `6 or 3` gives `6`: the first value is already true. `6 | 3` is `111`, which is 7.
+- `not 6` is `False`, while `~6` is `-7`.
+
+## Predict the output
+
+<Predict>
+
+```python
+print(5 & 3, 5 | 3, 5 ^ 3)
+```
+
+```output
+1 7 6
+```
+
+</Predict>
+
+<Predict>
+
+```python
+x = 10
+print(~x, x >> 2, x << 2)
+```
+
+```output
+-11 2 40
+```
+
+</Predict>
+
+<Predict>
+
+```python
+print(2 + 2 << 1 | 1)
+```
+
+```output
+9
+```
+
+</Predict>
+
+## Common mistakes
+
+**Thinking `^` means "to the power of".** In Python, power is `**`. The caret `^` is xor:
+
+```python
+print(2 ^ 3, 2 ** 3)
+```
+
+```output
+1 8
+```
+
+**Thinking `~x` is `-x`.** It is always one less: `~4` is `-5`, not `-4`.
+
+**Using bitwise operators on floats.** They only work on integers (and Booleans):
+
+```python
+print(2.0 << 1)
+```
+
+```error
+TypeError: unsupported operand type(s) for <<: 'float' and 'int'
+```
+
+**Shifting by a negative amount.** The number of places must not be negative:
+
+```python
+print(8 >> -1)
+```
+
+```error
+ValueError: negative shift count
+```
+
+## Exam traps
+
+- **`~x == -x - 1`.** `~0` is `-1`, `~-1` is `0`, and `~7` is `-8`.
+- **`&` vs `and`, `|` vs `or`.** `4 and 2` is `2`, but `4 & 2` is `0`, because `100` and `010` share no bits.
+- **Shift = multiply or divide by a power of 2.** `x << 3` is `x * 8`, and `x >> 2` is `x // 4`, rounded down.
+- **Precedence surprises.** `+` and `-` happen before the shifts, and `&` before `^` before `|`. `1 << 2 + 1` is `1 << 3`, which is 8.
+- **`^` is not power.** `3 ^ 2` is `1`, not 9.
+- **xor twice undoes itself.** `(x ^ k) ^ k` is always `x` again.
+
+## Try it
+
+In the [Playground](/playground), store the settings of a washing machine as bits: 1 for "quick wash", 2 for "extra rinse", 4 for "eco mode". Switch on quick wash and eco mode with `|`, then use `&` to check each setting. Next, check the rule `~x == -x - 1` for a few numbers, and confirm that `n << 3` and `n * 8` give the same answer.
+
+When you're ready, [practise this objective](/practice?objective=x.2).

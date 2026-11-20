@@ -1,0 +1,240 @@
+export const meta = {
+  objectiveId: 'x.1',
+  updated: '2026-11-20',
+  tldr: 'Integers can be written in binary (`0b`), octal (`0o`) or hexadecimal (`0x`), and `bin()`, `oct()` and `hex()` turn a number back into such a string. Floats can use scientific notation like `1e3`, and underscores like `1_000_000` make long numbers easier to read.',
+  subpointsCovered: ['x.1.1', 'x.1.2', 'x.1.3', 'x.1.4'],
+  links: [
+    { title: 'Integer and float literals', url: 'https://docs.python.org/3/reference/lexical_analysis.html#numeric-literals' },
+    { title: 'Built-in functions: bin(), oct(), hex()', url: 'https://docs.python.org/3/library/functions.html#bin' },
+  ],
+}
+
+## Big idea
+
+This topic is only on the older PCEP-30-02 exam; the current PCEP-30-03 exam dropped it.
+
+Every number you type into Python is a **literal**: a value written directly in the code. Usually you write numbers the everyday way, in **decimal** (base 10, using the digits 0 to 9). But Python also lets you write the **same** number in other counting systems, and it lets you write very big or very small floats in a short form:
+
+```python
+print(255, 0xFF, 0o377, 0b11111111)
+print(1.5e3)
+```
+
+```output
+255 255 255 255
+1500.0
+```
+
+All four values on the first line are the number 255, just spelled differently. Python always prints integers back in decimal.
+
+## Walkthrough
+
+### Binary, octal and hexadecimal literals
+
+A **numeral system** (or **base**) says how many different digits you count with before moving to the next column:
+
+| System | Base | Digits | Prefix | Example | Decimal value |
+|---|---|---|---|---|---|
+| Binary | 2 | 0, 1 | `0b` | `0b101` | 5 |
+| Octal | 8 | 0 to 7 | `0o` | `0o17` | 15 |
+| Decimal | 10 | 0 to 9 | none | `42` | 42 |
+| Hexadecimal | 16 | 0 to 9 and A to F | `0x` | `0x1F` | 31 |
+
+The **prefix** is the zero plus a letter at the start. It tells Python which system the digits are in. The letter can be lower or upper case (`0X1F` works too), and so can the hex digits A to F, which stand for 10 to 15.
+
+How do you read `0b101`? Each column is worth twice the one to its right: 4, 2, 1. So `101` is 4 + 0 + 1 = 5. In octal each column is worth eight times the next, so `0o17` is 1 × 8 + 7 = 15. In hexadecimal each column is worth sixteen times the next, so `0x1F` is 1 × 16 + 15 = 31.
+
+```python
+print(0b101, 0o17, 0x1F)
+print(0b101 + 0o17 + 0x1F)
+```
+
+```output
+5 15 31
+51
+```
+
+These are ordinary integers. You can add, compare and store them like any other `int`. Only the way you **write** them is different.
+
+### Converting with bin(), oct() and hex()
+
+To go the other way, from a number to its spelling in another system, use the built-in functions `bin()`, `oct()` and `hex()`. Each one returns a **string** (text), with the prefix included:
+
+```python
+lockers = 12
+print(bin(lockers))
+print(oct(lockers))
+print(hex(lockers))
+print(type(hex(lockers)))
+```
+
+```output
+0b1100
+0o14
+0xc
+<class 'str'>
+```
+
+Notice that `hex()` writes its letters in lower case. Because the result is a string, `bin(5) + 1` would fail: you can't add a number to text.
+
+The function `int()` can turn such a string back into a number if you tell it the base:
+
+```python
+print(int("1100", 2))
+print(int("0x1F", 16))
+```
+
+```output
+12
+31
+```
+
+### Scientific notation for floats
+
+Very large or very small numbers are awkward to type: 0.00025 has a lot of zeros. **Scientific notation** writes a number as "this many, times 10 to the power of that". In Python you use the letter `e` (or `E`) for "times 10 to the power of":
+
+```python
+distance_km = 3.8e5
+grain_mm = 2.5E-4
+print(distance_km)
+print(grain_mm)
+print(1e3)
+print(type(1e3))
+```
+
+```output
+380000.0
+0.00025
+1000.0
+<class 'float'>
+```
+
+`3.8e5` means 3.8 × 10⁵ = 380000. `2.5E-4` means 2.5 × 10⁻⁴ = 0.00025. A literal with `e` in it is **always a float**, even if it has no decimal point, so `1e3` is `1000.0`, not `1000`.
+
+Python itself switches to this notation when it prints very large or very small floats:
+
+```python
+print(0.00001)
+print(12000000000000000000000.0)
+```
+
+```output
+1e-05
+1.2e+22
+```
+
+### Underscores in long numbers
+
+You may put single underscores between digits to group them, the way you might write commas in 1,000,000 on paper. Python ignores the underscores; they are only there to help you read:
+
+```python
+salary = 1_250_000
+mask = 0b1111_0000
+print(salary)
+print(mask)
+print(1_000.5)
+```
+
+```output
+1250000
+240
+1000.5
+```
+
+The underscore must sit **between two digits**. It can't start or end the number, and you can't put two in a row.
+
+## Predict the output
+
+<Predict>
+
+```python
+print(0o10 + 0x10 + 0b10)
+```
+
+```output
+26
+```
+
+</Predict>
+
+<Predict>
+
+```python
+print(bin(6), hex(255))
+```
+
+```output
+0b110 0xff
+```
+
+</Predict>
+
+<Predict>
+
+```python
+apples = 2e2
+print(apples, 3_0 + 1)
+```
+
+```output
+200.0 31
+```
+
+</Predict>
+
+## Common mistakes
+
+**Using a digit the system doesn't have.** Binary only has 0 and 1, and octal only has 0 to 7:
+
+```python
+print(0o8)
+```
+
+```error
+SyntaxError: invalid digit '8' in octal literal
+```
+
+**Writing octal with a plain leading zero.** Some older languages treat `017` as octal. Python 3 does not: a leading zero on a non-zero integer is simply an error. You must write `0o17`.
+
+```python
+print(017)
+```
+
+```error
+SyntaxError: leading zeros in decimal integer literals are not permitted; use an 0o prefix for octal integers
+```
+
+**Treating the result of `bin()` as a number.** It is a string, so arithmetic on it fails:
+
+```python
+print(bin(5) + 1)
+```
+
+```error
+TypeError: can only concatenate str (not "int") to str
+```
+
+**Misplacing underscores.** A trailing underscore or a double underscore is not allowed:
+
+```python
+print(1__000)
+```
+
+```error
+SyntaxError: invalid decimal literal
+```
+
+## Exam traps
+
+- **`0o` vs `0`.** `0o17` is 15, but `017` is a `SyntaxError`. And `0O17` (capital letter O) is valid but easy to misread.
+- **`bin()`, `oct()` and `hex()` return strings.** `len(bin(5))` is 5, because the string `'0b101'` has five characters, prefix included.
+- **`e` always gives a float.** `1e3` prints `1000.0`, and `2e0` is `2.0`. The question may ask for `type(...)`.
+- **Negative exponent means small.** `5e-2` is `0.05`, not `-500`.
+- **Underscores change nothing.** `1_0 + 1` is `11`; the underscore is not a decimal point or a separator between two numbers.
+- **Mixing systems in one sum.** Convert each part to decimal first: `0x10` is 16, `0o10` is 8, `0b10` is 2.
+
+## Try it
+
+In the [Playground](/playground), write the number of days in a year (365) in binary, octal and hexadecimal with `bin()`, `oct()` and `hex()`. Then type those strings back in as literals (for example `0b101101101`) and check that each one prints 365. Finally, write the population of a big city with underscores, and the size of a dust particle in metres in scientific notation, and print both.
+
+When you're ready, [practise this objective](/practice?objective=x.1).

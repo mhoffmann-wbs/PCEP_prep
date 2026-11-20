@@ -1,0 +1,310 @@
+export const meta = {
+  objectiveId: '3.4.1',
+  updated: '2026-11-20',
+  tldr: 'A dictionary stores values under keys, like words and their meanings. Read with `d[key]` or `get()`, add or change with `d[key] = value`, remove with `del` or `pop()`, check keys with `in`, and loop with `keys()`, `values()` and `items()`.',
+  subpointsCovered: ['3.4.1.1', '3.4.1.2', '3.4.1.3', '3.4.1.4', '3.4.1.5'],
+  links: [
+    { title: 'Python tutorial: Dictionaries', url: 'https://docs.python.org/3/tutorial/datastructures.html#dictionaries' },
+    { title: 'Mapping types: dict', url: 'https://docs.python.org/3/library/stdtypes.html#mapping-types-dict' },
+  ],
+}
+
+## Big idea
+
+A **dictionary** (or **dict**) stores pairs: a **key** and its **value**. You look a value up by its key, not by a position. It works like a phone book, where you find a number by the person's name.
+
+```python
+prices = {"coffee": 2.5, "tea": 2.0, "cake": 3.75}
+print(prices["tea"])
+print(len(prices))
+```
+
+```output
+2.0
+3
+```
+
+Keys are unique: one key can only appear once. Values can repeat and can be anything. Since Python 3.7, a dict remembers the order in which keys were added, so printing it is predictable.
+
+## Walkthrough
+
+### Creating dictionaries
+
+Write pairs as `key: value`, separated by commas, inside curly braces. An empty pair of braces `{}` is an empty dictionary, and so is `dict()`:
+
+```python
+empty = {}
+also_empty = dict()
+pet = {"name": "Biscuit", "species": "dog", "age": 4}
+from_pairs = dict([("a", 1), ("b", 2)])
+print(empty, also_empty)
+print(pet)
+print(from_pairs)
+```
+
+```output
+{} {}
+{'name': 'Biscuit', 'species': 'dog', 'age': 4}
+{'a': 1, 'b': 2}
+```
+
+Keys must be immutable: strings, numbers and tuples are fine, lists are not. If you repeat a key when writing a dict, the last value wins:
+
+```python
+d = {"x": 1, "y": 2, "x": 3}
+print(d)
+```
+
+```output
+{'x': 3, 'y': 2}
+```
+
+### Reading values, and checking keys with `in`
+
+`d[key]` gives the value, or raises `KeyError` if the key is missing. The `get()` method is the gentle version: it returns `None`, or a default you choose, instead of failing:
+
+```python
+stock = {"apples": 12, "pears": 0}
+print(stock["apples"])
+print(stock.get("plums"))
+print(stock.get("plums", 0))
+```
+
+```output
+12
+None
+0
+```
+
+`in` and `not in` check the **keys** of a dict, never the values:
+
+```python
+stock = {"apples": 12, "pears": 0}
+print("pears" in stock)
+print(12 in stock)
+print("plums" not in stock)
+```
+
+```output
+True
+False
+True
+```
+
+To check values, use `in` on `stock.values()`: `12 in stock.values()` is `True`.
+
+### Adding and updating
+
+Assigning to a key adds the pair if the key is new, or replaces the value if the key already exists. The same syntax does both jobs:
+
+```python
+grades = {"Ana": 7}
+grades["Ben"] = 9
+grades["Ana"] = 8
+grades["Ben"] += 1
+print(grades)
+```
+
+```output
+{'Ana': 8, 'Ben': 10}
+```
+
+`update()` adds or replaces several pairs at once from another dictionary:
+
+```python
+settings = {"volume": 5, "theme": "light"}
+settings.update({"theme": "dark", "font": "large"})
+print(settings)
+```
+
+```output
+{'volume': 5, 'theme': 'dark', 'font': 'large'}
+```
+
+### Removing pairs
+
+- `del d[key]` removes the pair, and raises `KeyError` if the key is missing.
+- `d.pop(key)` removes the pair and **returns** its value. `d.pop(key, default)` returns the default instead of failing if the key is missing.
+- `d.popitem()` removes and returns the **last** pair added, as a tuple.
+- `d.clear()` empties the dict.
+
+```python
+cart = {"milk": 1, "eggs": 12, "jam": 2, "salt": 1}
+del cart["milk"]
+eggs = cart.pop("eggs")
+gone = cart.pop("bread", "not there")
+last = cart.popitem()
+print(eggs, gone, last)
+print(cart)
+```
+
+```output
+12 not there ('salt', 1)
+{'jam': 2}
+```
+
+### Looping: `keys()`, `values()` and `items()`
+
+A plain `for` loop over a dict gives you the keys. `keys()` does the same, `values()` gives the values, and `items()` gives `(key, value)` pairs, which you can unpack into two variables:
+
+```python
+capitals = {"France": "Paris", "Kenya": "Nairobi", "Chile": "Santiago"}
+for country in capitals:
+    print(country)
+for city in capitals.values():
+    print(city)
+for country, city in capitals.items():
+    print(country, "->", city)
+```
+
+```output
+France
+Kenya
+Chile
+Paris
+Nairobi
+Santiago
+France -> Paris
+Kenya -> Nairobi
+Chile -> Santiago
+```
+
+These methods return **views**: live windows onto the dict. Turn one into a list with `list()` if you want to print or index it:
+
+```python
+capitals = {"France": "Paris", "Kenya": "Nairobi"}
+print(list(capitals.keys()))
+print(list(capitals.items()))
+```
+
+```output
+['France', 'Kenya']
+[('France', 'Paris'), ('Kenya', 'Nairobi')]
+```
+
+A typical use: counting things. Start each count at 0 the first time you see a key:
+
+```python
+weather = ["sun", "rain", "sun", "fog", "sun"]
+counts = {}
+for w in weather:
+    counts[w] = counts.get(w, 0) + 1
+print(counts)
+```
+
+```output
+{'sun': 3, 'rain': 1, 'fog': 1}
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+d = {"a": 1, "b": 2}
+d["c"] = 3
+d["a"] = 10
+print(len(d), d["a"], "b" in d, 2 in d)
+```
+
+```output
+3 10 True False
+```
+
+</Predict>
+
+<Predict>
+
+```python
+ages = {"Mia": 30, "Leo": 25}
+total = 0
+for name in ages:
+    total += ages[name]
+print(total, ages.pop("Leo"), ages)
+```
+
+```output
+55 25 {'Mia': 30}
+```
+
+</Predict>
+
+<Predict>
+
+```python
+fruit = {"kiwi": 3}
+print(fruit["plums"])
+```
+
+```error
+KeyError: 'plums'
+```
+
+</Predict>
+
+## Common mistakes
+
+**Reading a missing key with square brackets.** Use `get()` or check with `in` first:
+
+```python
+menu = {"soup": 4}
+print(menu["salad"])
+```
+
+```error
+KeyError: 'salad'
+```
+
+**Using indexes like a list.** `d[0]` looks for the **key** `0`, not the first pair:
+
+```python
+colors = {"sky": "blue", "grass": "green"}
+print(colors[0])
+```
+
+```error
+KeyError: 0
+```
+
+**Using a list as a key.**
+
+```python
+places = {["Rome", "Italy"]: 5}
+```
+
+```error
+TypeError: cannot use 'list' as a dict key (unhashable type: 'list')
+```
+
+Use a tuple instead: `{("Rome", "Italy"): 5}` works.
+
+**Changing a dict's size while looping over it.** Adding or deleting keys inside a loop over the same dict fails:
+
+```python
+scores = {"a": 1, "b": 0, "c": 2}
+for k in scores:
+    if scores[k] == 0:
+        del scores[k]
+```
+
+```error
+RuntimeError: dictionary changed size during iteration
+```
+
+Loop over a copy of the keys instead: `for k in list(scores):`.
+
+## Exam traps
+
+- **`in` checks keys.** `"Paris" in {"France": "Paris"}` is `False`.
+- **A plain loop gives keys.** `for x in d:` gives keys, not values or pairs.
+- **Duplicate keys.** In `{"a": 1, "a": 2}` the last value wins, and `len()` is 1.
+- **`d[k] = v` adds or replaces.** No error for new keys, so questions mix adding and overwriting in one block.
+- **`get()` vs. `[]`.** `d.get("x")` returns `None` for a missing key; `d["x"]` raises `KeyError`.
+- **`pop()` returns the value**, `popitem()` returns a `(key, value)` tuple, `del` returns nothing.
+- **`{}` is an empty dict**, not an empty set.
+
+## Try it
+
+In the [Playground](/playground), make a dictionary of four foods in your kitchen and how many of each you have. Add a new food, change one amount, remove one food with `pop()`, and print what's left with a loop over `items()`. Then use `get()` to look up a food you don't have without causing an error.
+
+When you're ready, [practise this objective](/practice?objective=3.4.1).

@@ -1,0 +1,350 @@
+export const meta = {
+  objectiveId: '5.1.1',
+  updated: '2026-11-20',
+  tldr: 'Open a file with `open(name, mode)`: `"r"` reads, `"w"` wipes and writes, `"a"` adds to the end. Read with `read()`, `readline()` or `readlines()`, write with `write()`, and use `with` so the file is always closed.',
+  subpointsCovered: ['5.1.1.1', '5.1.1.2', '5.1.1.3', '5.1.1.4', '5.1.1.5'],
+  links: [
+    { title: 'Python tutorial: Reading and writing files', url: 'https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files' },
+    { title: 'Built-in function open()', url: 'https://docs.python.org/3/library/functions.html#open' },
+  ],
+}
+
+## Big idea
+
+A **file** is a named piece of data saved on a disk, like a note you keep in a drawer. A **text file** holds ordinary characters split into lines, for example a shopping list or a diary.
+
+Variables vanish when a program ends. Files stay. To use a file, a program **opens** it, reads from it or writes to it, and then **closes** it again.
+
+```python
+with open("shopping.txt", "w") as f:
+    f.write("apples\n")
+    f.write("rice\n")
+
+with open("shopping.txt", "r") as f:
+    print(f.read())
+```
+
+```output
+apples
+rice
+
+```
+
+The first block creates the file and writes two lines. The second block opens it again and prints everything inside.
+
+**In this app, every run starts with an empty folder.** There are no files until your code makes them. That's why many examples below begin with a short set-up step that creates a file first.
+
+## Walkthrough
+
+### Opening a file and choosing a mode
+
+The built-in function `open()` takes the file's name and a **mode**: a short string that says what you plan to do.
+
+| Mode | Meaning | If the file is missing | If the file exists |
+|---|---|---|---|
+| `"r"` | read | error | reads from the start |
+| `"w"` | write | creates it | **empties it first**, then writes |
+| `"a"` | append (add to the end) | creates it | keeps the old text, writes after it |
+
+If you leave the mode out, Python uses `"r"`. So `open("notes.txt")` means the same as `open("notes.txt", "r")`.
+
+`open()` gives back a **file object**: a value that stands for the open file. You call methods on it, such as `f.read()` or `f.write(...)`. The name `f` is just a habit; any variable name works.
+
+### The `with` statement closes the file for you
+
+An open file should be closed when you're done, so the data is saved properly and the computer can free the file. You could call `f.close()` yourself, but it's easy to forget, and if an error happens first, the close line never runs.
+
+The **`with` statement** solves this. The file stays open for the indented block under `with` and is closed automatically when the block ends, even if an error happens inside it:
+
+```python
+with open("diary.txt", "w") as f:
+    f.write("Sunny day.\n")
+    print(f.closed)
+print(f.closed)
+```
+
+```output
+False
+True
+```
+
+The attribute `closed` is `True` once the file is closed. After the `with` block, `f` still exists as a name, but you can no longer read from it or write to it.
+
+### Writing with `"w"`
+
+`write()` adds the text you give it to the file. It does **not** add a line break on its own, unlike `print()`. To end a line, put the **newline character** `\n` at the end of the string yourself:
+
+```python
+with open("pets.txt", "w") as f:
+    f.write("cat")
+    f.write("dog\n")
+    f.write("fish\n")
+
+with open("pets.txt") as f:
+    print(f.read())
+```
+
+```output
+catdog
+fish
+
+```
+
+Without a `\n` after `"cat"`, the next word continues on the same line. The empty line at the end of the output appears because the file ends with `\n` and `print()` then adds its own line break.
+
+`write()` only accepts strings. To save a number, turn it into text first, for example `f.write(str(42))`.
+
+### Mode `"w"` wipes the old content
+
+Opening an existing file with `"w"` empties it straight away, before you write anything:
+
+```python
+# Set-up: create a small file to work with
+with open("todo.txt", "w") as f:
+    f.write("buy milk\nwater plants\n")
+
+with open("todo.txt", "w") as f:
+    f.write("call grandma\n")
+
+with open("todo.txt") as f:
+    print(f.read())
+```
+
+```output
+call grandma
+
+```
+
+The two old lines are gone. Only what was written after the second `open()` is left.
+
+### Appending with `"a"`
+
+Mode `"a"` keeps what's already in the file and adds new text at the end. It's what you want for a log or a growing list:
+
+```python
+# Set-up: create a small file to work with
+with open("weather.txt", "w") as f:
+    f.write("Mon: 18C\n")
+
+with open("weather.txt", "a") as f:
+    f.write("Tue: 21C\n")
+    f.write("Wed: 16C\n")
+
+with open("weather.txt") as f:
+    print(f.read())
+```
+
+```output
+Mon: 18C
+Tue: 21C
+Wed: 16C
+
+```
+
+### Reading: `read()`, `readline()` and `readlines()`
+
+There are three common ways to read a text file. Each one returns strings:
+
+- `read()` returns the **whole file** as one string.
+- `readline()` returns the **next single line**, including its `\n`. At the end of the file it returns an empty string `""`.
+- `readlines()` returns a **list** of all the remaining lines, each still ending in `\n`.
+
+```python
+# Set-up: create a small file to work with
+with open("recipe.txt", "w") as f:
+    f.write("flour\nsugar\neggs\n")
+
+with open("recipe.txt") as f:
+    first = f.readline()
+    rest = f.readlines()
+print(repr(first))
+print(rest)
+```
+
+```output
+'flour\n'
+['sugar\n', 'eggs\n']
+```
+
+`repr()` shows a string the way you'd type it in code, so you can see the hidden `\n`. Notice that `readlines()` started where `readline()` stopped: a file object remembers how far it has read.
+
+You can also loop over the file object directly. Each turn of the loop gives you one line. Use `strip()` to remove the `\n` (and any spaces) from the ends:
+
+```python
+# Set-up: create a small file to work with
+with open("grades.txt", "w") as f:
+    f.write("Ana 91\nBen 78\nCleo 85\n")
+
+total = 0
+with open("grades.txt") as f:
+    for line in f:
+        name, grade = line.strip().split()
+        total += int(grade)
+print("Average:", total / 3)
+```
+
+```output
+Average: 84.66666666666667
+```
+
+Everything you read from a text file is a **string**, even if it looks like a number. That's why the code uses `int(grade)` before adding.
+
+### Common errors when opening or using files
+
+Opening a file that doesn't exist in `"r"` mode raises a `FileNotFoundError`:
+
+```python
+with open("missing.txt") as f:
+    print(f.read())
+```
+
+```error
+FileNotFoundError: [Errno 44] No such file or directory: 'missing.txt'
+```
+
+The number after `Errno` is an error code from the operating system. In this app it's 44; on a typical desktop computer it's 2. The exam cares about the error's **name**, not the number.
+
+Using the wrong method for the mode raises an `io.UnsupportedOperation` error, for example reading from a file opened with `"w"`:
+
+```python
+with open("list.txt", "w") as f:
+    f.write("pears\n")
+    print(f.read())
+```
+
+```error
+io.UnsupportedOperation: not readable
+```
+
+And using a file after `with` has closed it raises a `ValueError`:
+
+```python
+with open("note.txt", "w") as f:
+    f.write("hello\n")
+f.write("again\n")
+```
+
+```error
+ValueError: I/O operation on closed file.
+```
+
+You can catch these errors with `try` and `except`, just like any other exception:
+
+```python
+try:
+    with open("settings.txt") as f:
+        print(f.read())
+except FileNotFoundError:
+    print("No settings file yet.")
+```
+
+```output
+No settings file yet.
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+with open("log.txt", "w") as f:
+    f.write("one\n")
+with open("log.txt", "a") as f:
+    f.write("two\n")
+with open("log.txt", "w") as f:
+    f.write("three\n")
+with open("log.txt") as f:
+    print(f.readlines())
+```
+
+```output
+['three\n']
+```
+
+</Predict>
+
+<Predict>
+
+```python
+with open("trip.txt", "w") as f:
+    f.write("Paris")
+    f.write("Rome\n")
+    f.write("Lisbon\n")
+with open("trip.txt") as f:
+    print(len(f.readlines()))
+```
+
+```output
+2
+```
+
+</Predict>
+
+<Predict>
+
+```python
+with open("plants.txt", "w") as f:
+    f.write("fern\nbasil\n")
+with open("plants.txt") as f:
+    a = f.readline()
+    b = f.readline()
+    c = f.readline()
+print(repr(c), len(a + b))
+```
+
+```output
+'' 11
+```
+
+</Predict>
+
+## Common mistakes
+
+**Reading a file that hasn't been created.** In `"r"` mode the file must already exist. Check the name and the spelling, and remember that in this app each run starts with an empty folder.
+
+```python
+with open("Notes.txt", "w") as f:
+    f.write("hi\n")
+with open("notes.txt") as f:
+    print(f.read())
+```
+
+```error
+FileNotFoundError: [Errno 44] No such file or directory: 'notes.txt'
+```
+
+Here the file was saved as `Notes.txt` with a capital N, and the names don't match.
+
+**Using `"w"` when you meant `"a"`.** `"w"` silently throws away everything that was in the file. Use `"a"` to add to the end.
+
+**Forgetting `\n`.** `write()` does not start a new line for you, so `f.write("a")` followed by `f.write("b")` saves `ab` on one line.
+
+**Writing a number.** `write()` needs a string:
+
+```python
+with open("count.txt", "w") as f:
+    f.write(5)
+```
+
+```error
+TypeError: write() argument must be str, not int
+```
+
+**Forgetting that lines keep their `\n`.** A line read from a file usually ends in `\n`, so `line == "basil"` is `False` when `line` is `"basil\n"`. Call `line.strip()` first.
+
+## Exam traps
+
+- **This whole section is PCEP-30-03 only.** It's not part of PCEP-30-02.
+- **`"w"` truncates.** Opening with `"w"` empties the file immediately, even if you then write nothing. Questions often write, then reopen with `"w"`, and ask what's left.
+- **`"a"` appends.** The old content stays and new text goes at the end. A missing file is created by both `"w"` and `"a"`.
+- **`"r"` on a missing file** raises `FileNotFoundError`. The default mode is `"r"`.
+- **`read()` vs. `readline()` vs. `readlines()`.** One string for the whole file, one string for one line, or a list of line strings. Know which type each returns.
+- **Newline characters.** Lines read from a file keep their `\n`, and `readline()` returns `""` at the end of the file. Count characters carefully: `"fern\n"` has 5.
+- **`with` closes the file.** After the block, `f.closed` is `True` and any read or write raises `ValueError`.
+- **Everything read is a string.** `"7" + "3"` is `"73"`, not `10`.
+
+## Try it
+
+In the [Playground](/playground), write three of your favourite meals to `meals.txt` with mode `"w"`, one per line. Then append a fourth with mode `"a"`. Read the file back three ways: with `read()`, with `readlines()`, and with a `for` loop that prints each line after `strip()`. Finally, try opening `"meal.txt"` (no s) and catch the error with `try`/`except`.
+
+When you're ready, [practise this objective](/practice?objective=5.1.1).

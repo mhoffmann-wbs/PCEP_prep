@@ -541,7 +541,7 @@ const RAW: Record<string, RawObjective[]> = {
         'Trace the calls and results of a recursive function.',
         'Recognize infinite recursion and `RecursionError`.',
         'Define a generator function using `yield`.',
-        'Iterate over the values produced by a generator.',
+        'Iterate over the values produced by a generator with `for` or `next()`.',
       ],
     },
     {
@@ -554,7 +554,7 @@ const RAW: Record<string, RawObjective[]> = {
         'Recognize abstract exceptions such as `ArithmeticError` and `LookupError` and the concrete exceptions under them.',
         'Order `except` branches from the most specific to the most general.',
         'Trace how an exception propagates through function calls.',
-        'Delegate responsibility for handling an exception to the caller.',
+        'Delegate responsibility for handling an exception to the caller, including re-raising it with `raise`.',
       ],
     },
   ],

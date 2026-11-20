@@ -1,0 +1,328 @@
+export const meta = {
+  objectiveId: '4.2.2',
+  updated: '2026-11-20',
+  tldr: 'Put risky code in a `try` block and the reaction in an `except` block. Name the exception type to catch only that kind of problem, and add one `except` branch per type. Python runs the first branch that matches, then carries on after the whole `try` statement.',
+  subpointsCovered: ['4.2.2.1', '4.2.2.2', '4.2.2.3', '4.2.2.4'],
+  links: [
+    { title: 'Python tutorial: Handling exceptions', url: 'https://docs.python.org/3/tutorial/errors.html#handling-exceptions' },
+    { title: 'The try statement', url: 'https://docs.python.org/3/reference/compound_stmts.html#the-try-statement' },
+  ],
+}
+
+## Big idea
+
+An exception normally stops the whole program (see [Python exceptions](/learn/4.2.1)). With **`try`** and **`except`** you can catch it and decide what happens instead:
+
+```python
+try:
+    portions = 12 // 0
+    print("Each person gets", portions)
+except ZeroDivisionError:
+    print("Nobody to share with!")
+print("Program continues")
+```
+
+```output
+Nobody to share with!
+Program continues
+```
+
+Python **tries** the indented block under `try:`. When a line in it raises an exception that matches the `except` line, Python jumps to the `except` block, runs it, and then continues after the whole statement. The program doesn't crash.
+
+## Walkthrough
+
+### `try` and `except`
+
+The shape is always the same:
+
+```text
+try:
+    code that might raise an exception
+except SomeError:
+    what to do if it does
+code after the try statement
+```
+
+Both lines end with a colon, and both blocks are indented. A `try` must have at least one `except` branch.
+
+If **no** exception happens, the `except` block is skipped completely:
+
+```python
+try:
+    portions = 12 // 4
+    print("Each person gets", portions)
+except ZeroDivisionError:
+    print("Nobody to share with!")
+print("Program continues")
+```
+
+```output
+Each person gets 3
+Program continues
+```
+
+A typical use is checking what a user types. `int()` raises `ValueError` when the text isn't a whole number:
+
+```python
+try:
+    age = int(input("Your age: "))
+    print("Next year you will be", age + 1)
+except ValueError:
+    print("Please type a whole number.")
+```
+
+```input
+twelve
+```
+
+```output
+Your age: Please type a whole number.
+```
+
+(In the Playground, the prompt and the answer appear on the same line, because the input you type isn't printed.)
+
+### Catching specific exception types
+
+The name after `except` says **which** exception the branch handles. An exception of another type isn't caught by it, and it stops the program as usual:
+
+```python
+try:
+    prices = {"tea": 2.0}
+    print(prices["coffee"])
+except ValueError:
+    print("Bad value")
+```
+
+```error
+KeyError: 'coffee'
+```
+
+One branch can handle several types: put them in round brackets, separated by commas.
+
+```python
+shelf = ["salt", "sugar"]
+for position in ["1", "x", "7"]:
+    try:
+        print(shelf[int(position)])
+    except (ValueError, IndexError):
+        print("No such shelf:", position)
+```
+
+```output
+sugar
+No such shelf: x
+No such shelf: 7
+```
+
+An `except:` with no name at all catches **every** exception. It's allowed, but it also hides mistakes you didn't expect, such as a misspelled variable name. Prefer naming the exceptions you expect.
+
+### Several `except` branches
+
+To react differently to different problems, write one `except` branch per type. Python checks them **from top to bottom** and runs **only the first one that matches**. The rest are skipped:
+
+```python
+def share(total, people):
+    try:
+        each = total / int(people)
+        print("Each pays", each)
+    except ValueError:
+        print("People must be a number")
+    except ZeroDivisionError:
+        print("Need at least one person")
+
+share(30, "3")
+share(30, "three")
+share(30, "0")
+```
+
+```output
+Each pays 10.0
+People must be a number
+Need at least one person
+```
+
+A bare `except:` can be added as a last branch to catch anything the others missed. It **must** be the last branch, otherwise Python refuses to run the code:
+
+```python
+try:
+    print(10 / 0)
+except:
+    print("Something went wrong")
+except ZeroDivisionError:
+    print("Division by zero")
+```
+
+```error
+SyntaxError: default 'except:' must be last
+```
+
+### Tracing the flow
+
+To trace a `try` statement by hand, follow these rules:
+
+1. Run the `try` block line by line.
+2. If a line raises an exception, **skip the rest of the `try` block** at once.
+3. Check the `except` branches from the top. Run the first one that matches, and only that one.
+4. Continue with the code **after** the whole `try` statement.
+5. If no branch matches, the exception isn't handled and the program stops.
+6. If nothing raised an exception, skip all `except` branches and go to step 4.
+
+```python
+print("A")
+try:
+    print("B")
+    number = int("4x")
+    print("C")
+except ValueError:
+    print("D")
+except TypeError:
+    print("E")
+print("F")
+```
+
+```output
+A
+B
+D
+F
+```
+
+`C` is skipped because the line above it raised `ValueError`. `E` is skipped because the first matching branch already ran.
+
+The `except` block can raise an exception too. That new exception isn't caught by the branches of the same `try`, so the program stops:
+
+```python
+try:
+    print([1, 2][5])
+except IndexError:
+    print("Fixing...")
+    print(1 / 0)
+except ZeroDivisionError:
+    print("Never reached")
+```
+
+```error
+ZeroDivisionError: division by zero
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+basket = {"apples": 3}
+try:
+    print("Checking")
+    print(basket["pears"])
+    print("Found")
+except KeyError:
+    print("No pears")
+print("Bye")
+```
+
+```output
+Checking
+No pears
+Bye
+```
+
+</Predict>
+
+<Predict>
+
+```python
+for text in ["8", "0", "abc"]:
+    try:
+        print(16 // int(text))
+    except ZeroDivisionError:
+        print("zero")
+    except ValueError:
+        print("not a number")
+```
+
+```output
+2
+zero
+not a number
+```
+
+</Predict>
+
+<Predict>
+
+```python
+try:
+    days = ["Mon", "Tue"]
+    print(days[1])
+except IndexError:
+    print("index")
+except (TypeError, ValueError):
+    print("type or value")
+print("end")
+```
+
+```output
+Tue
+end
+```
+
+</Predict>
+
+## Common mistakes
+
+**Catching the wrong type.** The branch only catches the type it names. Here the problem is a `TypeError`, so the `ValueError` branch doesn't help:
+
+```python
+try:
+    total = "Total: " + 5
+except ValueError:
+    print("Bad value")
+```
+
+```error
+TypeError: can only concatenate str (not "int") to str
+```
+
+**Expecting the `try` block to continue after the error.** Once a line fails, the remaining lines of the `try` block never run, not even after the `except` block.
+
+**Forgetting the colon or the indentation.**
+
+```python
+try:
+    print(int("7"))
+except ValueError
+    print("Not a number")
+```
+
+```error
+SyntaxError: expected ':'
+```
+
+**Writing `try` without `except`.** A `try` block needs at least one `except` branch (or a `finally`, which isn't on the PCEP syllabus):
+
+```python
+try:
+    print("Hello")
+print("Bye")
+```
+
+```error
+SyntaxError: expected 'except' or 'finally' block
+```
+
+## Exam traps
+
+- **First match wins.** With several `except` branches, only the first matching one runs, even if a later one would also match.
+- **Lines after the failing line are skipped.** A `print` in the `try` block below the failing line never runs.
+- **Code after the `try` statement runs** whenever the exception was handled, or when there was no exception at all.
+- **No exception, no `except`.** If the `try` block runs without problems, every `except` block is skipped.
+- **Unmatched exceptions still crash.** If no branch names the raised type, the program stops with a traceback, after printing whatever came before.
+- **Bare `except:` must be last.** Otherwise it's a `SyntaxError`, and nothing runs at all.
+- **A tuple of types.** `except (ValueError, ZeroDivisionError):` handles both types in one branch.
+- **Know which operation raises what.** Many questions hinge on this: `int("x")` is `ValueError`, `[1][3]` is `IndexError`, `{}["k"]` is `KeyError`, `1 / 0` is `ZeroDivisionError`, `"a" + 1` is `TypeError`.
+
+## Try it
+
+In the [Playground](/playground), write a small calculator that asks for two numbers with `input()` and prints the first divided by the second. Add one `except` branch for `ValueError` (the user typed letters) and one for `ZeroDivisionError`, each with its own friendly message. Try it with good numbers, with letters, and with `0` as the second number.
+
+When you're ready, [practise this objective](/practice?objective=4.2.2).

@@ -11,6 +11,11 @@ const base = process.env.BASE_PATH ?? '/'
 export default defineConfig({
   base,
   plugins: [{ enforce: 'pre', ...mdx({ remarkPlugins: [remarkGfm] }) }, react({ include: /\.(mdx|tsx?)$/ }), tailwindcss()],
+  build: {
+    // The lessons are one ~670 kB chunk (~125 kB gzipped), loaded only on Learn
+    // pages, because the lesson index needs every lesson's meta.
+    chunkSizeWarningLimit: 800,
+  },
   test: {
     environment: 'node',
     include: ['src/**/*.test.{ts,tsx}'],

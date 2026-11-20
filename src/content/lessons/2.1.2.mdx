@@ -1,0 +1,278 @@
+export const meta = {
+  objectiveId: '2.1.2',
+  updated: '2026-11-20',
+  tldr: 'Use `if-elif-else` to choose one of several paths. Python tests the conditions from top to bottom, runs the first branch whose condition is true and skips all the rest; `else` catches whatever is left.',
+  subpointsCovered: ['2.1.2.1', '2.1.2.2', '2.1.2.3', '2.1.2.4', '2.1.2.5'],
+  links: [
+    { title: 'Python tutorial: if statements', url: 'https://docs.python.org/3/tutorial/controlflow.html#if-statements' },
+    { title: 'The if statement (reference)', url: 'https://docs.python.org/3/reference/compound_stmts.html#the-if-statement' },
+  ],
+}
+
+## Big idea
+
+`if-else` picks between **two** paths. Real choices often have more: a traffic light can be red, yellow or green. **`elif`** (short for "else if") adds more conditions to the same `if`:
+
+```python
+light = "yellow"
+if light == "green":
+    print("Go")
+elif light == "yellow":
+    print("Slow down")
+else:
+    print("Stop")
+```
+
+```output
+Slow down
+```
+
+Python checks the conditions **in order, from top to bottom**. It runs the block of the **first** condition that is true and then leaves the whole structure. At most one branch ever runs.
+
+## Walkthrough
+
+### `if-elif`: several conditions
+
+You can add as many `elif` branches as you need. Each one has its own condition and colon, and lines up with the `if`:
+
+```python
+day = "Sat"
+if day == "Mon":
+    print("Gym class")
+elif day == "Wed":
+    print("Piano lesson")
+elif day == "Sat":
+    print("Market day")
+print("Checked the calendar")
+```
+
+```output
+Market day
+Checked the calendar
+```
+
+Without an `else`, it is possible that **no** branch runs: if `day` were `"Sun"`, only the last line would print.
+
+### `if-elif-else`: a fallback
+
+Add `else` at the end to give a **fallback**: a branch that runs when none of the conditions above it were true. With an `else`, exactly one branch always runs.
+
+```python
+weight_kg = 25
+if weight_kg <= 5:
+    print("Small parcel: 4 euros")
+elif weight_kg <= 20:
+    print("Medium parcel: 9 euros")
+else:
+    print("Large parcel: 15 euros")
+```
+
+```output
+Large parcel: 15 euros
+```
+
+`else` must come last, and there can be only one. `elif` can never come after `else`.
+
+### Conditions are checked in order
+
+Python stops at the **first** true condition. Later conditions are not even looked at, even if they would also be true:
+
+```python
+temp = 28
+if temp > 25:
+    print("Hot")
+elif temp > 15:
+    print("Warm")
+elif temp > 5:
+    print("Cool")
+else:
+    print("Cold")
+```
+
+```output
+Hot
+```
+
+`28 > 15` and `28 > 5` are true too, but they never get checked. This is why you can write `elif temp > 15` instead of `elif temp > 15 and temp <= 25`: if Python reaches that line, it already knows `temp > 25` was false.
+
+Compare this with separate `if` statements, where **every** condition is checked and several blocks can run:
+
+```python
+temp = 28
+if temp > 25:
+    print("Hot")
+if temp > 15:
+    print("Warm")
+if temp > 5:
+    print("Cool")
+```
+
+```output
+Hot
+Warm
+Cool
+```
+
+### Tracing a multi-branch structure
+
+To trace an `if-elif-else`, go down the conditions one by one and stop at the first `True`:
+
+```python
+points = 74
+if points >= 90:
+    grade = "A"
+elif points >= 80:
+    grade = "B"
+elif points >= 70:
+    grade = "C"
+else:
+    grade = "F"
+print(points, grade)
+```
+
+```output
+74 C
+```
+
+| Condition | Value | What happens |
+|---|---|---|
+| `points >= 90` | `False` | go on |
+| `points >= 80` | `False` | go on |
+| `points >= 70` | `True` | `grade = "C"`, then leave |
+| `else` | not reached | skipped |
+
+### Wrong order, redundant and unreachable branches
+
+Because only the first match counts, the **order** of the conditions matters. Here the grades are checked from the lowest bar up, and the program is wrong:
+
+```python
+points = 95
+if points >= 70:
+    grade = "C"
+elif points >= 80:
+    grade = "B"
+elif points >= 90:
+    grade = "A"
+print(grade)
+```
+
+```output
+C
+```
+
+Any score of 80 or more is also `>= 70`, so the first branch always wins. The `"B"` and `"A"` branches are **unreachable**: no value can ever get to them. The fix is to test the strictest condition first, as in the previous example.
+
+A branch is **redundant** when it adds nothing, for example when it repeats a test that an earlier branch already caught:
+
+```python
+size = "M"
+if size == "S":
+    print("Small")
+elif size == "M":
+    print("Medium")
+elif size == "S":
+    print("Small again?")
+else:
+    print("Large")
+```
+
+```output
+Medium
+```
+
+The second `size == "S"` can never run, because any `"S"` was caught by the first branch.
+
+## Predict the output
+
+<Predict>
+
+```python
+x = 10
+if x > 5:
+    print("A")
+elif x > 8:
+    print("B")
+else:
+    print("C")
+```
+
+```output
+A
+```
+
+</Predict>
+
+<Predict>
+
+```python
+fruit = "kiwi"
+if fruit == "apple":
+    print("red")
+elif fruit == "banana":
+    print("yellow")
+print("end")
+```
+
+```output
+end
+```
+
+</Predict>
+
+<Predict>
+
+```python
+n = 0
+if n > 0:
+    print("positive")
+elif n:
+    print("non-zero")
+elif n == 0:
+    print("zero")
+else:
+    print("negative")
+```
+
+```output
+zero
+```
+
+</Predict>
+
+## Common mistakes
+
+**Putting `elif` after `else`.** `else` closes the structure, so nothing can follow it at the same level.
+
+```python
+mood = "happy"
+if mood == "sad":
+    print("Cheer up")
+else:
+    print("Great")
+elif mood == "tired":
+    print("Rest")
+```
+
+```error
+SyntaxError: 'elif' block follows an 'else' block
+```
+
+**Writing `else if` instead of `elif`.** Python has no `else if` on one line. Use the single keyword `elif`.
+
+**Expecting more than one branch to run.** In one `if-elif-else`, at most one block runs. If you want several checks that can each run, use separate `if` statements.
+
+**Checking the widest condition first.** `if x > 0:` before `elif x > 100:` makes the second branch unreachable. Put the narrowest (strictest) test first.
+
+## Exam traps
+
+- **Unreachable branches.** Look for an early condition that already covers a later one, such as `> 50` before `> 80`, or `>= 0` before `== 0`. The later branch never runs.
+- **First match wins.** When several conditions are true, only the first true one counts. Don't pick the "best" match.
+- **No `else`, no output.** An `if-elif` with no `else` may run no branch at all.
+- **Separate `if`s vs `elif`.** Two code samples can look almost the same: one with `if ... if ...` (several blocks can run) and one with `if ... elif ...` (at most one runs).
+- **Truthiness in `elif`.** `elif n:` is false when `n` is `0` or `""`, so control moves on to the next branch.
+
+## Try it
+
+In the [Playground](/playground), write a program that turns a wind speed in km/h into a description: `"Calm"` below 2, `"Breeze"` below 30, `"Strong wind"` below 60, and `"Storm"` otherwise. Test it with 0, 2, 45 and 80. Then swap two of the branches and see which inputs now give the wrong answer.
+
+When you're ready, [practise this objective](/practice?objective=2.1.2).

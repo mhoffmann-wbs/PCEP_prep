@@ -1,0 +1,252 @@
+export const meta = {
+  objectiveId: '3.1.3',
+  updated: '2026-11-20',
+  tldr: 'A list can hold other lists. A list of lists is a grid with rows and columns, and one more level of nesting gives a cube. Use one index per level, like `grid[row][col]`, to read or change a value.',
+  subpointsCovered: ['3.1.3.1', '3.1.3.2', '3.1.3.3', '3.1.3.4'],
+  links: [
+    { title: 'Python tutorial: Nested list comprehensions', url: 'https://docs.python.org/3/tutorial/datastructures.html#nested-list-comprehensions' },
+    { title: 'Programming FAQ: How do I create a multidimensional list?', url: 'https://docs.python.org/3/faq/programming.html#how-do-i-create-a-multidimensional-list' },
+  ],
+}
+
+## Big idea
+
+An item in a list can be anything, including another list. When a list holds lists, it is called a **nested** list. A list of lists is a handy way to store a table or grid, like a seating plan or a weekly timetable.
+
+```python
+seats = [
+    ["A1", "A2", "A3"],
+    ["B1", "B2", "B3"],
+]
+print(seats[1])
+print(seats[1][2])
+```
+
+```output
+['B1', 'B2', 'B3']
+B3
+```
+
+The first index picks a **row** (an inner list). The second index picks an item inside that row. Such a list is called **two-dimensional** (2D), because you need two numbers to find a value.
+
+## Walkthrough
+
+### Lists of lists: grids and matrices
+
+A **matrix** is a rectangle of numbers arranged in rows and columns. In Python you store each row as a list, and put the rows in an outer list:
+
+```python
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+]
+print(len(matrix))
+print(len(matrix[0]))
+```
+
+```output
+3
+3
+```
+
+`len(matrix)` counts the rows. `len(matrix[0])` counts the items in the first row, which is the number of columns.
+
+You can also build a grid with a loop, or with a **list comprehension** (a short way of writing a loop that builds a list inside square brackets):
+
+```python
+board = [[0 for col in range(4)] for row in range(3)]
+print(board)
+```
+
+```output
+[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+```
+
+### Deeper nesting: cubes
+
+Put grids inside a list and you get **three** dimensions, like a cube or a stack of pages. Imagine a small hotel: floors, then rooms on each floor, then beds in each room:
+
+```python
+hotel = [
+    [[1, 2], [1, 1]],
+    [[2, 2], [1, 2]],
+]
+print(hotel[1])
+print(hotel[1][0])
+print(hotel[1][0][1])
+```
+
+```output
+[[2, 2], [1, 2]]
+[2, 2]
+2
+```
+
+Each index goes one level deeper: floor, then room, then bed.
+
+### Reading with several indexes
+
+Indexes are read left to right. `grid[r][c]` first takes `grid[r]` (a row), then takes item `c` of that row. Negative indexes work at every level:
+
+```python
+week = [
+    ["sunny", "cloudy", "rain"],
+    ["rain", "rain", "sunny"],
+]
+print(week[0][-1])
+print(week[-1][0])
+```
+
+```output
+rain
+rain
+```
+
+To visit every value, use one loop inside another. The outer loop takes rows, the inner loop takes items in the row:
+
+```python
+grid = [[1, 2], [3, 4], [5, 6]]
+total = 0
+for row in grid:
+    for value in row:
+        total += value
+print(total)
+```
+
+```output
+21
+```
+
+### Changing values in nested lists
+
+Assign to the full index path to change one value:
+
+```python
+grid = [[0, 0, 0], [0, 0, 0]]
+grid[1][2] = 7
+grid[0][0] = 3
+print(grid)
+```
+
+```output
+[[3, 0, 0], [0, 0, 7]]
+```
+
+Inner lists are ordinary lists, so their methods work too:
+
+```python
+shelves = [["jam"], ["tea", "rice"]]
+shelves[0].append("honey")
+shelves[1].remove("tea")
+print(shelves)
+```
+
+```output
+[['jam', 'honey'], ['rice']]
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+m = [[1, 2, 3], [4, 5, 6]]
+print(m[1][0] + m[0][-1])
+```
+
+```output
+7
+```
+
+</Predict>
+
+<Predict>
+
+```python
+cube = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+print(cube[1][1][0], len(cube[0]))
+```
+
+```output
+7 2
+```
+
+</Predict>
+
+<Predict>
+
+```python
+row = [0, 0]
+grid = [row, row]
+grid[0][1] = 5
+print(grid)
+```
+
+```output
+[[0, 5], [0, 5]]
+```
+
+</Predict>
+
+## Common mistakes
+
+**Building a grid with `*`.** `[[0] * 3] * 2` looks right, but the outer `* 2` repeats the **same** inner list. Change one row and every row changes:
+
+```python
+grid = [[0] * 3] * 2
+grid[0][0] = 9
+print(grid)
+```
+
+```output
+[[9, 0, 0], [9, 0, 0]]
+```
+
+Build each row separately instead, with a comprehension: `[[0] * 3 for _ in range(2)]`.
+
+```python
+grid = [[0] * 3 for _ in range(2)]
+grid[0][0] = 9
+print(grid)
+```
+
+```output
+[[9, 0, 0], [0, 0, 0]]
+```
+
+**Swapping row and column.** `grid[r][c]` is row first. In a grid with 2 rows and 3 columns, `grid[2][0]` fails because there is no third row:
+
+```python
+grid = [[1, 2, 3], [4, 5, 6]]
+print(grid[2][0])
+```
+
+```error
+IndexError: list index out of range
+```
+
+**Writing `grid[1, 2]`.** Python lists need one pair of brackets per level. A comma inside one pair makes a tuple, which a list can't use as an index:
+
+```python
+grid = [[1, 2, 3], [4, 5, 6]]
+print(grid[1, 2])
+```
+
+```error
+TypeError: list indices must be integers or slices, not tuple
+```
+
+## Exam traps
+
+- **`len()` counts one level.** `len([[1, 2], [3, 4, 5]])` is `2`, the number of rows, not 5.
+- **The `*` copy trap.** `[[0] * n] * m` shares one inner list; questions change one cell and ask what the whole grid prints.
+- **Slices of nested lists are shallow.** `copy = grid[:]` makes a new outer list, but the rows inside are still shared, so `copy[0][0] = 1` also changes `grid`.
+- **Rows don't have to be the same length.** A "jagged" list like `[[1], [2, 3]]` is valid; watch for `IndexError` on the shorter row.
+- **Counting nested loops.** An outer loop over 3 rows and an inner loop over 4 columns runs the inner body 12 times.
+
+## Try it
+
+In the [Playground](/playground), make a 3 by 3 grid for a game of noughts and crosses, filled with `"."`. Place an `"X"` in the middle and an `"O"` in the top-right corner, then print the grid one row per line with a loop. Next, try building the grid with `[["."] * 3] * 3` and see what goes wrong.
+
+When you're ready, [practise this objective](/practice?objective=3.1.3).

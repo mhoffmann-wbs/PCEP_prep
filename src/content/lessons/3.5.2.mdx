@@ -1,0 +1,316 @@
+export const meta = {
+  objectiveId: '3.5.2',
+  updated: '2026-11-20',
+  tldr: 'String methods change case, find text, split a string into a list, join a list into a string, trim the edges and replace parts. None of them changes the original string: each one returns a new string (or a list, or a number) that you must store or print.',
+  subpointsCovered: ['3.5.2.1', '3.5.2.2', '3.5.2.3', '3.5.2.4', '3.5.2.5', '3.5.2.6', '3.5.2.7'],
+  links: [
+    { title: 'String methods', url: 'https://docs.python.org/3/library/stdtypes.html#string-methods' },
+  ],
+}
+
+## Big idea
+
+A **method** is a function that belongs to a value. You call it by writing a dot after the value, then the method name and round brackets:
+
+```python
+dish = "tomato soup"
+print(dish.upper())
+```
+
+```output
+TOMATO SOUP
+```
+
+Strings come with dozens of handy methods for cleaning and reshaping text. The one rule to remember: because strings are **immutable** (they can't be changed), a string method never changes the string you call it on. It **returns** a brand-new result, and the original stays exactly as it was.
+
+## Walkthrough
+
+### Changing letter case
+
+Five methods change upper and lower case:
+
+```python
+title = "the HAPPY baker"
+print(title.lower())
+print(title.upper())
+print(title.capitalize())
+print(title.title())
+print(title.swapcase())
+```
+
+```output
+the happy baker
+THE HAPPY BAKER
+The happy baker
+The Happy Baker
+THE happy BAKER
+```
+
+- `lower()` makes every letter small, `upper()` makes every letter capital.
+- `capitalize()` makes the **first character** of the whole string capital and **all the rest** small.
+- `title()` makes the first letter of **each word** capital and the rest small.
+- `swapcase()` flips each letter: capitals become small and small become capitals.
+
+Characters that aren't letters, like digits and spaces, are left alone.
+
+### Searching with `find()`
+
+`find()` tells you the index where a substring first appears. If it doesn't appear at all, you get `-1`:
+
+```python
+trip = "Paris to Rome to Vienna"
+print(trip.find("to"))
+print(trip.find("Rome"))
+print(trip.find("Oslo"))
+```
+
+```output
+6
+9
+-1
+```
+
+Only the **first** match counts. You can give a second argument, the index where the search should start:
+
+```python
+trip = "Paris to Rome to Vienna"
+print(trip.find("to", 7))
+```
+
+```output
+14
+```
+
+Like `in`, `find()` is case-sensitive.
+
+### Splitting with `split()`
+
+`split()` cuts a string into pieces and returns them as a **list** of strings. With no argument, it splits on any run of whitespace (spaces, tabs, new lines) and drops empty pieces:
+
+```python
+sentence = "  cats   like    naps "
+print(sentence.split())
+```
+
+```output
+['cats', 'like', 'naps']
+```
+
+Give it a **separator** to split on that exact text instead:
+
+```python
+csv_line = "eggs,milk,,bread"
+print(csv_line.split(","))
+print("2026-11-20".split("-"))
+```
+
+```output
+['eggs', 'milk', '', 'bread']
+['2026', '11', '20']
+```
+
+With a separator, two separators in a row produce an empty string `''` between them.
+
+### Joining with `join()`
+
+`join()` does the opposite of `split()`: it glues a list of strings into one string. The surprising part is the order: you call it **on the separator**, and pass the list:
+
+```python
+colors = ["red", "green", "blue"]
+print(", ".join(colors))
+print("-".join(colors))
+print("".join(colors))
+```
+
+```output
+red, green, blue
+red-green-blue
+redgreenblue
+```
+
+Every item in the list must be a string. Numbers cause an error (see Common mistakes).
+
+### Trimming with `strip()`, `lstrip()` and `rstrip()`
+
+`strip()` removes whitespace from both ends of a string, but never from the middle. `lstrip()` only trims the left (start) end, and `rstrip()` only the right (end):
+
+```python
+raw = "   hot tea   "
+print("[" + raw.strip() + "]")
+print("[" + raw.lstrip() + "]")
+print("[" + raw.rstrip() + "]")
+```
+
+```output
+[hot tea]
+[hot tea   ]
+[   hot tea]
+```
+
+You can also tell them **which characters** to remove. The argument is a set of characters, not a word: any of them is removed from the edges, in any order, until a different character is reached:
+
+```python
+price = "$$19.99$"
+print(price.strip("$"))
+print("xxhixyx".strip("xy"))
+```
+
+```output
+19.99
+hi
+```
+
+### Replacing with `replace()`
+
+`replace(old, new)` returns a copy where every `old` is swapped for `new`. An optional third argument limits how many replacements happen, counting from the left:
+
+```python
+note = "rain, rain, go away"
+print(note.replace("rain", "sun"))
+print(note.replace("rain", "sun", 1))
+print(note.replace(" ", ""))
+```
+
+```output
+sun, sun, go away
+sun, rain, go away
+rain,rain,goaway
+```
+
+If `old` is not found, you simply get an unchanged copy.
+
+### Methods return new strings
+
+This is the most important rule in this lesson. Calling a method on its own line does **nothing** visible, because the result is thrown away:
+
+```python
+name = "olivia"
+name.capitalize()
+print(name)
+```
+
+```output
+olivia
+```
+
+To keep the result, assign it, either to a new name or back to the same one:
+
+```python
+name = "olivia"
+fixed = name.capitalize()
+print(name, fixed)
+name = name.upper()
+print(name)
+```
+
+```output
+olivia Olivia
+OLIVIA
+```
+
+Because each method returns a string, you can **chain** methods: the next method runs on the result of the previous one, from left to right:
+
+```python
+answer = "  YES please "
+print(answer.strip().lower().replace(" ", "_"))
+```
+
+```output
+yes_please
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+pet = "my DOG rex"
+pet.upper()
+print(pet.capitalize(), pet.title())
+```
+
+```output
+My dog rex My Dog Rex
+```
+
+</Predict>
+
+<Predict>
+
+```python
+items = "apple;pear;plum".split(";")
+print(len(items), "+".join(items))
+```
+
+```output
+3 apple+pear+plum
+```
+
+</Predict>
+
+<Predict>
+
+```python
+s = "banana"
+print(s.find("an"), s.find("na", 3), s.replace("a", "o", 2))
+```
+
+```output
+1 4 bonona
+```
+
+</Predict>
+
+## Common mistakes
+
+**Forgetting to keep the result.** `text.strip()` on its own line leaves `text` unchanged. Write `text = text.strip()`.
+
+**Calling `join()` on the list.** `join()` belongs to the separator string, not to the list:
+
+```python
+words = ["a", "b"]
+print(words.join("-"))
+```
+
+```error
+AttributeError: 'list' object has no attribute 'join'
+```
+
+**Joining numbers.** Every item must already be a string:
+
+```python
+print(", ".join([1, 2, 3]))
+```
+
+```error
+TypeError: sequence item 0: expected str instance, int found
+```
+
+Convert them first, for example `", ".join(["1", "2", "3"])`.
+
+**Expecting `find()` to raise an error.** When nothing is found, `find()` returns `-1`. And because `-1` is a valid index, `text[text.find("x")]` silently gives you the **last** character instead of failing.
+
+**Thinking `strip()` removes a word.** `"tomato".strip("to")` removes the characters `t` and `o` from both ends, giving `"ma"`, not `"mato"`.
+
+```python
+print("tomato".strip("to"))
+```
+
+```output
+ma
+```
+
+## Exam traps
+
+- **Discarded results.** A question calls `s.upper()` or `s.replace(...)` without assigning, then prints `s`. The answer is the **original** string.
+- **`capitalize()` vs. `title()`.** `capitalize()` lowers everything after the first character, so `"hELLO World".capitalize()` is `"Hello world"`.
+- **`find()` returns `-1`, not an error.** Also, it returns the first match only.
+- **`split()` with and without an argument.** `"a  b".split()` gives `['a', 'b']`, but `"a  b".split(" ")` gives `['a', '', 'b']`.
+- **`join()` order.** It's `separator.join(list)`, and the separator only goes **between** items, not at the ends.
+- **`strip(chars)` takes characters, not a substring.** Order inside the argument doesn't matter.
+
+## Try it
+
+In the [Playground](/playground), start with `messy = "  mango, KIWI ,lime  "`. Split it on commas, strip each piece and make it lowercase, then join the cleaned pieces with `" | "` and print the result. Finally, print `messy` again to see that it never changed.
+
+When you're ready, [practise this objective](/practice?objective=3.5.2). Need a refresher on indexes first? See [Construct strings and access their contents](/learn/3.5.1).

@@ -1,0 +1,305 @@
+export const meta = {
+  objectiveId: '1.4.2',
+  updated: '2026-11-20',
+  tldr: '`print()` shows values, with `sep` and `end` to control spacing. `input()` reads one line from the user and always returns a string, so convert it with `int()` or `float()` before doing maths, and with `str()` to turn numbers back into text.',
+  subpointsCovered: ['1.4.2.1', '1.4.2.2', '1.4.2.3', '1.4.2.4', '1.4.2.5', '1.4.2.6'],
+  links: [
+    { title: 'Built-in functions: print()', url: 'https://docs.python.org/3/library/functions.html#print' },
+    { title: 'Built-in functions: input()', url: 'https://docs.python.org/3/library/functions.html#input' },
+  ],
+}
+
+## Big idea
+
+**Console I/O** means input and output through the text window where your program runs, called the **console**. Output is what the program shows; input is what the user types. Python gives you one function for each: `print()` writes to the console, and `input()` waits for the user to type a line and press Enter.
+
+```python
+food = input("Favourite food? ")
+print("Yum,", food)
+```
+
+```input
+noodles
+```
+
+```output
+Favourite food? Yum, noodles
+```
+
+(The examples here simulate the typing: the box labelled *input* shows what the user typed. The typed text itself is not shown in the output.)
+
+The single most important fact: **`input()` always gives you a string**, even when the user types a number. To calculate with it, you must first **convert** it to a number.
+
+## Walkthrough
+
+### Displaying values with `print()`
+
+`print()` takes any number of values, separated by commas. It shows them with a single space between them and moves to a new line at the end:
+
+```python
+print("Rain chance:", 40, "%")
+print()
+print(3.5, True, "done")
+```
+
+```output
+Rain chance: 40 %
+
+3.5 True done
+```
+
+An empty `print()` prints just a blank line. Two **keyword arguments** (extra settings written as `name=value`) change the default behaviour:
+
+- `sep` is the text placed **between** the values. It is `" "` (a space) by default.
+- `end` is the text placed **after** the last value. It is `"\n"` (a new line) by default.
+
+```python
+print("2026", "11", "20", sep="-")
+print("Loading", end="...")
+print("ready")
+print("a", "b", sep="", end="!\n")
+```
+
+```output
+2026-11-20
+Loading...ready
+ab!
+```
+
+Because the second line ended with `"..."` instead of a new line, the next `print()` carried on on the same line.
+
+### Reading input with `input()`
+
+`input()` pauses the program until the user types something and presses Enter. You can give it a **prompt**: a message shown before the user types. The function then **returns** what was typed, so you normally store it in a variable:
+
+```python
+city = input("Where are you travelling to? ")
+days = input("For how many days? ")
+print(city, "for", days, "days")
+```
+
+```input
+Kyoto
+10
+```
+
+```output
+Where are you travelling to? For how many days? Kyoto for 10 days
+```
+
+Each call to `input()` reads exactly one line. The Enter key itself is not included in the result.
+
+### `input()` returns a string
+
+Whatever the user types, `input()` hands it back as a `str`. The `type()` function shows the type of a value:
+
+```python
+answer = input("How old is your cat? ")
+print(type(answer))
+print(answer + answer)
+```
+
+```input
+4
+```
+
+```output
+How old is your cat? <class 'str'>
+44
+```
+
+`"4" + "4"` joins two strings into `"44"`. It doesn't add 4 and 4. And trying to do maths with a string and a number fails:
+
+```python
+answer = input("How old is your cat? ")
+print(answer + 1)
+```
+
+```input
+4
+```
+
+```error
+TypeError: can only concatenate str (not "int") to str
+```
+
+### Converting between types
+
+Python has built-in functions that turn a value into another type:
+
+| Function | Turns its argument into | Example | Result |
+|---|---|---|---|
+| `int()` | a whole number | `int("42")` | `42` |
+| `float()` | a decimal number | `float("2.5")` | `2.5` |
+| `str()` | a string | `str(7)` | `"7"` |
+
+```python
+print(int("42") + 1)
+print(float("2.5") * 2)
+print(str(7) + str(3))
+print(int(9.99), float(3), int(" 12 "))
+```
+
+```output
+43
+5.0
+73
+9 3.0 12
+```
+
+Some details:
+
+- `int()` of a float simply **cuts off** the decimal part, it does not round: `int(9.99)` is `9`, and `int(-2.7)` is `-2`.
+- `int()` and `float()` ignore spaces around the text.
+- The text must look like the right kind of number. `int("2.5")` fails, because `"2.5"` is not a whole number, and words don't work at all:
+
+```python
+print(int("2.5"))
+```
+
+```error
+ValueError: invalid literal for int() with base 10: '2.5'
+```
+
+```python
+print(float("three"))
+```
+
+```error
+ValueError: could not convert string to float: 'three'
+```
+
+These conversions only work between **compatible** values: text that spells a number can become a number, and any value can become a string.
+
+### Converting input before you use it
+
+The usual pattern is to wrap `input()` directly in the conversion, so the variable holds a number from the start:
+
+```python
+price = float(input("Price per kilo: "))
+kilos = int(input("How many kilos? "))
+print("Total:", price * kilos)
+```
+
+```input
+2.5
+3
+```
+
+```output
+Price per kilo: How many kilos? Total: 7.5
+```
+
+Python works from the inside out: first `input()` returns the string `"2.5"`, then `float()` turns it into `2.5`. Use `int()` for counts and whole numbers, and `float()` when the user might type a decimal point.
+
+### Putting it all together
+
+Most small programs follow the same four steps: **read** input, **convert** it, **process** it (calculate), and **output** the result. Here is a tip calculator:
+
+```python
+bill = float(input("Bill amount: "))
+percent = int(input("Tip percent: "))
+people = int(input("Number of people: "))
+tip = bill * percent / 100
+share = (bill + tip) / people
+print("Tip:", tip)
+print("Each person pays " + str(share))
+```
+
+```input
+60
+10
+4
+```
+
+```output
+Bill amount: Tip percent: Number of people: Tip: 6.0
+Each person pays 16.5
+```
+
+Notice that the last line needs `str(share)`, because `+` can only join a string to another string.
+
+## Predict the output
+
+<Predict>
+
+```python
+print("x", "y", "z", sep="", end="?")
+print("ok", 1, sep="*")
+```
+
+```output
+xyz?ok*1
+```
+
+</Predict>
+
+<Predict>
+
+```python
+a = input()
+b = input()
+print(a + b, int(a) + int(b))
+```
+
+```input
+12
+3
+```
+
+```output
+123 15
+```
+
+</Predict>
+
+<Predict>
+
+```python
+x = int(float("7.9"))
+print(x, str(x) * 2, float(x))
+```
+
+```output
+7 77 7.0
+```
+
+</Predict>
+
+## Common mistakes
+
+**Doing maths on raw input.** `input()` returns a string, so `input() * 2` repeats the text instead of doubling the number. Convert first with `int()` or `float()`.
+
+**Converting a decimal string with `int()`.** `int("3.5")` raises a `ValueError`. Use `float()`, or `int(float("3.5"))` if you want to cut off the decimals.
+
+**Gluing a number into a string with `+`.** You need `str()`, or use commas in `print()` instead:
+
+```python
+total = 12
+print("Total: " + str(total))
+print("Total:", total)
+```
+
+```output
+Total: 12
+Total: 12
+```
+
+**Forgetting the space at the end of the prompt.** `input("Name?")` leaves the cursor right next to the question mark. Write `input("Name? ")`.
+
+**Expecting `int()` to round.** `int(4.9)` is `4`. Use `round(4.9)` if you need rounding.
+
+## Exam traps
+
+- **`input()` always returns `str`.** If the user types `5`, then `input() + input()` with `5` and `5` gives `"55"`, not `10`.
+- **`sep` and `end`.** `print(1, 2, sep="")` prints `12`, and `end=""` keeps the next output on the same line. `sep` only goes **between** values.
+- **`int()` truncates.** `int(-3.9)` is `-3`, not `-4`. Compare with `-3.9 // 1`, which is `-4.0`.
+- **`int("4.0")` is an error**, but `float("4")` is fine and gives `4.0`.
+- **Type of the result.** `float(input())` gives a float even if the user types `3`, so later results print as `3.0`.
+- **Conversion order.** In `int(input())`, `input()` runs first, then `int()` converts what it returned.
+
+## Try it
+
+In the [Playground](/playground), write a program that asks for a temperature in Celsius, converts it to Fahrenheit with `celsius * 9 / 5 + 32`, and prints a sentence such as `20.0 C is 68.0 F`. Then try typing a word instead of a number and read the error message.
+
+When you're ready, [practise this objective](/practice?objective=1.4.2). For the operators used here, see [Use operators and expressions](/learn/1.4.1).

@@ -1,0 +1,256 @@
+export const meta = {
+  objectiveId: '1.1.1',
+  updated: '2026-11-20',
+  tldr: 'A programming language has a lexis (its words), a syntax (rules for putting words together) and semantics (what the code means). A compiler translates a whole program before it runs; an interpreter reads and runs it as it goes. Python compiles your code to bytecode and then interprets that bytecode.',
+  subpointsCovered: ['1.1.1.1', '1.1.1.2', '1.1.1.3', '1.1.1.4', '1.1.1.5'],
+  links: [
+    { title: 'Python tutorial: Using the Python interpreter', url: 'https://docs.python.org/3/tutorial/interpreter.html' },
+    { title: 'Glossary: bytecode', url: 'https://docs.python.org/3/glossary.html#term-bytecode' },
+    { title: 'Lexical analysis', url: 'https://docs.python.org/3/reference/lexical_analysis.html' },
+  ],
+}
+
+## Big idea
+
+A computer's processor only understands **machine code**: long lists of very simple instructions stored as numbers. People don't want to write that, so we write programs in a **programming language** such as Python, which is much closer to English. This text is called **source code**.
+
+Before the computer can act on source code, a program has to **translate** it. In Python that program is called the **Python interpreter**. When you click Run, the interpreter reads your code, checks that it follows the rules of Python, and then carries out the instructions:
+
+```python
+print("Good morning!")
+print(2 + 3)
+```
+
+```output
+Good morning!
+5
+```
+
+Like a human language, a programming language has words, grammar rules and meanings. Knowing which of these a mistake breaks helps you understand the error messages Python shows you.
+
+## Walkthrough
+
+### Lexis, syntax and semantics
+
+Every language, human or programming, has three layers:
+
+- **Lexis** is the set of **words** the language allows, its vocabulary. In Python these "words" are called **tokens**: keywords like `if` and `while`, names like `price`, numbers like `42`, strings like `"hello"`, operators like `+` and `==`, and punctuation like `(` and `:`.
+- **Syntax** is the set of **rules** for putting tokens together into valid instructions, like the grammar of a sentence. For example: a function call needs its brackets to be closed, and an `if` line must end with a colon.
+- **Semantics** is the **meaning**: what an instruction actually does when it runs, and whether that makes sense.
+
+An English example: "Cat the sleeps" uses real words (good lexis) in the wrong order (bad syntax). "The sofa ate its homework" has good words and good grammar, but makes no sense (bad semantics).
+
+In this line of Python, every token is a real Python word, the order is valid, and the meaning is clear, so it runs:
+
+```python
+total = 4 * 2.5
+print(total)
+```
+
+```output
+10.0
+```
+
+### Three kinds of errors
+
+Each layer has its own kind of mistake.
+
+A **lexical error** is a character or "word" Python doesn't recognise at all. For example, `$` is not part of Python's vocabulary:
+
+```python
+price$ = 10
+```
+
+```error
+SyntaxError: invalid syntax
+```
+
+A string that is never closed is another lexical error: Python can't tell where the token ends.
+
+```python
+city = "Madrid
+```
+
+```error
+SyntaxError: unterminated string literal (detected at line 1)
+```
+
+A **syntax error** uses valid tokens, but puts them together in a way the grammar doesn't allow, such as a missing colon:
+
+```python
+if 5 > 3
+    print("five is bigger")
+```
+
+```error
+SyntaxError: expected ':'
+```
+
+Python reports lexical and syntax errors with the same name, `SyntaxError`, and it finds them **before** running a single line. That is why nothing is printed here, even though the first line is fine:
+
+```python
+print("Start")
+print("End"
+```
+
+```error
+SyntaxError: '(' was never closed
+```
+
+A **semantic error** is in code that is perfectly valid Python, but the meaning is wrong. Some semantic errors make Python stop while the program runs, with an **exception** (a runtime error). For example, you can't add a number to a piece of text:
+
+```python
+print("Start")
+print("Age: " + 30)
+```
+
+```error
+TypeError: can only concatenate str (not "int") to str
+```
+
+This time `Start` **is** printed, because the code was valid and Python began running it.
+
+Other semantic errors produce no message at all: the program runs but gives the wrong answer. These are called **logic errors**, and only careful testing finds them. Here the brackets are missing, so the average is wrong:
+
+```python
+average = 6 + 8 / 2
+print(average)
+```
+
+```output
+10.0
+```
+
+The average of 6 and 8 is 7, so `(6 + 8) / 2` was meant.
+
+### Compilers and interpreters
+
+There are two classic ways to turn source code into something the computer can run.
+
+A **compiler** translates the **whole** program into machine code **before** it runs. The result is a separate file, such as a `.exe` program, that can run again and again without the compiler and without the source code. If the source has errors, the compiler reports them and produces no program at all.
+
+An **interpreter** reads the source code and carries out the instructions **as it goes**, every time the program runs. There's no separate machine-code file: you need the interpreter (and the source) each time.
+
+```text
+Compiled:
+  source code --> [compiler] --> machine code file --> runs on the CPU
+                  (once, ahead of time)              (as often as you like)
+
+Interpreted:
+  source code --> [interpreter reads and runs it] --> results
+                  (every time the program runs)
+```
+
+### Comparing the two models
+
+| | Compiled | Interpreted |
+|---|---|---|
+| When translation happens | Once, before running | Each time, while running |
+| What you hand to users | The machine-code file | The source code (and they need the interpreter) |
+| Speed when running | Usually faster | Usually slower |
+| Finding errors | Before it runs, for the whole program | Often only when the faulty part is reached |
+| Changing the code | Must compile again before testing | Edit and run again straight away |
+| Where it runs | Built for one kind of computer and system | Anywhere the interpreter is installed |
+| Examples | C, C++, Rust, Go | Python, JavaScript, Ruby |
+
+Neither model is "better": compiled code is fast, while interpreted code is quick to change and easy to move between computers.
+
+### How Python runs your code
+
+Python is called an **interpreted language**, but the full story has a middle step. When you run a `.py` file, the Python interpreter (usually **CPython**, the standard one) does this:
+
+```text
+1. Read the source code     greeting.py
+2. Split it into tokens     print  (  "Hi"  )             <- lexis is checked
+3. Check the grammar        is this a valid statement?    <- syntax is checked
+4. Compile to bytecode      simple instructions for the Python Virtual Machine
+5. Run the bytecode         the Python Virtual Machine carries out each instruction
+```
+
+- Steps 1–4 happen **before** anything runs. A `SyntaxError` in any line stops everything here, so not even the first line runs.
+- **Bytecode** is not machine code. It's a simpler, lower-level form of your program that the **Python Virtual Machine** (part of the interpreter) understands. Python may save it in `.pyc` files inside a `__pycache__` folder so the next start is faster.
+- In step 5 the instructions run one by one. Runtime errors, such as `TypeError` or `ZeroDivisionError`, appear here, when the faulty line is reached; the lines before it have already run.
+
+So Python **compiles** to bytecode and then **interprets** the bytecode. Because the user still needs the interpreter and gets no machine-code file, Python counts as an interpreted language.
+
+## Predict the output
+
+<Predict>
+
+```python
+print("one")
+print("two")
+print("three"
+```
+
+```error
+SyntaxError: '(' was never closed
+```
+
+</Predict>
+
+<Predict>
+
+```python
+print("one")
+print("two" * 2)
+print(3 / 0)
+print("four")
+```
+
+```error
+ZeroDivisionError: division by zero
+```
+
+</Predict>
+
+<Predict>
+
+```python
+hours = 2
+minutes = 30
+total_minutes = hours * 60 + minutes
+print(total_minutes / 60)
+```
+
+```output
+2.5
+```
+
+</Predict>
+
+## Common mistakes
+
+**Thinking Python runs lines until it meets a syntax error.** Python checks the whole file first. A missing bracket on the last line stops the program before the first `print` runs.
+
+**Confusing syntax errors with runtime errors.** A `SyntaxError` breaks the rules of the language and nothing runs. An exception such as `NameError` happens while the code runs, after the lines before it have already done their work:
+
+```python
+print("Loading recipe")
+print(ingredients)
+```
+
+```error
+NameError: name 'ingredients' is not defined
+```
+
+Here `Loading recipe` is printed first.
+
+**Thinking "no error message" means "correct".** A logic error runs without complaint and simply gives the wrong result. Check your answers with values you can work out by hand.
+
+**Thinking Python makes an `.exe` file.** Python doesn't produce a machine-code program: the interpreter is needed every time the code runs.
+
+## Exam traps
+
+- **Lexis = words, syntax = grammar, semantics = meaning.** Learn this pairing: questions describe one and ask for its name.
+- **Which kind of error?** An unknown symbol or an unclosed string is lexical; a missing colon or bracket is syntactic; valid code that does the wrong thing, or fails while running, is semantic.
+- **Compiler vs. interpreter.** The compiler translates the whole program ahead of time into a separate file; the interpreter translates and runs it each time.
+- **Python's model.** CPython compiles source to **bytecode**, and the **Python Virtual Machine** interprets the bytecode. Bytecode isn't machine code.
+- **Where errors appear.** Syntax errors appear before anything runs; runtime errors appear when Python reaches the faulty line.
+- **The interpreter is a program too.** "The Python interpreter" is the program that runs your code (for example CPython); "Python" is the language.
+
+## Try it
+
+In the [Playground](/playground), write three `print` lines. First break the **last** one by deleting its closing bracket, and check that nothing prints. Then fix it and instead make the last line divide by zero: this time the first two lines print before the error. Finally, write a short calculation with a logic error (a missing bracket in an average) and fix it.
+
+When you're ready, [practise this objective](/practice?objective=1.1.1).

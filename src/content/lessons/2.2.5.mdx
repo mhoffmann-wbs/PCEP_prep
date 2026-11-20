@@ -1,0 +1,284 @@
+export const meta = {
+  objectiveId: '2.2.5',
+  updated: '2026-11-20',
+  tldr: '`break` leaves the loop at once, `continue` skips the rest of this round and goes on to the next, and `pass` does nothing at all: it only fills a place where Python needs a statement. In nested loops, `break` and `continue` affect only the innermost loop.',
+  subpointsCovered: ['2.2.5.1', '2.2.5.2', '2.2.5.3', '2.2.5.4'],
+  links: [
+    { title: 'Python tutorial: break and continue', url: 'https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements' },
+    { title: 'Python tutorial: pass statements', url: 'https://docs.python.org/3/tutorial/controlflow.html#pass-statements' },
+  ],
+}
+
+## Big idea
+
+Normally a loop runs its whole body for every item. Three short keywords change that:
+
+| Keyword | What it does |
+|---|---|
+| `break` | Stops the loop completely, right now. The program goes on after the loop. |
+| `continue` | Skips the rest of the body for this round and jumps to the next round. |
+| `pass` | Does nothing. It is a placeholder where Python needs at least one line. |
+
+```python
+for n in [1, 2, 3, 4, 5]:
+    if n == 2:
+        continue
+    if n == 4:
+        break
+    print(n)
+print("done")
+```
+
+```output
+1
+3
+done
+```
+
+1 is printed. 2 is skipped by `continue`. 3 is printed. At 4, `break` ends the loop, so 4 and 5 are never printed.
+
+## Walkthrough
+
+### `break`: stop early
+
+`break` is useful when you are searching for something and can stop as soon as you find it. It is almost always inside an `if`:
+
+```python
+fridge = ["cheese", "milk", "eggs", "butter"]
+for food in fridge:
+    print("Checking", food)
+    if food == "milk":
+        print("Found the milk!")
+        break
+print("Last checked:", food)
+```
+
+```output
+Checking cheese
+Checking milk
+Found the milk!
+Last checked: milk
+```
+
+`"eggs"` and `"butter"` are never checked. After a `break`, the loop variable keeps the value it had at that moment.
+
+`break` works the same way in a `while` loop. It is a common way to leave a loop that would otherwise go on and on:
+
+```python
+balance = 10
+while True:
+    balance = balance - 3
+    if balance < 0:
+        break
+print(balance)
+```
+
+```output
+-2
+```
+
+### `continue`: skip to the next round
+
+`continue` jumps straight back to the top of the loop and takes the next item. Lines below it in the body are skipped for this round only:
+
+```python
+prices = [4, -1, 7, 0, 2]
+for p in prices:
+    if p <= 0:
+        continue
+    print("Price:", p)
+```
+
+```output
+Price: 4
+Price: 7
+Price: 2
+```
+
+The loop still runs 5 rounds. In two of them, `continue` skips the `print`.
+
+### `pass`: an empty placeholder
+
+Some places in Python must contain at least one line, such as the body of a loop or of an `if`. If you don't want to do anything there yet, write `pass`. It does nothing, and the loop carries on normally:
+
+```python
+for day in ["Mon", "Tue", "Wed"]:
+    if day == "Tue":
+        pass
+    print(day)
+```
+
+```output
+Mon
+Tue
+Wed
+```
+
+Compare this with `continue`: `pass` does **not** skip the `print`. It is just a "nothing here" line, often used while you are still writing a program:
+
+```python
+for room in ["kitchen", "hall"]:
+    pass
+print("finished", room)
+```
+
+```output
+finished hall
+```
+
+### Tracing loops with `break`, `continue` and `pass`
+
+Trace these loops line by line and ask, for each round: does a `continue` fire (skip the rest), does a `break` fire (leave the loop)?
+
+```python
+total = 0
+for i in range(1, 10):
+    if i % 3 == 0:
+        continue
+    if i > 7:
+        break
+    total = total + i
+    print(i, total)
+print("end", i, total)
+```
+
+```output
+1 1
+2 3
+4 7
+5 12
+7 19
+end 8 19
+```
+
+| `i` | What happens | `total` |
+|---|---|---|
+| 1 | added | 1 |
+| 2 | added | 3 |
+| 3 | `continue` | 3 |
+| 4 | added | 7 |
+| 5 | added | 12 |
+| 6 | `continue` | 12 |
+| 7 | added | 19 |
+| 8 | `break` | 19 |
+
+In **nested loops**, `break` and `continue` only affect the **innermost** loop they are in. The outer loop keeps going:
+
+```python
+for shelf in ["A", "B"]:
+    for book in [1, 2, 3]:
+        if book == 2:
+            break
+        print(shelf, book)
+```
+
+```output
+A 1
+B 1
+```
+
+The `break` leaves the inner loop each time, but the outer loop still moves on to shelf `"B"`.
+
+## Predict the output
+
+<Predict>
+
+```python
+for ch in "recipe":
+    if ch == "e":
+        continue
+    if ch == "p":
+        break
+    print(ch, end="")
+print()
+```
+
+```output
+rci
+```
+
+</Predict>
+
+<Predict>
+
+```python
+count = 0
+for x in range(5):
+    if x == 2:
+        pass
+    count = count + 1
+print(count, x)
+```
+
+```output
+5 4
+```
+
+</Predict>
+
+<Predict>
+
+```python
+for i in range(3):
+    for j in range(3):
+        if j > i:
+            break
+        print(i, j)
+```
+
+```output
+0 0
+1 0
+1 1
+2 0
+2 1
+2 2
+```
+
+</Predict>
+
+## Common mistakes
+
+**Using `break` or `continue` outside a loop.** They only make sense inside a loop:
+
+```python
+temperature = 30
+if temperature > 25:
+    break
+```
+
+```error
+SyntaxError: 'break' outside loop
+```
+
+**Leaving a block empty.** A loop or `if` with no body at all is an error. Use `pass` as a placeholder:
+
+```python
+for item in ["a", "b"]:
+# to do later
+print("ok")
+```
+
+```error
+IndentationError: expected an indented block after 'for' statement on line 1
+```
+
+**Thinking `pass` skips the rest of the round.** It doesn't. Only `continue` does.
+
+**Expecting `break` to leave all the loops.** In nested loops, `break` only leaves the innermost loop.
+
+**Putting `continue` before the update in a `while` loop.** If the line that changes the counter comes after the `continue`, it can be skipped, and the loop never ends. Update the counter before the `continue`.
+
+## Exam traps
+
+- **`continue` vs. `pass`.** `continue` skips the rest of the body; `pass` does nothing, and the lines after it still run.
+- **`break` only leaves the inner loop.** The outer loop keeps going with its next item.
+- **The loop variable after `break`.** It keeps the value it had when `break` ran, not the last item of the collection.
+- **Count the rounds.** With `continue` the loop still runs every round; it just skips some lines. With `break`, later rounds never happen.
+- **Order of the checks.** Whether an item is skipped or ends the loop can depend on which `if` comes first in the body.
+
+## Try it
+
+In the [Playground](/playground), loop over a list of exam marks. Skip any mark below 0 with `continue`, stop the loop with `break` when you reach a mark of 100, and print the marks that are left. Then replace `continue` with `pass` and see how the output changes.
+
+When you're ready, [practise this objective](/practice?objective=2.2.5).

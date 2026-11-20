@@ -1,0 +1,255 @@
+export const meta = {
+  objectiveId: 'x.4',
+  updated: '2026-11-20',
+  tldr: 'A list comprehension builds a new list in one line: `[expression for item in iterable if condition]`. The `if` part keeps only some items, and a comprehension inside another one builds a nested list such as a grid.',
+  subpointsCovered: ['x.4.1', 'x.4.2', 'x.4.3', 'x.4.4'],
+  links: [
+    { title: 'Python tutorial: List comprehensions', url: 'https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions' },
+  ],
+}
+
+## Big idea
+
+This topic is only on the older PCEP-30-02 exam; the current PCEP-30-03 exam dropped it.
+
+Very often you build a new list by going through another one with a loop and appending to an empty list. A **list comprehension** does the same job in a single line. These two pieces of code build the same list:
+
+```python
+prices = [2, 5, 8]
+
+with_tax = []
+for p in prices:
+    with_tax.append(p * 1.5)
+print(with_tax)
+
+with_tax = [p * 1.5 for p in prices]
+print(with_tax)
+```
+
+```output
+[3.0, 7.5, 12.0]
+[3.0, 7.5, 12.0]
+```
+
+Read the comprehension from the middle outwards: "**for** each `p` **in** `prices`, put `p * 1.5` into the new list".
+
+## Walkthrough
+
+### The basic shape
+
+A list comprehension sits in square brackets and has two required parts:
+
+```
+[expression for variable in iterable]
+```
+
+- The **iterable** is anything a `for` loop can go through: a list, a string, a `range()`, a tuple, and so on.
+- The **variable** takes each item in turn, just as in a `for` loop.
+- The **expression** is worked out for each item, and its result goes into the new list.
+
+```python
+squares = [n * n for n in range(1, 6)]
+print(squares)
+
+names = ["ana", "ben", "cleo"]
+print([name.upper() for name in names])
+
+print([ch for ch in "tea"])
+```
+
+```output
+[1, 4, 9, 16, 25]
+['ANA', 'BEN', 'CLEO']
+['t', 'e', 'a']
+```
+
+The original list is not changed: a comprehension always makes a **new** list.
+
+### Filtering with if
+
+Add `if condition` at the end to keep only the items for which the condition is true. Items that fail the test are left out completely:
+
+```python
+grades = [72, 45, 90, 58, 66]
+passed = [g for g in grades if g >= 60]
+print(passed)
+
+words = ["sun", "rain", "fog", "snow"]
+print([w for w in words if len(w) == 4])
+```
+
+```output
+[72, 90, 66]
+['rain', 'snow']
+```
+
+The same filter written as a loop has the `if` inside the loop:
+
+```python
+grades = [72, 45, 90, 58, 66]
+passed = []
+for g in grades:
+    if g >= 60:
+        passed.append(g)
+print(passed)
+```
+
+```output
+[72, 90, 66]
+```
+
+You can change and filter at the same time. The `if` decides **which** items are used, and the expression decides **what** goes into the list:
+
+```python
+print([n * 10 for n in range(6) if n % 2 == 1])
+```
+
+```output
+[10, 30, 50]
+```
+
+### Nested lists and grids
+
+A **nested list** is a list whose items are themselves lists, like the rows of a table. Put one comprehension inside another to build one. The outer comprehension makes the rows, and the inner one makes the items in each row:
+
+```python
+grid = [[0 for col in range(3)] for row in range(2)]
+print(grid)
+
+table = [[r * c for c in range(1, 4)] for r in range(1, 4)]
+print(table)
+print(table[2][1])
+```
+
+```output
+[[0, 0, 0], [0, 0, 0]]
+[[1, 2, 3], [2, 4, 6], [3, 6, 9]]
+6
+```
+
+`table` is a small multiplication table. `table[2][1]` takes row 2, then item 1 in that row, which is 3 × 2 = 6.
+
+You can also write two `for` parts in **one** comprehension. That gives a flat list, not a nested one. The `for` parts run in the same order as nested loops, the first one on the outside:
+
+```python
+sizes = ["S", "M"]
+colors = ["red", "blue"]
+print([s + "-" + c for s in sizes for c in colors])
+```
+
+```output
+['S-red', 'S-blue', 'M-red', 'M-blue']
+```
+
+### Tracing a comprehension
+
+To work out what a comprehension produces, go through the iterable one item at a time:
+
+1. Take the next item and give it to the variable.
+2. If there is an `if`, test it. If it is false, skip this item.
+3. Otherwise, work out the expression and add the result to the new list.
+
+```python
+temps = [-2, 5, 0, 12]
+print([t + 1 for t in temps if t > 0])
+```
+
+```output
+[6, 13]
+```
+
+`-2` fails the test, `5` passes and becomes `6`, `0` fails (it is not greater than 0), and `12` becomes `13`.
+
+The variable belongs to the comprehension only. It does not exist outside it:
+
+```python
+doubled = [x * 2 for x in [1, 2, 3]]
+print(doubled)
+print(x)
+```
+
+```error
+NameError: name 'x' is not defined
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+print([len(w) for w in ["cat", "parrot", "ox"]])
+```
+
+```output
+[3, 6, 2]
+```
+
+</Predict>
+
+<Predict>
+
+```python
+nums = [1, 2, 3, 4, 5, 6]
+print([n // 2 for n in nums if n % 3 == 0])
+```
+
+```output
+[1, 3]
+```
+
+</Predict>
+
+<Predict>
+
+```python
+m = [[i + j for j in range(2)] for i in range(3)]
+print(m, len(m))
+```
+
+```output
+[[0, 1], [1, 2], [2, 3]] 3
+```
+
+</Predict>
+
+## Common mistakes
+
+**Putting the `if` filter before the `for`.** On its own, the filter goes at the end:
+
+```python
+nums = [1, 2, 3]
+print([n if n > 1 for n in nums])
+```
+
+```error
+SyntaxError: expected 'else' after 'if' expression
+```
+
+Python reads `n if n > 1` as the start of a **conditional expression**, which needs an `else`. That form is valid, but it does something different: it keeps every item and chooses a value for each one.
+
+```python
+nums = [1, 2, 3]
+print([n if n > 1 else 0 for n in nums])
+```
+
+```output
+[0, 2, 3]
+```
+
+**Using round brackets.** `(n * 2 for n in nums)` is not a list but a generator, which you meet in [the lesson on recursion and generators](/learn/x.5). Printing it doesn't show the values.
+
+**Mixing up the order of nested `for` parts.** In `[a + b for a in "xy" for b in "12"]` the first `for` is the outer loop, so the result is `['x1', 'x2', 'y1', 'y2']`.
+
+## Exam traps
+
+- **Filter at the end vs. choice at the front.** `[x for x in data if x > 0]` drops items; `[x if x > 0 else 0 for x in data]` keeps every item. Count the items in the answer.
+- **The expression is applied after the filter.** In `[n * 2 for n in nums if n > 2]`, the test uses the original `n`, not `n * 2`.
+- **Nested comprehension vs. two `for` parts.** `[[...] for ...]` gives a list of lists; `[... for a in A for b in B]` gives one flat list.
+- **Copies of rows.** `[[0] * 3 for _ in range(2)]` makes two separate rows, but `[[0] * 3] * 2` repeats the **same** row twice, so changing one changes both.
+- **`range()` limits.** `[i for i in range(1, 4)]` is `[1, 2, 3]`; the stop value is never included.
+
+## Try it
+
+In the [Playground](/playground), make a list of recipe cooking times in minutes. Use comprehensions to build: the times in hours, only the recipes that take under 30 minutes, and a 3 × 3 grid of zeros for a tic-tac-toe board. Then rewrite one of them as an ordinary `for` loop with `append()` and check that both give the same list. For a refresher on lists, see [the lists lesson](/learn/3.1.1).
+
+When you're ready, [practise this objective](/practice?objective=x.4).

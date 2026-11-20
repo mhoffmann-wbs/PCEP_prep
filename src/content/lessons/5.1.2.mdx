@@ -1,0 +1,278 @@
+export const meta = {
+  objectiveId: '5.1.2',
+  updated: '2026-11-20',
+  tldr: 'A CSV file is a table saved as text: one row per line, values separated by commas. `import csv`, then `csv.reader(f)` gives each row as a list of strings and `csv.writer(f).writerow(list)` writes one. Open CSV files with `newline=""`.',
+  subpointsCovered: ['5.1.2.1', '5.1.2.2', '5.1.2.3', '5.1.2.4', '5.1.2.5'],
+  links: [
+    { title: 'csv: CSV file reading and writing', url: 'https://docs.python.org/3/library/csv.html' },
+  ],
+}
+
+## Big idea
+
+A **CSV file** is a table saved as plain text. CSV stands for **comma-separated values**. Each line of the file is one **row** of the table, and inside a row, the values are separated by commas:
+
+```
+item,price,qty
+apples,0.50,6
+bread,2.20,1
+```
+
+The first row is often a **header**: the names of the columns. The rows after it hold the data. Spreadsheet programs can open and save CSV files, which makes them a popular way to share simple tables.
+
+Python has a built-in **module** called `csv` that reads and writes this format for you. A module is a ready-made bundle of code you load with `import` (see [Import and use modules](/learn/5.2.1)).
+
+**In this app, every run starts with an empty folder**, so each example first creates the CSV file it reads.
+
+## Walkthrough
+
+### The structure of a CSV file
+
+The rules are simple:
+
+- one row per line,
+- a comma between values (no comma at the end of the line),
+- every row usually has the same number of values.
+
+If a value itself contains a comma, it's wrapped in double quotes, for example `"Paris, France"`. The `csv` module handles these quotes for you, which is one good reason to use it instead of `split(",")`.
+
+### Importing the `csv` module
+
+Write `import csv` at the top of your program. After that, the module's tools are available as `csv.reader` and `csv.writer`:
+
+```python
+import csv
+print(type(csv))
+```
+
+```output
+<class 'module'>
+```
+
+### Reading with `csv.reader()`
+
+Open the file in `"r"` mode, as for any text file, and pass the file object to `csv.reader()`. The result is a **reader** you can loop over. Each turn of the loop gives you one row as a **list of strings**:
+
+```python
+import csv
+
+# Set-up: create a small CSV file to work with
+with open("pets.csv", "w", newline="") as f:
+    f.write("name,animal,age\nRex,dog,4\nMia,cat,2\n")
+
+with open("pets.csv", newline="") as f:
+    for row in csv.reader(f):
+        print(row)
+```
+
+```output
+['name', 'animal', 'age']
+['Rex', 'dog', '4']
+['Mia', 'cat', '2']
+```
+
+The values come back as strings, even `'4'`, and the `\n` at the end of each line is already gone.
+
+The `newline=""` argument tells `open()` to leave line endings alone and let the `csv` module deal with them. The Python documentation recommends it for every CSV file you open, for reading and for writing. Without it, some systems end up with an extra blank line between rows.
+
+### Writing with `csv.writer()`
+
+Open the file in `"w"` (or `"a"`) mode and pass it to `csv.writer()`. The writer has two methods:
+
+- `writerow(list)` writes one row,
+- `writerows(list_of_lists)` writes several rows at once.
+
+```python
+import csv
+
+with open("recipe.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["ingredient", "grams"])
+    writer.writerows([["flour", 250], ["sugar", 100], ["salt, fine", 5]])
+
+with open("recipe.csv", newline="") as f:
+    for line in f.readlines():
+        print(repr(line))
+```
+
+```output
+'ingredient,grams\r\n'
+'flour,250\r\n'
+'sugar,100\r\n'
+'"salt, fine",5\r\n'
+```
+
+The writer adds the commas and the line endings for you, turns numbers into text, and puts quotes around `salt, fine` because it contains a comma.
+
+Printing each line with `repr()` shows its hidden characters. The `csv` writer ends every row with `\r\n`, the line ending used by Windows, instead of a plain `\n`. That's normal for CSV files, and `csv.reader()` understands both.
+
+### Processing rows and values
+
+Because each row is a list, you use list tools on it: indexes, unpacking and `len()`. To skip the header, call `next()` on the reader once before the loop. `next()` takes the next row out of the reader:
+
+```python
+import csv
+
+# Set-up: create a small CSV file to work with
+with open("shop.csv", "w", newline="") as f:
+    f.write("item,price,qty\napples,0.50,6\nbread,2.20,1\nmilk,1.10,2\n")
+
+total = 0
+with open("shop.csv", newline="") as f:
+    reader = csv.reader(f)
+    header = next(reader)
+    for item, price, qty in reader:
+        cost = float(price) * int(qty)
+        total += cost
+        print(item, round(cost, 2))
+print("Columns:", header)
+print("Total:", round(total, 2))
+```
+
+```output
+apples 3.0
+bread 2.2
+milk 2.2
+Columns: ['item', 'price', 'qty']
+Total: 7.4
+```
+
+Every value must be converted before you do maths with it: `float()` for decimals and `int()` for whole numbers.
+
+You can also gather the rows into a list with `list(reader)` and work with them afterwards:
+
+```python
+import csv
+
+# Set-up: create a small CSV file to work with
+with open("temps.csv", "w", newline="") as f:
+    f.write("city,temp\nOslo,4\nLima,19\nCairo,27\n")
+
+with open("temps.csv", newline="") as f:
+    rows = list(csv.reader(f))
+
+print(len(rows))
+print(rows[2][0], rows[-1][1])
+warm = [r[0] for r in rows[1:] if int(r[1]) > 10]
+print(warm)
+```
+
+```output
+4
+Lima 27
+['Lima', 'Cairo']
+```
+
+`rows[2][0]` means "row 2, column 0". The header is row 0, so it's counted too.
+
+## Predict the output
+
+<Predict>
+
+```python
+import csv
+with open("a.csv", "w", newline="") as f:
+    f.write("x,y\n3,4\n")
+with open("a.csv", newline="") as f:
+    rows = list(csv.reader(f))
+print(rows[1][0] + rows[1][1])
+```
+
+```output
+34
+```
+
+</Predict>
+
+<Predict>
+
+```python
+import csv
+with open("b.csv", "w", newline="") as f:
+    w = csv.writer(f)
+    w.writerow(["tea", 2])
+    w.writerow(["cake"])
+with open("b.csv", newline="") as f:
+    for row in csv.reader(f):
+        print(len(row), row)
+```
+
+```output
+2 ['tea', '2']
+1 ['cake']
+```
+
+</Predict>
+
+<Predict>
+
+```python
+import csv
+with open("c.csv", "w", newline="") as f:
+    f.write('city,country\n"Paris, TX",USA\n')
+with open("c.csv", newline="") as f:
+    reader = csv.reader(f)
+    next(reader)
+    row = next(reader)
+print(row[0], len(row))
+```
+
+```output
+Paris, TX 2
+```
+
+</Predict>
+
+## Common mistakes
+
+**Doing maths on strings.** `csv.reader()` never converts anything for you:
+
+```python
+import csv
+with open("ages.csv", "w", newline="") as f:
+    f.write("Rex,4\n")
+with open("ages.csv", newline="") as f:
+    for name, age in csv.reader(f):
+        print(age + 1)
+```
+
+```error
+TypeError: can only concatenate str (not "int") to str
+```
+
+Convert first: `int(age) + 1`.
+
+**Forgetting to import the module.** Using `csv.reader` without `import csv` fails:
+
+```python
+with open("x.csv", "w") as f:
+    f.write("a,b\n")
+with open("x.csv") as f:
+    print(list(csv.reader(f)))
+```
+
+```error
+NameError: name 'csv' is not defined. Did you forget to import 'csv'?
+```
+
+**Passing a file name instead of a file object.** `csv.reader("data.csv")` doesn't open the file. It treats the string itself as the data and reads it character by character. Always `open()` the file and pass the file object.
+
+**Passing a string to `writerow()`.** `writerow("tea")` treats the string as a sequence of characters and writes `t,e,a`. Give it a list: `writerow(["tea"])`.
+
+**Counting the header as data.** If the file has a header, skip it with `next(reader)` or slice it off with `rows[1:]`.
+
+## Exam traps
+
+- **This whole section is PCEP-30-03 only.** It's not part of PCEP-30-02.
+- **Rows are lists of strings.** `row[1] + row[2]` joins text, it doesn't add numbers. Look for a missing `int()` or `float()`.
+- **The header is a row too.** `len(list(reader))` counts it, and `rows[0]` is the header, not the first data row.
+- **`newline=""`** is the recommended way to open CSV files, both for reading and writing.
+- **`writerow()` vs. `writerows()`.** One list for one row, or a list of lists for many rows.
+- **Commas inside quotes.** `"Paris, TX"` is one value, not two, when read with `csv.reader()`.
+- **`csv.reader()` takes a file object**, opened in a reading mode. `csv.writer()` needs one opened with `"w"` or `"a"`.
+
+## Try it
+
+In the [Playground](/playground), write a CSV file `books.csv` with a header row `title,pages` and three books of your choice, using `csv.writer()` and `writerows()`. Then read it back with `csv.reader()`, skip the header with `next()`, and print the total number of pages and the title of the longest book.
+
+When you're ready, [practise this objective](/practice?objective=5.1.2).

@@ -1,0 +1,341 @@
+export const meta = {
+  objectiveId: '4.1.5',
+  updated: '2026-11-20',
+  tldr: 'A name created inside a function is local: it lives only while the function runs and hides any global name with the same spelling. Reading a global works anywhere, but changing one from inside a function needs the `global` keyword.',
+  subpointsCovered: ['4.1.5.1', '4.1.5.2', '4.1.5.3', '4.1.5.4', '4.1.5.5'],
+  links: [
+    { title: 'Python tutorial: Python scopes and namespaces', url: 'https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces' },
+    { title: 'The global statement', url: 'https://docs.python.org/3/reference/simple_stmts.html#the-global-statement' },
+  ],
+}
+
+## Big idea
+
+The **scope** of a variable is the part of the program where its name can be used. Python has two scopes you need for PCEP:
+
+- A **global** variable is created outside any function, at the top level of the file. It can be read everywhere in the file.
+- A **local** variable is created inside a function. It exists only while that function runs, and code outside the function can't see it.
+
+```python
+greeting = "Hello"          # global
+
+def welcome():
+    guest = "Ana"           # local to welcome()
+    print(greeting, guest)
+
+welcome()
+print(greeting)
+```
+
+```output
+Hello Ana
+Hello
+```
+
+Inside `welcome()`, both names work. After the function ends, `guest` is gone, but `greeting` is still there.
+
+## Walkthrough
+
+### Local and global scope
+
+A local variable can't be used outside its function. Trying it gives a `NameError`, because the name doesn't exist at the top level:
+
+```python
+def make_tea():
+    cups = 2
+    print("Making", cups, "cups")
+
+make_tea()
+print(cups)
+```
+
+```error
+NameError: name 'cups' is not defined
+```
+
+**Parameters are local too.** In `def area(width, height):`, the names `width` and `height` exist only inside `area()`.
+
+Every call starts fresh: the local variables of the last call are gone, so a function can't "remember" a local value between calls.
+
+```python
+def count_visit():
+    visits = 0
+    visits = visits + 1
+    print("Visits:", visits)
+
+count_visit()
+count_visit()
+```
+
+```output
+Visits: 1
+Visits: 1
+```
+
+### How Python finds a name
+
+When code inside a function uses a name, Python looks for it in this order:
+
+1. In the function's **local** names.
+2. If it isn't there, in the **global** names of the file.
+3. If it isn't there either, among the **built-in** names such as `print`, `len` and `input`.
+
+If the name is in none of them, you get a `NameError`. So a function can **read** a global variable without doing anything special:
+
+```python
+tax_rate = 0.2
+
+def price_with_tax(price):
+    return price + price * tax_rate
+
+print(price_with_tax(50))
+```
+
+```output
+60.0
+```
+
+There's one important rule: Python decides whether a name is local **before** the function runs, by looking at the whole function body. If the function **assigns** to a name anywhere (with `=`, `+=`, as a `for` loop variable, or as a parameter), that name is local in the **whole** function, even on lines above the assignment.
+
+### Namespaces and shadowing
+
+A **namespace** is a table that links names to values. The global names of a file form one namespace, and each function call gets its own new local namespace. Because they are separate tables, the same name can appear in both without clashing.
+
+When a function creates a local variable with the same name as a global one, the local one **shadows** (hides) the global one inside the function. The global variable isn't changed:
+
+```python
+city = "Paris"
+
+def holiday():
+    city = "Lisbon"
+    print("Inside:", city)
+
+holiday()
+print("Outside:", city)
+```
+
+```output
+Inside: Lisbon
+Outside: Paris
+```
+
+Assigning `city = "Lisbon"` inside the function made a brand-new local `city`. The global `city` stayed `"Paris"`.
+
+A parameter can shadow a global name in the same way:
+
+```python
+size = "large"
+
+def order(size):
+    print("Ordering a", size, "pizza")
+
+order("small")
+print(size)
+```
+
+```output
+Ordering a small pizza
+large
+```
+
+### The `global` keyword
+
+To **change** a global variable from inside a function, declare it with `global name` at the top of the function. Then every use of that name in the function refers to the global variable:
+
+```python
+points = 0
+
+def add_points(amount):
+    global points
+    points = points + amount
+
+add_points(10)
+add_points(5)
+print(points)
+```
+
+```output
+15
+```
+
+Without `global`, the line `points = points + amount` makes `points` local. Python then tries to read the local `points` before it has a value, and stops with an `UnboundLocalError`:
+
+```python
+points = 0
+
+def add_points(amount):
+    points = points + amount
+
+add_points(10)
+```
+
+```error
+UnboundLocalError: cannot access local variable 'points' where it is not associated with a value
+```
+
+`global` can also create a new global variable from inside a function:
+
+```python
+def set_language():
+    global language
+    language = "Spanish"
+
+set_language()
+print(language)
+```
+
+```output
+Spanish
+```
+
+### Why too many globals are risky
+
+`global` works, but programs that use it a lot get hard to manage:
+
+- **Hidden effects.** Any function can change a global, so when its value is wrong, you have to search the whole program to find out who changed it.
+- **Order matters.** A function's result depends on what other functions ran before it, so the same call can give different answers.
+- **Harder to reuse and test.** A function that reads and writes globals only works in a program that has exactly those globals.
+- **Name clashes.** In a big file, two parts of the program may accidentally use the same global name for different things.
+
+The usual fix is to pass values **in** as arguments and send results **out** with `return`:
+
+```python
+def add_points(total, amount):
+    return total + amount
+
+score = 0
+score = add_points(score, 10)
+score = add_points(score, 5)
+print(score)
+```
+
+```output
+15
+```
+
+Now the function depends only on what it's given, and you can see every change to `score` in one place.
+
+## Predict the output
+
+<Predict>
+
+```python
+fruit = "apple"
+
+def snack():
+    fruit = "banana"
+    return fruit
+
+print(snack(), fruit)
+```
+
+```output
+banana apple
+```
+
+</Predict>
+
+<Predict>
+
+```python
+stock = 5
+
+def sell():
+    global stock
+    stock -= 1
+
+def restock():
+    stock = 10
+
+sell()
+restock()
+sell()
+print(stock)
+```
+
+```output
+3
+```
+
+</Predict>
+
+<Predict>
+
+```python
+total = 100
+
+def show():
+    print(total)
+    total = 50
+
+show()
+```
+
+```error
+UnboundLocalError: cannot access local variable 'total' where it is not associated with a value
+```
+
+</Predict>
+
+## Common mistakes
+
+**Using a local variable after the function ends.** Its namespace is gone once the function returns. Return the value instead:
+
+```python
+def plan_trip():
+    destination = "Rome"
+
+plan_trip()
+print(destination)
+```
+
+```error
+NameError: name 'destination' is not defined
+```
+
+**Changing a global with `+=` and no `global`.** `+=` is an assignment, so it makes the name local in the whole function:
+
+```python
+likes = 0
+
+def like_photo():
+    likes += 1
+
+like_photo()
+```
+
+```error
+UnboundLocalError: cannot access local variable 'likes' where it is not associated with a value
+```
+
+**Expecting an assignment inside a function to change the global.** Without `global`, `name = value` inside a function only creates a local variable that shadows the global one.
+
+**Putting `global` after the name is used.** The `global` line must come before any use of the name in that function, otherwise Python stops with a `SyntaxError` before running anything:
+
+```python
+mood = "calm"
+
+def change_mood():
+    print(mood)
+    global mood
+    mood = "happy"
+```
+
+```error
+SyntaxError: name 'mood' is used prior to global declaration
+```
+
+## Exam traps
+
+- **Read vs. assign.** A function that only **reads** a global prints the global value. A function that **assigns** to the same name anywhere in its body treats it as local everywhere in the body, so reading it first raises `UnboundLocalError`.
+- **Shadowing leaves the global alone.** After a function sets `x = 5` locally, a `print(x)` outside still shows the old global value.
+- **`global` vs. no `global` side by side.** Questions often have two functions, one with `global x` and one without, then ask for the final value of `x`. Only the one with `global` changes it.
+- **Local names don't leak out.** Printing a local variable or a parameter outside its function raises `NameError`.
+- **Fresh locals on each call.** A local counter starts again from its first value every time the function is called.
+- **Parameters are local.** A parameter with the same name as a global shadows the global inside the function.
+
+## Try it
+
+In the [Playground](/playground), create a global variable `balance = 100`. Write one function that tries `balance -= 20` without `global` and read the error. Then fix it with `global balance`. Finally, rewrite it without any global: make the function take the balance as a parameter and return the new one.
+
+When you're ready, [practise this objective](/practice?objective=4.1.5).

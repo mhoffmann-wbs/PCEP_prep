@@ -1,0 +1,292 @@
+export const meta = {
+  objectiveId: '5.2.3',
+  updated: '2026-11-20',
+  tldr: '`import random` gives you `random()` (a float from 0.0 up to but not including 1.0), `choice()` (one item from a sequence) and `sample()` (several different items). `seed()` sets the starting point, so the same seed always gives the same "random" values.',
+  subpointsCovered: ['5.2.3.1', '5.2.3.2', '5.2.3.3', '5.2.3.4', '5.2.3.5', '5.2.3.6'],
+  links: [
+    { title: 'random: Generate pseudo-random numbers', url: 'https://docs.python.org/3/library/random.html' },
+  ],
+}
+
+## Big idea
+
+Games, quizzes and simulations often need values that look random: roll a die, shuffle a quiz, pick a dinner idea. The `random` module provides them.
+
+A computer can't really toss a coin. Instead, it uses a formula that produces a long series of numbers that **look** random. These are called **pseudorandom** numbers ("pseudo" means "pretend"). The formula needs a starting value, called the **seed**. The same seed always produces the same series.
+
+```python
+import random
+
+random.seed(7)
+print(random.choice(["pasta", "curry", "salad", "soup"]))
+```
+
+```output
+salad
+```
+
+**Every example in this lesson calls `random.seed(...)` first.** That's why the outputs shown are fixed: they are the values that particular seed produces. Without a seed, you'd see different values on each run.
+
+## Walkthrough
+
+### Importing and using the `random` module
+
+Load the module with `import random` and call its functions with dot notation, such as `random.random()` or `random.choice(...)`. You can also import single names, for example `from random import choice, seed` (see [Import and use modules](/learn/5.2.1)).
+
+Note the double name: `random` is the **module**, and `random.random` is a **function** inside it.
+
+### Random floats with `random()`
+
+`random.random()` takes no arguments and returns a float that is **at least 0.0 and less than 1.0**. In maths this range is written `[0, 1)`: the square bracket means 0.0 can come out, the round bracket means 1.0 never does.
+
+```python
+import random
+
+random.seed(1)
+print(random.random())
+print(random.random())
+```
+
+```output
+0.13436424411240122
+0.8474337369372327
+```
+
+Each call gives the next value in the series. These two numbers come from seed 1, so you'll see exactly these if you run the code.
+
+You can stretch the range with ordinary maths. Multiplying by 10 gives a float from 0.0 up to (but not including) 10.0:
+
+```python
+import random
+
+random.seed(1)
+temperature = 15 + random.random() * 10
+print(round(temperature, 1))
+```
+
+```output
+16.3
+```
+
+### Setting the starting point with `seed()`
+
+`random.seed(value)` resets the generator to a starting point chosen by `value`, which is usually a whole number. After calling `seed()` with the same value, the same sequence of results follows:
+
+```python
+import random
+
+random.seed(42)
+first = [random.random() for _ in range(3)]
+random.seed(42)
+second = [random.random() for _ in range(3)]
+print(first == second)
+```
+
+```output
+True
+```
+
+If you never call `seed()`, Python picks a starting point by itself (from the operating system or the current time), so every run is different.
+
+### Why repeatable results are useful
+
+Repeatable "random" results sound strange, but they're very handy:
+
+- **Testing.** If a program misbehaves with certain random values, a fixed seed lets you reproduce the problem.
+- **Sharing.** Someone else can run your code and get the same results, as with every example in this lesson.
+- **Fair comparisons.** Two versions of a simulation can be tried on exactly the same random data.
+
+A different seed gives a different, but equally repeatable, series:
+
+```python
+import random
+
+random.seed(3)
+a = random.random()
+random.seed(4)
+b = random.random()
+random.seed(3)
+c = random.random()
+print(a == b, a == c)
+```
+
+```output
+False True
+```
+
+### Picking one item with `choice()`
+
+`random.choice(sequence)` returns **one** item from a sequence, such as a list, a tuple or a string. Every item has the same chance:
+
+```python
+import random
+
+random.seed(10)
+pets = ["cat", "dog", "rabbit", "parrot"]
+print(random.choice(pets))
+print(random.choice(pets))
+print(random.choice("ABCDE"))
+```
+
+```output
+cat
+parrot
+D
+```
+
+The same item can come up more than once across calls, because each call picks again from the whole sequence. The list itself is not changed.
+
+`choice()` needs at least one item. An empty sequence raises an error:
+
+```python
+import random
+print(random.choice([]))
+```
+
+```error
+IndexError: Cannot choose from an empty sequence
+```
+
+### Picking several different items with `sample()`
+
+`random.sample(sequence, k)` returns a **new list** of `k` items chosen from the sequence **without repeats**. Each position in the sequence can be picked at most once. It's like drawing names from a hat without putting them back:
+
+```python
+import random
+
+random.seed(5)
+cities = ["Lisbon", "Kyoto", "Lima", "Oslo", "Cairo"]
+trip = random.sample(cities, 3)
+print(trip)
+print(len(set(trip)))
+print(cities)
+```
+
+```output
+['Cairo', 'Lima', 'Oslo']
+3
+['Lisbon', 'Kyoto', 'Lima', 'Oslo', 'Cairo']
+```
+
+The original list stays as it was. If `k` is larger than the number of items, there aren't enough to pick from without repeats, so Python raises an error:
+
+```python
+import random
+print(random.sample([1, 2, 3], 4))
+```
+
+```error
+ValueError: Sample larger than population or is negative
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+import random
+random.seed(99)
+x = random.random()
+random.seed(99)
+y = random.random()
+print(x == y, 0 <= x < 1)
+```
+
+```output
+True True
+```
+
+</Predict>
+
+<Predict>
+
+```python
+import random
+random.seed(2)
+picks = random.sample(range(10), 10)
+print(len(picks), sorted(picks) == list(range(10)))
+```
+
+```output
+10 True
+```
+
+</Predict>
+
+<Predict>
+
+```python
+import random
+random.seed(8)
+colors = ["red", "green"]
+print(random.choice(colors) in colors, len(random.sample(colors, 2)))
+```
+
+```output
+True 2
+```
+
+</Predict>
+
+## Common mistakes
+
+**Calling the module instead of the function.** After `import random`, the module itself isn't a function:
+
+```python
+import random
+print(random())
+```
+
+```error
+TypeError: 'module' object is not callable. Did you mean: 'random.random(...)'?
+```
+
+Write `random.random()`, or use `from random import random` and then `random()`.
+
+**Expecting `random()` to reach 1.0.** It never returns 1.0. `random.random() * 6` gives a float from 0.0 up to, but not including, 6.0.
+
+**Seeding inside a loop.** Calling `seed()` with the same value before every pick resets the series each time, so you get the same value again and again:
+
+```python
+import random
+for _ in range(3):
+    random.seed(4)
+    print(random.choice(["tea", "coffee", "juice", "water"]))
+```
+
+```output
+coffee
+coffee
+coffee
+```
+
+Seed once, at the start of the program.
+
+**Asking `sample()` for too many items.** `k` must not be bigger than the length of the sequence.
+
+**Forgetting the size argument.** `sample()` needs to know how many items to pick:
+
+```python
+import random
+print(random.sample(["a", "b", "c"]))
+```
+
+```error
+TypeError: Random.sample() missing 1 required positional argument: 'k'
+```
+
+## Exam traps
+
+- **This whole section is PCEP-30-03 only.** It's not part of PCEP-30-02.
+- **The range of `random()`** is `[0, 1)`: 0.0 is possible, 1.0 is not. Any statement that it can return 1.0 is false.
+- **`seed()` repeatability.** The same seed followed by the same calls gives the same results, every time. Questions compare two values made after the same seed and expect `True`.
+- **`choice()` returns one item**, not a list. It can repeat across calls, and an empty sequence raises `IndexError`.
+- **`sample()` returns a list without repeats**, of length `k`. `k` larger than the sequence raises `ValueError`. The original sequence is not changed.
+- **Module vs. function.** `random` is the module; `random.random()` is the function. `import random` then `random()` raises `TypeError`.
+- **Output questions with random values** can only have one right answer if the values don't matter (lengths, types, ranges) or a seed fixes them.
+
+## Try it
+
+In the [Playground](/playground), make a list of six dinner ideas. Seed the generator with your favourite number, print one random dinner with `choice()`, and plan three different dinners for the week with `sample()`. Run it twice and check the results are the same. Then change the seed, or remove the `seed()` line, and see what changes.
+
+When you're ready, [practise this objective](/practice?objective=5.2.3).

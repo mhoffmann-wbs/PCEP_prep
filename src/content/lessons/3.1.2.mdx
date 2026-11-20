@@ -1,0 +1,366 @@
+export const meta = {
+  objectiveId: '3.1.2',
+  updated: '2026-11-20',
+  tldr: 'Lists can change after you make them. Add items with `append()` and `insert()`, find them with `index()` and `in`, remove them with `remove()`, `pop()` or `del`, sort with `sort()` or `sorted()`, and walk through them with a `for` loop.',
+  subpointsCovered: ['3.1.2.1', '3.1.2.2', '3.1.2.3', '3.1.2.4', '3.1.2.5', '3.1.2.6', '3.1.2.7', '3.1.2.8'],
+  links: [
+    { title: 'Python tutorial: More on lists', url: 'https://docs.python.org/3/tutorial/datastructures.html#more-on-lists' },
+    { title: 'Sorting techniques', url: 'https://docs.python.org/3/howto/sorting.html' },
+  ],
+}
+
+## Big idea
+
+A list is not frozen once you write it. You can add items, take them away, look for them, put them in order and visit them one by one. Most of this is done with **methods**: functions that belong to the list and are called with a dot, like `groceries.append("rice")`.
+
+```python
+groceries = ["apples", "bread"]
+groceries.append("rice")
+print(groceries)
+print(len(groceries))
+```
+
+```output
+['apples', 'bread', 'rice']
+3
+```
+
+Most list methods change the list **in place**: they change the list you already have and give back `None` (Python's "nothing" value) instead of a new list.
+
+## Walkthrough
+
+### Adding items: `append()` and `insert()`
+
+`append(x)` puts `x` at the end. `insert(i, x)` puts `x` at index `i` and shifts everything after it one place to the right:
+
+```python
+queue = ["Ana", "Ben"]
+queue.append("Cleo")
+queue.insert(0, "Dev")
+queue.insert(2, "Eli")
+print(queue)
+```
+
+```output
+['Dev', 'Ana', 'Eli', 'Ben', 'Cleo']
+```
+
+If the index given to `insert()` is past the end, the item simply goes at the end. No error is raised.
+
+### Finding items: `index()`
+
+`index(x)` tells you the position of the **first** item equal to `x`:
+
+```python
+flavors = ["vanilla", "mint", "lemon", "mint"]
+print(flavors.index("mint"))
+print(flavors.index("lemon"))
+```
+
+```output
+1
+2
+```
+
+If the item is not in the list at all, `index()` raises a `ValueError` (see Common mistakes).
+
+### Removing items: `remove()`, `pop()` and `del`
+
+There are three ways to take things out, and they differ in what you give them:
+
+- `remove(x)` deletes the first item **equal to** `x`.
+- `pop()` deletes the last item and **returns** it, so you can keep it. `pop(i)` does the same for index `i`.
+- `del lst[i]` deletes the item at index `i`. `del` is a keyword, not a method, so there is no dot and no brackets around the list. It also works with slices.
+
+```python
+tasks = ["wash car", "pay rent", "call mum", "buy stamps", "water plants"]
+tasks.remove("pay rent")
+last = tasks.pop()
+first = tasks.pop(0)
+print(last, "|", first)
+print(tasks)
+del tasks[0]
+print(tasks)
+```
+
+```output
+water plants | wash car
+['call mum', 'buy stamps']
+['buy stamps']
+```
+
+`del` can also remove a whole slice, or the whole variable:
+
+```python
+numbers = [1, 2, 3, 4, 5, 6]
+del numbers[1:3]
+print(numbers)
+del numbers[:]
+print(numbers)
+```
+
+```output
+[1, 4, 5, 6]
+[]
+```
+
+### Sorting: `sort()` and `sorted()`
+
+`lst.sort()` puts the list itself in order and returns `None`. The function `sorted(lst)` leaves the original alone and returns a **new** sorted list. Both accept `reverse=True` for largest-first:
+
+```python
+prices = [4.5, 1.2, 3.0, 2.8]
+cheapest_first = sorted(prices)
+print(cheapest_first)
+print(prices)
+prices.sort(reverse=True)
+print(prices)
+```
+
+```output
+[1.2, 2.8, 3.0, 4.5]
+[4.5, 1.2, 3.0, 2.8]
+[4.5, 3.0, 2.8, 1.2]
+```
+
+Strings are sorted by character code, so capital letters come before lowercase ones. There is also `lst.reverse()`, which flips the order in place without sorting:
+
+```python
+names = ["zoe", "Adam", "bea"]
+print(sorted(names))
+names.reverse()
+print(names)
+```
+
+```output
+['Adam', 'bea', 'zoe']
+['bea', 'Adam', 'zoe']
+```
+
+### Looping through a list
+
+A `for` loop visits each item in order. The loop variable takes the value of one item at a time:
+
+```python
+pets = ["cat", "dog", "fish"]
+for pet in pets:
+    print("I feed the", pet)
+```
+
+```output
+I feed the cat
+I feed the dog
+I feed the fish
+```
+
+When you need the positions as well, loop over `range(len(lst))`:
+
+```python
+pets = ["cat", "dog", "fish"]
+for i in range(len(pets)):
+    print(i, pets[i])
+```
+
+```output
+0 cat
+1 dog
+2 fish
+```
+
+### Starting values and updating while you loop
+
+A common pattern: set a variable to a **starting value** before the loop (this is called **initializing** it), then update it on every pass. Here we add up a bill and find the biggest item:
+
+```python
+bill = [12.0, 3.5, 8.25, 6.0]
+total = 0
+biggest = bill[0]
+for amount in bill:
+    total += amount
+    if amount > biggest:
+        biggest = amount
+print(total, biggest)
+```
+
+```output
+29.75 12.0
+```
+
+To **change** the items themselves, you need their indexes. Assigning to the loop variable does nothing to the list:
+
+```python
+temps = [20, 22, 19]
+for t in temps:
+    t = t + 1
+print(temps)
+for i in range(len(temps)):
+    temps[i] = temps[i] + 1
+print(temps)
+```
+
+```output
+[20, 22, 19]
+[21, 23, 20]
+```
+
+You can also build a new list by starting with an empty one and appending:
+
+```python
+words = ["sun", "rain", "snow"]
+lengths = []
+for w in words:
+    lengths.append(len(w))
+print(lengths)
+```
+
+```output
+[3, 4, 4]
+```
+
+### Membership: `in` and `not in`
+
+`x in lst` gives `True` if some item equals `x`. `x not in lst` gives the opposite:
+
+```python
+packed = ["passport", "charger", "socks"]
+print("socks" in packed)
+print("towel" in packed)
+print("towel" not in packed)
+```
+
+```output
+True
+False
+True
+```
+
+A safe way to remove something is to check first: `if x in lst: lst.remove(x)`.
+
+### Counting items: `len()`
+
+`len(lst)` gives the number of items. It counts the top-level items only, so a list inside a list counts as one:
+
+```python
+print(len([]))
+print(len(["a", "b", "c"]))
+print(len([1, [2, 3], 4]))
+```
+
+```output
+0
+3
+3
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+box = [3, 1, 2]
+box.append(5)
+box.insert(1, 9)
+box.remove(2)
+print(box, len(box))
+```
+
+```output
+[3, 9, 1, 5] 4
+```
+
+</Predict>
+
+<Predict>
+
+```python
+nums = [4, 2, 7]
+result = nums.sort()
+print(result, nums)
+```
+
+```output
+None [2, 4, 7]
+```
+
+</Predict>
+
+<Predict>
+
+```python
+marks = [6, 9, 4, 9]
+count = 0
+for m in marks:
+    if m > 5:
+        count += 1
+print(count, marks.index(9), 4 in marks)
+```
+
+```output
+3 1 True
+```
+
+</Predict>
+
+## Common mistakes
+
+**Looking for something that isn't there.** Both `index()` and `remove()` raise an error if the item is missing:
+
+```python
+fruit = ["pear", "plum"]
+fruit.remove("kiwi")
+```
+
+```error
+ValueError: list.remove(x): x not in list
+```
+
+```python
+fruit = ["pear", "plum"]
+print(fruit.index("kiwi"))
+```
+
+```error
+ValueError: list.index(x): x not in list
+```
+
+**Saving the result of `sort()`.** `sort()` changes the list and returns `None`, so `lst = lst.sort()` throws your list away. Use `sorted(lst)` when you want a new list.
+
+**Popping from an empty list.**
+
+```python
+stack = []
+stack.pop()
+```
+
+```error
+IndexError: pop from empty list
+```
+
+**Mixing up `remove()` and `pop()`.** `remove()` takes a **value**, `pop()` takes an **index**. `[10, 20, 30].pop(1)` removes `20`, but `[10, 20, 30].remove(1)` fails because there is no item equal to `1`.
+
+**Sorting mixed types.** Python can't compare numbers with strings:
+
+```python
+mix = [3, "two", 1]
+mix.sort()
+```
+
+```error
+TypeError: '<' not supported between instances of 'str' and 'int'
+```
+
+## Exam traps
+
+- **`append()` vs. `insert()` positions.** `insert(i, x)` puts `x` **at** index `i`, so the old item at `i` moves right. Questions chain several inserts; trace them one by one.
+- **Appending a list.** `a.append([1, 2])` adds **one** item (a list), so `len(a)` grows by 1, not 2.
+- **`pop()` returns, `remove()` and `sort()` return `None`.** `print(lst.remove(3))` prints `None`.
+- **`index()` finds the first match only**, and `remove()` removes the first match only.
+- **`del` on a slice.** `del lst[1:3]` removes two items; `del lst` removes the name itself, so using `lst` afterwards is a `NameError`.
+- **Changing the loop variable.** `for x in lst: x = 0` leaves `lst` unchanged.
+- **`in` checks items, not parts of items.** `"app" in ["apple"]` is `False`, because no item is exactly `"app"`.
+
+## Try it
+
+In the [Playground](/playground), start with a list of four meals you like. Add one at the end and one at the front, remove one by name, then print the list sorted alphabetically without changing the original. Finally, loop through it and count how many meal names are longer than five letters.
+
+When you're ready, [practise this objective](/practice?objective=3.1.2).

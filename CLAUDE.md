@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Phases 0 (scaffold), 1 (Pyodide runner) and 2 (quiz engine) are done; next is phase 3 (lessons). The bank holds a first 12 items; phase 4 fills it. **`PLAN.md` is the build plan and sets the order of work**: it records the decisions made, the content map, the item kinds and the phases. As parts get built, replace the plan-level notes below with what actually exists (commands, file layout, gotchas).
+Phases 0 (scaffold), 1 (Pyodide runner), 2 (quiz engine) and 3 (lessons: all 35 objectives plus the 6 extras) are done; next is phase 4 (question bank, then the 30-02 mock and the exam-track switch). The bank holds a first 12 items; phase 4 fills it. **`PLAN.md` is the build plan and sets the order of work**: it records the decisions made, the content map, the item kinds and the phases. As parts get built, replace the plan-level notes below with what actually exists (commands, file layout, gotchas).
 
 ## Commands
 
@@ -33,6 +33,7 @@ Phases 0 (scaffold), 1 (Pyodide runner) and 2 (quiz engine) are done; next is ph
   - `shortcuts.ts` `useShortcuts`: practice and the bank (Enter checks, then advances; ←/→ in the bank), mock (Enter/→ next, ← previous, M flags, R back to review). Ignores keys typed into fields. `ShortcutHint` lists them.
   - `SessionReview`: end-of-practice review, misses first, each expandable.
 - **Pages** (`src/pages/`, all lazy-loaded in `src/app/routes.tsx`; keep content imports out of routes and Layout): `/` syllabus overview, `/learn` and `/learn/:objectiveId` (sub-points until lessons exist), `/practice?objective=2.2.3`, `?section=2`, `?mix=10` (each with optional `&focus=1` for least mastered), `?weak=1`, `/questions` and `/questions/:itemId` (bank browser with topic and mastery filters), `/mock`, `/playground`, `/progress` (readiness, export/import).
+- **Lessons** (`src/content/lessons/<objectiveId>.mdx`, `3.1.1.mdx` is the reference template): each exports `meta` (validated by `lessonMetaSchema`: `objectiveId`, `updated`, `tldr`, `subpointsCovered` = all of the objective's sub-point ids, optional docs.python.org `links`) and has the sections `## Big idea`, `## Walkthrough`, `## Predict the output`, `## Common mistakes`, `## Exam traps`, `## Try it`, in that order. Code goes in ```` ```python ```` fences (rendered as runnable cells). An ```` ```output ```` or ```` ```error ```` fence right after one (optionally with an ```` ```input ```` fence for `input()` between) states what it prints or the last traceback line it raises; ```` ```text ```` fences are shown but not run. `<Predict>` wraps one python fence and its output fence (2–3 per lesson, tags at column 0, blank lines around the fences); the learner must type a guess before revealing. `src/content/lessons.test.ts` checks structure and coverage, and runs every snippet in two Pyodide instances: claimed output/error must match exactly, and unclaimed snippets must not raise. Each run starts in an empty folder, so file snippets create their own files. MDX: a bare `{`, `}` or `<` in prose breaks the build; wrap it in backticks. The components live in `src/lessons/components.tsx`; `/learn/:objectiveId` renders the lesson with `prose` (colours mapped to theme tokens in `index.css`), "Mark as read", practice links and previous/next navigation in syllabus order (extras last).
 - **Theme**: colour tokens (`brand`, `brand-dark`, `accent`, `chalk`, `page`, `header`, `code`) in `src/index.css` via `@theme`. Dark mode follows the OS by remapping the tokens and the slate scale once there, so components don't use `dark:` variants. Text on `bg-code` uses a fixed light colour, because the slate scale inverts in dark mode.
 - UI tests (`src/pages/pages.test.tsx`) render the real routes with `createMemoryRouter` and an async `renderAt()` that waits for the lazy page, over the real bank, so keep them independent of item order and pool size.
 - `src/app/` (router shell and layout with the non-affiliation footer), `src/pages/`, `src/test/` (setup and one fixture item per kind).
@@ -62,6 +63,8 @@ It has three parts:
 - Write every question for this app. Never copy from the live exam or from the Python Institute's practice tests.
 
 ## Gotchas
+
+- Python 3.14 words many errors differently from older versions (e.g. `ValueError: list.index(x): x not in list`, `too many values to unpack (expected 2, got 3)`, `ZeroDivisionError: division by zero` for `//` and `%`, `FileNotFoundError: [Errno 44] ...` under Pyodide, `csv.writer` ending rows with `\r\n`). Lessons and items quote what Pyodide prints; the tests enforce it.
 
 - Pyodide randomises string hashing per instance, so set and dict-of-set ordering can change between runs; the output check uses two fixed hash seeds to catch it.
 - Python error messages change between versions (Pyodide 314 = Python 3.14). Tests of error handling take messages from real Pyodide runs, never typed from memory.
