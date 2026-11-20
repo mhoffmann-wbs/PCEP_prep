@@ -3,15 +3,34 @@
     "id": "4.2.1-01",
     "kind": "single",
     "objectiveId": "4.2.1",
-    "subpoints": ["4.2.1.4", "4.2.1.5"],
+    "subpoints": [
+      "4.2.1.4",
+      "4.2.1.5"
+    ],
     "stem": "Which exception does this code raise?",
     "code": "height = float(\"1,75\")\nprint(height)",
     "raises": "ValueError",
     "options": [
-      { "text": "`TypeError`", "correct": false, "rationale": "`float()` does accept a string. The type is right; the text just isn't a number Python can read." },
-      { "text": "`SyntaxError`", "correct": false, "rationale": "`\"1,75\"` is a normal string literal, so the code is written correctly; the problem only appears when it runs." },
-      { "text": "`NameError`", "correct": false, "rationale": "Both `float` and `height` are known names here." },
-      { "text": "`ValueError`", "correct": true, "rationale": "`float()` accepts strings, so the type is fine; only the content is bad, because Python uses a point, not a comma, for decimals." }
+      {
+        "text": "`TypeError`",
+        "correct": false,
+        "rationale": "`float()` does accept a string. The type is right; the text just isn't a number Python can read."
+      },
+      {
+        "text": "`SyntaxError`",
+        "correct": false,
+        "rationale": "`\"1,75\"` is a normal string literal, so the code is written correctly; the problem only appears when it runs."
+      },
+      {
+        "text": "`NameError`",
+        "correct": false,
+        "rationale": "Both `float` and `height` are known names here."
+      },
+      {
+        "text": "`ValueError`",
+        "correct": true,
+        "rationale": "`float()` accepts strings, so the type is fine; only the content is bad, because Python uses a point, not a comma, for decimals."
+      }
     ],
     "explanation": "Ask whether the type is wrong or the value. `float()` works on strings, so the type is fine, but `\"1,75\"` is not a number in Python's notation (it needs `\"1.75\"`). A right type with unusable content raises `ValueError`."
   },
@@ -19,15 +38,35 @@
     "id": "4.2.1-02",
     "kind": "single",
     "objectiveId": "4.2.1",
-    "subpoints": ["4.2.1.2", "4.2.1.4"],
+    "subpoints": [
+      "4.2.1.2",
+      "4.2.1.4"
+    ],
     "stem": "What happens when this code runs?",
     "code": "playlist = [\"intro\", \"chorus\", \"outro\"]\nprint(\"Now playing:\", playlist[0])\nprint(\"Next:\", playlist[3])\nprint(\"Done\")",
+    "output": "Now playing: intro\n",
     "raises": "IndexError",
     "options": [
-      { "text": "It prints `Now playing: intro`, then stops with an `IndexError`.", "correct": true, "rationale": "The first `print()` works; `playlist[3]` asks for a fourth item that does not exist, and the program stops there." },
-      { "text": "It prints `Now playing: intro`, then `Next: outro`, and finally `Done` on the last line.", "correct": false, "rationale": "Indexes start at 0, so the last of three items is `playlist[2]`; `playlist[3]` does not exist." },
-      { "text": "It prints `Now playing: intro`, then stops with a `KeyError`.", "correct": false, "rationale": "`KeyError` is for a missing dictionary key. A list position that does not exist raises `IndexError`." },
-      { "text": "It stops with an `IndexError` before printing anything at all.", "correct": false, "rationale": "Lines before the failing line do run, so the first `print()` already happened." }
+      {
+        "text": "It prints `Now playing: intro`, then stops with an `IndexError`.",
+        "correct": true,
+        "rationale": "The first `print()` works; `playlist[3]` asks for a fourth item that does not exist, and the program stops there."
+      },
+      {
+        "text": "It prints `Now playing: intro`, then `Next: outro`, and finally `Done` on the last line.",
+        "correct": false,
+        "rationale": "Indexes start at 0, so the last of three items is `playlist[2]`; `playlist[3]` does not exist."
+      },
+      {
+        "text": "It prints `Now playing: intro`, then stops with a `KeyError`.",
+        "correct": false,
+        "rationale": "`KeyError` is for a missing dictionary key. A list position that does not exist raises `IndexError`."
+      },
+      {
+        "text": "It stops with an `IndexError` before printing anything at all.",
+        "correct": false,
+        "rationale": "Lines before the failing line do run, so the first `print()` already happened."
+      }
     ],
     "explanation": "Python runs the lines one by one. The first `print()` shows `Now playing: intro`. The second asks for index 3 in a list whose indexes are 0 to 2, so it raises `IndexError: list index out of range`. The program stops at that line, so `Done` is never printed."
   },
@@ -35,16 +74,35 @@
     "id": "4.2.1-03",
     "kind": "single",
     "objectiveId": "4.2.1",
-    "subpoints": ["4.2.1.3", "4.2.1.5"],
+    "subpoints": [
+      "4.2.1.3",
+      "4.2.1.5"
+    ],
     "stem": "What is the output of the following code?",
     "code": "seats = [\"A1\", \"A2\", \"A3\"]\nprint(seats[1:8])\nprint(len(seats[4:]))",
     "output": "['A2', 'A3']\n0\n",
     "outputKey": true,
     "options": [
-      { "text": "['A1', 'A2', 'A3']\n0", "correct": false, "rationale": "Indexes start at 0, so the slice from index 1 begins with `\"A2\"`." },
-      { "text": "['A2', 'A3']\n0", "correct": true, "rationale": "A slice that runs past the end just stops at the end of the list, and a slice that starts past the end is empty." },
-      { "text": "['A2', 'A3']\n1", "correct": false, "rationale": "Index 4 is past the end of the list, so the slice `seats[4:]` is empty and its length is 0." },
-      { "text": "['A2', 'A3']", "correct": false, "rationale": "Slicing past the end never raises `IndexError`, so the second line runs too and prints 0." }
+      {
+        "text": "['A1', 'A2', 'A3']\n0",
+        "correct": false,
+        "rationale": "Indexes start at 0, so the slice from index 1 begins with `\"A2\"`."
+      },
+      {
+        "text": "['A2', 'A3']\n0",
+        "correct": true,
+        "rationale": "A slice that runs past the end just stops at the end of the list, and a slice that starts past the end is empty."
+      },
+      {
+        "text": "['A2', 'A3']\n1",
+        "correct": false,
+        "rationale": "Index 4 is past the end of the list, so the slice `seats[4:]` is empty and its length is 0."
+      },
+      {
+        "text": "['A2', 'A3']",
+        "correct": false,
+        "rationale": "Slicing past the end never raises `IndexError`, so the second line runs too and prints 0."
+      }
     ],
     "explanation": "Only indexing a single position that doesn't exist raises `IndexError`. A slice is more forgiving: `seats[1:8]` stops at the end of the list and gives `['A2', 'A3']`, and `seats[4:]` starts past the end, so it is the empty list with length 0."
   },
@@ -52,13 +110,32 @@
     "id": "4.2.1-04",
     "kind": "single",
     "objectiveId": "4.2.1",
-    "subpoints": ["4.2.1.4", "4.2.1.5"],
+    "subpoints": [
+      "4.2.1.4",
+      "4.2.1.5"
+    ],
     "stem": "Which expression raises a `KeyError`?",
     "options": [
-      { "text": "`[\"soup\", \"pie\", \"cake\"][3]`", "correct": false, "rationale": "A list position that does not exist raises `IndexError`, not `KeyError`." },
-      { "text": "`int(\"soup\")`", "correct": false, "rationale": "Text that is not a whole number makes `int()` raise `ValueError`." },
-      { "text": "`{\"soup\": 4, \"pie\": 3}[\"cake\"]`", "correct": true, "rationale": "The dictionary has no key `\"cake\"`, and a missing dictionary key raises `KeyError`." },
-      { "text": "`\"soup\" + 4`", "correct": false, "rationale": "Adding a string and an int is a `TypeError`." }
+      {
+        "text": "`[\"soup\", \"pie\", \"cake\"][3]`",
+        "correct": false,
+        "rationale": "A list position that does not exist raises `IndexError`, not `KeyError`."
+      },
+      {
+        "text": "`int(\"soup\")`",
+        "correct": false,
+        "rationale": "Text that is not a whole number makes `int()` raise `ValueError`."
+      },
+      {
+        "text": "`{\"soup\": 4, \"pie\": 3}[\"cake\"]`",
+        "correct": true,
+        "rationale": "The dictionary has no key `\"cake\"`, and a missing dictionary key raises `KeyError`."
+      },
+      {
+        "text": "`\"soup\" + 4`",
+        "correct": false,
+        "rationale": "Adding a string and an int is a `TypeError`."
+      }
     ],
     "explanation": "Each operation has its typical exception: a missing dictionary key raises `KeyError`, a list index that is too large raises `IndexError`, text that `int()` cannot read raises `ValueError`, and mixing `str` and `int` with `+` raises `TypeError`."
   },
@@ -66,13 +143,32 @@
     "id": "4.2.1-05",
     "kind": "single",
     "objectiveId": "4.2.1",
-    "subpoints": ["4.2.1.1", "4.2.1.2"],
+    "subpoints": [
+      "4.2.1.1",
+      "4.2.1.2"
+    ],
     "stem": "Which statement about exceptions in Python is true?",
     "options": [
-      { "text": "An exception is found while Python reads the code, so no line of the program runs at all, not even the first one.", "correct": false, "rationale": "That describes a `SyntaxError`. Exceptions such as `ValueError` happen while the program runs, after the earlier lines have run." },
-      { "text": "When an exception happens, Python skips only the line that failed and then carries on with the next line of the program.", "correct": false, "rationale": "An unhandled exception stops the program; none of the following lines run." },
-      { "text": "An exception is just a warning: Python prints its message, then finishes the rest of the program as usual.", "correct": false, "rationale": "An unhandled exception is not a warning. The program stops at the failing line." },
-      { "text": "An exception reports a problem met while the program runs; if nothing handles it, the program stops at that line.", "correct": true, "rationale": "Exceptions describe run-time problems, and an unhandled one ends the program with a traceback." }
+      {
+        "text": "An exception is found while Python reads the code, so no line of the program runs at all, not even the first one.",
+        "correct": false,
+        "rationale": "That describes a `SyntaxError`. Exceptions such as `ValueError` happen while the program runs, after the earlier lines have run."
+      },
+      {
+        "text": "When an exception happens, Python skips only the line that failed and then carries on with the next line of the program.",
+        "correct": false,
+        "rationale": "An unhandled exception stops the program; none of the following lines run."
+      },
+      {
+        "text": "An exception is just a warning: Python prints its message, then finishes the rest of the program as usual.",
+        "correct": false,
+        "rationale": "An unhandled exception is not a warning. The program stops at the failing line."
+      },
+      {
+        "text": "An exception reports a problem met while the program runs; if nothing handles it, the program stops at that line.",
+        "correct": true,
+        "rationale": "Exceptions describe run-time problems, and an unhandled one ends the program with a traceback."
+      }
     ],
     "explanation": "Python raises an exception when an operation can't be done while the program runs, such as dividing by zero. This stops the normal flow at that line instead of carrying on with a wrong value. If nothing handles it, the program ends and Python prints a traceback whose last line names the exception type."
   },
@@ -80,16 +176,44 @@
     "id": "4.2.1-06",
     "kind": "multi",
     "objectiveId": "4.2.1",
-    "subpoints": ["4.2.1.4", "4.2.1.5", "4.2.1.3"],
+    "subpoints": [
+      "4.2.1.4",
+      "4.2.1.5",
+      "4.2.1.3"
+    ],
     "stem": "Which lines raise a `TypeError`? (Select TWO)",
     "select": 2,
     "options": [
-      { "text": "`len(25)`", "correct": true, "rationale": "An int has no length, so `len()` does not work with this type at all." },
-      { "text": "`print(\"Room \" + 12)`", "correct": true, "rationale": "`+` cannot combine a string and an int: `can only concatenate str (not \"int\") to str`." },
-      { "text": "`int(\"12a\")`", "correct": false, "rationale": "`int()` accepts strings; the bad content makes it a `ValueError`." },
-      { "text": "`print(10 % 0)`", "correct": false, "rationale": "`%` by zero raises `ZeroDivisionError`, like `/` and `//`." },
-      { "text": "`print(\"abc\"[5])`", "correct": false, "rationale": "A string position that does not exist raises `IndexError`." },
-      { "text": "`Print(\"hello\")`", "correct": false, "rationale": "Names are case-sensitive, so `Print` is an unknown name: `NameError`." }
+      {
+        "text": "`len(25)`",
+        "correct": true,
+        "rationale": "An int has no length, so `len()` does not work with this type at all."
+      },
+      {
+        "text": "`print(\"Room \" + 12)`",
+        "correct": true,
+        "rationale": "`+` cannot combine a string and an int: `can only concatenate str (not \"int\") to str`."
+      },
+      {
+        "text": "`int(\"12a\")`",
+        "correct": false,
+        "rationale": "`int()` accepts strings; the bad content makes it a `ValueError`."
+      },
+      {
+        "text": "`print(10 % 0)`",
+        "correct": false,
+        "rationale": "`%` by zero raises `ZeroDivisionError`, like `/` and `//`."
+      },
+      {
+        "text": "`print(\"abc\"[5])`",
+        "correct": false,
+        "rationale": "A string position that does not exist raises `IndexError`."
+      },
+      {
+        "text": "`Print(\"hello\")`",
+        "correct": false,
+        "rationale": "Names are case-sensitive, so `Print` is an unknown name: `NameError`."
+      }
     ],
     "explanation": "A `TypeError` means the operation does not work with this type of value at all. `len()` needs something with a length, and `+` can't join `str` and `int`. The others raise `ValueError` (bad content), `ZeroDivisionError`, `IndexError` and `NameError`."
   },
@@ -97,12 +221,28 @@
     "id": "4.2.1-07",
     "kind": "gap",
     "objectiveId": "4.2.1",
-    "subpoints": ["4.2.1.5", "4.2.1.3", "4.2.1.2"],
+    "subpoints": [
+      "4.2.1.5",
+      "4.2.1.3",
+      "4.2.1.2"
+    ],
     "stem": "Complete the code so that it prints `Sharing the cake...` and then stops with a `ZeroDivisionError`.",
     "code": "guests = __BLANK1__\nslices = 12\nprint(\"Sharing the cake...\")\nprint(slices // guests)",
+    "output": "Sharing the cake...\n",
     "raises": "ZeroDivisionError",
     "blanks": [
-      { "n": 1, "kind": "choice", "choices": ["0", "\"0\"", "zero", "4"], "answer": "0", "rationale": "Floor division by the number 0 raises `ZeroDivisionError`. The string `\"0\"` would give a `TypeError`, the unknown name `zero` a `NameError`, and 4 no error at all." }
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "0",
+          "\"0\"",
+          "zero",
+          "4"
+        ],
+        "answer": "0",
+        "rationale": "Floor division by the number 0 raises `ZeroDivisionError`. The string `\"0\"` would give a `TypeError`, the unknown name `zero` a `NameError`, and 4 no error at all."
+      }
     ],
     "explanation": "The first `print()` runs normally. On the last line, `12 // 0` asks Python to divide by zero, which raises `ZeroDivisionError: division by zero` and stops the program. With `\"0\"` the types don't fit `//` (`TypeError`), and `zero` is a name that was never created (`NameError`, before anything is printed)."
   },
@@ -110,11 +250,28 @@
     "id": "4.2.1-08",
     "kind": "order",
     "objectiveId": "4.2.1",
-    "subpoints": ["4.2.1.2", "4.2.1.3", "4.2.1.4"],
+    "subpoints": [
+      "4.2.1.2",
+      "4.2.1.3",
+      "4.2.1.4"
+    ],
     "stem": "Put the lines in order so the program prints `Packing...` and `Total: 3`, and then stops with a `KeyError`.",
     "mode": "code",
-    "lines": ["bag = {\"socks\": 2, \"shirts\": 1}", "print(\"Packing...\")", "print(\"Total:\", bag[\"socks\"] + bag[\"shirts\"])", "print(\"Hats:\", bag[\"hats\"])"],
-    "altOrders": [[1, 0, 2, 3]],
+    "lines": [
+      "bag = {\"socks\": 2, \"shirts\": 1}",
+      "print(\"Packing...\")",
+      "print(\"Total:\", bag[\"socks\"] + bag[\"shirts\"])",
+      "print(\"Hats:\", bag[\"hats\"])"
+    ],
+    "altOrders": [
+      [
+        1,
+        0,
+        2,
+        3
+      ]
+    ],
+    "output": "Packing...\nTotal: 3\n",
     "raises": "KeyError",
     "rationale": "The dictionary must exist before it is used, and the line with the missing key must come last, because the exception stops the program.",
     "explanation": "`bag` has no key `\"hats\"`, so `bag[\"hats\"]` raises `KeyError: 'hats'`. Every line before it runs, and nothing after it would, so it has to be the last line to let `Total: 3` appear. `print(\"Packing...\")` does not use `bag`, so it may come before or after the line that creates the dictionary."
@@ -123,15 +280,35 @@
     "id": "4.2.1-09",
     "kind": "insert",
     "objectiveId": "4.2.1",
-    "subpoints": ["4.2.1.5", "4.2.1.4"],
+    "subpoints": [
+      "4.2.1.5",
+      "4.2.1.4"
+    ],
     "stem": "Which line, inserted at the marked spot, makes the program print `Readings: 3` and then stop with a `TypeError`?",
     "code": "temps = [18, 21, 19]\nprint(\"Readings:\", len(temps))\n# >>> INSERT <<<\nprint(\"Finished\")",
+    "output": "Readings: 3\n",
     "raises": "TypeError",
     "options": [
-      { "text": "print(\"Max:\", max(temps))", "correct": false, "rationale": "Passing two values to `print()` is fine; it prints `Max: 21` and the program finishes normally." },
-      { "text": "print(\"Max: \" + max(temps))", "correct": true, "rationale": "`max(temps)` is the int 21, and `+` cannot join a string and an int: `TypeError`." },
-      { "text": "print(\"Max:\", temps[3])", "correct": false, "rationale": "Index 3 does not exist in a three-item list, which raises `IndexError`, not `TypeError`." },
-      { "text": "print(\"Max:\", int(\"21.5\"))", "correct": false, "rationale": "`int()` accepts the string, but `\"21.5\"` is not a whole number, so this raises `ValueError`." }
+      {
+        "text": "print(\"Max:\", max(temps))",
+        "correct": false,
+        "rationale": "Passing two values to `print()` is fine; it prints `Max: 21` and the program finishes normally."
+      },
+      {
+        "text": "print(\"Max: \" + max(temps))",
+        "correct": true,
+        "rationale": "`max(temps)` is the int 21, and `+` cannot join a string and an int: `TypeError`."
+      },
+      {
+        "text": "print(\"Max:\", temps[3])",
+        "correct": false,
+        "rationale": "Index 3 does not exist in a three-item list, which raises `IndexError`, not `TypeError`."
+      },
+      {
+        "text": "print(\"Max:\", int(\"21.5\"))",
+        "correct": false,
+        "rationale": "`int()` accepts the string, but `\"21.5\"` is not a whole number, so this raises `ValueError`."
+      }
     ],
     "explanation": "A `TypeError` comes from an operation that doesn't work with the types involved. `\"Max: \" + 21` tries to add a `str` and an `int`, which `+` can't do. The line before it has already printed `Readings: 3`, and `Finished` is never reached."
   }

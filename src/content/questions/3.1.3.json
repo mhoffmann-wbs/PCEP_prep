@@ -117,6 +117,7 @@
     ],
     "stem": "What happens when the following code runs?",
     "code": "table = [[1, 2, 3], [4, 5, 6]]\nprint(table[1][2])\nprint(table[2][1])",
+    "output": "6\n",
     "raises": "IndexError",
     "options": [
       {

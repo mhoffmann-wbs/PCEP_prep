@@ -109,10 +109,15 @@ describe('mock exam', () => {
   })
 
   it('scales the time when the bank is short', () => {
-    const mock = buildMockExam(ITEMS, '30-03', false, new Set(), seededRng(5))
-    expect(mock.items.length).toBe(new Set(ITEMS.map((i) => i.objectiveId)).size)
-    expect(mock.shortfall).toBe(35 - mock.items.length)
-    expect(mock.minutes).toBe(Math.round((50 * mock.items.length) / 35))
+    const short = fullBank.filter((i) => !i.objectiveId.startsWith('5.'))
+    const mock = buildMockExam(short, '30-03', false, new Set(), seededRng(5))
+    expect(mock).toMatchObject({ shortfall: 5, minutes: Math.round((50 * 30) / 35) })
+    expect(mock.items).toHaveLength(30)
+  })
+
+  it('fills a full 30-03 mock from the real bank', () => {
+    expect(buildMockExam(ITEMS, '30-03', false, new Set(), seededRng(6))).toMatchObject({ shortfall: 0, minutes: 50 })
+    expect(buildMockExam(ITEMS, '30-02', true, new Set(), seededRng(6))).toMatchObject({ shortfall: 0, minutes: 40 })
   })
 
   it('scores by section and keeps the extras apart', () => {

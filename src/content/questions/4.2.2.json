@@ -3,16 +3,35 @@
     "id": "4.2.2-01",
     "kind": "single",
     "objectiveId": "4.2.2",
-    "subpoints": ["4.2.2.3", "4.2.2.4"],
+    "subpoints": [
+      "4.2.2.3",
+      "4.2.2.4"
+    ],
     "stem": "What is the output of the following code?",
     "code": "try:\n    n = int(\"4.5\")\n    print(\"parsed\")\nexcept ValueError:\n    print(\"bad number\")\nexcept TypeError:\n    print(\"wrong type\")\nprint(\"done\")",
     "output": "bad number\ndone\n",
     "outputKey": true,
     "options": [
-      { "text": "bad number\ndone", "correct": true, "rationale": "int() raises ValueError for \"4.5\", the matching branch runs, and the program continues after the try statement." },
-      { "text": "parsed\ndone", "correct": false, "rationale": "int() cannot convert text with a decimal point, so the line after it never runs." },
-      { "text": "bad number", "correct": false, "rationale": "Once the exception is handled, the program carries on with the code after the try statement." },
-      { "text": "wrong type\ndone", "correct": false, "rationale": "The argument is a string, which int() accepts; the problem is its value, so the error is a ValueError." }
+      {
+        "text": "bad number\ndone",
+        "correct": true,
+        "rationale": "int() raises ValueError for \"4.5\", the matching branch runs, and the program continues after the try statement."
+      },
+      {
+        "text": "parsed\ndone",
+        "correct": false,
+        "rationale": "int() cannot convert text with a decimal point, so the line after it never runs."
+      },
+      {
+        "text": "bad number",
+        "correct": false,
+        "rationale": "Once the exception is handled, the program carries on with the code after the try statement."
+      },
+      {
+        "text": "wrong type\ndone",
+        "correct": false,
+        "rationale": "The argument is a string, which int() accepts; the problem is its value, so the error is a ValueError."
+      }
     ],
     "explanation": "int(\"4.5\") raises ValueError because the text is not a whole number. Python skips the rest of the try block and runs the first except branch that matches. After that branch, execution continues with print(\"done\")."
   },
@@ -20,15 +39,35 @@
     "id": "4.2.2-02",
     "kind": "single",
     "objectiveId": "4.2.2",
-    "subpoints": ["4.2.2.2", "4.2.2.4"],
+    "subpoints": [
+      "4.2.2.2",
+      "4.2.2.4"
+    ],
     "stem": "What happens when this code runs?",
     "code": "try:\n    print(\"Start\")\n    total = \"Bill: \" + 20\n    print(\"Done\")\nexcept ValueError:\n    print(\"Bad value\")\nprint(\"End\")",
+    "output": "Start\n",
     "raises": "TypeError",
     "options": [
-      { "text": "It prints `Start`, `Bad value` and `End`.", "correct": false, "rationale": "An `except` branch only catches the type it names; this problem is a `TypeError`, not a `ValueError`." },
-      { "text": "It prints `Start`, then stops with a `TypeError`.", "correct": true, "rationale": "Adding a string and an int raises `TypeError`, and the only branch handles `ValueError`, so nothing catches it." },
-      { "text": "It prints `Start`, `Done` and `End`.", "correct": false, "rationale": "The line after the failing line in the `try` block never runs." },
-      { "text": "It prints `Start` and `End`, and no error is shown.", "correct": false, "rationale": "An exception that no branch matches is not ignored; it stops the program." }
+      {
+        "text": "It prints `Start`, `Bad value` and `End`.",
+        "correct": false,
+        "rationale": "An `except` branch only catches the type it names; this problem is a `TypeError`, not a `ValueError`."
+      },
+      {
+        "text": "It prints `Start`, then stops with a `TypeError`.",
+        "correct": true,
+        "rationale": "Adding a string and an int raises `TypeError`, and the only branch handles `ValueError`, so nothing catches it."
+      },
+      {
+        "text": "It prints `Start`, `Done` and `End`.",
+        "correct": false,
+        "rationale": "The line after the failing line in the `try` block never runs."
+      },
+      {
+        "text": "It prints `Start` and `End`, and no error is shown.",
+        "correct": false,
+        "rationale": "An exception that no branch matches is not ignored; it stops the program."
+      }
     ],
     "explanation": "`\"Bill: \" + 20` raises `TypeError`, because `+` can't join `str` and `int`. Python skips the rest of the `try` block and looks for a matching branch. The only branch names `ValueError`, so the exception isn't handled and the program stops after printing `Start`. `End` is never printed."
   },
@@ -36,16 +75,36 @@
     "id": "4.2.2-03",
     "kind": "single",
     "objectiveId": "4.2.2",
-    "subpoints": ["4.2.2.3", "4.2.2.4", "4.2.2.2"],
+    "subpoints": [
+      "4.2.2.3",
+      "4.2.2.4",
+      "4.2.2.2"
+    ],
     "stem": "What is the output of the following code?",
     "code": "stock = {\"apples\": 4, \"plums\": 0}\nfor name in [\"apples\", \"pears\", \"plums\"]:\n    try:\n        print(name, 20 // stock[name])\n    except KeyError:\n        print(name, \"missing\")\n    except (ZeroDivisionError, ValueError):\n        print(name, \"none left\")",
     "output": "apples 5\npears missing\nplums none left\n",
     "outputKey": true,
     "options": [
-      { "text": "apples 5\npears missing", "correct": false, "rationale": "The exception is handled inside the loop body, so the loop carries on with the next name." },
-      { "text": "apples 5\npears none left\nplums none left", "correct": false, "rationale": "A missing key raises `KeyError`, which the first branch handles." },
-      { "text": "apples 5\npears missing\nplums none left", "correct": true, "rationale": "Each pass of the loop has its own `try`: no error for apples, `KeyError` for pears and `ZeroDivisionError` for plums." },
-      { "text": "apples 5.0\npears missing\nplums none left", "correct": false, "rationale": "`//` is floor division of two ints, which gives the int 5, not 5.0." }
+      {
+        "text": "apples 5\npears missing",
+        "correct": false,
+        "rationale": "The exception is handled inside the loop body, so the loop carries on with the next name."
+      },
+      {
+        "text": "apples 5\npears none left\nplums none left",
+        "correct": false,
+        "rationale": "A missing key raises `KeyError`, which the first branch handles."
+      },
+      {
+        "text": "apples 5\npears missing\nplums none left",
+        "correct": true,
+        "rationale": "Each pass of the loop has its own `try`: no error for apples, `KeyError` for pears and `ZeroDivisionError` for plums."
+      },
+      {
+        "text": "apples 5.0\npears missing\nplums none left",
+        "correct": false,
+        "rationale": "`//` is floor division of two ints, which gives the int 5, not 5.0."
+      }
     ],
     "explanation": "The `try` statement is inside the loop, so it runs once per name. `20 // 4` works and prints `apples 5`. `stock[\"pears\"]` raises `KeyError`, handled by the first branch. `20 // 0` raises `ZeroDivisionError`, which matches the tuple in the second branch. The `print()` on the failing line never prints anything, because its argument could not be worked out."
   },
@@ -53,15 +112,34 @@
     "id": "4.2.2-04",
     "kind": "single",
     "objectiveId": "4.2.2",
-    "subpoints": ["4.2.2.4"],
+    "subpoints": [
+      "4.2.2.4"
+    ],
     "stem": "What happens when this code runs?",
     "code": "try:\n    sizes = [\"S\", \"M\", \"L\"]\n    print(sizes[3])\nexcept IndexError:\n    print(\"No such size\")\n    print(int(\"XL\"))\nexcept ValueError:\n    print(\"Not a number\")",
+    "output": "No such size\n",
     "raises": "ValueError",
     "options": [
-      { "text": "It prints `No such size` and then `Not a number`.", "correct": false, "rationale": "The `except ValueError` branch only covers the `try` block, not an exception raised inside another `except` block." },
-      { "text": "It prints `No such size` and the program then finishes normally, without any error.", "correct": false, "rationale": "`int(\"XL\")` raises `ValueError`, and nothing handles it, so the program stops." },
-      { "text": "It stops with an `IndexError` without printing anything.", "correct": false, "rationale": "The `IndexError` is caught by the first branch, which prints `No such size`." },
-      { "text": "It prints `No such size`, then stops with a `ValueError`.", "correct": true, "rationale": "The new exception is raised inside the `except` block, and the branches of the same `try` do not catch it." }
+      {
+        "text": "It prints `No such size` and then `Not a number`.",
+        "correct": false,
+        "rationale": "The `except ValueError` branch only covers the `try` block, not an exception raised inside another `except` block."
+      },
+      {
+        "text": "It prints `No such size` and the program then finishes normally, without any error.",
+        "correct": false,
+        "rationale": "`int(\"XL\")` raises `ValueError`, and nothing handles it, so the program stops."
+      },
+      {
+        "text": "It stops with an `IndexError` without printing anything.",
+        "correct": false,
+        "rationale": "The `IndexError` is caught by the first branch, which prints `No such size`."
+      },
+      {
+        "text": "It prints `No such size`, then stops with a `ValueError`.",
+        "correct": true,
+        "rationale": "The new exception is raised inside the `except` block, and the branches of the same `try` do not catch it."
+      }
     ],
     "explanation": "`sizes[3]` raises `IndexError`, so Python runs the first branch and prints `No such size`. Then `int(\"XL\")` raises `ValueError` inside that `except` block. The branches of a `try` statement only handle exceptions from its `try` block, so the program stops with `ValueError`."
   },
@@ -69,15 +147,34 @@
     "id": "4.2.2-05",
     "kind": "single",
     "objectiveId": "4.2.2",
-    "subpoints": ["4.2.2.3", "4.2.2.1"],
+    "subpoints": [
+      "4.2.2.3",
+      "4.2.2.1"
+    ],
     "stem": "What happens when you try to run this program?",
     "code": "print(\"Checking the oven\")\ntry:\n    temp = int(\"hot\")\nexcept:\n    print(\"Something went wrong\")\nexcept ValueError:\n    print(\"Not a number\")",
     "raises": "SyntaxError",
     "options": [
-      { "text": "Nothing is printed: Python reports a `SyntaxError` because the bare `except:` is not last.", "correct": true, "rationale": "A bare `except:` must be the last branch. The rule is checked before the program runs, so not even the first line runs." },
-      { "text": "It prints `Checking the oven` and then `Something went wrong`, because the first matching branch wins.", "correct": false, "rationale": "First match wins only in valid code; here Python refuses to run the program at all." },
-      { "text": "It prints `Checking the oven` and then `Not a number`, because the more specific branch is chosen.", "correct": false, "rationale": "Python never chooses the most specific branch; and in any case this code is a `SyntaxError`." },
-      { "text": "It prints `Checking the oven`, `Something went wrong` and `Not a number`, one after another.", "correct": false, "rationale": "At most one branch runs; and here the code does not run at all." }
+      {
+        "text": "Nothing is printed: Python reports a `SyntaxError` because the bare `except:` is not last.",
+        "correct": true,
+        "rationale": "A bare `except:` must be the last branch. The rule is checked before the program runs, so not even the first line runs."
+      },
+      {
+        "text": "It prints `Checking the oven` and then `Something went wrong`, because the first matching branch wins.",
+        "correct": false,
+        "rationale": "First match wins only in valid code; here Python refuses to run the program at all."
+      },
+      {
+        "text": "It prints `Checking the oven` and then `Not a number`, because the more specific branch is chosen.",
+        "correct": false,
+        "rationale": "Python never chooses the most specific branch; and in any case this code is a `SyntaxError`."
+      },
+      {
+        "text": "It prints `Checking the oven`, `Something went wrong` and `Not a number`, one after another.",
+        "correct": false,
+        "rationale": "At most one branch runs; and here the code does not run at all."
+      }
     ],
     "explanation": "An `except:` with no exception name catches everything, so any branch after it could never run. Python therefore requires it to be the last branch: `SyntaxError: default 'except:' must be last`. Because it is a syntax error, it is found before anything runs, so `Checking the oven` is not printed either."
   },
@@ -85,17 +182,44 @@
     "id": "4.2.2-06",
     "kind": "multi",
     "objectiveId": "4.2.2",
-    "subpoints": ["4.2.2.2", "4.2.2.4"],
+    "subpoints": [
+      "4.2.2.2",
+      "4.2.2.4"
+    ],
     "stem": "Which calls make the program stop with an exception that is not handled? (Select TWO)",
     "select": 2,
     "code": "def pick(items, text):\n    try:\n        print(items[int(text)])\n    except ValueError:\n        print(\"not a number\")\n\nmenu = [\"soup\", \"pie\"]",
     "options": [
-      { "text": "`pick(menu, \"5\")`", "correct": true, "rationale": "`int(\"5\")` works, but `menu[5]` raises `IndexError`, which the `ValueError` branch does not handle." },
-      { "text": "`pick({\"a\": 1}, \"0\")`", "correct": true, "rationale": "The dictionary has no key `0`, so `KeyError` is raised, and no branch handles it." },
-      { "text": "`pick(menu, \"one\")`", "correct": false, "rationale": "`int(\"one\")` raises `ValueError`, which is handled: it prints `not a number`." },
-      { "text": "`pick(menu, \"1.5\")`", "correct": false, "rationale": "`int(\"1.5\")` raises `ValueError`, which is handled." },
-      { "text": "`pick(menu, \"1\")`", "correct": false, "rationale": "No exception: it prints `pie`." },
-      { "text": "`pick(menu, \"-1\")`", "correct": false, "rationale": "A negative index counts from the end, so it prints `pie` without an error." }
+      {
+        "text": "`pick(menu, \"5\")`",
+        "correct": true,
+        "rationale": "`int(\"5\")` works, but `menu[5]` raises `IndexError`, which the `ValueError` branch does not handle."
+      },
+      {
+        "text": "`pick({\"a\": 1}, \"0\")`",
+        "correct": true,
+        "rationale": "The dictionary has no key `0`, so `KeyError` is raised, and no branch handles it."
+      },
+      {
+        "text": "`pick(menu, \"one\")`",
+        "correct": false,
+        "rationale": "`int(\"one\")` raises `ValueError`, which is handled: it prints `not a number`."
+      },
+      {
+        "text": "`pick(menu, \"1.5\")`",
+        "correct": false,
+        "rationale": "`int(\"1.5\")` raises `ValueError`, which is handled."
+      },
+      {
+        "text": "`pick(menu, \"1\")`",
+        "correct": false,
+        "rationale": "No exception: it prints `pie`."
+      },
+      {
+        "text": "`pick(menu, \"-1\")`",
+        "correct": false,
+        "rationale": "A negative index counts from the end, so it prints `pie` without an error."
+      }
     ],
     "explanation": "The only branch catches `ValueError`, which happens when `int()` gets text that is not a whole number. Any other exception in the `try` block is not handled: `menu[5]` raises `IndexError`, and a missing dictionary key raises `KeyError`. Both stop the program."
   },
@@ -103,13 +227,39 @@
     "id": "4.2.2-07",
     "kind": "gap",
     "objectiveId": "4.2.2",
-    "subpoints": ["4.2.2.2", "4.2.2.3", "4.2.2.1"],
+    "subpoints": [
+      "4.2.2.2",
+      "4.2.2.3",
+      "4.2.2.1"
+    ],
     "stem": "Complete the code so that it prints `6`, `not a number` and `cannot divide by zero`.",
     "code": "for value in [\"4\", \"six\", \"0\"]:\n    try:\n        print(24 // int(value))\n    except __BLANK1__:\n        print(\"not a number\")\n    except __BLANK2__:\n        print(\"cannot divide by zero\")",
     "output": "6\nnot a number\ncannot divide by zero\n",
     "blanks": [
-      { "n": 1, "kind": "choice", "choices": ["ValueError", "TypeError", "ZeroDivisionError", "NameError"], "answer": "ValueError", "rationale": "`int(\"six\")` gets a string with unusable content, which is a `ValueError`." },
-      { "n": 2, "kind": "choice", "choices": ["ZeroDivisionError", "ValueError", "IndexError", "KeyError"], "answer": "ZeroDivisionError", "rationale": "`24 // 0` raises `ZeroDivisionError`." }
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "ValueError",
+          "TypeError",
+          "ZeroDivisionError",
+          "NameError"
+        ],
+        "answer": "ValueError",
+        "rationale": "`int(\"six\")` gets a string with unusable content, which is a `ValueError`."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "ZeroDivisionError",
+          "ValueError",
+          "IndexError",
+          "KeyError"
+        ],
+        "answer": "ZeroDivisionError",
+        "rationale": "`24 // 0` raises `ZeroDivisionError`."
+      }
     ],
     "explanation": "For `\"4\"` there is no exception, so both branches are skipped and `6` is printed. For `\"six\"`, `int()` raises `ValueError`, handled by the first branch. For `\"0\"`, `24 // 0` raises `ZeroDivisionError`, handled by the second branch. Any other type in a branch would leave one of these exceptions unhandled."
   },
@@ -117,10 +267,20 @@
     "id": "4.2.2-08",
     "kind": "order",
     "objectiveId": "4.2.2",
-    "subpoints": ["4.2.2.1", "4.2.2.4"],
+    "subpoints": [
+      "4.2.2.1",
+      "4.2.2.4"
+    ],
     "stem": "Put the lines in order so the program prints `Try again` and then `Bye`.",
     "mode": "code",
-    "lines": ["try:", "    rating = int(\"five\")", "    print(\"Rating:\", rating)", "except ValueError:", "    print(\"Try again\")", "print(\"Bye\")"],
+    "lines": [
+      "try:",
+      "    rating = int(\"five\")",
+      "    print(\"Rating:\", rating)",
+      "except ValueError:",
+      "    print(\"Try again\")",
+      "print(\"Bye\")"
+    ],
     "output": "Try again\nBye\n",
     "rationale": "The risky line goes in the `try` block before the line that uses its result, the reaction goes under `except`, and `Bye` comes after the whole `try` statement.",
     "explanation": "`int(\"five\")` raises `ValueError`, so the rest of the `try` block, `print(\"Rating:\", rating)`, is skipped. Python runs the matching `except` block, which prints `Try again`, and then continues after the `try` statement with `print(\"Bye\")`."
@@ -129,15 +289,34 @@
     "id": "4.2.2-09",
     "kind": "insert",
     "objectiveId": "4.2.2",
-    "subpoints": ["4.2.2.3", "4.2.2.4"],
+    "subpoints": [
+      "4.2.2.3",
+      "4.2.2.4"
+    ],
     "stem": "Which line, inserted at the marked spot, makes the program print `Not on the menu` and then `Thanks`?",
     "code": "prices = {\"tea\": 3, \"cake\": 4}\ntry:\n    # >>> INSERT <<<\n    print(\"Found it\")\nexcept KeyError:\n    print(\"Not on the menu\")\nexcept ZeroDivisionError:\n    print(\"Free item\")\nprint(\"Thanks\")",
     "output": "Not on the menu\nThanks\n",
     "options": [
-      { "text": "cost = prices[\"tea\"]", "correct": false, "rationale": "This key exists, so no exception happens: the program prints `Found it` and `Thanks`." },
-      { "text": "cost = prices[\"cake\"] / 0", "correct": false, "rationale": "Dividing by zero raises `ZeroDivisionError`, so the second branch prints `Free item`." },
-      { "text": "cost = prices[\"juice\"]", "correct": true, "rationale": "`\"juice\"` is not a key of `prices`, so `KeyError` is raised and the first branch runs." },
-      { "text": "cost = prices[\"tea\"] + \"1\"", "correct": false, "rationale": "Adding an int and a string raises `TypeError`, which no branch handles, so the program stops." }
+      {
+        "text": "cost = prices[\"tea\"]",
+        "correct": false,
+        "rationale": "This key exists, so no exception happens: the program prints `Found it` and `Thanks`."
+      },
+      {
+        "text": "cost = prices[\"cake\"] / 0",
+        "correct": false,
+        "rationale": "Dividing by zero raises `ZeroDivisionError`, so the second branch prints `Free item`."
+      },
+      {
+        "text": "cost = prices[\"juice\"]",
+        "correct": true,
+        "rationale": "`\"juice\"` is not a key of `prices`, so `KeyError` is raised and the first branch runs."
+      },
+      {
+        "text": "cost = prices[\"tea\"] + \"1\"",
+        "correct": false,
+        "rationale": "Adding an int and a string raises `TypeError`, which no branch handles, so the program stops."
+      }
     ],
     "explanation": "The target output needs the `KeyError` branch. A missing key raises `KeyError`, Python skips `print(\"Found it\")`, runs the first matching branch, and then continues after the `try` statement with `print(\"Thanks\")`."
   }

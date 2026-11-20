@@ -3,13 +3,35 @@
     "id": "3.4.1-01",
     "kind": "gap",
     "objectiveId": "3.4.1",
-    "subpoints": ["3.4.1.3", "3.4.1.4", "3.4.1.5"],
+    "subpoints": [
+      "3.4.1.3",
+      "3.4.1.4",
+      "3.4.1.5"
+    ],
     "stem": "Fill the gaps so the program removes the pears and prints each remaining fruit with its count.",
     "code": "stock = {\"apples\": 4, \"pears\": 0}\nstock[\"plums\"] = 7\ndel stock[__BLANK1__]\nfor fruit, n in stock.__BLANK2__():\n    print(fruit, n)",
     "output": "apples 4\nplums 7\n",
     "blanks": [
-      {"n": 1, "kind": "text", "accept": ["\"pears\"", "'pears'"], "rationale": "del removes a key-value pair by its key, written as a string."},
-      {"n": 2, "kind": "choice", "choices": ["keys", "values", "items"], "answer": "items", "rationale": "items() gives (key, value) pairs, which unpack into fruit and n."}
+      {
+        "n": 1,
+        "kind": "text",
+        "accept": [
+          "\"pears\"",
+          "'pears'"
+        ],
+        "rationale": "del removes a key-value pair by its key, written as a string."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "keys",
+          "values",
+          "items"
+        ],
+        "answer": "items",
+        "rationale": "items() gives (key, value) pairs, which unpack into fruit and n."
+      }
     ],
     "explanation": "Assigning to a new key adds a pair, and del stock[\"pears\"] removes one. Dictionaries keep insertion order, so the loop sees apples, then plums. items() is the method that gives both the key and the value."
   },
@@ -17,16 +39,35 @@
     "id": "3.4.1-02",
     "kind": "single",
     "objectiveId": "3.4.1",
-    "subpoints": ["3.4.1.1", "3.4.1.3"],
+    "subpoints": [
+      "3.4.1.1",
+      "3.4.1.3"
+    ],
     "stem": "What is the output of the following code?",
     "code": "menu = {\"soup\": 4, \"salad\": 6, \"soup\": 5}\nmenu[\"bread\"] = 2\nprint(len(menu), menu[\"soup\"])",
     "output": "3 5\n",
     "outputKey": true,
     "options": [
-      {"text": "3 5", "correct": true, "rationale": "The repeated key `\"soup\"` keeps only its last value, 5, and `\"bread\"` is added as a third key."},
-      {"text": "4 5", "correct": false, "rationale": "A key can appear only once, so writing `\"soup\"` twice still makes one pair, not two."},
-      {"text": "3 4", "correct": false, "rationale": "When a key is repeated in the braces, the last value wins, not the first."},
-      {"text": "4 4", "correct": false, "rationale": "This counts the duplicate key as a separate pair and keeps the first value: both are mistakes."}
+      {
+        "text": "3 5",
+        "correct": true,
+        "rationale": "The repeated key `\"soup\"` keeps only its last value, 5, and `\"bread\"` is added as a third key."
+      },
+      {
+        "text": "4 5",
+        "correct": false,
+        "rationale": "A key can appear only once, so writing `\"soup\"` twice still makes one pair, not two."
+      },
+      {
+        "text": "3 4",
+        "correct": false,
+        "rationale": "When a key is repeated in the braces, the last value wins, not the first."
+      },
+      {
+        "text": "4 4",
+        "correct": false,
+        "rationale": "This counts the duplicate key as a separate pair and keeps the first value: both are mistakes."
+      }
     ],
     "explanation": "Keys in a dictionary are unique. In `{\"soup\": 4, \"salad\": 6, \"soup\": 5}` the second `\"soup\"` replaces the first value, so the dict has 2 pairs and `menu[\"soup\"]` is 5. Assigning to the new key `\"bread\"` adds a third pair, so `len(menu)` is 3."
   },
@@ -34,15 +75,34 @@
     "id": "3.4.1-03",
     "kind": "single",
     "objectiveId": "3.4.1",
-    "subpoints": ["3.4.1.2"],
+    "subpoints": [
+      "3.4.1.2"
+    ],
     "stem": "What happens when the following code runs?",
     "code": "colors = {\"sky\": \"blue\", \"grass\": \"green\"}\nprint(\"blue\" in colors, colors.get(\"sun\", \"yellow\"))\nprint(colors[0])",
+    "output": "False yellow\n",
     "raises": "KeyError",
     "options": [
-      {"text": "It prints `True yellow`, then raises a `KeyError`.", "correct": false, "rationale": "`in` checks the keys of a dict, not its values, so `\"blue\" in colors` is `False`."},
-      {"text": "It prints `False yellow`, then raises a `KeyError`.", "correct": true, "rationale": "`in` checks keys, `get()` returns the default for the missing key `\"sun\"`, and `colors[0]` looks for the key `0`, which does not exist."},
-      {"text": "It prints `False yellow`, then prints `blue`.", "correct": false, "rationale": "A dictionary has no positions: `colors[0]` looks for the key `0`, not for the first pair."},
-      {"text": "It prints `False None`, then raises a `KeyError`.", "correct": false, "rationale": "`get()` returns `None` only when no default is given; here the default is `\"yellow\"`."}
+      {
+        "text": "It prints `True yellow`, then raises a `KeyError`.",
+        "correct": false,
+        "rationale": "`in` checks the keys of a dict, not its values, so `\"blue\" in colors` is `False`."
+      },
+      {
+        "text": "It prints `False yellow`, then raises a `KeyError`.",
+        "correct": true,
+        "rationale": "`in` checks keys, `get()` returns the default for the missing key `\"sun\"`, and `colors[0]` looks for the key `0`, which does not exist."
+      },
+      {
+        "text": "It prints `False yellow`, then prints `blue`.",
+        "correct": false,
+        "rationale": "A dictionary has no positions: `colors[0]` looks for the key `0`, not for the first pair."
+      },
+      {
+        "text": "It prints `False None`, then raises a `KeyError`.",
+        "correct": false,
+        "rationale": "`get()` returns `None` only when no default is given; here the default is `\"yellow\"`."
+      }
     ],
     "explanation": "The first `print()` works: `\"blue\"` is a value, not a key, so `\"blue\" in colors` is `False`, and `get(\"sun\", \"yellow\")` returns the default `\"yellow\"` because `\"sun\"` is missing. On the next line, `colors[0]` asks for the key `0`. Dictionaries are looked up by key, never by position, so Python raises `KeyError: 0`."
   },
@@ -50,16 +110,34 @@
     "id": "3.4.1-04",
     "kind": "single",
     "objectiveId": "3.4.1",
-    "subpoints": ["3.4.1.4"],
+    "subpoints": [
+      "3.4.1.4"
+    ],
     "stem": "What is the output of the following code?",
     "code": "cart = {\"milk\": 2, \"eggs\": 6, \"jam\": 1}\nx = cart.pop(\"eggs\")\ny = cart.popitem()\nprint(x, y, cart)",
     "output": "6 ('jam', 1) {'milk': 2}\n",
     "outputKey": true,
     "options": [
-      {"text": "6 ('milk', 2) {'jam': 1}", "correct": false, "rationale": "`popitem()` removes the last pair that was added, not the first one."},
-      {"text": "('eggs', 6) ('jam', 1) {'milk': 2}", "correct": false, "rationale": "`pop()` returns only the value, not a `(key, value)` tuple."},
-      {"text": "6 ('jam', 1) {'milk': 2}", "correct": true, "rationale": "`pop(\"eggs\")` returns the value 6, and `popitem()` removes and returns the last pair added as a tuple."},
-      {"text": "6 1 {'milk': 2}", "correct": false, "rationale": "`popitem()` returns the whole pair as a tuple, not just its value."}
+      {
+        "text": "6 ('milk', 2) {'jam': 1}",
+        "correct": false,
+        "rationale": "`popitem()` removes the last pair that was added, not the first one."
+      },
+      {
+        "text": "('eggs', 6) ('jam', 1) {'milk': 2}",
+        "correct": false,
+        "rationale": "`pop()` returns only the value, not a `(key, value)` tuple."
+      },
+      {
+        "text": "6 ('jam', 1) {'milk': 2}",
+        "correct": true,
+        "rationale": "`pop(\"eggs\")` returns the value 6, and `popitem()` removes and returns the last pair added as a tuple."
+      },
+      {
+        "text": "6 1 {'milk': 2}",
+        "correct": false,
+        "rationale": "`popitem()` returns the whole pair as a tuple, not just its value."
+      }
     ],
     "explanation": "`cart.pop(\"eggs\")` removes the pair with the key `\"eggs\"` and returns its value, 6. `cart.popitem()` removes the pair that was added last, `\"jam\": 1`, and returns it as the tuple `('jam', 1)`. Only `\"milk\": 2` is left in the dict."
   },
@@ -67,16 +145,34 @@
     "id": "3.4.1-05",
     "kind": "single",
     "objectiveId": "3.4.1",
-    "subpoints": ["3.4.1.5"],
+    "subpoints": [
+      "3.4.1.5"
+    ],
     "stem": "What is the output of the following code?",
     "code": "pets = {\"cat\": 2, \"dog\": 1, \"fish\": 5}\ntotal = 0\nfor p in pets.values():\n    total += p\nnames = \"\"\nfor p in pets:\n    names += p[0]\nprint(total, names)",
     "output": "8 cdf\n",
     "outputKey": true,
     "options": [
-      {"text": "3 cdf", "correct": false, "rationale": "`total += p` adds the values themselves; it does not count how many there are."},
-      {"text": "5 cdf", "correct": false, "rationale": "`total` keeps growing in every pass of the loop, so it ends at the sum of all values, not at the last one."},
-      {"text": "8 catdogfish", "correct": false, "rationale": "`p[0]` takes only the first character of each key, not the whole key."},
-      {"text": "8 cdf", "correct": true, "rationale": "`values()` gives 2, 1 and 5, which add up to 8, and a plain loop gives the keys, whose first letters are c, d and f."}
+      {
+        "text": "3 cdf",
+        "correct": false,
+        "rationale": "`total += p` adds the values themselves; it does not count how many there are."
+      },
+      {
+        "text": "5 cdf",
+        "correct": false,
+        "rationale": "`total` keeps growing in every pass of the loop, so it ends at the sum of all values, not at the last one."
+      },
+      {
+        "text": "8 catdogfish",
+        "correct": false,
+        "rationale": "`p[0]` takes only the first character of each key, not the whole key."
+      },
+      {
+        "text": "8 cdf",
+        "correct": true,
+        "rationale": "`values()` gives 2, 1 and 5, which add up to 8, and a plain loop gives the keys, whose first letters are c, d and f."
+      }
     ],
     "explanation": "The first loop uses `values()`, so `p` is 2, then 1, then 5, and `total` becomes 8. The second loop goes over the dict itself, which gives the keys `\"cat\"`, `\"dog\"` and `\"fish\"`. `p[0]` is the first letter of each key, so `names` becomes `\"cdf\"`."
   },
@@ -84,16 +180,36 @@
     "id": "3.4.1-06",
     "kind": "single",
     "objectiveId": "3.4.1",
-    "subpoints": ["3.4.1.2", "3.4.1.3", "3.4.1.5"],
+    "subpoints": [
+      "3.4.1.2",
+      "3.4.1.3",
+      "3.4.1.5"
+    ],
     "stem": "What is the output of the following code?",
     "code": "settings = {\"volume\": 5, \"theme\": \"light\"}\nsettings.update({\"theme\": \"dark\", \"font\": 12})\nsettings[\"volume\"] += 1\nprint(list(settings.keys()))\nprint(\"dark\" in settings, 6 in settings.values())",
     "output": "['volume', 'theme', 'font']\nFalse True\n",
     "outputKey": true,
     "options": [
-      {"text": "['volume', 'theme', 'font']\nFalse True", "correct": true, "rationale": "`update()` replaces the value of `\"theme\"` in place and adds `\"font\"` at the end; `in` checks keys, while `in settings.values()` checks values."},
-      {"text": "['volume', 'theme', 'font']\nTrue True", "correct": false, "rationale": "`\"dark\"` is a value, and `in` on a dict only checks its keys."},
-      {"text": "['volume', 'theme', 'theme', 'font']\nFalse True", "correct": false, "rationale": "Keys are unique: updating `\"theme\"` changes its value instead of adding a second `\"theme\"` key."},
-      {"text": "['volume', 'font', 'theme']\nFalse True", "correct": false, "rationale": "Updating an existing key keeps its place in the order; only new keys go at the end."}
+      {
+        "text": "['volume', 'theme', 'font']\nFalse True",
+        "correct": true,
+        "rationale": "`update()` replaces the value of `\"theme\"` in place and adds `\"font\"` at the end; `in` checks keys, while `in settings.values()` checks values."
+      },
+      {
+        "text": "['volume', 'theme', 'font']\nTrue True",
+        "correct": false,
+        "rationale": "`\"dark\"` is a value, and `in` on a dict only checks its keys."
+      },
+      {
+        "text": "['volume', 'theme', 'theme', 'font']\nFalse True",
+        "correct": false,
+        "rationale": "Keys are unique: updating `\"theme\"` changes its value instead of adding a second `\"theme\"` key."
+      },
+      {
+        "text": "['volume', 'font', 'theme']\nFalse True",
+        "correct": false,
+        "rationale": "Updating an existing key keeps its place in the order; only new keys go at the end."
+      }
     ],
     "explanation": "`update()` changes `\"theme\"` to `\"dark\"` and adds the new key `\"font\"` after the existing ones. `settings[\"volume\"] += 1` changes 5 to 6. So the keys are `volume`, `theme`, `font`. `\"dark\" in settings` checks the keys, so it is `False`, while `6 in settings.values()` checks the values, so it is `True`."
   },
@@ -101,16 +217,42 @@
     "id": "3.4.1-07",
     "kind": "multi",
     "objectiveId": "3.4.1",
-    "subpoints": ["3.4.1.1"],
+    "subpoints": [
+      "3.4.1.1"
+    ],
     "stem": "Which statements create an empty dictionary? (Select THREE)",
     "select": 3,
     "options": [
-      {"text": "`d = {}`", "correct": true, "rationale": "Empty curly braces make an empty dictionary."},
-      {"text": "`d = dict()`", "correct": true, "rationale": "Calling `dict()` with no arguments makes an empty dictionary."},
-      {"text": "`d = []`", "correct": false, "rationale": "Square brackets make an empty list, not a dictionary."},
-      {"text": "`d = dict([])`", "correct": true, "rationale": "`dict()` builds a dictionary from a list of pairs; an empty list gives no pairs, so the dict is empty."},
-      {"text": "`d = {:}`", "correct": false, "rationale": "A colon with no key and no value is not valid Python: this is a `SyntaxError`."},
-      {"text": "`d = ()`", "correct": false, "rationale": "Round brackets make an empty tuple, not a dictionary."}
+      {
+        "text": "`d = {}`",
+        "correct": true,
+        "rationale": "Empty curly braces make an empty dictionary."
+      },
+      {
+        "text": "`d = dict()`",
+        "correct": true,
+        "rationale": "Calling `dict()` with no arguments makes an empty dictionary."
+      },
+      {
+        "text": "`d = []`",
+        "correct": false,
+        "rationale": "Square brackets make an empty list, not a dictionary."
+      },
+      {
+        "text": "`d = dict([])`",
+        "correct": true,
+        "rationale": "`dict()` builds a dictionary from a list of pairs; an empty list gives no pairs, so the dict is empty."
+      },
+      {
+        "text": "`d = {:}`",
+        "correct": false,
+        "rationale": "A colon with no key and no value is not valid Python: this is a `SyntaxError`."
+      },
+      {
+        "text": "`d = ()`",
+        "correct": false,
+        "rationale": "Round brackets make an empty tuple, not a dictionary."
+      }
     ],
     "explanation": "`{}` and `dict()` are the two usual ways to make an empty dictionary. `dict()` can also turn a list of `(key, value)` pairs into a dict, and an empty list gives an empty dict. `[]` is an empty list, `()` is an empty tuple, and `{:}` is a syntax error."
   },
@@ -118,12 +260,32 @@
     "id": "3.4.1-08",
     "kind": "order",
     "objectiveId": "3.4.1",
-    "subpoints": ["3.4.1.1", "3.4.1.3", "3.4.1.5"],
+    "subpoints": [
+      "3.4.1.1",
+      "3.4.1.3",
+      "3.4.1.5"
+    ],
     "stem": "Put the lines in order so the program prints `apples 7` and then `pears 2`.",
     "mode": "code",
-    "lines": ["basket = {}", "basket[\"apples\"] = 3", "basket[\"pears\"] = 2", "basket[\"apples\"] += 4", "for fruit, n in basket.items():", "    print(fruit, n)"],
+    "lines": [
+      "basket = {}",
+      "basket[\"apples\"] = 3",
+      "basket[\"pears\"] = 2",
+      "basket[\"apples\"] += 4",
+      "for fruit, n in basket.items():",
+      "    print(fruit, n)"
+    ],
     "output": "apples 7\npears 2\n",
-    "altOrders": [[0, 1, 3, 2, 4, 5]],
+    "altOrders": [
+      [
+        0,
+        1,
+        3,
+        2,
+        4,
+        5
+      ]
+    ],
     "rationale": "The dict must exist before keys are added, `\"apples\"` must be added before `\"pears\"` so it comes first, and `\"apples\"` must exist before `+= 4` can update it. The update can come before or after the `\"pears\"` line.",
     "explanation": "Assigning to a new key adds a pair, and dictionaries keep the order in which keys were added, so `\"apples\"` must be added before `\"pears\"`. `basket[\"apples\"] += 4` reads the current value 3 and stores 7, so it must come after `\"apples\"` was added (otherwise it raises `KeyError`). Finally, the loop over `items()` prints each key with its value."
   },
@@ -131,15 +293,34 @@
     "id": "3.4.1-09",
     "kind": "insert",
     "objectiveId": "3.4.1",
-    "subpoints": ["3.4.1.4", "3.4.1.5"],
+    "subpoints": [
+      "3.4.1.4",
+      "3.4.1.5"
+    ],
     "stem": "Which line, inserted at the marked spot, makes the program print `Paris 3` and then `Rome 2`?",
     "code": "trips = {\"Paris\": 3, \"Rome\": 2, \"Oslo\": 0}\n# >>> INSERT <<<\nfor city in trips:\n    print(city, trips[city])",
     "output": "Paris 3\nRome 2\n",
     "options": [
-      {"text": "del trips[\"Oslo\"]", "correct": true, "rationale": "`del` removes the pair with the key `\"Oslo\"`, so only Paris and Rome are left to print."},
-      {"text": "trips.remove(\"Oslo\")", "correct": false, "rationale": "Dictionaries have no `remove()` method, so this raises an `AttributeError`. Use `del` or `pop()`."},
-      {"text": "del trips[2]", "correct": false, "rationale": "A dict is indexed by key, not by position: there is no key `2`, so this raises a `KeyError`."},
-      {"text": "trips[\"Oslo\"] = None", "correct": false, "rationale": "This changes the value of `\"Oslo\"` but keeps the key, so the loop still prints `Oslo None`."}
+      {
+        "text": "del trips[\"Oslo\"]",
+        "correct": true,
+        "rationale": "`del` removes the pair with the key `\"Oslo\"`, so only Paris and Rome are left to print."
+      },
+      {
+        "text": "trips.remove(\"Oslo\")",
+        "correct": false,
+        "rationale": "Dictionaries have no `remove()` method, so this raises an `AttributeError`. Use `del` or `pop()`."
+      },
+      {
+        "text": "del trips[2]",
+        "correct": false,
+        "rationale": "A dict is indexed by key, not by position: there is no key `2`, so this raises a `KeyError`."
+      },
+      {
+        "text": "trips[\"Oslo\"] = None",
+        "correct": false,
+        "rationale": "This changes the value of `\"Oslo\"` but keeps the key, so the loop still prints `Oslo None`."
+      }
     ],
     "explanation": "To remove a key-value pair, use `del d[key]` (or `d.pop(key)`). After `del trips[\"Oslo\"]`, the loop over the dict sees only the keys `\"Paris\"` and `\"Rome\"`, and `trips[city]` gives each value."
   }

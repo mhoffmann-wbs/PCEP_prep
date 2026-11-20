@@ -23,7 +23,7 @@ type Of<K extends Item['kind']> = Extract<Item, { kind: K }>
 export function ItemView({ item, response, onChange, revealed = false, keyboard = false }: Props) {
   const objective = OBJECTIVE_BY_ID.get(item.objectiveId)!
   return (
-    <article className="space-y-4">
+    <article className="space-y-4" data-item-id={item.id}>
       <p className="text-xs uppercase tracking-wide text-slate-500">
         {objective.id} <Inline text={objective.title} />
         {objective.sectionId === 'x' && (

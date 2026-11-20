@@ -170,6 +170,7 @@
       }
     ],
     "explanation": "`Saving...` is printed first. Then `KeyboardInterrupt` is raised. It is a direct child of `BaseException`, not of `Exception`, so `except Exception:` doesn't match. Nothing else handles it, so the program stops and `after` is never printed.",
+    "output": "Saving...\n",
     "raises": "KeyboardInterrupt"
   },
   {

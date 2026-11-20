@@ -79,6 +79,7 @@
     ],
     "stem": "What happens when the following code runs?",
     "code": "point = (4, 7)\npoint = point + (9,)\nprint(point)\npoint[0] = 5",
+    "output": "(4, 7, 9)\n",
     "raises": "TypeError",
     "options": [
       {

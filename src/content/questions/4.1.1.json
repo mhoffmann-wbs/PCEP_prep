@@ -3,16 +3,35 @@
     "id": "4.1.1-01",
     "kind": "single",
     "objectiveId": "4.1.1",
-    "subpoints": ["4.1.1.5", "4.1.1.6"],
+    "subpoints": [
+      "4.1.1.5",
+      "4.1.1.6"
+    ],
     "stem": "What is the output of the following code?",
     "code": "print(\"Plan the trip\")\n\ndef book_hotel():\n    print(\"Hotel booked\")\n\ndef book_train():\n    print(\"Train booked\")\n    book_hotel()\n\nbook_train()\nprint(\"Pack the bags\")",
     "output": "Plan the trip\nTrain booked\nHotel booked\nPack the bags\n",
     "outputKey": true,
     "options": [
-      { "text": "Plan the trip\nHotel booked\nTrain booked\nPack the bags", "correct": false, "rationale": "This follows the order of the definitions. What counts is the order of the calls: `book_train()` prints before it calls `book_hotel()`." },
-      { "text": "Plan the trip\nTrain booked\nPack the bags", "correct": false, "rationale": "The call `book_hotel()` inside `book_train` runs too, every time `book_train` is called." },
-      { "text": "Plan the trip\nTrain booked\nHotel booked\nPack the bags", "correct": true, "rationale": "The `def` lines print nothing; `book_train()` prints, then calls `book_hotel()`, and then the last line runs." },
-      { "text": "Plan the trip\nHotel booked\nTrain booked\nHotel booked\nPack the bags", "correct": false, "rationale": "A `def` only remembers the function; its body doesn't run when the definition is read." }
+      {
+        "text": "Plan the trip\nHotel booked\nTrain booked\nPack the bags",
+        "correct": false,
+        "rationale": "This follows the order of the definitions. What counts is the order of the calls: `book_train()` prints before it calls `book_hotel()`."
+      },
+      {
+        "text": "Plan the trip\nTrain booked\nPack the bags",
+        "correct": false,
+        "rationale": "The call `book_hotel()` inside `book_train` runs too, every time `book_train` is called."
+      },
+      {
+        "text": "Plan the trip\nTrain booked\nHotel booked\nPack the bags",
+        "correct": true,
+        "rationale": "The `def` lines print nothing; `book_train()` prints, then calls `book_hotel()`, and then the last line runs."
+      },
+      {
+        "text": "Plan the trip\nHotel booked\nTrain booked\nHotel booked\nPack the bags",
+        "correct": false,
+        "rationale": "A `def` only remembers the function; its body doesn't run when the definition is read."
+      }
     ],
     "explanation": "Python runs the file from top to bottom. It prints `Plan the trip`, then reads the two `def` statements without running their bodies. The call `book_train()` prints `Train booked` and then calls `book_hotel()`, which prints `Hotel booked`. When the call finishes, Python continues after it and prints `Pack the bags`."
   },
@@ -20,13 +39,31 @@
     "id": "4.1.1-02",
     "kind": "single",
     "objectiveId": "4.1.1",
-    "subpoints": ["4.1.1.1"],
+    "subpoints": [
+      "4.1.1.1"
+    ],
     "stem": "A program prints the same three-line receipt header in five places. How does moving those lines into one function make the program easier to maintain?",
     "options": [
-      { "text": "A change to the header is made once, in the function, and every call gets it", "correct": true, "rationale": "The steps live in one place, so one fix updates all five places that call the function." },
-      { "text": "The header lines no longer need indentation, because the function groups them", "correct": false, "rationale": "A function body must be indented. Functions don't remove indentation rules." },
-      { "text": "The lines inside a function run faster than the same lines written outside it", "correct": false, "rationale": "Functions are about organising code, not speed. The same lines do the same work." },
-      { "text": "Each call can come before the `def`, so the order of the file doesn't matter any more", "correct": false, "rationale": "A function must be defined before a call to it runs, so order still matters." }
+      {
+        "text": "A change to the header is made once, in the function, and every call gets it",
+        "correct": true,
+        "rationale": "The steps live in one place, so one fix updates all five places that call the function."
+      },
+      {
+        "text": "The header lines no longer need indentation, because the function groups them",
+        "correct": false,
+        "rationale": "A function body must be indented. Functions don't remove indentation rules."
+      },
+      {
+        "text": "The lines inside a function run faster than the same lines written outside it",
+        "correct": false,
+        "rationale": "Functions are about organising code, not speed. The same lines do the same work."
+      },
+      {
+        "text": "Each call can come before the `def`, so the order of the file doesn't matter any more",
+        "correct": false,
+        "rationale": "A function must be defined before a call to it runs, so order still matters."
+      }
     ],
     "explanation": "Functions support decomposition (splitting a job into named steps), reuse (writing code once, calling it many times) and maintainability. With the header in one function, a change, such as a new shop name, is made in one place and every call uses it. Without the function, all five copies would need the same edit."
   },
@@ -34,13 +71,32 @@
     "id": "4.1.1-03",
     "kind": "single",
     "objectiveId": "4.1.1",
-    "subpoints": ["4.1.1.2", "4.1.1.3"],
+    "subpoints": [
+      "4.1.1.2",
+      "4.1.1.3"
+    ],
     "stem": "Which function definition line is valid?",
     "options": [
-      { "text": "`def 2nd_course():`", "correct": false, "rationale": "A function name, like any identifier, must not start with a digit." },
-      { "text": "`def second-course():`", "correct": false, "rationale": "`-` is the minus operator, so it can't be part of a name." },
-      { "text": "`def second_course():`", "correct": true, "rationale": "`def`, a valid snake_case name, empty brackets and the colon." },
-      { "text": "`def second_course:`", "correct": false, "rationale": "The brackets are needed even when the function takes nothing." }
+      {
+        "text": "`def 2nd_course():`",
+        "correct": false,
+        "rationale": "A function name, like any identifier, must not start with a digit."
+      },
+      {
+        "text": "`def second-course():`",
+        "correct": false,
+        "rationale": "`-` is the minus operator, so it can't be part of a name."
+      },
+      {
+        "text": "`def second_course():`",
+        "correct": true,
+        "rationale": "`def`, a valid snake_case name, empty brackets and the colon."
+      },
+      {
+        "text": "`def second_course:`",
+        "correct": false,
+        "rationale": "The brackets are needed even when the function takes nothing."
+      }
     ],
     "explanation": "A definition line is `def`, then a name, then brackets, then a colon. Function names follow the same rules as variable names: letters, digits and underscores, not starting with a digit, and not a keyword. Only `def second_course():` gets every part right."
   },
@@ -48,16 +104,35 @@
     "id": "4.1.1-04",
     "kind": "single",
     "objectiveId": "4.1.1",
-    "subpoints": ["4.1.1.4", "4.1.1.6"],
+    "subpoints": [
+      "4.1.1.4",
+      "4.1.1.6"
+    ],
     "stem": "What is the output of the following code?",
     "code": "def water_garden():\n    print(\"Fill the can\")\n    print(\"Water the roses\")\nprint(\"Garden done\")\n\nwater_garden()",
     "output": "Garden done\nFill the can\nWater the roses\n",
     "outputKey": true,
     "options": [
-      { "text": "Fill the can\nWater the roses\nGarden done", "correct": false, "rationale": "`print(\"Garden done\")` is not indented, so it is not in the body. It runs before the call." },
-      { "text": "Garden done", "correct": false, "rationale": "The call `water_garden()` at the end does run the body." },
-      { "text": "Garden done\nFill the can\nWater the roses\nGarden done", "correct": false, "rationale": "The unindented line runs only once, when Python reaches it; it is not part of the function." },
-      { "text": "Garden done\nFill the can\nWater the roses", "correct": true, "rationale": "The body is the two indented lines. The unindented `print` runs first, and the call runs the body afterwards." }
+      {
+        "text": "Fill the can\nWater the roses\nGarden done",
+        "correct": false,
+        "rationale": "`print(\"Garden done\")` is not indented, so it is not in the body. It runs before the call."
+      },
+      {
+        "text": "Garden done",
+        "correct": false,
+        "rationale": "The call `water_garden()` at the end does run the body."
+      },
+      {
+        "text": "Garden done\nFill the can\nWater the roses\nGarden done",
+        "correct": false,
+        "rationale": "The unindented line runs only once, when Python reaches it; it is not part of the function."
+      },
+      {
+        "text": "Garden done\nFill the can\nWater the roses",
+        "correct": true,
+        "rationale": "The body is the two indented lines. The unindented `print` runs first, and the call runs the body afterwards."
+      }
     ],
     "explanation": "The body of a function is the indented lines below the `def` line. The first line that is not indented, `print(\"Garden done\")`, ends the function and runs straight away. Only after that does the call `water_garden()` run the two body lines."
   },
@@ -65,15 +140,35 @@
     "id": "4.1.1-05",
     "kind": "single",
     "objectiveId": "4.1.1",
-    "subpoints": ["4.1.1.5", "4.1.1.6"],
+    "subpoints": [
+      "4.1.1.5",
+      "4.1.1.6"
+    ],
     "stem": "What happens when this code is run?",
     "code": "print(\"Opening shop\")\ngreet_customer()\n\ndef greet_customer():\n    print(\"Welcome!\")",
+    "output": "Opening shop\n",
     "raises": "NameError",
     "options": [
-      { "text": "`Opening shop` and `Welcome!` are printed, as Python reads the whole file first", "correct": false, "rationale": "Python reads the whole file for syntax, but it only creates the function when it runs the `def` line." },
-      { "text": "`Opening shop` is printed, and then a `NameError` stops the program", "correct": true, "rationale": "The call runs before the `def` line has run, so the name `greet_customer` doesn't exist yet." },
-      { "text": "Nothing is printed: Python reports a `SyntaxError` before running anything", "correct": false, "rationale": "The code follows Python's grammar, so it starts running. The problem only shows up at the call." },
-      { "text": "Only `Opening shop` is printed, and the early call is skipped without an error", "correct": false, "rationale": "Python never skips a call silently. An unknown name raises an error." }
+      {
+        "text": "`Opening shop` and `Welcome!` are printed, as Python reads the whole file first",
+        "correct": false,
+        "rationale": "Python reads the whole file for syntax, but it only creates the function when it runs the `def` line."
+      },
+      {
+        "text": "`Opening shop` is printed, and then a `NameError` stops the program",
+        "correct": true,
+        "rationale": "The call runs before the `def` line has run, so the name `greet_customer` doesn't exist yet."
+      },
+      {
+        "text": "Nothing is printed: Python reports a `SyntaxError` before running anything",
+        "correct": false,
+        "rationale": "The code follows Python's grammar, so it starts running. The problem only shows up at the call."
+      },
+      {
+        "text": "Only `Opening shop` is printed, and the early call is skipped without an error",
+        "correct": false,
+        "rationale": "Python never skips a call silently. An unknown name raises an error."
+      }
     ],
     "explanation": "Python runs the file from top to bottom. It prints `Opening shop`, then reaches the call `greet_customer()`. The `def` line further down hasn't run yet, so the name is unknown and Python raises `NameError: name 'greet_customer' is not defined`. A function must be defined before the line that calls it runs."
   },
@@ -81,17 +176,43 @@
     "id": "4.1.1-06",
     "kind": "multi",
     "objectiveId": "4.1.1",
-    "subpoints": ["4.1.1.5"],
+    "subpoints": [
+      "4.1.1.5"
+    ],
     "stem": "Which lines, placed after the definition below, run the body of `show_menu`? (Select TWO)",
     "code": "def show_menu():\n    print(\"Soup, salad, pie\")",
     "select": 2,
     "options": [
-      { "text": "`show_menu()`", "correct": true, "rationale": "The name followed by round brackets calls the function." },
-      { "text": "`result = show_menu()`", "correct": true, "rationale": "The call on the right runs the body; its result is then stored in `result`." },
-      { "text": "`show_menu`", "correct": false, "rationale": "Without brackets the function is only mentioned, not called, so nothing runs." },
-      { "text": "`def show_menu():`", "correct": false, "rationale": "This starts a new definition; it doesn't run the existing body." },
-      { "text": "`call show_menu`", "correct": false, "rationale": "Python has no `call` keyword. This line is a syntax error." },
-      { "text": "`show_menu[]`", "correct": false, "rationale": "Calls use round brackets. Square brackets are for indexing, which doesn't call anything." }
+      {
+        "text": "`show_menu()`",
+        "correct": true,
+        "rationale": "The name followed by round brackets calls the function."
+      },
+      {
+        "text": "`result = show_menu()`",
+        "correct": true,
+        "rationale": "The call on the right runs the body; its result is then stored in `result`."
+      },
+      {
+        "text": "`show_menu`",
+        "correct": false,
+        "rationale": "Without brackets the function is only mentioned, not called, so nothing runs."
+      },
+      {
+        "text": "`def show_menu():`",
+        "correct": false,
+        "rationale": "This starts a new definition; it doesn't run the existing body."
+      },
+      {
+        "text": "`call show_menu`",
+        "correct": false,
+        "rationale": "Python has no `call` keyword. This line is a syntax error."
+      },
+      {
+        "text": "`show_menu[]`",
+        "correct": false,
+        "rationale": "Calls use round brackets. Square brackets are for indexing, which doesn't call anything."
+      }
     ],
     "explanation": "You invoke a function by writing its name followed by round brackets. The call can stand alone or be part of a bigger statement, such as an assignment. Writing the name without brackets doesn't run anything."
   },
@@ -99,13 +220,33 @@
     "id": "4.1.1-07",
     "kind": "gap",
     "objectiveId": "4.1.1",
-    "subpoints": ["4.1.1.2", "4.1.1.4"],
+    "subpoints": [
+      "4.1.1.2",
+      "4.1.1.4"
+    ],
     "stem": "Fill the gaps to define the function `print_receipt`, so that the program prints the two receipt lines.",
     "code": "__BLANK1__ print_receipt__BLANK2__\n    print(\"Corner Bakery\")\n    print(\"Thank you!\")\n\nprint_receipt()",
     "output": "Corner Bakery\nThank you!\n",
     "blanks": [
-      { "n": 1, "kind": "text", "accept": ["def"], "rationale": "A function definition starts with the keyword `def`." },
-      { "n": 2, "kind": "choice", "choices": ["():", ":", "()"], "answer": "():", "rationale": "The header needs the brackets and then a colon, which starts the indented body." }
+      {
+        "n": 1,
+        "kind": "text",
+        "accept": [
+          "def"
+        ],
+        "rationale": "A function definition starts with the keyword `def`."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "():",
+          ":",
+          "()"
+        ],
+        "answer": "():",
+        "rationale": "The header needs the brackets and then a colon, which starts the indented body."
+      }
     ],
     "explanation": "A definition line is the keyword `def`, the function's name, a pair of round brackets and a colon. The indented lines below form the body. The call `print_receipt()` at the end then runs the body, printing both lines."
   },
@@ -113,11 +254,31 @@
     "id": "4.1.1-08",
     "kind": "order",
     "objectiveId": "4.1.1",
-    "subpoints": ["4.1.1.2", "4.1.1.4", "4.1.1.6"],
+    "subpoints": [
+      "4.1.1.2",
+      "4.1.1.4",
+      "4.1.1.6"
+    ],
     "stem": "Put the lines in order so the program prints `Start`, `Boil water`, `Add tea bag` and `Enjoy`, one per line.",
     "mode": "code",
-    "lines": ["print(\"Start\")", "def make_tea():", "    print(\"Boil water\")", "    print(\"Add tea bag\")", "make_tea()", "print(\"Enjoy\")"],
-    "altOrders": [[1, 2, 3, 0, 4, 5]],
+    "lines": [
+      "print(\"Start\")",
+      "def make_tea():",
+      "    print(\"Boil water\")",
+      "    print(\"Add tea bag\")",
+      "make_tea()",
+      "print(\"Enjoy\")"
+    ],
+    "altOrders": [
+      [
+        1,
+        2,
+        3,
+        0,
+        4,
+        5
+      ]
+    ],
     "output": "Start\nBoil water\nAdd tea bag\nEnjoy\n",
     "rationale": "The body lines must sit directly under the `def` line, the definition must come before the call, and `Enjoy` is printed after the call.",
     "explanation": "A `def` prints nothing; it only creates the function. The body is the indented lines under it. The output starts with `Start`, then the call `make_tea()` prints the two body lines, and `Enjoy` comes last. `print(\"Start\")` may also go after the definition, because the definition prints nothing."
@@ -126,15 +287,34 @@
     "id": "4.1.1-09",
     "kind": "insert",
     "objectiveId": "4.1.1",
-    "subpoints": ["4.1.1.5", "4.1.1.6"],
+    "subpoints": [
+      "4.1.1.5",
+      "4.1.1.6"
+    ],
     "stem": "Which line, inserted at the marked spot, makes the program print `Morning`, `Rain later` and `Take an umbrella`, one per line?",
     "code": "def check_weather():\n    print(\"Rain later\")\n\nprint(\"Morning\")\n# >>> INSERT <<<\nprint(\"Take an umbrella\")",
     "output": "Morning\nRain later\nTake an umbrella\n",
     "options": [
-      { "text": "check_weather", "correct": false, "rationale": "Without brackets the function is only mentioned, not called, so `Rain later` is never printed." },
-      { "text": "def check_weather():", "correct": false, "rationale": "This starts a new definition with no indented body, so Python reports an `IndentationError`." },
-      { "text": "check_weather()", "correct": true, "rationale": "The call runs the body, which prints `Rain later` between the other two lines." },
-      { "text": "print(\"check_weather()\")", "correct": false, "rationale": "This prints the text `check_weather()` instead of calling the function." }
+      {
+        "text": "check_weather",
+        "correct": false,
+        "rationale": "Without brackets the function is only mentioned, not called, so `Rain later` is never printed."
+      },
+      {
+        "text": "def check_weather():",
+        "correct": false,
+        "rationale": "This starts a new definition with no indented body, so Python reports an `IndentationError`."
+      },
+      {
+        "text": "check_weather()",
+        "correct": true,
+        "rationale": "The call runs the body, which prints `Rain later` between the other two lines."
+      },
+      {
+        "text": "print(\"check_weather()\")",
+        "correct": false,
+        "rationale": "This prints the text `check_weather()` instead of calling the function."
+      }
     ],
     "explanation": "The `def` only creates the function. To run its body you call it: its name followed by round brackets. The call sits between the two `print` lines, so `Rain later` appears between them."
   }

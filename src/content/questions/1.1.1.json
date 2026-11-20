@@ -3,13 +3,31 @@
     "id": "1.1.1-01",
     "kind": "single",
     "objectiveId": "1.1.1",
-    "subpoints": ["1.1.1.1"],
+    "subpoints": [
+      "1.1.1.1"
+    ],
     "stem": "A rule of Python says that an `if` line must end with a colon. Which layer of a programming language does a rule like this belong to?",
     "options": [
-      { "text": "Lexis", "correct": false, "rationale": "Lexis is the set of words (tokens) the language allows. The colon is a valid token; the rule is about how tokens are combined." },
-      { "text": "Syntax", "correct": true, "rationale": "Syntax is the set of grammar rules for putting tokens together, such as where a colon must go." },
-      { "text": "Semantics", "correct": false, "rationale": "Semantics is about what an instruction means and does when it runs, not about how it must be written." },
-      { "text": "Bytecode", "correct": false, "rationale": "Bytecode is the form CPython compiles a program into. It is not one of the three layers of a language." }
+      {
+        "text": "Lexis",
+        "correct": false,
+        "rationale": "Lexis is the set of words (tokens) the language allows. The colon is a valid token; the rule is about how tokens are combined."
+      },
+      {
+        "text": "Syntax",
+        "correct": true,
+        "rationale": "Syntax is the set of grammar rules for putting tokens together, such as where a colon must go."
+      },
+      {
+        "text": "Semantics",
+        "correct": false,
+        "rationale": "Semantics is about what an instruction means and does when it runs, not about how it must be written."
+      },
+      {
+        "text": "Bytecode",
+        "correct": false,
+        "rationale": "Bytecode is the form CPython compiles a program into. It is not one of the three layers of a language."
+      }
     ],
     "explanation": "Every language has three layers. Lexis is the vocabulary (the tokens), syntax is the grammar (how tokens may be combined) and semantics is the meaning. \"An `if` line must end with a colon\" is a rule about how tokens are put together, so it belongs to the syntax."
   },
@@ -17,15 +35,34 @@
     "id": "1.1.1-02",
     "kind": "single",
     "objectiveId": "1.1.1",
-    "subpoints": ["1.1.1.2", "1.1.1.5"],
+    "subpoints": [
+      "1.1.1.2",
+      "1.1.1.5"
+    ],
     "stem": "What happens when this program is run?",
     "code": "print(\"Packing list\")\nprint(\"socks\")\nprint(\"towel\"",
     "raises": "SyntaxError",
     "options": [
-      { "text": "Nothing is printed: Python reports a `SyntaxError` before it runs any line", "correct": true, "rationale": "Python checks the whole file before running it. The bracket that is never closed stops everything at that stage." },
-      { "text": "`Packing list` and `socks` are printed, then a `SyntaxError` is reported", "correct": false, "rationale": "This treats the bracket mistake like a runtime error. Syntax is checked for the whole file before the first line runs." },
-      { "text": "All three words are printed, because Python closes the missing bracket for you", "correct": false, "rationale": "Python never repairs your code. A bracket that is never closed breaks the grammar, so the program can't start." },
-      { "text": "`Packing list` is printed, and then a `TypeError` stops the program", "correct": false, "rationale": "A `TypeError` is a runtime error in valid code. A missing bracket is a syntax error, found before anything runs." }
+      {
+        "text": "Nothing is printed: Python reports a `SyntaxError` before it runs any line",
+        "correct": true,
+        "rationale": "Python checks the whole file before running it. The bracket that is never closed stops everything at that stage."
+      },
+      {
+        "text": "`Packing list` and `socks` are printed, then a `SyntaxError` is reported",
+        "correct": false,
+        "rationale": "This treats the bracket mistake like a runtime error. Syntax is checked for the whole file before the first line runs."
+      },
+      {
+        "text": "All three words are printed, because Python closes the missing bracket for you",
+        "correct": false,
+        "rationale": "Python never repairs your code. A bracket that is never closed breaks the grammar, so the program can't start."
+      },
+      {
+        "text": "`Packing list` is printed, and then a `TypeError` stops the program",
+        "correct": false,
+        "rationale": "A `TypeError` is a runtime error in valid code. A missing bracket is a syntax error, found before anything runs."
+      }
     ],
     "explanation": "The last line is missing its closing bracket, which breaks Python's grammar. CPython splits the whole file into tokens and checks its syntax before it compiles and runs anything. So it reports `SyntaxError: '(' was never closed` and not even the first `print` runs."
   },
@@ -33,15 +70,33 @@
     "id": "1.1.1-03",
     "kind": "single",
     "objectiveId": "1.1.1",
-    "subpoints": ["1.1.1.2"],
+    "subpoints": [
+      "1.1.1.2"
+    ],
     "stem": "This program should print the day's pay: the hours worked times the pay per hour. Which kind of error does it contain?",
     "code": "hours_worked = 8\npay_per_hour = 12\nprint(\"Pay:\", hours_worked + pay_per_hour)",
     "output": "Pay: 20\n",
     "options": [
-      { "text": "A lexical error: one of its tokens is not part of Python's vocabulary", "correct": false, "rationale": "Every token here (names, numbers, `=`, `+`, brackets, a string) is a valid Python word." },
-      { "text": "A syntax error: valid tokens are put together against Python's grammar", "correct": false, "rationale": "The lines follow the grammar, so Python can run them. A syntax error would stop the program before it starts." },
-      { "text": "A semantic (logic) error: it runs, but `+` gives the wrong meaning", "correct": true, "rationale": "The code is valid and runs without a message, but it adds instead of multiplying, so the meaning is wrong." },
-      { "text": "No error: the program finishes without an error message, so it is correct", "correct": false, "rationale": "No error message doesn't mean correct. The program prints 20, but 8 hours at 12 per hour is 96." }
+      {
+        "text": "A lexical error: one of its tokens is not part of Python's vocabulary",
+        "correct": false,
+        "rationale": "Every token here (names, numbers, `=`, `+`, brackets, a string) is a valid Python word."
+      },
+      {
+        "text": "A syntax error: valid tokens are put together against Python's grammar",
+        "correct": false,
+        "rationale": "The lines follow the grammar, so Python can run them. A syntax error would stop the program before it starts."
+      },
+      {
+        "text": "A semantic (logic) error: it runs, but `+` gives the wrong meaning",
+        "correct": true,
+        "rationale": "The code is valid and runs without a message, but it adds instead of multiplying, so the meaning is wrong."
+      },
+      {
+        "text": "No error: the program finishes without an error message, so it is correct",
+        "correct": false,
+        "rationale": "No error message doesn't mean correct. The program prints 20, but 8 hours at 12 per hour is 96."
+      }
     ],
     "explanation": "The program runs and prints `Pay: 20`, with no error message. But the pay should be 8 * 12 = 96. The words and grammar are fine; only the meaning is wrong. That is a semantic error of the kind called a logic error, and only testing with values you can check by hand finds it."
   },
@@ -49,13 +104,32 @@
     "id": "1.1.1-04",
     "kind": "single",
     "objectiveId": "1.1.1",
-    "subpoints": ["1.1.1.3", "1.1.1.4"],
+    "subpoints": [
+      "1.1.1.3",
+      "1.1.1.4"
+    ],
     "stem": "Which statement about a compiler is true?",
     "options": [
-      { "text": "It reads one instruction, runs it straight away, then reads the next one", "correct": false, "rationale": "That describes an interpreter, which translates and runs the program as it goes." },
-      { "text": "It must be installed on the user's computer every time the program runs", "correct": false, "rationale": "That is true of an interpreter. A compiled program runs without the compiler." },
-      { "text": "Its output runs unchanged on every kind of computer and operating system", "correct": false, "rationale": "Compiled machine code is built for one kind of computer and system. Running anywhere is a strength of interpreted code." },
-      { "text": "It translates the whole program into machine code before the program runs", "correct": true, "rationale": "A compiler works once, ahead of time, and produces a separate machine-code file." }
+      {
+        "text": "It reads one instruction, runs it straight away, then reads the next one",
+        "correct": false,
+        "rationale": "That describes an interpreter, which translates and runs the program as it goes."
+      },
+      {
+        "text": "It must be installed on the user's computer every time the program runs",
+        "correct": false,
+        "rationale": "That is true of an interpreter. A compiled program runs without the compiler."
+      },
+      {
+        "text": "Its output runs unchanged on every kind of computer and operating system",
+        "correct": false,
+        "rationale": "Compiled machine code is built for one kind of computer and system. Running anywhere is a strength of interpreted code."
+      },
+      {
+        "text": "It translates the whole program into machine code before the program runs",
+        "correct": true,
+        "rationale": "A compiler works once, ahead of time, and produces a separate machine-code file."
+      }
     ],
     "explanation": "A compiler translates the whole source code into machine code before the program runs. The result is a separate file that can run again and again without the compiler or the source. An interpreter, by contrast, translates and runs the code every time, so it is needed on each run."
   },
@@ -63,13 +137,31 @@
     "id": "1.1.1-05",
     "kind": "single",
     "objectiveId": "1.1.1",
-    "subpoints": ["1.1.1.5"],
+    "subpoints": [
+      "1.1.1.5"
+    ],
     "stem": "When CPython runs a `.py` file, what is the bytecode it produces?",
     "options": [
-      { "text": "Machine code that the processor runs directly, saved as an `.exe` file", "correct": false, "rationale": "Bytecode is not machine code, and Python doesn't produce an `.exe` program: the interpreter is needed every time." },
-      { "text": "A lower-level form of the program that the Python Virtual Machine runs", "correct": true, "rationale": "CPython compiles source to bytecode, and the Python Virtual Machine, part of the interpreter, carries it out." },
-      { "text": "The list of tokens Python makes when it splits the source code into words", "correct": false, "rationale": "Splitting into tokens is an earlier step, where lexis is checked. Bytecode comes after the grammar check." },
-      { "text": "A copy of the source code with all the comments and blank lines removed", "correct": false, "rationale": "Bytecode is not source code at all. It is a set of simple instructions for the Python Virtual Machine." }
+      {
+        "text": "Machine code that the processor runs directly, saved as an `.exe` file",
+        "correct": false,
+        "rationale": "Bytecode is not machine code, and Python doesn't produce an `.exe` program: the interpreter is needed every time."
+      },
+      {
+        "text": "A lower-level form of the program that the Python Virtual Machine runs",
+        "correct": true,
+        "rationale": "CPython compiles source to bytecode, and the Python Virtual Machine, part of the interpreter, carries it out."
+      },
+      {
+        "text": "The list of tokens Python makes when it splits the source code into words",
+        "correct": false,
+        "rationale": "Splitting into tokens is an earlier step, where lexis is checked. Bytecode comes after the grammar check."
+      },
+      {
+        "text": "A copy of the source code with all the comments and blank lines removed",
+        "correct": false,
+        "rationale": "Bytecode is not source code at all. It is a set of simple instructions for the Python Virtual Machine."
+      }
     ],
     "explanation": "CPython reads the source, splits it into tokens, checks the grammar and then compiles the program to bytecode: simple, lower-level instructions. The Python Virtual Machine then runs the bytecode instruction by instruction. Bytecode may be saved in `.pyc` files, but it is not machine code, so the interpreter is still needed."
   },
@@ -77,16 +169,42 @@
     "id": "1.1.1-06",
     "kind": "multi",
     "objectiveId": "1.1.1",
-    "subpoints": ["1.1.1.2"],
+    "subpoints": [
+      "1.1.1.2"
+    ],
     "stem": "Which lines contain a lexical error, a token that Python can't recognise? (Select TWO)",
     "select": 2,
     "options": [
-      { "text": "`total$ = 5`", "correct": true, "rationale": "`$` is not part of Python's vocabulary, so `total$` is not a valid token." },
-      { "text": "`city = \"Rome`", "correct": true, "rationale": "The string is never closed, so Python can't tell where the token ends." },
-      { "text": "`if total > 5`", "correct": false, "rationale": "Every token is valid; the missing colon breaks the grammar, so this is a syntax error." },
-      { "text": "`print(\"hi\"`", "correct": false, "rationale": "The tokens are fine, but the bracket is never closed. That breaks the grammar: a syntax error." },
-      { "text": "`print(\"Age: \" + 30)`", "correct": false, "rationale": "This is valid Python that fails while running with a `TypeError`: a semantic error." },
-      { "text": "`average = 6 + 8 / 2`", "correct": false, "rationale": "This runs without a message but gives the wrong average: a semantic (logic) error." }
+      {
+        "text": "`total$ = 5`",
+        "correct": true,
+        "rationale": "`$` is not part of Python's vocabulary, so `total$` is not a valid token."
+      },
+      {
+        "text": "`city = \"Rome`",
+        "correct": true,
+        "rationale": "The string is never closed, so Python can't tell where the token ends."
+      },
+      {
+        "text": "`if total > 5`",
+        "correct": false,
+        "rationale": "Every token is valid; the missing colon breaks the grammar, so this is a syntax error."
+      },
+      {
+        "text": "`print(\"hi\"`",
+        "correct": false,
+        "rationale": "The tokens are fine, but the bracket is never closed. That breaks the grammar: a syntax error."
+      },
+      {
+        "text": "`print(\"Age: \" + 30)`",
+        "correct": false,
+        "rationale": "This is valid Python that fails while running with a `TypeError`: a semantic error."
+      },
+      {
+        "text": "`average = 6 + 8 / 2`",
+        "correct": false,
+        "rationale": "This runs without a message but gives the wrong average: a semantic (logic) error."
+      }
     ],
     "explanation": "A lexical error is a character or word that Python doesn't recognise at all, such as `$` in a name or a string with no closing quote. A missing colon or bracket uses valid tokens in the wrong arrangement, which is a syntax error. Valid code that fails while running or gives a wrong result has a semantic error."
   },
@@ -94,15 +212,38 @@
     "id": "1.1.1-07",
     "kind": "multi",
     "objectiveId": "1.1.1",
-    "subpoints": ["1.1.1.3", "1.1.1.4"],
+    "subpoints": [
+      "1.1.1.3",
+      "1.1.1.4"
+    ],
     "stem": "Which statements are true for the interpreted execution model? (Select TWO)",
     "select": 2,
     "options": [
-      { "text": "The source code is translated again each time the program runs", "correct": true, "rationale": "An interpreter reads and carries out the source every time, as it goes." },
-      { "text": "You can change the code and run it again at once, with no separate build step", "correct": true, "rationale": "There's no machine-code file to rebuild, so an edit can be tested straight away." },
-      { "text": "Users get a machine-code file and don't need the interpreter to run it", "correct": false, "rationale": "That is the compiled model. With an interpreter, users need the interpreter and the source." },
-      { "text": "The whole program is translated once, ahead of time, before it ever runs", "correct": false, "rationale": "Translating once, ahead of time, is what a compiler does." },
-      { "text": "Programs usually run faster than the same program compiled to machine code", "correct": false, "rationale": "It's usually the other way round: compiled machine code tends to run faster." }
+      {
+        "text": "The source code is translated again each time the program runs",
+        "correct": true,
+        "rationale": "An interpreter reads and carries out the source every time, as it goes."
+      },
+      {
+        "text": "You can change the code and run it again at once, with no separate build step",
+        "correct": true,
+        "rationale": "There's no machine-code file to rebuild, so an edit can be tested straight away."
+      },
+      {
+        "text": "Users get a machine-code file and don't need the interpreter to run it",
+        "correct": false,
+        "rationale": "That is the compiled model. With an interpreter, users need the interpreter and the source."
+      },
+      {
+        "text": "The whole program is translated once, ahead of time, before it ever runs",
+        "correct": false,
+        "rationale": "Translating once, ahead of time, is what a compiler does."
+      },
+      {
+        "text": "Programs usually run faster than the same program compiled to machine code",
+        "correct": false,
+        "rationale": "It's usually the other way round: compiled machine code tends to run faster."
+      }
     ],
     "explanation": "An interpreter translates and runs the source code each time the program runs. That makes it quick to edit and rerun, and the same source runs anywhere the interpreter is installed. A compiler translates the whole program once, ahead of time, into a machine-code file that usually runs faster and doesn't need the compiler."
   },
@@ -110,10 +251,18 @@
     "id": "1.1.1-08",
     "kind": "order",
     "objectiveId": "1.1.1",
-    "subpoints": ["1.1.1.5"],
+    "subpoints": [
+      "1.1.1.5"
+    ],
     "stem": "Put the steps in the order CPython follows when it runs a `.py` file.",
     "mode": "values",
-    "lines": ["Read the source code", "Split it into tokens (lexis is checked)", "Check the grammar (syntax is checked)", "Compile it to bytecode", "Run the bytecode in the Python Virtual Machine"],
+    "lines": [
+      "Read the source code",
+      "Split it into tokens (lexis is checked)",
+      "Check the grammar (syntax is checked)",
+      "Compile it to bytecode",
+      "Run the bytecode in the Python Virtual Machine"
+    ],
     "rationale": "Tokens must exist before their grammar can be checked, only valid code is compiled, and bytecode must exist before the Python Virtual Machine can run it.",
     "explanation": "CPython first reads the file and splits it into tokens, checking the lexis. Next it checks that the tokens follow the grammar. Then it compiles the program to bytecode, and finally the Python Virtual Machine runs the bytecode instruction by instruction. The first four steps happen before any line runs, which is why a `SyntaxError` anywhere stops the whole program."
   },
@@ -121,15 +270,34 @@
     "id": "1.1.1-09",
     "kind": "insert",
     "objectiveId": "1.1.1",
-    "subpoints": ["1.1.1.2"],
+    "subpoints": [
+      "1.1.1.2"
+    ],
     "stem": "Which line, inserted at the marked spot, has a semantic error that Python only reports while running, after `Recipe: pancakes` has been printed?",
     "code": "print(\"Recipe: pancakes\")\n# >>> INSERT <<<\nprint(\"Serves 4\")",
+    "output": "Recipe: pancakes\n",
     "raises": "TypeError",
     "options": [
-      { "text": "print(\"Eggs: \" + 2)", "correct": true, "rationale": "The line is valid Python, so the program starts. When it is reached, adding a number to text raises a `TypeError`." },
-      { "text": "print(\"Eggs: \" + \"2\"", "correct": false, "rationale": "The bracket is never closed. That is a syntax error, found before anything runs, so nothing is printed." },
-      { "text": "print(\"Eggs: 2)", "correct": false, "rationale": "The string is never closed, a lexical error. Python reports a `SyntaxError` before the first line runs." },
-      { "text": "print(\"Eggs:\", 2 + 2)", "correct": false, "rationale": "This line is valid and runs without any error, so the program prints all three lines." }
+      {
+        "text": "print(\"Eggs: \" + 2)",
+        "correct": true,
+        "rationale": "The line is valid Python, so the program starts. When it is reached, adding a number to text raises a `TypeError`."
+      },
+      {
+        "text": "print(\"Eggs: \" + \"2\"",
+        "correct": false,
+        "rationale": "The bracket is never closed. That is a syntax error, found before anything runs, so nothing is printed."
+      },
+      {
+        "text": "print(\"Eggs: 2)",
+        "correct": false,
+        "rationale": "The string is never closed, a lexical error. Python reports a `SyntaxError` before the first line runs."
+      },
+      {
+        "text": "print(\"Eggs:\", 2 + 2)",
+        "correct": false,
+        "rationale": "This line is valid and runs without any error, so the program prints all three lines."
+      }
     ],
     "explanation": "Lexical and syntax errors are found before anything runs, so they stop the program before `Recipe: pancakes` is printed. A semantic error in valid code is only found when Python reaches it. `\"Eggs: \" + 2` tries to add a number to text, so the first line prints and then a `TypeError` stops the program."
   }

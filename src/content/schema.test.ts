@@ -30,7 +30,6 @@ describe('item schema', () => {
     expect(errors({ ...SINGLE, output: undefined, outputKey: false })).toContain(
       'stem asks for the output: set output or raises so it is checked in Pyodide',
     )
-    expect(errors({ ...SINGLE, raises: 'TypeError' })).toContain('use either output or raises, not both')
   })
 
   it('multi: correct count must match select and the stem', () => {

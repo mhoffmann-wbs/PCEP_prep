@@ -18,9 +18,21 @@ async function renderAt(path: string) {
   return result
 }
 
-/** The item whose stem is on screen (sessions are shuffled). */
-const shownItem = (pool: Item[]) =>
-  pool.find((i) => screen.queryAllByText((_, el) => el?.tagName === 'P' && el.textContent === i.stem.replaceAll('`', '')).length > 0)!
+/** The item on screen (sessions are shuffled). */
+const shownItem = (pool: Item[]) => {
+  const id = document.querySelector('[data-item-id]')?.getAttribute('data-item-id')
+  return pool.find((i) => i.id === id)!
+}
+
+/** Gives some answer to whatever item is on screen, so "Check answer" is enabled. */
+async function answerAnything(user: ReturnType<typeof userEvent.setup>) {
+  const radios = screen.queryAllByRole('radio')
+  const boxes = screen.queryAllByRole('checkbox')
+  if (radios.length) await user.click(radios[0]!)
+  else if (boxes.length) for (const b of boxes.slice(0, 3)) await user.click(b)
+  for (const input of screen.queryAllByRole('textbox')) await user.type(input, 'x')
+  for (const select of screen.queryAllByRole('combobox')) await user.selectOptions(select, within(select).getAllByRole('option')[1]!)
+}
 
 beforeEach(() => {
   localStorage.clear()
@@ -46,9 +58,7 @@ describe('practice', () => {
     expect(screen.queryByRole('button', { name: /Run/ })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Open in Playground' })).not.toBeInTheDocument()
 
-    const options = item.kind === 'multi' ? screen.getAllByRole('checkbox') : screen.getAllByRole('radio')
-    const count = item.kind === 'multi' ? item.select : 1
-    for (const option of options.slice(0, count)) await user.click(option)
+    await answerAnything(user)
     await user.click(screen.getByRole('button', { name: 'Check answer' }))
 
     expect(screen.getByText('Explanation')).toBeInTheDocument()
@@ -75,15 +85,7 @@ describe('practice', () => {
     expect(screen.queryByLabelText('time remaining')).not.toBeInTheDocument()
     for (let n = 0; n < total; n++) {
       // Skip straight through: an ordering item is always "answered"; others get their first option or a typed gap.
-      const check = screen.getByRole('button', { name: 'Check answer' })
-      if ((check as HTMLButtonElement).disabled) {
-        const radios = screen.queryAllByRole('radio')
-        const boxes = screen.queryAllByRole('checkbox')
-        if (radios.length) await user.click(radios[0]!)
-        else if (boxes.length) for (const b of boxes.slice(0, 3)) await user.click(b)
-        for (const input of screen.queryAllByRole('textbox')) await user.type(input, 'x')
-        for (const select of screen.queryAllByRole('combobox')) await user.selectOptions(select, within(select).getAllByRole('option')[1]!)
-      }
+      if ((screen.getByRole('button', { name: 'Check answer' }) as HTMLButtonElement).disabled) await answerAnything(user)
       await user.click(screen.getByRole('button', { name: 'Check answer' }))
       await user.click(screen.getByRole('button', { name: /Next question|Finish/ }))
     }
@@ -130,7 +132,8 @@ describe('mock exam', () => {
     await user.click(screen.getByRole('button', { name: 'Start the mock exam' }))
     expect(screen.getByLabelText('time remaining')).toBeInTheDocument()
 
-    const total = new Set(ITEMS.map((i) => i.objectiveId)).size
+    const total = Number(screen.getByText(/^Question 1 of \d+$/).textContent!.split(' of ')[1])
+    expect(total).toBe(35)
     await user.click(screen.getByRole('button', { name: 'Flag for review' }))
     for (let n = 0; n < total; n++) {
       expect(screen.queryByRole('button', { name: /Run/ })).not.toBeInTheDocument()

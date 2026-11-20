@@ -38,7 +38,10 @@ const base = {
   output: z.string().optional(),
   /** Files in the working directory when the code runs, e.g. {"notes.txt": "..."}. */
   files: z.record(z.string(), z.string()).optional(),
-  /** Exception type the complete program raises, e.g. "TypeError". */
+  /**
+   * Exception type the complete program raises, e.g. "TypeError". With `output`
+   * too, `output` is what the program prints before the exception.
+   */
   raises: z.string().regex(/^[A-Z]\w*$/).optional(),
   explanation: nonEmpty,
 }
@@ -112,7 +115,6 @@ export const itemSchema = z
     for (const [i, s] of item.subpoints.entries()) {
       if (!s.startsWith(`${item.objectiveId}.`)) issue(`sub-point ${s} is not under ${item.objectiveId}`, ['subpoints', i])
     }
-    if (item.output !== undefined && item.raises !== undefined) issue('use either output or raises, not both')
     if (/\boutput\b/i.test(item.stem) && item.output === undefined && item.raises === undefined)
       issue('stem asks for the output: set output or raises so it is checked in Pyodide', ['output'])
 

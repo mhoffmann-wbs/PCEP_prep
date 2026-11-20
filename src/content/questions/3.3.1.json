@@ -115,6 +115,7 @@
     ],
     "stem": "What happens when the following code runs?",
     "code": "toppings = {\"olives\", \"cheese\", \"ham\"}\nordered = sorted(toppings)\nprint(ordered[0])\nprint(toppings[0])",
+    "output": "cheese\n",
     "raises": "TypeError",
     "options": [
       {

@@ -16,7 +16,7 @@ const show = (o: Outcome) => (o.error ? `${JSON.stringify(o.stdout)} then ${o.er
 
 /** What the item says its complete program does. */
 const claimed = (item: Item): Outcome | null =>
-  item.output !== undefined ? { stdout: item.output, error: null } : item.raises ? { stdout: '', error: item.raises } : null
+  item.output === undefined && !item.raises ? null : { stdout: item.output ?? '', error: item.raises ?? null }
 
 /** Programs built from each wrong answer; none may behave like the key. */
 function wrongPrograms(item: Item): [label: string, code: string][] {
@@ -52,9 +52,9 @@ export function verifyItem(item: Item, pys: [PyodideAPI, PyodideAPI]): string[] 
   const problems: string[] = []
   const [a, b] = pys.map((py) => execute(py, program, item.files)) as [Outcome, Outcome]
 
-  if (claim.error) {
-    if (a.error !== claim.error) problems.push(`raises ${a.error ?? 'nothing'}, item says ${claim.error}`)
-  } else if (!same(a, claim)) problems.push(`prints ${show(a)}, item says ${show(claim)}`)
+  if (claim.error && a.error !== claim.error) problems.push(`raises ${a.error ?? 'nothing'}, item says ${claim.error}`)
+  else if (a.stdout !== claim.stdout) problems.push(`prints ${show(a)}, item says ${show(claim)}`)
+  else if (!claim.error && a.error) problems.push(`raises ${a.error}, item says it doesn't`)
   if (!same(a, b)) problems.push(`output is not deterministic: ${show(a)} vs ${show(b)}`)
 
   for (const [label, code] of wrongPrograms(item)) {
