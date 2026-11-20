@@ -5,7 +5,7 @@ import { EXAM_IDS, type ExamId } from '../content/blueprint'
 // All persisted learner state lives behind this module. Bump VERSION and add a
 // migration in `load()` whenever the shape changes; never read localStorage elsewhere.
 const STORAGE_KEY = 'pcep101:progress'
-const VERSION = 2
+const VERSION = 3
 
 export interface ItemStat {
   attempts: number
@@ -23,6 +23,36 @@ export interface ExerciseStat {
   solvedAt: number | null
   /** The learner's latest code, so a half-done exercise survives a reload. */
   code: string | null
+}
+
+/** Spaced-review state of one flashcard (built-in or the learner's own). */
+export interface CardStat {
+  /** Leitner box 0–5: the higher the box, the longer until the card comes back. */
+  box: number
+  /** When the card is next due (ms since epoch). */
+  due: number
+  reviews: number
+  /** Times the card was rated Again after it had been learned once. */
+  lapses: number
+  lastAt: number
+}
+
+/** A deck of the learner's own flashcards. */
+export interface UserDeck {
+  id: string
+  name: string
+  createdAt: number
+}
+
+export interface UserCard {
+  id: string
+  deckId: string
+  front: string
+  back: string
+  /** Optional Python shown under the question. */
+  code: string | null
+  createdAt: number
+  updatedAt: number
 }
 
 export interface ScoreRowRecord {
@@ -58,6 +88,10 @@ export interface Progress {
   lessonsRead: string[]
   exercises: Record<string, ExerciseStat>
   playgroundCode: string | null
+  /** Review state per flashcard id, for built-in and own cards. */
+  cards: Record<string, CardStat>
+  decks: UserDeck[]
+  myCards: UserCard[]
 }
 
 /** Toggle defaults follow the track: off for 30-03, on for 30-02. */
@@ -73,6 +107,9 @@ function empty(): Progress {
     lessonsRead: [],
     exercises: {},
     playgroundCode: null,
+    cards: {},
+    decks: [],
+    myCards: [],
   }
 }
 
@@ -81,8 +118,8 @@ function load(): Progress {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return empty()
     const parsed = JSON.parse(raw) as { version?: number }
-    // Version 1 had no exercises; the defaults from empty() fill them in.
-    if (parsed.version !== VERSION && parsed.version !== 1) return empty()
+    // Version 1 had no exercises and version 2 no flashcards; the defaults from empty() fill them in.
+    if (typeof parsed.version !== 'number' || parsed.version < 1 || parsed.version > VERSION) return empty()
     return { ...empty(), ...parsed, version: VERSION } as Progress
   } catch {
     return empty()
@@ -168,6 +205,53 @@ export function setPlaygroundCode(code: string | null) {
   commit({ ...state, playgroundCode: code })
 }
 
+export function recordCardReview(cardId: string, stat: CardStat) {
+  commit({ ...state, cards: { ...state.cards, [cardId]: stat } })
+}
+
+const newId = (prefix: string) => `${prefix}-${crypto.randomUUID().slice(0, 8)}`
+
+/** Creates an empty deck of own cards and returns its id. */
+export function createDeck(name: string, at: number = Date.now()): string {
+  const id = newId('d')
+  commit({ ...state, decks: [...state.decks, { id, name, createdAt: at }] })
+  return id
+}
+
+export function renameDeck(deckId: string, name: string) {
+  commit({ ...state, decks: state.decks.map((d) => (d.id === deckId ? { ...d, name } : d)) })
+}
+
+/** Deletes a deck with its cards and their review state. */
+export function deleteDeck(deckId: string) {
+  const gone = new Set(state.myCards.filter((c) => c.deckId === deckId).map((c) => c.id))
+  commit({
+    ...state,
+    decks: state.decks.filter((d) => d.id !== deckId),
+    myCards: state.myCards.filter((c) => !gone.has(c.id)),
+    cards: Object.fromEntries(Object.entries(state.cards).filter(([id]) => !gone.has(id))),
+  })
+}
+
+export type CardDraft = Pick<UserCard, 'deckId' | 'front' | 'back' | 'code'>
+
+/** Adds own cards (e.g. one typed in, or a whole uploaded deck) and returns their ids. */
+export function addCards(drafts: CardDraft[], at: number = Date.now()): string[] {
+  const added = drafts.map((d): UserCard => ({ ...d, id: newId('u'), createdAt: at, updatedAt: at }))
+  commit({ ...state, myCards: [...state.myCards, ...added] })
+  return added.map((c) => c.id)
+}
+
+/** Changes an own card's text. Its review state is kept. */
+export function updateCard(cardId: string, change: Pick<UserCard, 'front' | 'back' | 'code'>, at: number = Date.now()) {
+  commit({ ...state, myCards: state.myCards.map((c) => (c.id === cardId ? { ...c, ...change, updatedAt: at } : c)) })
+}
+
+export function deleteCard(cardId: string) {
+  const { [cardId]: _, ...cards } = state.cards
+  commit({ ...state, myCards: state.myCards.filter((c) => c.id !== cardId), cards })
+}
+
 // Imports come from files people pick, so they are validated in full before replacing anything.
 const count = z.number().int().nonnegative()
 const row = z.object({ id: z.string(), correct: count, total: count })
@@ -197,6 +281,19 @@ const ProgressSchema = z.object({
   lessonsRead: z.array(z.string()),
   exercises: z.record(z.string(), z.object({ attempts: count, solvedAt: z.number().nullable(), code: z.string().nullable() })),
   playgroundCode: z.string().nullable(),
+  cards: z.record(z.string(), z.object({ box: z.number().int().min(0).max(5), due: z.number(), reviews: count, lapses: count, lastAt: z.number() })),
+  decks: z.array(z.object({ id: z.string(), name: z.string(), createdAt: z.number() })),
+  myCards: z.array(
+    z.object({
+      id: z.string(),
+      deckId: z.string(),
+      front: z.string(),
+      back: z.string(),
+      code: z.string().nullable(),
+      createdAt: z.number(),
+      updatedAt: z.number(),
+    }),
+  ),
 })
 
 const EXPORT_APP = 'pcep101'
@@ -224,7 +321,9 @@ export function importProgress(json: string) {
   if (typeof version === 'number' && version > VERSION) {
     throw new Error('This export comes from a newer version of the app. Reload the app, then import it again.')
   }
-  const result = ProgressSchema.safeParse({ ...empty(), ...doc.progress, ...(version === 1 ? { version: VERSION } : {}) })
+  // Older versions lack newer fields; the defaults from empty() fill them in.
+  const older = typeof version === 'number' && version >= 1 && version < VERSION
+  const result = ProgressSchema.safeParse({ ...empty(), ...doc.progress, ...(older ? { version: VERSION } : {}) })
   if (!result.success) throw new Error('This export is damaged or incomplete, so nothing was imported.')
   commit(result.data)
 }

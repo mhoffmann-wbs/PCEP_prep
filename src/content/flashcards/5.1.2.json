@@ -1,0 +1,43 @@
+[
+  {
+    "id": "5.1.2-c01",
+    "objectiveId": "5.1.2",
+    "subpoints": ["5.1.2.1"],
+    "front": "What is the basic structure of a CSV file?",
+    "back": "Plain text where each line is one row and the values in a row are separated by a delimiter, usually a comma. The first row often holds the column names."
+  },
+  {
+    "id": "5.1.2-c02",
+    "objectiveId": "5.1.2",
+    "subpoints": ["5.1.2.2", "5.1.2.4"],
+    "front": "What does this print?",
+    "code": "import csv\nwith open(\"pets.csv\", \"w\", newline=\"\") as f:\n    w = csv.writer(f)\n    w.writerow([\"name\", \"age\"])\n    w.writerow([\"Rex\", 4])\nwith open(\"pets.csv\", newline=\"\") as f:\n    print(f.read().splitlines())",
+    "output": "['name,age', 'Rex,4']\n",
+    "back": "`csv.writer` turns each list into one comma-separated line, converting numbers to text. You import the module first with `import csv`."
+  },
+  {
+    "id": "5.1.2-c03",
+    "objectiveId": "5.1.2",
+    "subpoints": ["5.1.2.3"],
+    "front": "What does this print?",
+    "code": "import csv\nwith open(\"t.csv\", \"w\", newline=\"\") as f:\n    f.write(\"a,b\\n1,2\\n\")\nwith open(\"t.csv\", newline=\"\") as f:\n    rows = list(csv.reader(f))\nprint(rows)",
+    "output": "[['a', 'b'], ['1', '2']]\n",
+    "back": "`csv.reader` yields each row as a list of strings. Note that `1` and `2` are still strings, not numbers."
+  },
+  {
+    "id": "5.1.2-c04",
+    "objectiveId": "5.1.2",
+    "subpoints": ["5.1.2.5", "5.1.2.3"],
+    "front": "What does this print, and why do you need `int()`?",
+    "code": "import csv\nwith open(\"prices.csv\", \"w\", newline=\"\") as f:\n    f.write(\"tea,3\\ncake,5\\n\")\nwith open(\"prices.csv\", newline=\"\") as f:\n    total = 0\n    for row in csv.reader(f):\n        total += int(row[1])\nprint(total)",
+    "output": "8\n",
+    "back": "Every value from `csv.reader` is a string, so `row[1]` is `\"3\"`, not `3`. Convert it with `int()` before doing arithmetic."
+  },
+  {
+    "id": "5.1.2-c05",
+    "objectiveId": "5.1.2",
+    "subpoints": ["5.1.2.2", "5.1.2.4", "5.1.2.1"],
+    "front": "Which two functions of the `csv` module read and write rows, and what does each work with?",
+    "back": "`csv.reader(file)` produces rows as lists of strings, and `csv.writer(file)` has `writerow()` to write one list as a row. Both take an open file object, and you use them after `import csv`."
+  }
+]

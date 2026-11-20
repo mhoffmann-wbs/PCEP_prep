@@ -1,0 +1,69 @@
+[
+  {
+    "id": "3.5.1-c01",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.1",
+      "3.5.1.3"
+    ],
+    "front": "Which quotes can create a string, and how do you put a quote inside one?",
+    "back": "Single, double or triple quotes all work. Use the other kind of quote around it, as in `\"it's\"`, or escape it with a backslash: `'it\\'s'`."
+  },
+  {
+    "id": "3.5.1-c02",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.2"
+    ],
+    "front": "What does this print?",
+    "code": "print(\"a\\tb\\nc\\\\d\")",
+    "output": "a\tb\nc\\d\n",
+    "back": "`\\n` is a newline and `\\t` a tab, escape sequences that start with a backslash. `\\\\` gives one backslash."
+  },
+  {
+    "id": "3.5.1-c03",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.4"
+    ],
+    "front": "How do you write a string over several lines?",
+    "back": "Use triple quotes, single or double, and press Enter inside them. The line breaks become part of the string. You can also write `\\n` inside a normal string."
+  },
+  {
+    "id": "3.5.1-c04",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.5",
+      "3.5.1.6",
+      "3.5.1.7"
+    ],
+    "front": "What does this print?",
+    "code": "word = \"pancake\"\nprint(word[0], word[-1], word[3:6], word[::-1])",
+    "output": "p e cak ekacnap\n",
+    "back": "Indexes count from 0, negative ones from the end. A slice is `[start:stop:step]` and stops before `stop`. `[::-1]` reverses."
+  },
+  {
+    "id": "3.5.1-c05",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.8"
+    ],
+    "front": "What happens when this runs?",
+    "code": "name = \"cat\"\nprint(name.upper())\nname[0] = \"b\"",
+    "output": "CAT\n",
+    "raises": "TypeError",
+    "back": "Strings are immutable: you cannot change a character in place. Build a new string instead, for example by slicing and joining."
+  },
+  {
+    "id": "3.5.1-c06",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.9",
+      "3.5.1.10"
+    ],
+    "front": "What does this print?",
+    "code": "s = \"Rain today\"\nprint(len(s), \"day\" in s, \"rain\" in s, \"sun\" not in s)",
+    "output": "10 True False True\n",
+    "back": "`len()` counts the characters, spaces included. `in` tests for a substring and is case-sensitive."
+  }
+]

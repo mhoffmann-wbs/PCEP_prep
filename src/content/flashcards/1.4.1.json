@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1.4.1-c01",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.1"],
+    "front": "What does this print?",
+    "code": "print(17 / 5, 17 // 5, 17 % 5, 2 ** 3)",
+    "output": "3.4 3 2 8\n",
+    "back": "`/` always gives a float, `//` is floor division, `%` is the remainder and `**` is the power."
+  },
+  {
+    "id": "1.4.1-c02",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.2"],
+    "front": "What does this print?",
+    "code": "print(\"ha\" * 3 + \"!\")",
+    "output": "hahaha!\n",
+    "back": "`*` with a string and an int repeats the string, and `+` joins two strings. Mixing a string with a number using `+` is a `TypeError`."
+  },
+  {
+    "id": "1.4.1-c03",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.3", "1.4.1.4"],
+    "front": "What does this print? Is `-` unary or binary in each place?",
+    "code": "n = 10\nn -= 3\nprint(-n, 8 - n)",
+    "output": "-7 1\n",
+    "back": "`n -= 3` is augmented assignment, short for `n = n - 3`. In `-n` the minus has one operand (unary); in `8 - n` it has two (binary)."
+  },
+  {
+    "id": "1.4.1-c04",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.5"],
+    "front": "What does this print?",
+    "code": "print(2 + 3 * 2 ** 2)\nprint(2 ** 3 ** 2)\nprint(100 / 10 / 5)",
+    "output": "14\n512\n2.0\n",
+    "back": "`**` binds tightest, then `*`, then `+`. `**` is right-associative (`2 ** (3 ** 2)`), while `/` is left-associative, so it works left to right."
+  },
+  {
+    "id": "1.4.1-c05",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.6", "1.4.1.7"],
+    "front": "What does this print?",
+    "code": "rain = True\nwind = False\nprint(not rain, rain and wind, rain or wind)",
+    "output": "False False True\n",
+    "back": "`not` flips a value, `and` is true only if both sides are true, and `or` is true if at least one side is. `not` binds tighter than `and`, which binds tighter than `or`."
+  },
+  {
+    "id": "1.4.1-c06",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.8", "1.4.1.7"],
+    "front": "What does this print, and what is the difference between `=` and `==`?",
+    "code": "age = 12\nprint(age == 12, age != 12, age >= 13, age < 13)",
+    "output": "True False False True\n",
+    "back": "`=` assigns a value; `==` compares two values and gives a Boolean. The relational operators are `==`, `!=`, `>`, `>=`, `<` and `<=`."
+  }
+]

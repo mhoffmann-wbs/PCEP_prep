@@ -1,0 +1,66 @@
+[
+  {
+    "id": "4.1.3-c01",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.1"
+    ],
+    "front": "What is the difference between a parameter and an argument?",
+    "back": "A parameter is the name in the `def` line. An argument is the actual value you pass in the call. In `area(3, 4)`, `3` and `4` are arguments."
+  },
+  {
+    "id": "4.1.3-c02",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.2"
+    ],
+    "front": "What does this print?",
+    "code": "def pet(animal, name):\n    print(name, \"the\", animal)\n\npet(\"dog\", \"Rex\")\npet(name=\"Luna\", animal=\"cat\")\n",
+    "output": "Rex the dog\nLuna the cat\n",
+    "back": "Positional arguments match parameters by position. Keyword arguments match by name, so their order does not matter."
+  },
+  {
+    "id": "4.1.3-c03",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.3",
+      "4.1.3.4"
+    ],
+    "front": "What does this print?",
+    "code": "def drink(size=\"small\"):\n    print(\"One\", size, \"tea\")\n\ndrink()\ndrink(\"large\")\n",
+    "output": "One small tea\nOne large tea\n",
+    "back": "A default value is used when the argument is left out. An explicit argument overrides it."
+  },
+  {
+    "id": "4.1.3-c04",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.5"
+    ],
+    "front": "What do the `sep` and `end` keyword arguments of `print()` change?",
+    "back": "`sep` is placed between the values (default a space). `end` is printed after the last value (default a newline, so the next print starts on a new line)."
+  },
+  {
+    "id": "4.1.3-c05",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.5"
+    ],
+    "front": "What does this print?",
+    "code": "print(\"a\", \"b\", \"c\", sep=\"-\", end=\"!\")\nprint(\"d\")\n",
+    "output": "a-b-c!d\n",
+    "back": "`sep=\"-\"` joins the values with a dash. `end=\"!\"` replaces the newline, so the next print continues on the same line."
+  },
+  {
+    "id": "4.1.3-c06",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.2",
+      "4.1.3.6"
+    ],
+    "front": "What happens when this runs?",
+    "code": "def trip(city, nights):\n    print(city, nights)\n\ntrip(city=\"Rome\", 3)\n",
+    "raises": "SyntaxError",
+    "back": "Positional arguments must come before keyword arguments. Writing a positional one after a keyword one is a syntax error, so nothing runs at all."
+  }
+]

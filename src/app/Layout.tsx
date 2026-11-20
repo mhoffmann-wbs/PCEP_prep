@@ -5,6 +5,7 @@ const NAV = [
   { to: '/learn', label: 'Learn' },
   { to: '/practice', label: 'Practice' },
   { to: '/questions', label: 'Questions' },
+  { to: '/flashcards', label: 'Flashcards' },
   { to: '/mock', label: 'Mock exam' },
   { to: '/exercises', label: 'Exercises' },
   { to: '/playground', label: 'Playground' },
@@ -19,7 +20,7 @@ export function Layout() {
   return (
     <div className="flex min-h-screen flex-col bg-page text-slate-900">
       <header className="bg-header text-chalk print:hidden">
-        <nav aria-label="Main" className="mx-auto max-w-5xl px-4 py-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-2">
+        <nav aria-label="Main" className="mx-auto max-w-5xl px-4 py-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-2 sm:text-sm">
           <div className="flex items-center justify-between">
             <Link to="/" onClick={() => setMenuOpen(false)} className="text-lg font-bold tracking-tight">
               PCEP<span className="text-accent">101</span>

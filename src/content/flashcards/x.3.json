@@ -1,0 +1,36 @@
+[
+  {
+    "id": "x.3-c01",
+    "objectiveId": "x.3",
+    "subpoints": ["x.3.2", "x.3.3"],
+    "front": "When does the `else` block of a `for` loop run?",
+    "back": "When the loop finishes all its iterations without hitting `break`. If `break` ends the loop, the `else` block is skipped."
+  },
+  {
+    "id": "x.3-c02",
+    "objectiveId": "x.3",
+    "subpoints": ["x.3.2", "x.3.4"],
+    "front": "What does this print?",
+    "code": "for n in [3, 5, 8]:\n    if n % 2 == 0:\n        print(\"even found\")\n        break\nelse:\n    print(\"all odd\")",
+    "output": "even found\n",
+    "back": "The `break` fires at `8`, so the `else` block does not run. With only odd numbers it would print `all odd`."
+  },
+  {
+    "id": "x.3-c03",
+    "objectiveId": "x.3",
+    "subpoints": ["x.3.1", "x.3.3"],
+    "front": "What does this print?",
+    "code": "n = 3\nwhile n > 0:\n    n -= 1\nelse:\n    print(\"done\", n)",
+    "output": "done 0\n",
+    "back": "The condition becomes false without a `break`, so the `else` block runs once after the loop. A `while` loop that never runs its body also runs `else`."
+  },
+  {
+    "id": "x.3-c04",
+    "objectiveId": "x.3",
+    "subpoints": ["x.3.1", "x.3.4"],
+    "front": "What does this print?",
+    "code": "tries = 0\nwhile tries < 5:\n    tries += 1\n    if tries == 2:\n        break\nelse:\n    print(\"gave up\")\nprint(tries)",
+    "output": "2\n",
+    "back": "`break` leaves the loop at `tries == 2`, so `else` is skipped and only the final print runs."
+  }
+]

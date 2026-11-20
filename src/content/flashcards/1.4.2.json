@@ -1,0 +1,43 @@
+[
+  {
+    "id": "1.4.2-c01",
+    "objectiveId": "1.4.2",
+    "subpoints": ["1.4.2.1"],
+    "front": "What does this print?",
+    "code": "print(\"fish\", \"tank\", sep=\"-\", end=\"!\")\nprint(\"done\")",
+    "output": "fish-tank!done\n",
+    "back": "`sep` is placed between the values (a space by default) and `end` is printed after them (a newline by default). Here `end=\"!\"` stops the line break."
+  },
+  {
+    "id": "1.4.2-c02",
+    "objectiveId": "1.4.2",
+    "subpoints": ["1.4.2.2", "1.4.2.3"],
+    "front": "What does `input()` return, even if the user types `25`?",
+    "back": "Always a string. `input(\"Age: \")` shows the prompt, waits for a line and returns it as text, so the answer `25` arrives as `\"25\"`."
+  },
+  {
+    "id": "1.4.2-c03",
+    "objectiveId": "1.4.2",
+    "subpoints": ["1.4.2.4"],
+    "front": "What does this print?",
+    "code": "print(int(\"12\") + 3, float(\"1.5\") * 2, str(7) + \"7\", int(9.99))",
+    "output": "15 3.0 77 9\n",
+    "back": "`int()`, `float()` and `str()` convert values. `int(9.99)` cuts off the decimals (it does not round), and `str(7) + \"7\"` joins two strings."
+  },
+  {
+    "id": "1.4.2-c04",
+    "objectiveId": "1.4.2",
+    "subpoints": ["1.4.2.5", "1.4.2.3"],
+    "front": "What happens when this runs?",
+    "code": "answer = \"4\"\nprint(answer + 1)",
+    "raises": "TypeError",
+    "back": "`answer` is a string, like anything from `input()`, and a string cannot be added to an int. Convert first: `int(answer) + 1`."
+  },
+  {
+    "id": "1.4.2-c05",
+    "objectiveId": "1.4.2",
+    "subpoints": ["1.4.2.6", "1.4.2.2", "1.4.2.5", "1.4.2.1"],
+    "front": "In what order does a simple program read two numbers and show their total?",
+    "back": "Read each value with `input()`, convert with `int()` or `float()`, calculate, then show the result with `print()`: `print(int(a) + int(b))`. Skipping the conversion would join the strings instead of adding."
+  }
+]

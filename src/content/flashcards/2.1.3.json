@@ -1,0 +1,56 @@
+[
+  {
+    "id": "2.1.3-c01",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.1"
+    ],
+    "front": "What does this print?",
+    "code": "a = 5\nif a > 1:\n    print(\"x\")\nif a > 3:\n    print(\"y\")",
+    "output": "x\ny\n",
+    "back": "These are two separate `if` statements, so both are checked and both blocks run. With `elif` only one would."
+  },
+  {
+    "id": "2.1.3-c02",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.2",
+      "2.1.3.4"
+    ],
+    "front": "What does this print?",
+    "code": "weekend = True\nsunny = False\nif weekend:\n    if sunny:\n        print(\"park\")\n    else:\n        print(\"film\")\nprint(\"end\")",
+    "output": "film\nend\n",
+    "back": "The outer `if` is true, so its block runs and the inner `if` is checked. `sunny` is false, so the inner `else` runs. The final `print` is outside both."
+  },
+  {
+    "id": "2.1.3-c03",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.3"
+    ],
+    "front": "How can you write \"the number is between 10 and 20\" as one condition?",
+    "back": "Combine two comparisons with `and`: `n >= 10 and n <= 20`. Both parts must be true. With `or`, only one has to be true, and `not` reverses a result."
+  },
+  {
+    "id": "2.1.3-c04",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.2"
+    ],
+    "front": "Which `if` does an `else` belong to?",
+    "back": "The `if` at the same indentation level directly above it. Indentation, not position on the screen, decides the pairing, so check the spaces when you trace nested code."
+  },
+  {
+    "id": "2.1.3-c05",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.3",
+      "2.1.3.4",
+      "2.1.3.5"
+    ],
+    "front": "What does this print, and why is one branch unreachable?",
+    "code": "n = 7\nif n > 0 and n < 5:\n    print(\"low\")\nelif n > 5:\n    print(\"mid\")\nelif n > 10:\n    print(\"high\")",
+    "output": "mid\n",
+    "back": "`n > 0 and n < 5` is false for 7, so Python checks `n > 5`, which is true. The branch `n > 10` can never run: any number above 10 is already caught by `n > 5`."
+  }
+]

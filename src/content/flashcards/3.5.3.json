@@ -1,0 +1,59 @@
+[
+  {
+    "id": "3.5.3-c01",
+    "objectiveId": "3.5.3",
+    "subpoints": [
+      "3.5.3.1",
+      "3.5.3.2"
+    ],
+    "front": "How do you write an f-string, and what goes between the braces?",
+    "back": "Put `f` before the opening quote. Each `{}` holds a variable or any expression, and its value is inserted as text: `f\"{n} items\"`."
+  },
+  {
+    "id": "3.5.3-c02",
+    "objectiveId": "3.5.3",
+    "subpoints": [
+      "3.5.3.1",
+      "3.5.3.2"
+    ],
+    "front": "What does this print?",
+    "code": "price = 4.5\nqty = 3\nprint(f\"Total: {price * qty:.2f} for {qty} items\")",
+    "output": "Total: 13.50 for 3 items\n",
+    "back": "The braces can hold expressions such as arithmetic, and a format spec like `:.2f` rounds to 2 decimals."
+  },
+  {
+    "id": "3.5.3-c03",
+    "objectiveId": "3.5.3",
+    "subpoints": [
+      "3.5.3.3"
+    ],
+    "front": "What does this print?",
+    "code": "print(\"{} has {} legs\".format(\"A dog\", 4))\nprint(\"{1} before {0}\".format(\"b\", \"a\"))",
+    "output": "A dog has 4 legs\na before b\n",
+    "back": "`format()` fills the `{}` placeholders in order with its arguments. A number can name the argument to use."
+  },
+  {
+    "id": "3.5.3-c04",
+    "objectiveId": "3.5.3",
+    "subpoints": [
+      "3.5.3.4"
+    ],
+    "front": "What does this print?",
+    "code": "print(\"%s is %d years old\" % (\"Leo\", 7))",
+    "output": "Leo is 7 years old\n",
+    "back": "The `%` operator fills `%s` (string) and `%d` (integer) from the tuple on the right. It is the older style, still common in existing code."
+  },
+  {
+    "id": "3.5.3-c05",
+    "objectiveId": "3.5.3",
+    "subpoints": [
+      "3.5.3.1",
+      "3.5.3.2"
+    ],
+    "front": "What happens when this runs?",
+    "code": "city = \"Oslo\"\nprint(f\"Welcome to {city}\")\nprint(f\"Welcome to {town}\")",
+    "output": "Welcome to Oslo\n",
+    "raises": "NameError",
+    "back": "An f-string must have a closing brace for each opening one, and every name inside must exist. Using an undefined name raises `NameError`."
+  }
+]

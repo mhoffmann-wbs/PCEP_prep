@@ -29,7 +29,7 @@ Authoritative sources (where they disagree with this plan, they win):
 | Editor | CodeMirror 6 |
 | Deploy | GitHub Pages: `github.com/mhoffmann-wbs/PCEP_prep` → `https://mhoffmann-wbs.github.io/PCEP_prep/` |
 | Pyodide | **Self-hosted.** `pyodide` is an npm dependency. A `scripts/setup-pyodide.mjs` that runs before `dev`, `build` and `test` copies the runtime (`pyodide.asm.mjs`, `pyodide.asm.wasm`, `python_stdlib.zip`, `pyodide-lock.json`) into `public/pyodide/`, which is git-ignored. The deploy build ships it to Pages, and Python runs in the learner's browser. Only the stdlib is needed, with no extra packages (about 10 MB). One runtime module with no browser dependencies is shared by the worker and Vitest (Pyodide in Node). |
-| Extras | Error explainer and printable cheat sheet with exam-day guide in v1. Step-through visualizer and flashcards with spaced review come in later phases. |
+| Extras | Error explainer and printable cheat sheet with exam-day guide in v1. The step-through visualizer and flashcards with spaced review followed in phase 7. |
 
 ## 2. Exam facts the app must mirror (PCEP-30-03)
 
@@ -164,6 +164,6 @@ Tooling:
 4. **Question bank** (done 2026-11-20: 364 items, plus the 30-02 mock and the exam-track switch): about 310 core items plus about 54 for the 30-02 extras, written in parallel per objective file. Then the 30-02 mock exam and the exam-track switch.
 5. **Exercises and Playground** (done 2026-11-20: 58 exercises, CodeMirror editor, Playground permalinks): about 60 exercises.
 6. **Guides and polish** (done 2026-11-20): cheat sheet, exam-day guide, mobile pass, accessibility of ordering items.
-7. **Later**: step-through visualizer (`sys.settrace` in Pyodide records line, locals and stdout for each step), flashcards with spaced review, and interactive `input()` through cross-origin isolation.
+7. **Later**: step-through visualizer (done 2026-11-20: `sys.settrace` in Pyodide records line, frames and output for each step, at `/step`), flashcards with spaced review (done 2026-11-20: 212 built-in cards, Leitner boxes, own decks shared as files), and interactive `input()` through cross-origin isolation (open). Before phase 7 the blueprint was diffed word for word against the live 30-03 syllabus (v1.5, revised 2026-11-02): no changes.
 
 **After 2027-11-30**: drop the 30-02 profile and extras, or keep them hidden behind a "retired exam" note.

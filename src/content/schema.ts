@@ -285,3 +285,34 @@ export const guideMetaSchema = z.object({
 })
 
 export type GuideMeta = z.infer<typeof guideMetaSchema>
+
+/**
+ * A built-in flashcard (flashcards/<objectiveId>.json). `front` asks, `back`
+ * answers; both use `backticks` for code and blank lines between paragraphs.
+ * `code` is shown under the question. `output`/`raises` say what `code` prints
+ * or raises; the content tests check them in Pyodide, so never write them by hand.
+ */
+export const cardSchema = z
+  .object({
+    /** `${objectiveId}-c<nn>`, e.g. "3.1.1-c01", numbered in file order. */
+    id: z.string().regex(/^(\d\.\d\.\d|x\.\d)-c\d{2}$/),
+    objectiveId: z.string().regex(OBJECTIVE_ID),
+    /** Sub-point ids the card covers. Drive the 30-02 filter, as for items. */
+    subpoints: z.array(z.string()).min(1),
+    front: nonEmpty,
+    code: nonEmpty.optional(),
+    back: nonEmpty,
+    output: z.string().optional(),
+    raises: z.string().regex(/^[A-Z]\w*$/).optional(),
+  })
+  .superRefine((card, ctx) => {
+    if (!card.id.startsWith(`${card.objectiveId}-`)) ctx.addIssue({ code: 'custom', message: 'id must start with objectiveId', path: ['id'] })
+    for (const [i, s] of card.subpoints.entries()) {
+      if (!s.startsWith(`${card.objectiveId}.`)) ctx.addIssue({ code: 'custom', message: `sub-point ${s} is not under ${card.objectiveId}`, path: ['subpoints', i] })
+    }
+    if ((card.output !== undefined || card.raises) && !card.code) ctx.addIssue({ code: 'custom', message: 'output and raises need code', path: ['code'] })
+  })
+
+export const cardFileSchema = z.array(cardSchema)
+
+export type Card = z.infer<typeof cardSchema>

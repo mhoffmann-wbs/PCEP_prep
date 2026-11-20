@@ -1,0 +1,34 @@
+[
+  {
+    "id": "x.6-c01",
+    "objectiveId": "x.6",
+    "subpoints": ["x.6.1"],
+    "front": "Where do `Exception`, `SystemExit` and `KeyboardInterrupt` sit in the hierarchy?",
+    "back": "All derive from `BaseException`. `Exception` is the parent of the ordinary errors, while `SystemExit` and `KeyboardInterrupt` sit beside it, so a plain `except Exception` does not catch them."
+  },
+  {
+    "id": "x.6-c02",
+    "objectiveId": "x.6",
+    "subpoints": ["x.6.2"],
+    "front": "Which exception catches both `ZeroDivisionError` and `OverflowError`, and which catches `IndexError` and `KeyError`?",
+    "back": "`ArithmeticError` is their parent for the first pair, and `LookupError` for the second. Catching the abstract parent catches every concrete child."
+  },
+  {
+    "id": "x.6-c03",
+    "objectiveId": "x.6",
+    "subpoints": ["x.6.3"],
+    "front": "What does this print?",
+    "code": "try:\n    [1, 2][5]\nexcept LookupError:\n    print(\"general\")\nexcept IndexError:\n    print(\"specific\")",
+    "output": "general\n",
+    "back": "Python takes the first matching branch, and `IndexError` is a kind of `LookupError`. Put specific exceptions first, or the specific branch is never reached."
+  },
+  {
+    "id": "x.6-c04",
+    "objectiveId": "x.6",
+    "subpoints": ["x.6.4", "x.6.5"],
+    "front": "What does this print?",
+    "code": "def inner():\n    print(1 / 0)\n\ndef outer():\n    try:\n        inner()\n    except ZeroDivisionError:\n        print(\"outer saw it\")\n        raise\n\ntry:\n    outer()\nexcept ArithmeticError:\n    print(\"caller saw it\")",
+    "output": "outer saw it\ncaller saw it\n",
+    "back": "An unhandled exception travels up the call chain to the first matching `except`. A bare `raise` re-raises the current exception so the caller can handle it too."
+  }
+]

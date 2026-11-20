@@ -1,0 +1,79 @@
+[
+  {
+    "id": "4.1.4-c01",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.1",
+      "4.1.4.2"
+    ],
+    "front": "What does `*args` collect, and what type is it inside the function?",
+    "back": "It collects all extra positional arguments into a tuple, however many there are. With no extras it is the empty tuple `()`."
+  },
+  {
+    "id": "4.1.4-c02",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.1",
+      "4.1.4.2"
+    ],
+    "front": "What does this print?",
+    "code": "def basket(*items):\n    print(items)\n\nbasket(\"milk\", \"eggs\")\nbasket(\"tea\")\nbasket()\n",
+    "output": "('milk', 'eggs')\n('tea',)\n()\n",
+    "back": "`items` is a tuple holding every positional argument. A single item still prints with a trailing comma."
+  },
+  {
+    "id": "4.1.4-c03",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.3"
+    ],
+    "front": "What does this print?",
+    "code": "def total(*prices):\n    s = 0\n    for p in prices:\n        s += p\n    return s\n\nprint(total(2, 3, 5))\nprint(total())\n",
+    "output": "10\n0\n",
+    "back": "`args` is a tuple, so a `for` loop walks through it one value at a time."
+  },
+  {
+    "id": "4.1.4-c04",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.4",
+      "4.1.4.5"
+    ],
+    "front": "What does `**kwargs` collect, and what type is it inside the function?",
+    "back": "It collects extra keyword arguments into a dictionary: the argument names become the keys and their values become the values."
+  },
+  {
+    "id": "4.1.4-c05",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.5",
+      "4.1.4.6"
+    ],
+    "front": "What does this print?",
+    "code": "def profile(**info):\n    print(type(info).__name__)\n    for key, value in info.items():\n        print(key, value)\n\nprofile(name=\"Ana\", age=30)\n",
+    "output": "dict\nname Ana\nage 30\n",
+    "back": "`info` is a dictionary. `.items()` gives each key and value so you can process them."
+  },
+  {
+    "id": "4.1.4-c06",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.7"
+    ],
+    "front": "In which order must you write standard, default, `*args` and `**kwargs` parameters?",
+    "back": "Standard parameters first, then default ones, then `*args`, then `**kwargs`, as in `def f(a, b=2, *args, **kwargs):`."
+  },
+  {
+    "id": "4.1.4-c07",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.1",
+      "4.1.4.4",
+      "4.1.4.7"
+    ],
+    "front": "What does this print?",
+    "code": "def report(city, unit=\"C\", *args, **kwargs):\n    print(city, unit, args, kwargs)\n\nreport(\"Oslo\", \"F\", \"x\", wind=5)\n",
+    "output": "Oslo F ('x',) {'wind': 5}\n",
+    "back": "`city` takes the first value and `unit` its default. The extra positional `\"x\"` goes to `args` and the keyword `wind` goes to `kwargs`."
+  }
+]

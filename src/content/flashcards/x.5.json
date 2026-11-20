@@ -1,0 +1,46 @@
+[
+  {
+    "id": "x.5-c01",
+    "objectiveId": "x.5",
+    "subpoints": ["x.5.1", "x.5.3"],
+    "front": "What does a recursive function need so it does not run forever?",
+    "back": "A base case that returns without calling itself again, and recursive calls that move toward it. Without one, Python eventually raises `RecursionError`."
+  },
+  {
+    "id": "x.5-c02",
+    "objectiveId": "x.5",
+    "subpoints": ["x.5.1", "x.5.2"],
+    "front": "What does this print?",
+    "code": "def total(n):\n    if n == 0:\n        return 0\n    return n + total(n - 1)\n\nprint(total(4))",
+    "output": "10\n",
+    "back": "`total(4)` is `4 + total(3)`, and so on down to `total(0)` which returns `0`. The results then add up: 4+3+2+1+0."
+  },
+  {
+    "id": "x.5-c03",
+    "objectiveId": "x.5",
+    "subpoints": ["x.5.3"],
+    "front": "What happens when this runs?",
+    "code": "def loop(n):\n    return loop(n + 1)\n\nloop(1)",
+    "raises": "RecursionError",
+    "back": "There is no base case, so the calls pile up until Python hits its depth limit and raises `RecursionError`."
+  },
+  {
+    "id": "x.5-c04",
+    "objectiveId": "x.5",
+    "subpoints": ["x.5.4", "x.5.5"],
+    "front": "What does this print?",
+    "code": "def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\n\nfor v in countdown(3):\n    print(v)",
+    "output": "3\n2\n1\n",
+    "back": "A function with `yield` is a generator: calling it gives a generator object, and each value is produced as the `for` loop asks for the next one."
+  },
+  {
+    "id": "x.5-c05",
+    "objectiveId": "x.5",
+    "subpoints": ["x.5.4", "x.5.5"],
+    "front": "What does this print?",
+    "code": "def pair():\n    yield \"a\"\n    yield \"b\"\n\ng = pair()\nprint(next(g), next(g))\nprint(next(g))",
+    "output": "a b\n",
+    "raises": "StopIteration",
+    "back": "Each `next()` runs the generator up to its next `yield`. When it has no more values, `next()` raises `StopIteration`."
+  }
+]

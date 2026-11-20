@@ -8,7 +8,7 @@ import { ITEMS } from '../content/bank'
 import { LESSONS } from '../content/lessons'
 import type { Item } from '../content/schema'
 import { EXERCISES } from '../content/exercises'
-import { getProgress, resetProgress, setTrack as storeSetTrack } from '../progress/store'
+import { createDeck, getProgress, resetProgress, setTrack as storeSetTrack } from '../progress/store'
 import { pythonRunner } from '../python/client'
 import { encodeCode } from './playgroundLink'
 
@@ -318,6 +318,54 @@ describe('step through', () => {
     await user.keyboard('{ArrowLeft}')
     expect(screen.getByText('Step 2 of 3')).toBeInTheDocument()
     run.mockRestore()
+  })
+})
+
+describe('flashcards', () => {
+  it('reviews a deck: answer hidden until shown, ratings scheduled, misses come back', async () => {
+    const user = userEvent.setup()
+    await renderAt('/flashcards/review?deck=s1')
+    expect(screen.getByText(/^Card 1 of 10/)).toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'Answer' })).not.toBeInTheDocument()
+    const first = document.querySelector('[data-card-id]')!.getAttribute('data-card-id')!
+    await user.keyboard(' ')
+    expect(screen.getByRole('region', { name: 'Answer' })).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /^Again/ }))
+    expect(getProgress().cards[first]).toMatchObject({ box: 0, reviews: 1 })
+    expect(screen.getByText(/^Card 2 of 11/)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Show answer' }))
+    await user.keyboard('2')
+    expect(Object.values(getProgress().cards).map((c) => c.box)).toEqual([0, 1])
+  })
+
+  it('creates a deck, adds a card, downloads and re-uploads it', async () => {
+    const user = userEvent.setup()
+    const deckId = createDeck('Loops')
+    await renderAt(`/flashcards/deck/${deckId}`)
+    await user.type(screen.getByRole('textbox', { name: 'Front (the question)' }), 'What does `continue` do?')
+    await user.type(screen.getByRole('textbox', { name: 'Back (the answer)' }), 'Skips to the next round.')
+    await user.click(screen.getByRole('button', { name: 'Add card' }))
+    expect(getProgress().myCards).toMatchObject([{ deckId, front: 'What does `continue` do?', code: null }])
+    expect(within(screen.getByRole('list', { name: 'Cards' })).getByText('continue')).toBeInTheDocument()
+
+    cleanup()
+    const blobs: Blob[] = []
+    const createObjectURL = vi.fn<(b: Blob) => string>((b) => (blobs.push(b), 'blob:x'))
+    Object.assign(URL, { createObjectURL, revokeObjectURL: vi.fn<() => void>() })
+    await renderAt('/flashcards')
+    await user.click(screen.getByRole('button', { name: 'Download' }))
+    const file = await blobs[0]!.text()
+    expect(JSON.parse(file).decks[0]).toMatchObject({ name: 'Loops', cards: [{ front: 'What does `continue` do?' }] })
+
+    await user.upload(screen.getByLabelText('Upload a deck file'), new File([file], 'loops.json', { type: 'application/json' }))
+    expect(await screen.findByRole('status')).toHaveTextContent('Added 0 cards (1 you already had were skipped).')
+    await user.upload(screen.getByLabelText('Upload a deck file'), new File(['{"app":"x"}'], 'bad.json', { type: 'application/json' }))
+    expect(await screen.findByRole('status')).toHaveTextContent("isn't a PCEP101 flashcard file")
+  })
+
+  it('links a lesson to its flashcards', async () => {
+    await renderAt('/learn/3.1.1')
+    expect(screen.getByRole('link', { name: /^Flashcards \(5\)/ })).toHaveAttribute('href', '/flashcards/review?objective=3.1.1')
   })
 })
 

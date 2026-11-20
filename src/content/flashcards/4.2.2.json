@@ -1,0 +1,56 @@
+[
+  {
+    "id": "4.2.2-c01",
+    "objectiveId": "4.2.2",
+    "subpoints": [
+      "4.2.2.1"
+    ],
+    "front": "What do `try` and `except` do together?",
+    "back": "Python runs the `try` block. If an exception matching the `except` line is raised, it jumps to that block, runs it, and the program carries on after the statement instead of crashing."
+  },
+  {
+    "id": "4.2.2-c02",
+    "objectiveId": "4.2.2",
+    "subpoints": [
+      "4.2.2.4"
+    ],
+    "front": "What does this print?",
+    "code": "try:\n    print(12 // 4)\nexcept ZeroDivisionError:\n    print(\"Nobody\")\nprint(\"Done\")\n",
+    "output": "3\nDone\n",
+    "back": "No exception happens, so the `except` block is skipped completely."
+  },
+  {
+    "id": "4.2.2-c03",
+    "objectiveId": "4.2.2",
+    "subpoints": [
+      "4.2.2.1",
+      "4.2.2.4"
+    ],
+    "front": "What does this print?",
+    "code": "try:\n    print(\"Before\")\n    print(5 / 0)\n    print(\"After\")\nexcept ZeroDivisionError:\n    print(\"Caught\")\nprint(\"Done\")\n",
+    "output": "Before\nCaught\nDone\n",
+    "back": "The error occurs on the division line, so the rest of the `try` block is skipped and the `except` runs. Then the program continues."
+  },
+  {
+    "id": "4.2.2-c04",
+    "objectiveId": "4.2.2",
+    "subpoints": [
+      "4.2.2.2"
+    ],
+    "front": "What happens when this runs?",
+    "code": "try:\n    data = {\"a\": 1}\n    print(data[\"b\"])\nexcept ValueError:\n    print(\"Bad value\")\n",
+    "raises": "KeyError",
+    "back": "The `except` handles only `ValueError`. A `KeyError` is a different type, so it is not caught and stops the program."
+  },
+  {
+    "id": "4.2.2-c05",
+    "objectiveId": "4.2.2",
+    "subpoints": [
+      "4.2.2.3"
+    ],
+    "front": "What does this print?",
+    "code": "try:\n    n = int(\"x\")\nexcept ZeroDivisionError:\n    print(\"zero\")\nexcept ValueError:\n    print(\"not a number\")\n",
+    "output": "not a number\n",
+    "back": "Python checks the `except` branches in order and runs the first that matches. `int(\"x\")` raises `ValueError`, so only that branch runs."
+  }
+]

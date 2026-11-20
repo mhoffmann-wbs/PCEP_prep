@@ -1,0 +1,45 @@
+[
+  {
+    "id": "5.2.2-c01",
+    "objectiveId": "5.2.2",
+    "subpoints": ["5.2.2.1"],
+    "front": "How do you get `sqrt()` and the other maths helpers into your program?",
+    "back": "Write `import math` and then call them as `math.sqrt(...)`, `math.ceil(...)` and so on. Without the import you get a `NameError`."
+  },
+  {
+    "id": "5.2.2-c02",
+    "objectiveId": "5.2.2",
+    "subpoints": ["5.2.2.2", "5.2.2.3"],
+    "front": "What does this print?",
+    "code": "import math\nprint(math.ceil(4.1), math.floor(4.9))",
+    "output": "5 4\n",
+    "back": "`ceil()` always rounds up to the next whole number, `floor()` always rounds down. Neither looks at which whole number is closer."
+  },
+  {
+    "id": "5.2.2-c03",
+    "objectiveId": "5.2.2",
+    "subpoints": ["5.2.2.2", "5.2.2.3", "5.2.2.4"],
+    "front": "What does this print? Where do `floor()` and `trunc()` differ?",
+    "code": "import math\nprint(math.floor(-2.5), math.trunc(-2.5), math.ceil(-2.5))",
+    "output": "-3 -2 -2\n",
+    "back": "`floor()` goes down toward negative infinity, `ceil()` goes up, and `trunc()` just cuts off the fraction, moving toward zero. They agree for positives but differ for negatives."
+  },
+  {
+    "id": "5.2.2-c04",
+    "objectiveId": "5.2.2",
+    "subpoints": ["5.2.2.5"],
+    "front": "What does this print?",
+    "code": "import math\nside = math.sqrt(81)\nprint(side, type(side).__name__)",
+    "output": "9.0 float\n",
+    "back": "`sqrt()` returns a float even when the result is a whole number. Wrap it in `int()` if you need an integer."
+  },
+  {
+    "id": "5.2.2-c05",
+    "objectiveId": "5.2.2",
+    "subpoints": ["5.2.2.4", "5.2.2.2"],
+    "front": "What does this print?",
+    "code": "import math\nprint(math.trunc(7.99), math.ceil(7.01))",
+    "output": "7 8\n",
+    "back": "`trunc()` drops the fractional part, so `7.99` becomes `7`. `ceil()` rounds up, so even `7.01` becomes `8`."
+  }
+]

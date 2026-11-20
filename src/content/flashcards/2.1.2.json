@@ -1,0 +1,58 @@
+[
+  {
+    "id": "2.1.2-c01",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.3"
+    ],
+    "front": "In what order does Python check the conditions of an `if-elif` chain, and how many blocks can run?",
+    "back": "From top to bottom. It runs the block of the first true condition and then leaves the whole chain, so at most one block runs."
+  },
+  {
+    "id": "2.1.2-c02",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.2",
+      "2.1.2.4"
+    ],
+    "front": "What does this print?",
+    "code": "score = 75\nif score >= 90:\n    print(\"A\")\nelif score >= 70:\n    print(\"B\")\nelse:\n    print(\"C\")",
+    "output": "B\n",
+    "back": "`score >= 90` is false, `score >= 70` is true, so `\"B\"` is printed. The `else` is skipped because a branch already matched."
+  },
+  {
+    "id": "2.1.2-c03",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.5",
+      "2.1.2.3"
+    ],
+    "front": "What does this print, and what is wrong with the order?",
+    "code": "age = 20\nif age > 12:\n    print(\"teen\")\nelif age > 17:\n    print(\"adult\")",
+    "output": "teen\n",
+    "back": "The first condition `age > 12` is true for 20, so `\"teen\"` is printed. The later branch `age > 17` can never run because it is a stricter case of a test above it: put the most specific condition first."
+  },
+  {
+    "id": "2.1.2-c04",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.4"
+    ],
+    "front": "What happens when no condition in an `if-elif` chain without `else` is true?",
+    "back": "No branch runs and Python simply continues with the first line after the chain. Only an `else` guarantees that one branch always runs."
+  },
+  {
+    "id": "2.1.2-c05",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.2",
+      "2.1.2.4"
+    ],
+    "front": "What does this print?",
+    "code": "day = \"Sun\"\nif day == \"Sat\":\n    print(\"market\")\nelif day == \"Wed\":\n    print(\"piano\")\nelse:\n    print(\"free\")",
+    "output": "free\n",
+    "back": "`day` is `\"Sun\"`, which matches neither test, so the fallback `else` branch runs."
+  }
+]

@@ -13,6 +13,9 @@ const MockExamPage = lazy(() => import('../pages/MockExamPage'))
 const ExercisesPage = lazy(() => import('../pages/ExercisesPage'))
 const PlaygroundPage = lazy(() => import('../pages/PlaygroundPage'))
 const VisualizePage = lazy(() => import('../pages/VisualizePage'))
+const FlashcardsPage = lazy(() => import('../pages/FlashcardsPage'))
+const FlashcardReviewPage = lazy(() => import('../pages/FlashcardReviewPage'))
+const FlashcardDeckPage = lazy(() => import('../pages/FlashcardDeckPage'))
 const GuidePage = lazy(() => import('../pages/GuidePage'))
 const ProgressPage = lazy(() => import('../pages/ProgressPage'))
 
@@ -31,6 +34,9 @@ export const routes: RouteObject[] = [
       { path: 'exercises/:exerciseId', element: <ExercisesPage /> },
       { path: 'playground', element: <PlaygroundPage /> },
       { path: 'step', element: <VisualizePage /> },
+      { path: 'flashcards', element: <FlashcardsPage /> },
+      { path: 'flashcards/review', element: <FlashcardReviewPage /> },
+      { path: 'flashcards/deck/:deckId', element: <FlashcardDeckPage /> },
       { path: 'guides/:slug', element: <GuidePage /> },
       { path: 'progress', element: <ProgressPage /> },
       { path: '*', element: <h1 className="text-2xl font-semibold">Page not found</h1> },

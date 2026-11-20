@@ -1,0 +1,57 @@
+[
+  {
+    "id": "2.2.5-c01",
+    "objectiveId": "2.2.5",
+    "subpoints": [
+      "2.2.5.1",
+      "2.2.5.4"
+    ],
+    "front": "What does this print?",
+    "code": "for food in [\"egg\", \"milk\", \"jam\"]:\n    if food == \"milk\":\n        break\nprint(food)",
+    "output": "milk\n",
+    "back": "`break` ends the loop immediately, so `\"milk\"` is the last item checked. The loop variable keeps its last value."
+  },
+  {
+    "id": "2.2.5-c02",
+    "objectiveId": "2.2.5",
+    "subpoints": [
+      "2.2.5.2",
+      "2.2.5.4"
+    ],
+    "front": "What does this print?",
+    "code": "for n in [1, 2, 3, 4]:\n    if n == 3:\n        continue\n    print(n)",
+    "output": "1\n2\n4\n",
+    "back": "`continue` skips the rest of the body for that round and jumps to the next one, so 3 is not printed but the loop carries on."
+  },
+  {
+    "id": "2.2.5-c03",
+    "objectiveId": "2.2.5",
+    "subpoints": [
+      "2.2.5.3"
+    ],
+    "front": "What is `pass` for?",
+    "back": "It does nothing: it is a placeholder where Python needs at least one line, for example in an empty `if` or loop body you will fill in later."
+  },
+  {
+    "id": "2.2.5-c04",
+    "objectiveId": "2.2.5",
+    "subpoints": [
+      "2.2.5.1",
+      "2.2.5.2"
+    ],
+    "front": "What is the difference between `break` and `continue`?",
+    "back": "`break` leaves the whole loop, `continue` only skips to the next round. After `break` the program goes on after the loop."
+  },
+  {
+    "id": "2.2.5-c05",
+    "objectiveId": "2.2.5",
+    "subpoints": [
+      "2.2.5.3",
+      "2.2.5.4"
+    ],
+    "front": "What does this print?",
+    "code": "for n in range(3):\n    pass\nprint(n)",
+    "output": "2\n",
+    "back": "`pass` does nothing, so the loop body runs without any effect and the loop still visits every number. `n` ends at the last value, 2."
+  }
+]

@@ -1,0 +1,43 @@
+[
+  {
+    "id": "1.3.1-c01",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.1", "1.3.1.2"],
+    "front": "Which type is each literal, and which are the two Boolean literals? `42`, `4.2`, `\"42\"`, `True`",
+    "back": "`42` is `int`, `4.2` is `float`, `\"42\"` is `str` and `True` is `bool`. The Boolean literals are `True` and `False`, written with a capital first letter."
+  },
+  {
+    "id": "1.3.1-c02",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.1", "1.3.1.3"],
+    "front": "What does this print?",
+    "code": "print(type(7), type(7.0), type(\"7\"))",
+    "output": "<class 'int'> <class 'float'> <class 'str'>\n",
+    "back": "A number with a decimal point is a `float`, even when it ends in `.0`. Quotes make the value a `str`."
+  },
+  {
+    "id": "1.3.1-c03",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.4"],
+    "front": "What does this print, and why?",
+    "code": "print(0.1 + 0.2 == 0.3)\nprint(0.1 + 0.2)",
+    "output": "False\n0.30000000000000004\n",
+    "back": "Floats are stored in binary, so many decimals such as `0.1` are only approximations. Tiny rounding errors appear, so never trust `==` on floats."
+  },
+  {
+    "id": "1.3.1-c04",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.5"],
+    "front": "How can you write a string containing an apostrophe, like `It's sunny`, without an escape?",
+    "back": "Use the other kind of quote around it: `\"It's sunny\"`. Single and double quotes both make a string, but the opening and closing quotes must match."
+  },
+  {
+    "id": "1.3.1-c05",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.3", "1.3.1.5"],
+    "front": "What does this print?",
+    "code": "print(10 + 5)\nprint(\"10\" + \"5\")",
+    "output": "15\n105\n",
+    "back": "Without quotes, `10` and `5` are integer literals, so `+` adds them. With quotes they are string literals, so `+` joins them side by side."
+  }
+]

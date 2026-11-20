@@ -1,0 +1,63 @@
+[
+  {
+    "id": "4.1.5-c01",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.1"
+    ],
+    "front": "What is the difference between a local and a global variable?",
+    "back": "A global variable is created outside any function and can be read everywhere in the file. A local variable (including parameters) is created inside a function and exists only while it runs."
+  },
+  {
+    "id": "4.1.5-c02",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.1"
+    ],
+    "front": "What happens when this runs?",
+    "code": "def make_tea():\n    cups = 2\n    print(\"Making\", cups)\n\nmake_tea()\nprint(cups)\n",
+    "output": "Making 2\n",
+    "raises": "NameError",
+    "back": "`cups` is local to `make_tea`, so it does not exist at the top level: `NameError`."
+  },
+  {
+    "id": "4.1.5-c03",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.2"
+    ],
+    "front": "In what order does Python look for a name used inside a function?",
+    "back": "First the function's local names, then the global names, then the built-ins. If none has it, you get a `NameError`."
+  },
+  {
+    "id": "4.1.5-c04",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.3"
+    ],
+    "front": "What does this print?",
+    "code": "level = 1\n\ndef change():\n    level = 5\n    print(level)\n\nchange()\nprint(level)\n",
+    "output": "5\n1\n",
+    "back": "Assigning `level` inside the function creates a new local name that shadows the global. The global stays `1`."
+  },
+  {
+    "id": "4.1.5-c05",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.4"
+    ],
+    "front": "What does this print?",
+    "code": "total = 0\n\ndef add(n):\n    global total\n    total = total + n\n\nadd(4)\nadd(6)\nprint(total)\n",
+    "output": "10\n",
+    "back": "`global total` makes the function work on the global name, so the change is still there after the call."
+  },
+  {
+    "id": "4.1.5-c06",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.5"
+    ],
+    "front": "Why are many global variables risky?",
+    "back": "Any function can change them, so it is hard to see who changed a value or why. Code that depends on globals is harder to test and reuse; passing arguments and returning results is clearer."
+  }
+]

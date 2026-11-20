@@ -1,0 +1,70 @@
+[
+  {
+    "id": "3.1.2-c01",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.1"
+    ],
+    "front": "Which methods add an element to a list, and how do they differ?",
+    "back": "`append(x)` adds `x` at the end. `insert(i, x)` puts `x` at index `i` and shifts the later elements right."
+  },
+  {
+    "id": "3.1.2-c02",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.2",
+      "3.1.2.7",
+      "3.1.2.8"
+    ],
+    "front": "What does this print?",
+    "code": "pets = [\"cat\", \"dog\", \"fish\"]\nprint(pets.index(\"dog\"), \"bird\" in pets, len(pets))",
+    "output": "1 False 3\n",
+    "back": "`index()` returns the position of the first match. `in` only answers True or False, and `len()` counts the elements."
+  },
+  {
+    "id": "3.1.2-c03",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.3"
+    ],
+    "front": "How can you remove list elements, and what does each way need?",
+    "back": "`remove(x)` deletes the first element equal to `x`. `pop(i)` removes and returns the element at index `i` (the last one by default). `del lst[i]` deletes by index and also works with slices."
+  },
+  {
+    "id": "3.1.2-c04",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.4"
+    ],
+    "front": "What does this print?",
+    "code": "scores = [30, 10, 20]\nnew = sorted(scores)\nprint(scores, new)\nprint(scores.sort())\nprint(scores)",
+    "output": "[30, 10, 20] [10, 20, 30]\nNone\n[10, 20, 30]\n",
+    "back": "`sorted()` returns a new sorted list and leaves the original alone. `sort()` changes the list in place and returns `None`."
+  },
+  {
+    "id": "3.1.2-c05",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.5",
+      "3.1.2.6"
+    ],
+    "front": "What does this print?",
+    "code": "prices = [4, 7, 2]\ntotal = 0\nfor p in prices:\n    total += p\nprint(total)",
+    "output": "13\n",
+    "back": "`total` starts at 0 and the loop adds each price. After the loop it holds the sum of all elements."
+  },
+  {
+    "id": "3.1.2-c06",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.2",
+      "3.1.2.3",
+      "3.1.2.7"
+    ],
+    "front": "What happens when this runs?",
+    "code": "fruit = [\"apple\", \"pear\"]\nfruit.remove(\"pear\")\nprint(fruit)\nfruit.remove(\"plum\")",
+    "output": "['apple']\n",
+    "raises": "ValueError",
+    "back": "`remove()` raises `ValueError` when the value is not in the list. Test with `in` first if the value might be missing."
+  }
+]

@@ -1,0 +1,59 @@
+[
+  {
+    "id": "2.2.3-c01",
+    "objectiveId": "2.2.3",
+    "subpoints": [
+      "2.2.3.1",
+      "2.2.3.4"
+    ],
+    "front": "What numbers does `range(4)` produce?",
+    "code": "print(list(range(4)))",
+    "output": "[0, 1, 2, 3]\n",
+    "back": "`0, 1, 2, 3`: it starts at 0 and stops before 4. That makes exactly 4 numbers, so `for i in range(4)` repeats 4 times."
+  },
+  {
+    "id": "2.2.3-c02",
+    "objectiveId": "2.2.3",
+    "subpoints": [
+      "2.2.3.2"
+    ],
+    "front": "What do the arguments of `range(start, stop, step)` mean?",
+    "back": "`start` is the first number (included), `stop` is where it ends (never included) and `step` is the gap between numbers. Defaults are 0 for `start` and 1 for `step`."
+  },
+  {
+    "id": "2.2.3-c03",
+    "objectiveId": "2.2.3",
+    "subpoints": [
+      "2.2.3.2",
+      "2.2.3.4"
+    ],
+    "front": "What does this print?",
+    "code": "print(list(range(2, 10, 3)))",
+    "output": "[2, 5, 8]\n",
+    "back": "It starts at 2 and adds 3 each time: 2, 5, 8. The next one would be 11, which is past the stop 10, so the range ends at 8."
+  },
+  {
+    "id": "2.2.3-c04",
+    "objectiveId": "2.2.3",
+    "subpoints": [
+      "2.2.3.3"
+    ],
+    "front": "How do you count down from 3 to 1 with `range`?",
+    "code": "for n in range(3, 0, -1):\n    print(n)",
+    "output": "3\n2\n1\n",
+    "back": "Use a negative step and a start above the stop: `range(3, 0, -1)`. The stop `0` is still not included."
+  },
+  {
+    "id": "2.2.3-c05",
+    "objectiveId": "2.2.3",
+    "subpoints": [
+      "2.2.3.2",
+      "2.2.3.3",
+      "2.2.3.4"
+    ],
+    "front": "What does this print?",
+    "code": "print(list(range(5, 1)))",
+    "output": "[]\n",
+    "back": "With a positive step, a start that is already above the stop gives an empty range, so nothing is produced. A negative step is needed to count down."
+  }
+]

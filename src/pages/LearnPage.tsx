@@ -5,6 +5,7 @@ import { EXAM_PROFILES, OBJECTIVES, OBJECTIVE_BY_ID, PE1_URL } from '../content/
 import { ITEMS } from '../content/bank'
 import { EXERCISES } from '../content/exercises'
 import { LESSONS } from '../content/lessons'
+import { builtInCards } from '../flashcards/decks'
 import { lessonComponents } from '../lessons/components'
 import { setLessonRead, useProgress } from '../progress/store'
 
@@ -69,7 +70,8 @@ function LessonIndex() {
 }
 
 function LessonView({ objectiveId }: { objectiveId: string }) {
-  const { lessonsRead, exercises: exercisesDone } = useProgress()
+  const progress = useProgress()
+  const { lessonsRead, exercises: exercisesDone } = progress
   const objective = OBJECTIVE_BY_ID.get(objectiveId)
   const lesson = LESSONS.get(objectiveId)
   // The topic links sit at the bottom of the page, so start each lesson at the top
@@ -90,6 +92,7 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
   const section = SECTIONS.find((s) => s.objectiveIds.includes(objectiveId))!
   const read = lessonsRead.includes(objectiveId)
   const practiceCount = ITEMS.filter((i) => i.objectiveId === objectiveId).length
+  const cardCount = builtInCards(progress).filter((c) => c.objectiveId === objectiveId).length
   const exercises = EXERCISES.filter((e) => e.objectiveId === objectiveId)
 
   return (
@@ -186,6 +189,11 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
         {practiceCount > 0 && (
           <Link to={`/questions?objective=${objectiveId}`} className="rounded border px-4 py-2">
             Browse its questions
+          </Link>
+        )}
+        {cardCount > 0 && (
+          <Link to={`/flashcards/review?objective=${objectiveId}`} className="rounded border px-4 py-2">
+            Flashcards ({cardCount})
           </Link>
         )}
       </footer>

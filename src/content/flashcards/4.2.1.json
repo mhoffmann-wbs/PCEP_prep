@@ -1,0 +1,81 @@
+[
+  {
+    "id": "4.2.1-c01",
+    "objectiveId": "4.2.1",
+    "subpoints": [
+      "4.2.1.1",
+      "4.2.1.2"
+    ],
+    "front": "What is an exception, and what happens to the program when one is raised and not handled?",
+    "back": "It is an object describing a problem found while the program runs. Normal flow stops at that line, the rest is skipped and Python prints a traceback."
+  },
+  {
+    "id": "4.2.1-c02",
+    "objectiveId": "4.2.1",
+    "subpoints": [
+      "4.2.1.2",
+      "4.2.1.3"
+    ],
+    "front": "What does this print?",
+    "code": "print(\"Start\")\nprint(10 / 0)\nprint(\"End\")\n",
+    "output": "Start\n",
+    "raises": "ZeroDivisionError",
+    "back": "Python prints `Start`, then the division raises `ZeroDivisionError` and the program stops, so `End` never appears."
+  },
+  {
+    "id": "4.2.1-c03",
+    "objectiveId": "4.2.1",
+    "subpoints": [
+      "4.2.1.4",
+      "4.2.1.5"
+    ],
+    "front": "Which exception does `int(\"ten\")` raise, and why?",
+    "back": "`ValueError`: `int()` got the right type (a string) but its content cannot be turned into a number."
+  },
+  {
+    "id": "4.2.1-c04",
+    "objectiveId": "4.2.1",
+    "subpoints": [
+      "4.2.1.4",
+      "4.2.1.5"
+    ],
+    "front": "What happens when this runs?",
+    "code": "print(\"Apples: \" + 4)\n",
+    "raises": "TypeError",
+    "back": "Adding text and a number is not allowed: the operation does not fit those types, so Python raises `TypeError`."
+  },
+  {
+    "id": "4.2.1-c05",
+    "objectiveId": "4.2.1",
+    "subpoints": [
+      "4.2.1.4",
+      "4.2.1.5"
+    ],
+    "front": "What happens when this runs?",
+    "code": "pets = [\"cat\", \"dog\", \"fish\"]\nprint(pets[3])\n",
+    "raises": "IndexError",
+    "back": "The list has three items with indexes 0 to 2. Asking for index 3 is out of range: `IndexError`."
+  },
+  {
+    "id": "4.2.1-c06",
+    "objectiveId": "4.2.1",
+    "subpoints": [
+      "4.2.1.4",
+      "4.2.1.5"
+    ],
+    "front": "What happens when this runs?",
+    "code": "prices = {\"tea\": 2}\nprint(prices[\"coffee\"])\n",
+    "raises": "KeyError",
+    "back": "A dictionary lookup with a key that is not there raises `KeyError`."
+  },
+  {
+    "id": "4.2.1-c07",
+    "objectiveId": "4.2.1",
+    "subpoints": [
+      "4.2.1.4",
+      "4.2.1.5"
+    ],
+    "front": "Which exception do you get when you use a name that was never created, such as `print(total)` with no `total`?",
+    "back": "A `NameError`: Python does not know that name, often from a typo or a variable used before it is assigned."
+  }
+]

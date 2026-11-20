@@ -1,0 +1,38 @@
+[
+  {
+    "id": "x.2-c01",
+    "objectiveId": "x.2",
+    "subpoints": ["x.2.1"],
+    "front": "What does this print?",
+    "code": "print(12 & 10, 12 | 10, 12 ^ 10)",
+    "output": "8 14 6\n",
+    "back": "Bit by bit: 1100 and 1010. `&` keeps bits set in both (1000), `|` keeps bits set in either (1110), `^` keeps bits set in exactly one (0110)."
+  },
+  {
+    "id": "x.2-c02",
+    "objectiveId": "x.2",
+    "subpoints": ["x.2.1"],
+    "front": "What does `~x` give for an integer `x`?",
+    "code": "print(~5, ~0)",
+    "output": "-6 -1\n",
+    "back": "`~` flips every bit, which works out to `-x - 1`. That is why `~5` is `-6`, not a smaller positive number."
+  },
+  {
+    "id": "x.2-c03",
+    "objectiveId": "x.2",
+    "subpoints": ["x.2.2"],
+    "front": "What does this print?",
+    "code": "print(3 << 2, 20 >> 2)",
+    "output": "12 5\n",
+    "back": "`<<` shifts bits left, multiplying by 2 for each step. `>>` shifts right, dividing by 2 each step and dropping the remainder."
+  },
+  {
+    "id": "x.2-c04",
+    "objectiveId": "x.2",
+    "subpoints": ["x.2.3", "x.2.4"],
+    "front": "What does this print? Compare `&` with `and`.",
+    "code": "print(1 + 2 << 1)\nprint(6 & 3, 6 and 3)",
+    "output": "6\n2 3\n",
+    "back": "Shifts bind looser than `+`, so it is `(1 + 2) << 1`. `&` works on bits (110 and 011 gives 2), while `and` is Boolean and returns its second operand `3` when both are truthy."
+  }
+]

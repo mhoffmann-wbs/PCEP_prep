@@ -1,0 +1,56 @@
+[
+  {
+    "id": "2.2.2-c01",
+    "objectiveId": "2.2.2",
+    "subpoints": [
+      "2.2.2.1",
+      "2.2.2.2"
+    ],
+    "front": "What does the `in` keyword do in `for item in basket:`?",
+    "back": "It takes the next element from the iterable `basket` and puts it in the loop variable `item`, one element per round, until none are left."
+  },
+  {
+    "id": "2.2.2-c02",
+    "objectiveId": "2.2.2",
+    "subpoints": [
+      "2.2.2.3",
+      "2.2.2.4"
+    ],
+    "front": "What does this print?",
+    "code": "for ch in \"cat\":\n    print(ch.upper())",
+    "output": "C\nA\nT\n",
+    "back": "A string is an iterable of characters, so the loop variable receives `\"c\"`, `\"a\"`, `\"t\"` in turn. Each one is processed by `.upper()`."
+  },
+  {
+    "id": "2.2.2-c03",
+    "objectiveId": "2.2.2",
+    "subpoints": [
+      "2.2.2.3",
+      "2.2.2.5"
+    ],
+    "front": "What does this print?",
+    "code": "total = 0\nfor n in (1, 2, 3):\n    total = total + n\n    print(n, total)",
+    "output": "1 1\n2 3\n3 6\n",
+    "back": "Python hands out the tuple's elements in order. The variable `total` is updated every round, so it ends at 6."
+  },
+  {
+    "id": "2.2.2-c04",
+    "objectiveId": "2.2.2",
+    "subpoints": [
+      "2.2.2.1"
+    ],
+    "front": "What happens when you loop over an empty list?",
+    "back": "There is no first element, so the body never runs and the program continues after the loop. This is not an error."
+  },
+  {
+    "id": "2.2.2-c05",
+    "objectiveId": "2.2.2",
+    "subpoints": [
+      "2.2.2.5"
+    ],
+    "front": "What value does the loop variable have after this loop ends?",
+    "code": "for pet in [\"dog\", \"cat\", \"fish\"]:\n    pass\nprint(pet)",
+    "output": "fish\n",
+    "back": "It keeps the last element it was given, so `pet` is still `\"fish\"` after the loop."
+  }
+]
