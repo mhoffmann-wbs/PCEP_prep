@@ -5,7 +5,7 @@ import { EXAM_IDS, type ExamId } from '../content/blueprint'
 // All persisted learner state lives behind this module. Bump VERSION and add a
 // migration in `load()` whenever the shape changes; never read localStorage elsewhere.
 const STORAGE_KEY = 'pcep101:progress'
-const VERSION = 1
+const VERSION = 2
 
 export interface ItemStat {
   attempts: number
@@ -14,6 +14,15 @@ export interface ItemStat {
   lastAt: number
   /** Consecutive correct answers; a wrong answer resets it to 0. */
   streak: number
+}
+
+export interface ExerciseStat {
+  /** Times the learner pressed Check. */
+  attempts: number
+  /** When the checks first all passed (null while unsolved). Stays set after a later failed attempt. */
+  solvedAt: number | null
+  /** The learner's latest code, so a half-done exercise survives a reload. */
+  code: string | null
 }
 
 export interface ScoreRowRecord {
@@ -47,6 +56,7 @@ export interface Progress {
   mockResults: MockResult[]
   /** Objective ids whose lesson the learner marked as read. */
   lessonsRead: string[]
+  exercises: Record<string, ExerciseStat>
   playgroundCode: string | null
 }
 
@@ -61,6 +71,7 @@ function empty(): Progress {
     items: {},
     mockResults: [],
     lessonsRead: [],
+    exercises: {},
     playgroundCode: null,
   }
 }
@@ -70,8 +81,9 @@ function load(): Progress {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return empty()
     const parsed = JSON.parse(raw) as { version?: number }
-    if (parsed.version !== VERSION) return empty()
-    return { ...empty(), ...parsed } as Progress
+    // Version 1 had no exercises; the defaults from empty() fill them in.
+    if (parsed.version !== VERSION && parsed.version !== 1) return empty()
+    return { ...empty(), ...parsed, version: VERSION } as Progress
   } catch {
     return empty()
   }
@@ -138,6 +150,20 @@ export function setLessonRead(objectiveId: string, read: boolean) {
   commit({ ...state, lessonsRead: read ? [...others, objectiveId] : others })
 }
 
+const noExercise: ExerciseStat = { attempts: 0, solvedAt: null, code: null }
+
+export function recordExerciseCheck(exerciseId: string, passed: boolean, at: number = Date.now()) {
+  const prev = state.exercises[exerciseId] ?? noExercise
+  const solvedAt = prev.solvedAt ?? (passed ? at : null)
+  commit({ ...state, exercises: { ...state.exercises, [exerciseId]: { ...prev, attempts: prev.attempts + 1, solvedAt } } })
+}
+
+/** Keeps the learner's draft; null forgets it (the editor then shows the starter code). */
+export function setExerciseCode(exerciseId: string, code: string | null) {
+  const prev = state.exercises[exerciseId] ?? noExercise
+  commit({ ...state, exercises: { ...state.exercises, [exerciseId]: { ...prev, code } } })
+}
+
 export function setPlaygroundCode(code: string | null) {
   commit({ ...state, playgroundCode: code })
 }
@@ -169,6 +195,7 @@ const ProgressSchema = z.object({
     }),
   ),
   lessonsRead: z.array(z.string()),
+  exercises: z.record(z.string(), z.object({ attempts: count, solvedAt: z.number().nullable(), code: z.string().nullable() })),
   playgroundCode: z.string().nullable(),
 })
 
@@ -197,7 +224,7 @@ export function importProgress(json: string) {
   if (typeof version === 'number' && version > VERSION) {
     throw new Error('This export comes from a newer version of the app. Reload the app, then import it again.')
   }
-  const result = ProgressSchema.safeParse({ ...empty(), ...doc.progress })
+  const result = ProgressSchema.safeParse({ ...empty(), ...doc.progress, ...(version === 1 ? { version: VERSION } : {}) })
   if (!result.success) throw new Error('This export is damaged or incomplete, so nothing was imported.')
   commit(result.data)
 }

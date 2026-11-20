@@ -208,3 +208,69 @@ export const lessonMetaSchema = z.object({
 })
 
 export type LessonMeta = z.infer<typeof lessonMetaSchema>
+
+const functionCheck = z
+  .object({
+    /** Python expression evaluated in the learner's globals, e.g. `average([2, 4])`. */
+    call: nonEmpty,
+    /** Python expression for the expected value; the result must be equal and of the same type. */
+    expect: nonEmpty.optional(),
+    /** What the call must print (compared line by line, ignoring trailing spaces). */
+    prints: z.string().optional(),
+    /** Exception type the call must raise. */
+    raises: z.string().regex(/^[A-Z]\w*$/).optional(),
+  })
+  .refine((c) => c.expect !== undefined || c.prints !== undefined || c.raises !== undefined, 'a check needs expect, prints or raises')
+
+const ioCase = z.object({
+  /** Lines fed to input(), one per line. */
+  stdin: z.string().default(''),
+  /** What the program must print (compared line by line, ignoring trailing spaces). */
+  stdout: z.string(),
+  /** Files the program must have written, with their exact text. */
+  writes: z.record(z.string(), z.string()).optional(),
+})
+
+const exerciseBase = {
+  /** `${objectiveId}-e<n>`, e.g. "3.1.1-e1". */
+  id: z.string().regex(/^(\d\.\d\.\d|x\.\d)-e\d$/),
+  objectiveId: z.string().regex(OBJECTIVE_ID),
+  /** Sub-point ids the exercise practises. Drive the 30-02 filter, as for items. */
+  subpoints: z.array(z.string()).min(1),
+  title: nonEmpty,
+  /** The task. Paragraphs are separated by blank lines; `backticks` mark code. */
+  prompt: nonEmpty,
+  /** Code the editor starts with. It must not already pass. */
+  starter: z.string(),
+  /** A model solution; a content test runs it against the checks. */
+  solution: nonEmpty,
+  /** Revealed one at a time, from a gentle nudge to nearly the answer. */
+  hints: z.array(nonEmpty).min(1).max(3),
+  /** Files in the working directory when the program runs. */
+  files: z.record(z.string(), z.string()).optional(),
+}
+
+const functionExercise = z.object({
+  ...exerciseBase,
+  /** The learner writes a function; checks call it. */
+  kind: z.literal('function'),
+  checks: z.array(functionCheck).min(2),
+})
+
+const ioExercise = z.object({
+  ...exerciseBase,
+  /** The learner writes a program; each case feeds stdin and compares stdout. */
+  kind: z.literal('io'),
+  cases: z.array(ioCase).min(1),
+})
+
+export const exerciseSchema = z.discriminatedUnion('kind', [functionExercise, ioExercise]).superRefine((ex, ctx) => {
+  if (!ex.id.startsWith(`${ex.objectiveId}-`)) ctx.addIssue({ code: 'custom', message: 'id must start with objectiveId', path: ['id'] })
+  for (const [i, s] of ex.subpoints.entries()) {
+    if (!s.startsWith(`${ex.objectiveId}.`)) ctx.addIssue({ code: 'custom', message: `sub-point ${s} is not under ${ex.objectiveId}`, path: ['subpoints', i] })
+  }
+})
+
+export const exerciseFileSchema = z.array(exerciseSchema)
+
+export type Exercise = z.infer<typeof exerciseSchema>

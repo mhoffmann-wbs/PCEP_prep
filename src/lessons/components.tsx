@@ -34,7 +34,7 @@ export function Runnable({ code }: { code: string }) {
   return (
     <div className="not-prose my-4 space-y-2">
       {open ? (
-        <RunnerPanel initialCode={code} autoRun />
+        <RunnerPanel initialCode={code} autoRun minLines={3} />
       ) : (
         <>
           <CodeBlock code={code} />

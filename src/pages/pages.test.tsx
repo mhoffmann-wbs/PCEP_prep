@@ -2,12 +2,15 @@
 import { act, cleanup, render, screen, waitForElementToBeRemoved, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { RouterProvider, createMemoryRouter } from 'react-router'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { routes } from '../app/routes'
 import { ITEMS } from '../content/bank'
 import { LESSONS } from '../content/lessons'
 import type { Item } from '../content/schema'
+import { EXERCISES } from '../content/exercises'
 import { getProgress, resetProgress, setTrack as storeSetTrack } from '../progress/store'
+import { pythonRunner } from '../python/client'
+import { encodeCode } from './playgroundLink'
 
 const setTrack = (t: '30-03' | '30-02') => act(() => storeSetTrack(t))
 
@@ -215,5 +218,49 @@ describe('learn and progress', () => {
     await renderAt('/progress')
     expect(screen.getByText('Weighted readiness')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Export progress' })).toBeInTheDocument()
+  })
+})
+
+describe('exercises', () => {
+  it('lists the exercises by section and links each from its lesson', async () => {
+    await renderAt('/exercises')
+    expect(screen.getByRole('heading', { name: 'Exercises' })).toBeInTheDocument()
+    expect(screen.getByText(`0 of ${EXERCISES.length} solved.`, { exact: false })).toBeInTheDocument()
+    cleanup()
+    const ex = EXERCISES[0]!
+    await renderAt(`/learn/${ex.objectiveId}`)
+    expect(screen.getByRole('link', { name: ex.title })).toHaveAttribute('href', `/exercises/${ex.id}`)
+  })
+
+  it('reveals hints one at a time, checks the code and records a solve', async () => {
+    const ex = EXERCISES.find((e) => e.kind === 'function')!
+    // No worker in jsdom: report every check as passed.
+    const run = vi.spyOn(pythonRunner, 'run').mockImplementation(async (req) => ({
+      stdout: '',
+      stderr: '',
+      error: null,
+      files: {},
+      timedOut: false,
+      checks: (req.checks ?? []).map((c) => ({ call: c.call, passed: true, got: null, want: null, printed: '', error: null })),
+    }))
+    const user = userEvent.setup()
+    await renderAt(`/exercises/${ex.id}`)
+    expect(screen.getByRole('heading', { name: ex.title })).toBeInTheDocument()
+    expect(document.querySelector('.cm-content')?.textContent).toContain(ex.starter.split('\n')[0])
+    await user.click(screen.getByRole('button', { name: `Show hint 1 of ${ex.hints.length}` }))
+    expect(screen.getByText('Hint 1:')).toBeInTheDocument()
+    expect(screen.queryByText('Hint 2:')).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Check' }))
+    expect(await screen.findByText('✓ All checks passed. Well done!')).toBeInTheDocument()
+    expect(run).toHaveBeenCalledWith(expect.objectContaining({ checks: ex.checks }))
+    expect(getProgress().exercises[ex.id]).toMatchObject({ attempts: 1, solvedAt: expect.any(Number) })
+    run.mockRestore()
+  })
+})
+
+describe('playground', () => {
+  it('opens the code from a permalink', async () => {
+    await renderAt(`/playground${encodeCode('print("from a link")')}`)
+    expect(document.querySelector('.cm-content')?.textContent).toBe('print("from a link")')
   })
 })

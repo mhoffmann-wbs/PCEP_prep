@@ -1,0 +1,41 @@
+[
+  {
+    "id": "3.1.1-e1",
+    "objectiveId": "3.1.1",
+    "subpoints": ["3.1.1.3", "3.1.1.4"],
+    "kind": "function",
+    "title": "Ends of the queue",
+    "prompt": "A café keeps its waiting customers in a list, first in line first.\n\nWrite a function `ends(queue)` that returns a new list with two names: the first person in the queue and the last one. Use indexes, not a loop.\n\nFor example, `ends([\"Ana\", \"Ben\", \"Cleo\"])` returns `[\"Ana\", \"Cleo\"]`. A queue with one person returns that name twice.",
+    "starter": "def ends(queue):\n    # return [first, last]\n    pass\n",
+    "solution": "def ends(queue):\n    return [queue[0], queue[-1]]\n",
+    "hints": [
+      "The first element is at index 0. What index reaches the last element without knowing the length?",
+      "A negative index counts from the end: `queue[-1]` is the last element.",
+      "`return [queue[0], queue[-1]]`"
+    ],
+    "checks": [
+      { "call": "ends([\"Ana\", \"Ben\", \"Cleo\"])", "expect": "[\"Ana\", \"Cleo\"]" },
+      { "call": "ends([\"Dev\", \"Eli\"])", "expect": "[\"Dev\", \"Eli\"]" },
+      { "call": "ends([\"Fay\"])", "expect": "[\"Fay\", \"Fay\"]" },
+      { "call": "ends([\"Gus\", \"Hal\", \"Ivy\", \"Jo\", \"Kim\"])", "expect": "[\"Gus\", \"Kim\"]" }
+    ]
+  },
+  {
+    "id": "3.1.1-e2",
+    "objectiveId": "3.1.1",
+    "subpoints": ["3.1.1.2", "3.1.1.4", "3.1.1.5", "3.1.1.6"],
+    "kind": "io",
+    "title": "Every other day",
+    "prompt": "The list `temps` holds a week of midday temperatures, Monday first.\n\nPrint three lines, each using one slice of `temps`:\n\n1. the weekend (the last two days),\n2. every other day starting with Monday,\n3. the whole week backwards.\n\nThen make a copy of `temps` with a slice, set the copy's first element to `0`, and print `temps` again to show the original didn't change.",
+    "starter": "temps = [18, 21, 19, 24, 22, 17, 20]\n\n",
+    "solution": "temps = [18, 21, 19, 24, 22, 17, 20]\n\nprint(temps[-2:])\nprint(temps[::2])\nprint(temps[::-1])\ncopy = temps[:]\ncopy[0] = 0\nprint(temps)\n",
+    "hints": [
+      "A slice is `list[start:stop:step]`, and every part can be left out.",
+      "`temps[-2:]` starts two from the end and runs to the end; a step of 2 skips every other element; a step of -1 walks backwards.",
+      "`copy = temps[:]` makes a new list, so changing `copy[0]` leaves `temps` alone."
+    ],
+    "cases": [
+      { "stdout": "[17, 20]\n[18, 19, 22, 20]\n[20, 17, 22, 24, 19, 21, 18]\n[18, 21, 19, 24, 22, 17, 20]\n" }
+    ]
+  }
+]

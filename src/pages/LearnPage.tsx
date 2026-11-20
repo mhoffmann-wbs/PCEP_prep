@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router'
 import { Inline } from '../components/Inline'
 import { EXAM_PROFILES, OBJECTIVES, OBJECTIVE_BY_ID, PE1_URL } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
+import { EXERCISES } from '../content/exercises'
 import { LESSONS } from '../content/lessons'
 import { lessonComponents } from '../lessons/components'
 import { setLessonRead, useProgress } from '../progress/store'
@@ -68,7 +69,7 @@ function LessonIndex() {
 }
 
 function LessonView({ objectiveId }: { objectiveId: string }) {
-  const { lessonsRead } = useProgress()
+  const { lessonsRead, exercises: exercisesDone } = useProgress()
   const objective = OBJECTIVE_BY_ID.get(objectiveId)
   const lesson = LESSONS.get(objectiveId)
   // The topic links sit at the bottom of the page, so start each lesson at the top
@@ -89,6 +90,7 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
   const section = SECTIONS.find((s) => s.objectiveIds.includes(objectiveId))!
   const read = lessonsRead.includes(objectiveId)
   const practiceCount = ITEMS.filter((i) => i.objectiveId === objectiveId).length
+  const exercises = EXERCISES.filter((e) => e.objectiveId === objectiveId)
 
   return (
     <article className="space-y-6">
@@ -117,6 +119,22 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
         </>
       ) : (
         <p className="rounded border border-amber-300 bg-amber-50 p-3 text-sm">The lesson for this objective is coming soon.</p>
+      )}
+
+      {exercises.length > 0 && (
+        <section className="rounded-lg border-2 border-accent bg-white p-4">
+          <h2 className="font-semibold">Exercises for this topic</h2>
+          <ul className="mt-2 space-y-1">
+            {exercises.map((e) => (
+              <li key={e.id} className="text-sm">
+                <span className="inline-block w-4">{exercisesDone[e.id]?.solvedAt ? '✓' : ''}</span>
+                <Link to={`/exercises/${e.id}`} className="text-brand-dark underline">
+                  {e.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       <section className="grid gap-4 sm:grid-cols-2">

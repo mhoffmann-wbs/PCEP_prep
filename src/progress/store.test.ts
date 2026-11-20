@@ -1,6 +1,17 @@
 // @vitest-environment jsdom
 import { beforeEach, describe, expect, it } from 'vitest'
-import { exportProgress, getProgress, importProgress, recordAnswer, reloadProgress, resetProgress, setExtras, setTrack } from './store'
+import {
+  exportProgress,
+  getProgress,
+  importProgress,
+  recordAnswer,
+  recordExerciseCheck,
+  reloadProgress,
+  resetProgress,
+  setExerciseCode,
+  setExtras,
+  setTrack,
+} from './store'
 import { masteryOf } from './readiness'
 
 beforeEach(() => {
@@ -32,6 +43,25 @@ describe('progress store', () => {
     expect(getProgress().items).toEqual({})
   })
 
+  it('migrates version 1 data, which had no exercises', () => {
+    const v1 = { version: 1, track: '30-02', extrasInPractice: true, extrasInMock: true, items: {}, mockResults: [], lessonsRead: ['2.2.3'], playgroundCode: null }
+    localStorage.setItem('pcep101:progress', JSON.stringify(v1))
+    reloadProgress()
+    expect(getProgress()).toMatchObject({ version: 2, track: '30-02', lessonsRead: ['2.2.3'], exercises: {} })
+    importProgress(JSON.stringify({ app: 'pcep101', progress: v1 }))
+    expect(getProgress()).toMatchObject({ version: 2, exercises: {} })
+  })
+
+  it('records exercise checks and drafts; a solved exercise stays solved', () => {
+    setExerciseCode('3.1.1-e1', 'def ends(q):')
+    recordExerciseCheck('3.1.1-e1', false, 1)
+    recordExerciseCheck('3.1.1-e1', true, 2)
+    recordExerciseCheck('3.1.1-e1', false, 3)
+    expect(getProgress().exercises['3.1.1-e1']).toEqual({ attempts: 3, solvedAt: 2, code: 'def ends(q):' })
+    reloadProgress()
+    expect(getProgress().exercises['3.1.1-e1']?.solvedAt).toBe(2)
+  })
+
   it('resets the extras toggles to the track defaults when the track changes', () => {
     expect(getProgress()).toMatchObject({ track: '30-03', extrasInPractice: false, extrasInMock: false })
     setTrack('30-02')
@@ -50,7 +80,7 @@ describe('progress store', () => {
     expect(() => importProgress('nope')).toThrow("isn't valid JSON")
     expect(() => importProgress('{"app":"other"}')).toThrow("isn't a PCEP101 progress export")
     expect(() => importProgress(JSON.stringify({ app: 'pcep101', progress: { version: 1, items: { x: { attempts: -1 } } } }))).toThrow('damaged')
-    expect(() => importProgress(JSON.stringify({ app: 'pcep101', progress: { version: 2 } }))).toThrow('newer version')
+    expect(() => importProgress(JSON.stringify({ app: 'pcep101', progress: { version: 3 } }))).toThrow('newer version')
     expect(getProgress().items['4.1.2-01']?.attempts).toBe(1)
   })
 

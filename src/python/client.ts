@@ -107,6 +107,7 @@ export class PythonRunner {
               stderr: stderr.join(''),
               error: { type: TIMEOUT_TYPE, message: `The program ran for more than ${seconds} seconds and was stopped.`, line: null, traceback: '' },
               files: {},
+              checks: [],
               timedOut: true,
             })
           }, this.timeoutMs)

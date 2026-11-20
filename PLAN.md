@@ -166,6 +166,4 @@ Tooling:
 6. **Guides and polish**: cheat sheet, exam-day guide, mobile pass, accessibility of ordering items.
 7. **Later**: step-through visualizer (`sys.settrace` in Pyodide records line, locals and stdout for each step), flashcards with spaced review, and interactive `input()` through cross-origin isolation.
 
-**Before phase 0**: rename the folder to `PCEP101` (so `git init` and the memory path start out right).
-
 **After 2027-11-30**: drop the 30-02 profile and extras, or keep them hidden behind a "retired exam" note.

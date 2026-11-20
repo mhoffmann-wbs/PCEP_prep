@@ -21,7 +21,7 @@ class FakeWorker implements WorkerLike {
       return
     }
     this.emit({ type: 'stdout', id, text: req.code })
-    this.emit({ type: 'done', id, result: { stdout: req.code, stderr: '', error: null, files: {} } })
+    this.emit({ type: 'done', id, result: { stdout: req.code, stderr: '', error: null, files: {}, checks: [] } })
   }
   terminate() {
     this.terminated = true

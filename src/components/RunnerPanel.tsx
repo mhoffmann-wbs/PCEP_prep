@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
+import { CodeEditor } from './CodeEditor'
 import { explainError } from '../python/explain'
+import type { PyError } from '../python/runtime'
 import { usePythonRunner } from '../python/usePythonRunner'
 
 const STATUS_TEXT = { idle: '', loading: 'Loading Python…', ready: '', running: 'Running…' }
@@ -12,10 +14,13 @@ interface Props {
   /** Run once as soon as the panel appears. */
   autoRun?: boolean
   onCodeChange?: (code: string) => void
+  minLines?: number
+  /** Extra buttons next to Run, e.g. an exercise's Check. */
+  renderActions?: (code: string) => ReactNode
 }
 
 /** Code box, input box, Run button and output with error explanations. */
-export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRun = false, onCodeChange }: Props) {
+export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRun = false, onCodeChange, minLines = 10, renderActions }: Props) {
   const [code, setCode] = useState(initialCode)
   const [stdin, setStdin] = useState(initialStdin)
   const { status, output, outcome, loadError, run } = usePythonRunner()
@@ -35,32 +40,16 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRu
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const error = outcome?.error
-  const explanation = error && explainError(error)
   const written = Object.entries(outcome?.files ?? {}).filter(([name, text]) => files?.[name] !== text)
 
   return (
     <div className="space-y-4">
-      <label className="block">
+      <div>
         <span className="text-sm font-medium text-slate-700">Code</span>
-        <textarea
-          className="mt-1 block h-56 w-full rounded border border-slate-300 bg-white p-2 font-mono text-sm"
-          value={code}
-          spellCheck={false}
-          onChange={(e) => edit(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-              e.preventDefault()
-              start()
-            } else if (e.key === 'Tab') {
-              e.preventDefault()
-              const el = e.currentTarget
-              const { selectionStart: s, selectionEnd: end } = el
-              edit(code.slice(0, s) + '    ' + code.slice(end))
-              requestAnimationFrame(() => el.setSelectionRange(s + 4, s + 4))
-            }
-          }}
-        />
-      </label>
+        <div className="mt-1">
+          <CodeEditor value={code} onChange={edit} onRun={start} label="Code" minLines={minLines} />
+        </div>
+      </div>
       <label className="block">
         <span className="text-sm font-medium text-slate-700">Input (one line per input() call)</span>
         <textarea
@@ -79,6 +68,7 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRu
         >
           Run
         </button>
+        {renderActions?.(code)}
         <span className="text-sm text-slate-500">{STATUS_TEXT[status] || 'Ctrl+Enter to run'}</span>
       </div>
       {loadError && <p className="text-red-700">{loadError}</p>}
@@ -89,18 +79,7 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRu
           {error && <span className="text-[#ff9b9b]">{error.traceback || `${error.type}: ${error.message}`}</span>}
         </pre>
       </section>
-      {explanation && (
-        <aside className="rounded border border-amber-300 bg-amber-50 p-3">
-          <h2 className="font-semibold">
-            {explanation.title}
-            {error.line && <span className="font-normal text-slate-600"> (line {error.line})</span>}
-          </h2>
-          <p className="mt-1">{explanation.text}</p>
-          <Link className="mt-1 inline-block text-sm text-brand-dark underline" to={`/learn/${explanation.lessonId}`}>
-            Lesson {explanation.lessonId}
-          </Link>
-        </aside>
-      )}
+      {error && <ErrorHelp error={error} />}
       {written.length > 0 && (
         <section aria-label="Files">
           <h2 className="text-sm font-medium text-slate-700">Files written by the program</h2>
@@ -113,5 +92,23 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRu
         </section>
       )}
     </div>
+  )
+}
+
+/** A beginner explanation of a Python error, with a link to the lesson that covers it. */
+export function ErrorHelp({ error }: { error: PyError }) {
+  const explanation = explainError(error)
+  if (!explanation) return null
+  return (
+    <aside className="rounded border border-amber-300 bg-amber-50 p-3">
+      <h2 className="font-semibold">
+        {explanation.title}
+        {error.line && <span className="font-normal text-slate-600"> (line {error.line})</span>}
+      </h2>
+      <p className="mt-1">{explanation.text}</p>
+      <Link className="mt-1 inline-block text-sm text-brand-dark underline" to={`/learn/${explanation.lessonId}`}>
+        Lesson {explanation.lessonId}
+      </Link>
+    </aside>
   )
 }

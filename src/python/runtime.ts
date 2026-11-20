@@ -9,6 +9,32 @@ export interface RunRequest {
   stdin?: string
   /** Files placed in the working directory before the run. */
   files?: Record<string, string>
+  /** Exercise checks evaluated in the program's globals after it runs without an error. */
+  checks?: FunctionCheck[]
+}
+
+/**
+ * One check of a `function` exercise: `call` is a Python expression evaluated in
+ * the learner's globals. It passes when the value equals `expect` (same type
+ * too), what it printed matches `prints`, and/or it raised `raises`.
+ */
+export interface FunctionCheck {
+  call: string
+  expect?: string
+  prints?: string
+  raises?: string
+}
+
+export interface CheckResult {
+  call: string
+  passed: boolean
+  /** repr() of the value returned (null if it raised). */
+  got: string | null
+  /** repr() of the expected value, when the check has `expect`. */
+  want: string | null
+  printed: string
+  /** "TypeError: ..." if the call raised. */
+  error: string | null
 }
 
 export interface PyError {
@@ -27,6 +53,8 @@ export interface RunResult {
   error: PyError | null
   /** Files in the working directory after the run (null for binary files). */
   files: Record<string, string | null>
+  /** Results of the request's checks; empty when there are none or the program raised. */
+  checks: CheckResult[]
 }
 
 export interface RunHooks {
@@ -34,7 +62,7 @@ export interface RunHooks {
   onStderr?: (text: string) => void
 }
 
-type Harness = { reset: (files: string) => void; run: (src: string) => string; files: () => string }
+type Harness = { reset: (files: string) => void; run: (src: string, checks: string) => string; files: () => string }
 
 const harnesses = new WeakMap<PyodideAPI, Harness>()
 
@@ -73,6 +101,6 @@ export function runPython(py: PyodideAPI, req: RunRequest, hooks: RunHooks = {})
   py.setStderr({ write: err.write })
   py.setStdin({ stdin: () => lines.shift() })
   h.reset(JSON.stringify(req.files ?? {}))
-  const error = JSON.parse(h.run(req.code)) as PyError | null
-  return { stdout: out.text(), stderr: err.text(), error, files: JSON.parse(h.files()) }
+  const { error, checks } = JSON.parse(h.run(req.code, JSON.stringify(req.checks ?? []))) as Pick<RunResult, 'error' | 'checks'>
+  return { stdout: out.text(), stderr: err.text(), error, files: JSON.parse(h.files()), checks }
 }
