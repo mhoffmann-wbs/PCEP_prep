@@ -241,6 +241,188 @@
       {"text": "1*2*3*go", "correct": false, "rationale": "`sep=\"*\"` is used in the last call only, and that call has a single value, so there is nothing to separate."}
     ],
     "explanation": "`end` is what `print()` writes after its values, here a comma and a space instead of a newline. `sep` is what goes between several values in one call. In `print(\"go\", sep=\"*\")` there is only one value, so `sep` changes nothing."
+  },
+  {
+    "id": "4.1.3-14",
+    "kind": "single",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.3",
+      "4.1.3.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def add_item(item, basket=[]):\n    basket.append(item)\n    return basket\n\nprint(add_item(\"pen\"))\nprint(add_item(\"ink\"))\nprint(add_item(\"cap\", []))",
+    "output": "['pen']\n['pen', 'ink']\n['cap']\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "['pen']\n['ink']\n['cap']",
+        "correct": false,
+        "rationale": "The default list is created once, when `def` runs, not on every call, so the second call adds to the same list."
+      },
+      {
+        "text": "['pen']\n['pen', 'ink']\n['pen', 'ink', 'cap']",
+        "correct": false,
+        "rationale": "The third call passes its own new list, so it does not use the shared default."
+      },
+      {
+        "text": "['pen']\n['pen', 'ink']\n['cap']",
+        "correct": true,
+        "rationale": "The first two calls share the one default list; the third call passes a fresh list."
+      },
+      {
+        "text": "['pen']\n['ink']\n['pen', 'ink', 'cap']",
+        "correct": false,
+        "rationale": "This mixes the two cases up: the shared default list grows in the second call, and the third call does not use it."
+      }
+    ],
+    "explanation": "A default value is evaluated once, when the `def` statement runs. Every call that leaves out `basket` gets that same list object, so `\"pen\"` is still in it when `\"ink\"` is appended. The third call passes its own empty list, which only receives `\"cap\"`. This is why a list (or other changeable value) is a risky default."
+  },
+  {
+    "id": "4.1.3-15",
+    "kind": "single",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.3",
+      "4.1.3.1"
+    ],
+    "stem": "What happens when this code runs?",
+    "code": "def greet(greeting=\"Hi\", name):\n    print(greeting, name)\n\ngreet(\"Ana\")",
+    "raises": "SyntaxError",
+    "options": [
+      {
+        "text": "It prints `Hi Ana`",
+        "correct": false,
+        "rationale": "Python never gets as far as the call: the definition itself is rejected."
+      },
+      {
+        "text": "It prints `Ana None`",
+        "correct": false,
+        "rationale": "Parameters without a default never become `None` on their own, and this definition is not accepted anyway."
+      },
+      {
+        "text": "It raises `TypeError` when `greet(\"Ana\")` runs",
+        "correct": false,
+        "rationale": "A wrong call raises `TypeError`, but here the problem is in the definition, which is found before anything runs."
+      },
+      {
+        "text": "It raises `SyntaxError` before anything runs",
+        "correct": true,
+        "rationale": "A parameter without a default may not follow one with a default."
+      }
+    ],
+    "explanation": "In a function definition, parameters with default values must come after all parameters without one. `def greet(greeting=\"Hi\", name):` breaks that rule, so Python reports a `SyntaxError` (\"parameter without a default follows parameter with a default\") when it reads the file, before any line runs. Writing `def greet(name, greeting=\"Hi\"):` fixes it."
+  },
+  {
+    "id": "4.1.3-16",
+    "kind": "single",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "print(\"A\", sep=\"-\", end=\"\")\nprint(\"B\", \"C\", sep=\"\")\nprint(sep=\"*\", end=\"!\\n\")\nprint(\"D\", \"E\", sep=\"\\n\")",
+    "output": "ABC\n!\nD\nE\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "A-BC\n*!\nD E",
+        "correct": false,
+        "rationale": "`sep` only goes between values. One value has nothing to separate, and `print()` with no values prints only its `end`."
+      },
+      {
+        "text": "ABC\n!\nD\nE",
+        "correct": true,
+        "rationale": "The first `end=\"\"` keeps `B` on the same line, the empty `print()` prints just its `end`, and `sep=\"\\n\"` puts `E` on its own line."
+      },
+      {
+        "text": "A\nBC\n!\nD\nE",
+        "correct": false,
+        "rationale": "`end=\"\"` replaces the newline after `A`, so `BC` continues on the same line."
+      },
+      {
+        "text": "ABC\n\nD\nE",
+        "correct": false,
+        "rationale": "A `print()` with no values still prints its `end`, which here is `!` followed by a newline."
+      }
+    ],
+    "explanation": "`sep` is placed between the values a call prints, and `end` is printed once after them. The first call has one value, so `sep=\"-\"` has no effect and `end=\"\"` leaves the cursor after `A`. The second call prints `BC` (no separator) and a newline. The third call has no values, so it prints only its `end`: `!` and a newline. The last call puts a newline between `D` and `E`."
+  },
+  {
+    "id": "4.1.3-17",
+    "kind": "multi",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.3",
+      "4.1.3.1"
+    ],
+    "select": 2,
+    "stem": "Which function headers are valid Python? (Select TWO)",
+    "options": [
+      {
+        "text": "`def ship(item, express=False):`",
+        "correct": true,
+        "rationale": "The parameter with a default comes after the one without."
+      },
+      {
+        "text": "`def ship(express=False, item):`",
+        "correct": false,
+        "rationale": "A parameter without a default may not follow one with a default: `SyntaxError`."
+      },
+      {
+        "text": "`def ship(item=\"box\", express=False):`",
+        "correct": true,
+        "rationale": "Every parameter may have a default; then the function can be called with no arguments."
+      },
+      {
+        "text": "`def ship(item, express=False, weight):`",
+        "correct": false,
+        "rationale": "`weight` has no default but comes after `express`, which has one."
+      },
+      {
+        "text": "`def ship(item, item=1):`",
+        "correct": false,
+        "rationale": "A parameter name may appear only once in a definition."
+      },
+      {
+        "text": "`def ship(item, \"express\"):`",
+        "correct": false,
+        "rationale": "Parameters must be names; a string literal cannot be a parameter."
+      }
+    ],
+    "explanation": "A function header lists parameter names, each at most once. Parameters with defaults (`name=value`) may be mixed with ones without, but only in one order: all parameters without defaults first, then those with defaults. Anything else is a `SyntaxError` when the file is read."
+  },
+  {
+    "id": "4.1.3-18",
+    "kind": "gap",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.3",
+      "4.1.3.2",
+      "4.1.3.4"
+    ],
+    "stem": "Complete the code so that it prints `Ana economy` and then `Bo first`.",
+    "code": "def ticket(name, seat=__BLANK1__):\n    print(name, seat)\n\nticket(\"Ana\")\nticket(__BLANK2__=\"first\", name=\"Bo\")",
+    "output": "Ana economy\nBo first\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "text",
+        "accept": [
+          "\"economy\"",
+          "'economy'"
+        ],
+        "rationale": "The first call gives no seat, so the default value must be the string `\"economy\"`, in quotes."
+      },
+      {
+        "n": 2,
+        "kind": "text",
+        "accept": [
+          "seat"
+        ],
+        "rationale": "A keyword argument names the parameter it fills: `seat=\"first\"`. Keyword arguments may come in any order."
+      }
+    ],
+    "explanation": "`ticket(\"Ana\")` passes only `name`, so `seat` takes its default, which must be `\"economy\"`. In the second call both arguments are given by keyword, so their order does not matter; `seat=\"first\"` overrides the default."
   }
-
 ]

@@ -249,5 +249,42 @@
       {"text": "print(cups > mugs, cups == mugs)", "correct": false, "rationale": "`>` is false for equal values, so the first result would be `False`."}
     ],
     "explanation": "Relational operators compare values, not types, so `7 == 7.0` is true. Then `!=` asks the opposite question and gives false. `True False` therefore comes from `==` followed by `!=`."
+  },
+  {
+    "id": "1.4.1-17",
+    "kind": "single",
+    "objectiveId": "1.4.1",
+    "subpoints": [
+      "1.4.1.5",
+      "1.4.1.3",
+      "1.4.1.8"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "x = 3\nx = x == 3\nprint(x)\nx = x + 1\nprint(x)",
+    "output": "True\n2\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "3\n4",
+        "correct": false,
+        "rationale": "`=` has the lowest priority, so `x == 3` is evaluated first and its result, not 3, is stored."
+      },
+      {
+        "text": "True\nTrue1",
+        "correct": false,
+        "rationale": "`True + 1` is arithmetic, not string joining: `True` counts as 1."
+      },
+      {
+        "text": "True\n2",
+        "correct": true,
+        "rationale": "`x == 3` gives `True`, which is stored in `x`; `True + 1` is 2."
+      },
+      {
+        "text": "True\nTypeError",
+        "correct": false,
+        "rationale": "`bool` is a kind of integer, so adding 1 to `True` is allowed."
+      }
+    ],
+    "explanation": "In `x = x == 3`, the comparison `x == 3` is evaluated first (assignment always happens last), giving `True`, and that value is stored in `x`. In arithmetic, `True` behaves like 1 and `False` like 0, so `x + 1` is 2."
   }
 ]

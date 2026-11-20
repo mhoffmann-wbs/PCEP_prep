@@ -358,5 +358,119 @@
       }
     ],
     "explanation": "`in` tests whether a key exists, whatever its value, so `\"pears\" in stock` is `True`. `stock[\"pears\"]` returns the value 0. The number 5 is a value and not a key, so `5 in stock` is `False`."
+  },
+  {
+    "id": "3.4.1-11",
+    "kind": "single",
+    "objectiveId": "3.4.1",
+    "subpoints": [
+      "3.4.1.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "cart = {\"milk\": 1, \"bread\": 2}\nbackup = cart\ncart.clear()\ncart[\"tea\"] = 3\nprint(backup, len(cart))",
+    "output": "{'tea': 3} 1\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "{'milk': 1, 'bread': 2} 1",
+        "correct": false,
+        "rationale": "`backup = cart` does not copy the dictionary; both names refer to the same one, which `clear()` empties."
+      },
+      {
+        "text": "{} 1",
+        "correct": false,
+        "rationale": "`\"tea\"` is added after `clear()`, and `backup` shows that change too, because it is the same dictionary."
+      },
+      {
+        "text": "{'milk': 1, 'bread': 2, 'tea': 3} 3",
+        "correct": false,
+        "rationale": "`clear()` removes every pair before `\"tea\"` is added."
+      },
+      {
+        "text": "{'tea': 3} 1",
+        "correct": true,
+        "rationale": "`clear()` empties the one dictionary both names share; then `\"tea\"` is added to it."
+      }
+    ],
+    "explanation": "`backup = cart` makes a second name for the same dictionary. `cart.clear()` removes all pairs from that dictionary in place, and `cart[\"tea\"] = 3` adds one new pair. Printing through either name shows `{'tea': 3}`, and its length is 1."
+  },
+  {
+    "id": "3.4.1-12",
+    "kind": "single",
+    "objectiveId": "3.4.1",
+    "subpoints": [
+      "3.4.1.1",
+      "3.4.1.3"
+    ],
+    "stem": "What happens when this code runs?",
+    "code": "visits = {}\nvisits[(\"Rome\", 2024)] = 3\nprint(len(visits))\nvisits[[\"Paris\", 2025]] = 1\nprint(len(visits))",
+    "output": "1\n",
+    "raises": "TypeError",
+    "options": [
+      {
+        "text": "It prints `1`, then raises `TypeError`",
+        "correct": true,
+        "rationale": "A tuple can be a key, but a list cannot, because it can change."
+      },
+      {
+        "text": "It prints `1` and then `2`",
+        "correct": false,
+        "rationale": "The second key is a list, and lists cannot be dictionary keys."
+      },
+      {
+        "text": "It raises `TypeError` before printing anything",
+        "correct": false,
+        "rationale": "Tuples can be dictionary keys, so the first assignment and `print()` work."
+      },
+      {
+        "text": "It prints `1`, then raises `KeyError`",
+        "correct": false,
+        "rationale": "`KeyError` comes from reading a missing key; here the problem is the type of the key."
+      }
+    ],
+    "explanation": "Dictionary keys must be values that cannot change (hashable), such as numbers, strings and tuples of them. `(\"Rome\", 2024)` is a tuple, so it works and the length is 1. `[\"Paris\", 2025]` is a list, which can change, so using it as a key raises `TypeError: cannot use 'list' as a dict key (unhashable type: 'list')`."
+  },
+  {
+    "id": "3.4.1-13",
+    "kind": "multi",
+    "objectiveId": "3.4.1",
+    "subpoints": [
+      "3.4.1.4"
+    ],
+    "select": 2,
+    "stem": "The dictionary `stock = {\"pear\": 4, \"plum\": 9}` exists. Which lines remove the `\"pear\"` pair, leaving `{'plum': 9}`? (Select TWO)",
+    "options": [
+      {
+        "text": "`del stock[\"pear\"]`",
+        "correct": true,
+        "rationale": "`del` with a key removes that pair."
+      },
+      {
+        "text": "`stock.remove(\"pear\")`",
+        "correct": false,
+        "rationale": "Dictionaries have no `remove()` method (that is a list method), so this raises `AttributeError`."
+      },
+      {
+        "text": "`stock[\"pear\"] = None`",
+        "correct": false,
+        "rationale": "This keeps the key and only changes its value to `None`."
+      },
+      {
+        "text": "`stock.pop(\"pear\")`",
+        "correct": true,
+        "rationale": "`pop()` removes the pair and returns its value, 4."
+      },
+      {
+        "text": "`stock.clear(\"pear\")`",
+        "correct": false,
+        "rationale": "`clear()` takes no argument (`TypeError`), and it would empty the whole dictionary anyway."
+      },
+      {
+        "text": "`del stock[0]`",
+        "correct": false,
+        "rationale": "Dictionaries are looked up by key, not position; there is no key `0`, so this raises `KeyError`."
+      }
+    ],
+    "explanation": "A pair is removed by its key, either with `del stock[\"pear\"]` or with `stock.pop(\"pear\")`, which also returns the removed value. `remove()` belongs to lists, `clear()` empties the whole dictionary and takes no argument, assigning `None` keeps the key, and dictionaries have no positions to delete by."
   }
 ]

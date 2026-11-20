@@ -377,5 +377,194 @@
       }
     ],
     "explanation": "Globals create hidden connections between functions: any of them can change the value, and results depend on the order of calls. Such functions are hard to reuse and to test alone. Passing values in as arguments and sending results out with `return` keeps those connections visible."
+  },
+  {
+    "id": "4.1.5-12",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.2",
+      "4.1.5.1"
+    ],
+    "stem": "What happens when this code runs?",
+    "code": "level = 1\n\ndef show_level():\n    print(\"Level\", level)\n    level = 2\n\nshow_level()",
+    "raises": "UnboundLocalError",
+    "options": [
+      {
+        "text": "It prints `Level 1`",
+        "correct": false,
+        "rationale": "Python does not look up `level` line by line. The assignment further down makes `level` local for the whole function."
+      },
+      {
+        "text": "It prints `Level 2`",
+        "correct": false,
+        "rationale": "Code runs top to bottom, so even a local `level` would not have the value 2 yet when `print()` runs."
+      },
+      {
+        "text": "It raises `NameError`",
+        "correct": false,
+        "rationale": "Close, but the name is known to be local; it just has no value yet. Python reports that as the more specific `UnboundLocalError`."
+      },
+      {
+        "text": "It raises `UnboundLocalError`",
+        "correct": true,
+        "rationale": "`level = 2` makes `level` local to the function, so the `print()` before it reads a local variable that has no value yet."
+      }
+    ],
+    "explanation": "Whether a name inside a function is local is decided for the whole function before it runs: any assignment to `level` in the body makes it local everywhere in that body. The `print()` on the first line then reads the local `level`, which has not been assigned yet, so Python raises `UnboundLocalError` (a kind of `NameError`). Delete the assignment, or add `global level`, and the function prints `Level 1`."
+  },
+  {
+    "id": "4.1.5-13",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.4",
+      "4.1.5.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def use_dark():\n    global theme\n    theme = \"dark\"\n\ndef use_light():\n    theme = \"light\"\n\nuse_dark()\nuse_light()\nprint(theme)",
+    "output": "dark\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "light",
+        "correct": false,
+        "rationale": "`use_light()` has no `global` line, so its `theme` is a separate local variable that disappears when the function ends."
+      },
+      {
+        "text": "dark",
+        "correct": true,
+        "rationale": "`global theme` makes `use_dark()` create the global `theme`; the assignment in `use_light()` only creates a local one."
+      },
+      {
+        "text": "None",
+        "correct": false,
+        "rationale": "The global `theme` exists and holds `\"dark\"`; nothing sets it to `None`."
+      },
+      {
+        "text": "NameError",
+        "correct": false,
+        "rationale": "There is no global `theme` before the first call, but `global theme` followed by an assignment creates it."
+      }
+    ],
+    "explanation": "No `theme` exists at the top level at first. `use_dark()` declares `global theme`, so its assignment creates the global variable with the value `\"dark\"`. `use_light()` assigns to `theme` without `global`, which creates a local variable that shadows the global one only inside that call. The final `print()` sees the global `theme`: `dark`."
+  },
+  {
+    "id": "4.1.5-14",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.2",
+      "4.1.5.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def record(count, log):\n    count = count + 1\n    log.append(count)\n\nvisits = 5\nhistory = []\nrecord(visits, history)\nprint(visits, history)",
+    "output": "5 [6]\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "6 [6]",
+        "correct": false,
+        "rationale": "Assigning to the parameter `count` only changes the local name; `visits` outside still refers to 5."
+      },
+      {
+        "text": "5 []",
+        "correct": false,
+        "rationale": "`log` and `history` name the same list, so `append()` inside the function changes the list `history` shows."
+      },
+      {
+        "text": "5 [6]",
+        "correct": true,
+        "rationale": "Rebinding `count` stays local, but `append()` changes the one list that `log` and `history` share."
+      },
+      {
+        "text": "6 []",
+        "correct": false,
+        "rationale": "This swaps the two effects: the number stays the same outside, while the list does change."
+      }
+    ],
+    "explanation": "Parameters are local names that start out referring to the arguments. `count = count + 1` makes the local `count` refer to a new value, 6, and leaves the global `visits` at 5. `log` refers to the same list object as `history`, and `log.append(6)` changes that object, so `history` is `[6]` afterwards."
+  },
+  {
+    "id": "4.1.5-15",
+    "kind": "multi",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.1",
+      "4.1.5.2",
+      "4.1.5.3"
+    ],
+    "select": 2,
+    "stem": "Which statements about this code are true? (Select TWO)",
+    "code": "total = 10\n\ndef show():\n    print(total)\n\ndef reset():\n    total = 0\n    print(total)\n\ndef add_one():\n    total += 1",
+    "options": [
+      {
+        "text": "Calling `show()` prints `10`",
+        "correct": true,
+        "rationale": "A function that only reads a name finds the global `total`."
+      },
+      {
+        "text": "Calling `reset()` sets the global `total` to 0",
+        "correct": false,
+        "rationale": "Without `global`, `total = 0` creates a local variable; the global stays 10."
+      },
+      {
+        "text": "Calling `add_one()` raises `UnboundLocalError`",
+        "correct": true,
+        "rationale": "`total += 1` assigns to `total`, so it is local, and it reads that local before it has a value."
+      },
+      {
+        "text": "Calling `add_one()` makes the global `total` 11",
+        "correct": false,
+        "rationale": "That needs `global total` in the function. Without it, `+=` works on a local name and fails."
+      },
+      {
+        "text": "Defining `add_one()` raises an error even if it is never called",
+        "correct": false,
+        "rationale": "The function body only runs when the function is called, so defining it is fine."
+      },
+      {
+        "text": "Calling `reset()` raises `UnboundLocalError`",
+        "correct": false,
+        "rationale": "`reset()` assigns its local `total` before reading it, so `print()` shows 0."
+      }
+    ],
+    "explanation": "Reading a global name inside a function works, so `show()` prints 10. Any assignment to a name in a function makes that name local for the whole function: `reset()` gets its own `total` (the global is unchanged), and `add_one()` fails because `total += 1` must read the local `total` before it has been given a value, which raises `UnboundLocalError` when the function is called."
+  },
+  {
+    "id": "4.1.5-16",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.3",
+      "4.1.5.2"
+    ],
+    "stem": "What happens when this code runs?",
+    "code": "prices = [3, 5, 2]\nsum = 0\nfor p in prices:\n    sum += p\nprint(sum)\nprint(sum(prices))",
+    "output": "10\n",
+    "raises": "TypeError",
+    "options": [
+      {
+        "text": "It prints `10` twice",
+        "correct": false,
+        "rationale": "The second line would need the built-in `sum()`, but the name `sum` now refers to the number 10."
+      },
+      {
+        "text": "It prints `10`, then raises `TypeError`",
+        "correct": true,
+        "rationale": "The first `print()` works; `sum(prices)` then tries to call the integer 10, which is not callable."
+      },
+      {
+        "text": "It raises `NameError` before printing anything",
+        "correct": false,
+        "rationale": "`sum` is a valid variable name, so assigning to it works and the loop runs."
+      },
+      {
+        "text": "It raises `SyntaxError` before printing anything",
+        "correct": false,
+        "rationale": "Built-in function names are not keywords, so `sum = 0` is legal Python."
+      }
+    ],
+    "explanation": "Names like `sum`, `max`, `len` and `list` belong to the built-in scope, which Python searches last. Assigning `sum = 0` at the top level creates a global `sum` that shadows the built-in function. The loop adds up to 10 and the first `print()` shows it, but `sum(prices)` now means \"call the integer 10\", which raises `TypeError: 'int' object is not callable`."
   }
 ]

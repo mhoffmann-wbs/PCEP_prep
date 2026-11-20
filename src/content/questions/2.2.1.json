@@ -407,5 +407,40 @@
       }
     ],
     "explanation": "The walrus operator `:=` assigns a value inside an expression. In the condition, `n := n - 1` lowers `n` and compares the new value with 0. The body therefore sees 3, 2 and 1. On the next test `n` becomes 0, the condition is false, and `n` stays 0 after the loop."
+  },
+  {
+    "id": "2.2.1-12",
+    "kind": "single",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.3",
+      "2.2.1.2"
+    ],
+    "stem": "How many lines does the following code print?",
+    "code": "n = 20\nwhile n > 1:\n    n = n // 3\n    print(n)",
+    "output": "6\n2\n0\n",
+    "options": [
+      {
+        "text": "2",
+        "correct": false,
+        "rationale": "The test happens before each pass: with `n` at 2 the loop runs once more and prints 0."
+      },
+      {
+        "text": "3",
+        "correct": true,
+        "rationale": "It prints 6, 2 and 0; after 0 the condition `n > 1` is false."
+      },
+      {
+        "text": "6",
+        "correct": false,
+        "rationale": "`n` is divided by 3 on each pass, not reduced by 3."
+      },
+      {
+        "text": "The loop never ends",
+        "correct": false,
+        "rationale": "`//` keeps making `n` smaller, so `n > 1` becomes false."
+      }
+    ],
+    "explanation": "The condition is checked before each pass. 20 > 1, so `n` becomes 20 // 3 = 6 and is printed; 6 > 1, so `n` becomes 2; 2 > 1, so `n` becomes 0. Now `0 > 1` is false and the loop stops: three lines, 6, 2 and 0."
   }
 ]

@@ -352,5 +352,40 @@
       }
     ],
     "explanation": "For each row, the inner loop tries col = 1, 2 and 3. The `if` lets only the pair with `row == col` through, so three of the nine pairs print `row * col`: 1, 4 and 9. The last `print()` ends the line."
+  },
+  {
+    "id": "2.2.4-11",
+    "kind": "single",
+    "objectiveId": "2.2.4",
+    "subpoints": [
+      "2.2.4.3",
+      "2.2.4.1"
+    ],
+    "stem": "How many `#` characters does the following code print?",
+    "code": "for i in range(3):\n    for j in range(i, 4):\n        print(\"#\", end=\"\")\nprint()",
+    "output": "#########\n",
+    "options": [
+      {
+        "text": "12",
+        "correct": false,
+        "rationale": "That would be 4 every time, but the inner range starts at `i`, so it gets shorter on each pass."
+      },
+      {
+        "text": "6",
+        "correct": false,
+        "rationale": "`range(i, 4)` stops before 4 but includes `i`: it has 4, 3 and 2 values, not 3, 2 and 1."
+      },
+      {
+        "text": "10",
+        "correct": false,
+        "rationale": "The outer loop runs only for `i` = 0, 1 and 2, so there is no fourth pass with one `#`."
+      },
+      {
+        "text": "9",
+        "correct": true,
+        "rationale": "The inner loop runs 4, 3 and 2 times for `i` = 0, 1 and 2."
+      }
+    ],
+    "explanation": "`range(3)` gives `i` = 0, 1, 2. For each, `range(i, 4)` runs from `i` up to 3: four values when `i` is 0, three when it is 1, and two when it is 2. That is 4 + 3 + 2 = 9 characters, all on one line because of `end=\"\"`."
   }
 ]

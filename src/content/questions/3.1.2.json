@@ -472,5 +472,41 @@
       }
     ],
     "explanation": "Initialize the counter before the loop, then update it inside the `if`. `=` would reset it to 1 every time, `==` only compares, and `-=` would count downwards. Starting at 1 would overcount, and `None` cannot be added to."
+  },
+  {
+    "id": "3.1.2-14",
+    "kind": "single",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.6",
+      "3.1.2.8"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "temps = [-3, 4, -8, 2]\nprint(max(temps), min(temps), abs(min(temps)), sum(temps) / len(temps))",
+    "output": "4 -8 8 -1.25\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "4 -8 8 -1.25",
+        "correct": true,
+        "rationale": "`max()` and `min()` pick the extremes, `abs()` drops the sign, and `/` always gives a float."
+      },
+      {
+        "text": "-8 4 8 -1.25",
+        "correct": false,
+        "rationale": "`max()` returns the largest value (4) and `min()` the smallest (-8), not the other way round."
+      },
+      {
+        "text": "4 -8 -8 -1.25",
+        "correct": false,
+        "rationale": "`abs()` returns the distance from zero, which is never negative: `abs(-8)` is 8."
+      },
+      {
+        "text": "4 -8 8 -1",
+        "correct": false,
+        "rationale": "`/` is true division and always returns a float, so -5 / 4 is -1.25."
+      }
+    ],
+    "explanation": "`max(temps)` is 4 and `min(temps)` is -8. `abs(-8)` is 8. `sum(temps)` is -5 and `len(temps)` is 4, and `/` always gives a float, so the average is -1.25."
   }
 ]

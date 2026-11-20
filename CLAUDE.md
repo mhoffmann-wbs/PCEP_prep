@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Phases 0–5 are done: scaffold, Pyodide runner, quiz engine, lessons (35 objectives + 6 extras), the question bank (465 items: at least 9 per objective, 8 in section 5, and at least 3 per sub-point) with the 30-02 mock and the exam-track switch, and exercises (1–2 per objective) with the CodeMirror editor and Playground permalinks, phase 6: the cheat sheet and exam-day guide, a phone menu, print styles and accessible ordering items, and phase 7: the step-through visualizer, flashcards (212 built-in cards, own decks with file sharing) and interactive `input()`. **`PLAN.md` is the build plan and sets the order of work**: it records the decisions made, the content map, the item kinds and the phases. As parts get built, replace the plan-level notes below with what actually exists (commands, file layout, gotchas).
+Phases 0–5 are done: scaffold, Pyodide runner, quiz engine, lessons (35 objectives + 6 extras), the question bank (483 items: at least 9 per objective, 8 in section 5, and at least 3 per sub-point) with the 30-02 mock and the exam-track switch, and exercises (1–2 per objective) with the CodeMirror editor and Playground permalinks, phase 6: the cheat sheet and exam-day guide, a phone menu, print styles and accessible ordering items, and phase 7: the step-through visualizer, flashcards (212 built-in cards, own decks with file sharing) and interactive `input()`. **`PLAN.md` is the build plan and sets the order of work**: it records the decisions made, the content map, the item kinds and the phases. As parts get built, replace the plan-level notes below with what actually exists (commands, file layout, gotchas).
 
 ## Commands
 
