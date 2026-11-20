@@ -6,8 +6,8 @@ import { BLANK_RE, INSERT_MARKER, type Item, completeProgram } from './schema'
 
 type Outcome = { stdout: string; error: string | null }
 
-const execute = (py: PyodideAPI, code: string): Outcome => {
-  const r = runPython(py, { code })
+const execute = (py: PyodideAPI, code: string, files?: Record<string, string>): Outcome => {
+  const r = runPython(py, { code, files })
   return { stdout: r.stdout, error: r.error?.type ?? null }
 }
 
@@ -50,7 +50,7 @@ export function verifyItem(item: Item, pys: [PyodideAPI, PyodideAPI]): string[] 
   const claim = claimed(item)
   if (program === null || claim === null) return []
   const problems: string[] = []
-  const [a, b] = pys.map((py) => execute(py, program)) as [Outcome, Outcome]
+  const [a, b] = pys.map((py) => execute(py, program, item.files)) as [Outcome, Outcome]
 
   if (claim.error) {
     if (a.error !== claim.error) problems.push(`raises ${a.error ?? 'nothing'}, item says ${claim.error}`)
@@ -58,11 +58,11 @@ export function verifyItem(item: Item, pys: [PyodideAPI, PyodideAPI]): string[] 
   if (!same(a, b)) problems.push(`output is not deterministic: ${show(a)} vs ${show(b)}`)
 
   for (const [label, code] of wrongPrograms(item)) {
-    if (same(execute(pys[0], code), a)) problems.push(`wrong answer ${label} behaves exactly like the key`)
+    if (same(execute(pys[0], code, item.files), a)) problems.push(`wrong answer ${label} behaves exactly like the key`)
   }
   if (item.kind === 'order' && item.mode === 'code') {
     for (const order of item.altOrders ?? []) {
-      const alt = execute(pys[0], order.map((i) => item.lines[i]).join('\n'))
+      const alt = execute(pys[0], order.map((i) => item.lines[i]).join('\n'), item.files)
       if (!same(alt, a)) problems.push(`alternative order ${order} prints ${show(alt)}, not ${show(a)}`)
     }
   }

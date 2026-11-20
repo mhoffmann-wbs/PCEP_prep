@@ -1,0 +1,19 @@
+[
+  {
+    "id": "4.2.2-01",
+    "kind": "single",
+    "objectiveId": "4.2.2",
+    "subpoints": ["4.2.2.3", "4.2.2.4"],
+    "stem": "What is the output of the following code?",
+    "code": "try:\n    n = int(\"4.5\")\n    print(\"parsed\")\nexcept ValueError:\n    print(\"bad number\")\nexcept TypeError:\n    print(\"wrong type\")\nprint(\"done\")",
+    "output": "bad number\ndone\n",
+    "outputKey": true,
+    "options": [
+      { "text": "bad number\ndone", "correct": true, "rationale": "int() raises ValueError for \"4.5\", the matching branch runs, and the program continues after the try statement." },
+      { "text": "parsed\ndone", "correct": false, "rationale": "int() cannot convert text with a decimal point, so the line after it never runs." },
+      { "text": "bad number", "correct": false, "rationale": "Once the exception is handled, the program carries on with the code after the try statement." },
+      { "text": "wrong type\ndone", "correct": false, "rationale": "The argument is a string, which int() accepts; the problem is its value, so the error is a ValueError." }
+    ],
+    "explanation": "int(\"4.5\") raises ValueError because the text is not a whole number. Python skips the rest of the try block and runs the first except branch that matches. After that branch, execution continues with print(\"done\")."
+  }
+]

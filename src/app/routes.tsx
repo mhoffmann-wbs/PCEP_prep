@@ -1,19 +1,32 @@
+import { lazy } from 'react'
 import type { RouteObject } from 'react-router'
 import { Layout } from './Layout'
-import { Do } from '../pages/Do'
-import { Home } from '../pages/Home'
 
-const placeholder = (title: string) => () => <h1 className="text-2xl font-semibold">{title}</h1>
+// Every page is code-split: lessons and the question bank are the bulk of the
+// bundle, so the shell loads fast and each page loads on first use. Keep content
+// imports out of this file and Layout.
+const HomePage = lazy(() => import('../pages/HomePage'))
+const LearnPage = lazy(() => import('../pages/LearnPage'))
+const PracticePage = lazy(() => import('../pages/PracticePage'))
+const QuestionsPage = lazy(() => import('../pages/QuestionsPage'))
+const MockExamPage = lazy(() => import('../pages/MockExamPage'))
+const PlaygroundPage = lazy(() => import('../pages/PlaygroundPage'))
+const ProgressPage = lazy(() => import('../pages/ProgressPage'))
 
 export const routes: RouteObject[] = [
   {
     element: <Layout />,
     children: [
-      { index: true, element: <Home /> },
-      { path: 'learn', Component: placeholder('Learn') },
-      { path: 'check', Component: placeholder('Check') },
-      { path: 'do', element: <Do /> },
-      { path: '*', Component: placeholder('Page not found') },
+      { index: true, element: <HomePage /> },
+      { path: 'learn', element: <LearnPage /> },
+      { path: 'learn/:objectiveId', element: <LearnPage /> },
+      { path: 'practice', element: <PracticePage /> },
+      { path: 'questions', element: <QuestionsPage /> },
+      { path: 'questions/:itemId', element: <QuestionsPage /> },
+      { path: 'mock', element: <MockExamPage /> },
+      { path: 'playground', element: <PlaygroundPage /> },
+      { path: 'progress', element: <ProgressPage /> },
+      { path: '*', element: <h1 className="text-2xl font-semibold">Page not found</h1> },
     ],
   },
 ]

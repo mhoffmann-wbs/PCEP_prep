@@ -1,0 +1,19 @@
+[
+  {
+    "id": "2.2.5-01",
+    "kind": "single",
+    "objectiveId": "2.2.5",
+    "subpoints": ["2.2.5.1", "2.2.5.2", "2.2.5.4"],
+    "stem": "What is the output of the following code?",
+    "code": "total = 0\nfor n in range(1, 10):\n    if n % 2 == 0:\n        continue\n    if n > 6:\n        break\n    total += n\nprint(total)",
+    "output": "9\n",
+    "outputKey": true,
+    "options": [
+      { "text": "25", "correct": false, "rationale": "This adds every odd number up to 9, ignoring the break." },
+      { "text": "16", "correct": false, "rationale": "This adds 7 as well, but the loop breaks before 7 is added." },
+      { "text": "4", "correct": false, "rationale": "This stops after the first two odd numbers; 5 is still added." },
+      { "text": "9", "correct": true, "rationale": "Only 1, 3 and 5 are added before 7 triggers the break." }
+    ],
+    "explanation": "continue skips the rest of the loop body for even numbers. The odd numbers 1, 3 and 5 are added. When n is 7, the condition n > 6 is true and break ends the loop before 7 is added, so the total is 1 + 3 + 5 = 9."
+  }
+]

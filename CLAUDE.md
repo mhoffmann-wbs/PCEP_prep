@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Phases 0 (scaffold) and 1 (Pyodide runner) are done; next is phase 2 (quiz engine). **`PLAN.md` is the build plan and sets the order of work**: it records the decisions made, the content map, the item kinds and the phases. As parts get built, replace the plan-level notes below with what actually exists (commands, file layout, gotchas).
+Phases 0 (scaffold), 1 (Pyodide runner) and 2 (quiz engine) are done; next is phase 3 (lessons). The bank holds a first 12 items; phase 4 fills it. **`PLAN.md` is the build plan and sets the order of work**: it records the decisions made, the content map, the item kinds and the phases. As parts get built, replace the plan-level notes below with what actually exists (commands, file layout, gotchas).
 
 ## Commands
 
@@ -21,7 +21,20 @@ Phases 0 (scaffold) and 1 (Pyodide runner) are done; next is phase 2 (quiz engin
 - `src/content/quality.ts`: the anti-giveaway checks, run over the real bank by `bank.test.ts`.
 - `src/python/`: the runner. `harness.py` + `runtime.ts` (`runPython`) have no browser dependencies and are shared by the worker and the Node tests; each run gets fresh globals, fresh stdin and a fresh `/home/pyodide/work` seeded with `files`, and errors come back trimmed to `main.py`. `worker.ts` loads Pyodide from `public/pyodide/` at runtime (not bundled). `client.ts` (`pythonRunner`) creates the worker on first run, queues runs, and on a 5 s timeout terminates the worker (error type `Timeout`) so the next run gets a fresh one. `explain.ts` maps errors to a beginner explanation and a lesson id.
 - `src/content/verify.ts` (`verifyItem`) + `verify.test.ts`: the output check. Every item's `output`/`raises` is compared with real Python in two Pyodide instances with different `PYTHONHASHSEED`s (catches set-order dependence); wrong `insert` options and wrong `gap` choices must not behave like the key; `altOrders` must print the same. A stem that says "output" must set `output` or `raises`.
-- `src/components/RunnerPanel.tsx`: textarea-based code/stdin/output panel used on `/do` until CodeMirror arrives (phase 5).
+- `src/components/RunnerPanel.tsx`: textarea-based code/stdin/output panel (Playground and item Run) until CodeMirror arrives (phase 5). `usePythonRunner` ignores output from superseded runs.
+- **Progress** (`src/progress/store.ts`) is the only module that touches `localStorage` (key `pcep101:progress`). It is versioned: on a version mismatch it discards stored data, so bump `VERSION` and add a migration in `load()` when the shape changes, and keep `ProgressSchema` (used by `importProgress`) in step with the `Progress` type. It holds per-item stats with `streak` (consecutive correct answers, reset by a wrong one), mock results, the exam `track`, the two extras toggles (`setTrack` resets them to the track defaults), lessons read and playground code. Components read it with `useProgress()`. `src/progress/readiness.ts`: objective readiness (coverage × accuracy, weighted by syllabus weight), the weak-spot drill and `masteryOf()` (not tested / recent error / past error since correct / always correct).
+- **Quiz engine** (`src/quiz/`):
+  - `grade.ts`: a `Response` per kind, `isAnswered`, all-or-nothing `grade`. Gap text answers are compared after `normaliseAnswer` (collapse whitespace, drop it around punctuation). `answer.ts` `freshResponse()` starts ordering items scrambled, never in an accepted order.
+  - `pools.ts`: practice objectives and items for the learner's track and extras toggle; `objectiveWeights` (section weight shared among its objectives).
+  - `sampler.ts`: `buildMockExam` (30-03: one item per objective, + one per extra when extended; 30-02: each block's syllabus count; prefers unseen items; scales time to the real pace when the bank is short), `buildMixedSet` (weighted sampling by objective weight), `buildFocusSet` / `orderLeastMastered` (lowest streak first). Pass `seededRng(n)` in tests.
+  - `results.ts` `scoreMock`: percent, pass at the profile's mark, rows by section/block and objective, extras kept in a separate row.
+  - `ItemView`: renders all five kinds. Options are never shuffled and are labelled A–F; with the `keyboard` prop, 1–6/A–F select (enable on one ItemView per screen). Multi-select stops at `select`. `revealed` shows the key, every rationale and the explanation.
+  - `ItemRun`: "Run the completed code" / "Open in Playground" (navigation state carries code and files). Shown only after Check in practice and the question bank; the mock exam never renders it.
+  - `shortcuts.ts` `useShortcuts`: practice and the bank (Enter checks, then advances; ←/→ in the bank), mock (Enter/→ next, ← previous, M flags, R back to review). Ignores keys typed into fields. `ShortcutHint` lists them.
+  - `SessionReview`: end-of-practice review, misses first, each expandable.
+- **Pages** (`src/pages/`, all lazy-loaded in `src/app/routes.tsx`; keep content imports out of routes and Layout): `/` syllabus overview, `/learn` and `/learn/:objectiveId` (sub-points until lessons exist), `/practice?objective=2.2.3`, `?section=2`, `?mix=10` (each with optional `&focus=1` for least mastered), `?weak=1`, `/questions` and `/questions/:itemId` (bank browser with topic and mastery filters), `/mock`, `/playground`, `/progress` (readiness, export/import).
+- **Theme**: colour tokens (`brand`, `brand-dark`, `accent`, `chalk`, `page`, `header`, `code`) in `src/index.css` via `@theme`. Dark mode follows the OS by remapping the tokens and the slate scale once there, so components don't use `dark:` variants. Text on `bg-code` uses a fixed light colour, because the slate scale inverts in dark mode.
+- UI tests (`src/pages/pages.test.tsx`) render the real routes with `createMemoryRouter` and an async `renderAt()` that waits for the lazy page, over the real bank, so keep them independent of item order and pool size.
 - `src/app/` (router shell and layout with the non-affiliation footer), `src/pages/`, `src/test/` (setup and one fixture item per kind).
 
 ## Purpose

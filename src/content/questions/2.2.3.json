@@ -1,0 +1,35 @@
+[
+  {
+    "id": "2.2.3-01",
+    "kind": "single",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.3", "2.2.3.4"],
+    "stem": "What is the output of the following code?",
+    "code": "for i in range(10, 0, -3):\n    print(i, end=\" \")",
+    "output": "10 7 4 1 ",
+    "outputKey": true,
+    "options": [
+      { "text": "10 7 4", "correct": false, "rationale": "This stops one step too early: 1 is still greater than the stop value 0, so it is produced." },
+      { "text": "10 7 4 1", "correct": true, "rationale": "Start at 10 and subtract 3 while the value is still greater than the stop value 0." },
+      { "text": "10 7 4 1 -2", "correct": false, "rationale": "The stop value is never reached or passed: -2 is below 0, so it is not produced." },
+      { "text": "9 6 3", "correct": false, "rationale": "range() starts exactly at its start argument, 10, not one below it." }
+    ],
+    "explanation": "With a negative step, range(start, stop, step) counts down from start and stops before it reaches or passes stop. Here that gives 10, 7, 4 and 1. Each value is printed with end=\" \", so they appear on one line separated by spaces."
+  },
+  {
+    "id": "2.2.3-02",
+    "kind": "multi",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.2"],
+    "stem": "Which calls produce exactly the numbers 0, 2 and 4? (Select TWO)",
+    "select": 2,
+    "options": [
+      { "text": "`range(0, 5, 2)`", "correct": true, "rationale": "0, 2, 4: the next value, 6, would pass the stop value 5." },
+      { "text": "`range(0, 6, 2)`", "correct": true, "rationale": "0, 2, 4: the stop value 6 itself is never produced." },
+      { "text": "`range(2, 6, 2)`", "correct": false, "rationale": "This starts at 2, so it produces only 2 and 4." },
+      { "text": "`range(0, 4, 2)`", "correct": false, "rationale": "The stop value 4 is excluded, so this produces only 0 and 2." },
+      { "text": "`range(4, 0, -2)`", "correct": false, "rationale": "This counts down and stops before 0: it produces 4 and 2." }
+    ],
+    "explanation": "range() never includes its stop value. To reach 4 with a step of 2, the stop value must be 5 or 6: any value above 4 and up to 6 works."
+  }
+]

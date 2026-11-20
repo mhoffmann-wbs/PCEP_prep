@@ -1,0 +1,35 @@
+[
+  {
+    "id": "4.1.2-01",
+    "kind": "insert",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.1", "4.1.2.4"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `6.0`?",
+    "code": "def average(values):\n    total = 0\n    for v in values:\n        total += v\n    # >>> INSERT <<<\n\nresult = average([4, 8, 6])\nprint(result)",
+    "output": "6.0\n",
+    "options": [
+      { "text": "return total / len(values)", "correct": true, "rationale": "The function hands the average back to the caller, which prints it." },
+      { "text": "print(total / len(values))", "correct": false, "rationale": "This prints 6.0 inside the function, but the function then returns None, so the last line prints None as well." },
+      { "text": "return total // len(values)", "correct": false, "rationale": "// is floor division and gives the int 6, not the float 6.0." },
+      { "text": "return total", "correct": false, "rationale": "This returns the sum, 18, not the average." }
+    ],
+    "explanation": "A function gives a value back with return. The caller stores it in result and prints it. The / operator always gives a float, so 18 / 3 is 6.0."
+  },
+  {
+    "id": "4.1.2-02",
+    "kind": "single",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.7"],
+    "stem": "What is the output of the following code?",
+    "code": "def greet(name):\n    print(\"Hi\", name)\n\nx = greet(\"Ada\")\nprint(x)",
+    "output": "Hi Ada\nNone\n",
+    "outputKey": true,
+    "options": [
+      { "text": "Hi Ada", "correct": false, "rationale": "The second print() still runs and prints the function's result." },
+      { "text": "None", "correct": false, "rationale": "Calling greet() runs its print() first, before the result is stored." },
+      { "text": "Hi Ada\nHi Ada", "correct": false, "rationale": "x holds the function's return value, not a copy of what it printed." },
+      { "text": "Hi Ada\nNone", "correct": true, "rationale": "greet() prints a greeting and, with no return statement, returns None." }
+    ],
+    "explanation": "A function without a return statement returns None. The call prints \"Hi Ada\" while it runs, then x is None, and print(x) shows None."
+  }
+]

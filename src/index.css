@@ -1,1 +1,57 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+  --color-brand: #2b5b84;
+  --color-brand-dark: #1e4263;
+  --color-accent: #f2c230;
+  --color-chalk: #f7f8fa;
+  /* Surfaces that differ between light and dark mode. */
+  --color-page: #f4f6f9;
+  --color-header: #1e3a56;
+  --color-code: #0f172a;
+}
+
+/*
+ * Dark mode follows the OS setting. Instead of adding dark: variants to every
+ * component, the tokens the UI uses are remapped once here: the slate scale is
+ * inverted, "white" cards become dark surfaces, and brand-dark (link text)
+ * becomes a light blue.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --color-page: #0e1520;
+    --color-header: #0b1a2b;
+    --color-white: #151e2b;
+    --color-brand: #3f7cb0;
+    --color-brand-dark: #8ec3ef;
+    --color-code: #0a0f1a;
+    --color-slate-50: #182231;
+    --color-slate-100: #1d2838;
+    --color-slate-200: #2a3647;
+    --color-slate-300: #3a4759;
+    --color-slate-400: #66758a;
+    --color-slate-500: #8b98ab;
+    --color-slate-600: #aeb9c8;
+    --color-slate-700: #ccd5e0;
+    --color-slate-800: #e1e7ee;
+    --color-slate-900: #eef2f6;
+    --color-green-50: #10301f;
+    --color-green-600: #3fa66b;
+    --color-red-50: #3a1717;
+    --color-red-600: #e05a5a;
+    --color-red-700: #f08080;
+    --color-amber-50: #33280f;
+    --color-amber-300: #8a6a1f;
+  }
+}
+
+/* Phone layout: never let long code or wide tables push the page sideways. */
+body {
+  overflow-wrap: break-word;
+}
+
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+}

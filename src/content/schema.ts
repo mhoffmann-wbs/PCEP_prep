@@ -36,6 +36,8 @@ const base = {
    * written from memory.
    */
   output: z.string().optional(),
+  /** Files in the working directory when the code runs, e.g. {"notes.txt": "..."}. */
+  files: z.record(z.string(), z.string()).optional(),
   /** Exception type the complete program raises, e.g. "TypeError". */
   raises: z.string().regex(/^[A-Z]\w*$/).optional(),
   explanation: nonEmpty,

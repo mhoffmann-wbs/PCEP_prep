@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { explainError } from '../python/explain'
 import { usePythonRunner } from '../python/usePythonRunner'
@@ -9,15 +9,31 @@ interface Props {
   initialCode?: string
   initialStdin?: string
   files?: Record<string, string>
+  /** Run once as soon as the panel appears. */
+  autoRun?: boolean
+  onCodeChange?: (code: string) => void
 }
 
 /** Code box, input box, Run button and output with error explanations. */
-export function RunnerPanel({ initialCode = '', initialStdin = '', files }: Props) {
+export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRun = false, onCodeChange }: Props) {
   const [code, setCode] = useState(initialCode)
   const [stdin, setStdin] = useState(initialStdin)
   const { status, output, outcome, loadError, run } = usePythonRunner()
   const busy = status === 'loading' || status === 'running'
   const start = () => !busy && run({ code, stdin, files })
+  const edit = (next: string) => {
+    setCode(next)
+    onCodeChange?.(next)
+  }
+  // Run once on mount. The ref survives React's dev-mode double effect call.
+  const autoRan = useRef(false)
+  useEffect(() => {
+    if (autoRun && !autoRan.current) {
+      autoRan.current = true
+      start()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const error = outcome?.error
   const explanation = error && explainError(error)
   const written = Object.entries(outcome?.files ?? {}).filter(([name, text]) => files?.[name] !== text)
@@ -27,10 +43,10 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files }: Prop
       <label className="block">
         <span className="text-sm font-medium text-slate-700">Code</span>
         <textarea
-          className="mt-1 block h-56 w-full rounded border border-slate-300 p-2 font-mono text-sm"
+          className="mt-1 block h-56 w-full rounded border border-slate-300 bg-white p-2 font-mono text-sm"
           value={code}
           spellCheck={false}
-          onChange={(e) => setCode(e.target.value)}
+          onChange={(e) => edit(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
               e.preventDefault()
@@ -39,7 +55,7 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files }: Prop
               e.preventDefault()
               const el = e.currentTarget
               const { selectionStart: s, selectionEnd: end } = el
-              setCode(code.slice(0, s) + '    ' + code.slice(end))
+              edit(code.slice(0, s) + '    ' + code.slice(end))
               requestAnimationFrame(() => el.setSelectionRange(s + 4, s + 4))
             }
           }}
@@ -48,7 +64,7 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files }: Prop
       <label className="block">
         <span className="text-sm font-medium text-slate-700">Input (one line per input() call)</span>
         <textarea
-          className="mt-1 block h-16 w-full rounded border border-slate-300 p-2 font-mono text-sm"
+          className="mt-1 block h-16 w-full rounded border border-slate-300 bg-white p-2 font-mono text-sm"
           value={stdin}
           spellCheck={false}
           onChange={(e) => setStdin(e.target.value)}
@@ -59,7 +75,7 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files }: Prop
           type="button"
           onClick={start}
           disabled={busy}
-          className="rounded bg-blue-700 px-4 py-2 font-medium text-white disabled:opacity-50"
+          className="rounded bg-brand px-4 py-2 font-medium text-chalk disabled:opacity-50"
         >
           Run
         </button>
@@ -68,9 +84,9 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files }: Prop
       {loadError && <p className="text-red-700">{loadError}</p>}
       <section aria-label="Output">
         <h2 className="text-sm font-medium text-slate-700">Output</h2>
-        <pre className="mt-1 min-h-16 whitespace-pre-wrap rounded bg-slate-900 p-3 font-mono text-sm text-slate-100">
+        <pre className="mt-1 min-h-16 whitespace-pre-wrap rounded bg-code p-3 font-mono text-sm text-[#e6edf3]">
           {output}
-          {error && <span className="text-red-300">{error.traceback || `${error.type}: ${error.message}`}</span>}
+          {error && <span className="text-[#ff9b9b]">{error.traceback || `${error.type}: ${error.message}`}</span>}
         </pre>
       </section>
       {explanation && (
@@ -80,7 +96,7 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files }: Prop
             {error.line && <span className="font-normal text-slate-600"> (line {error.line})</span>}
           </h2>
           <p className="mt-1">{explanation.text}</p>
-          <Link className="mt-1 inline-block text-sm text-blue-700 underline" to={`/learn/${explanation.lessonId}`}>
+          <Link className="mt-1 inline-block text-sm text-brand-dark underline" to={`/learn/${explanation.lessonId}`}>
             Lesson {explanation.lessonId}
           </Link>
         </aside>

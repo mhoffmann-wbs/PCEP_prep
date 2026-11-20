@@ -1,0 +1,31 @@
+[
+  {
+    "id": "3.5.2-01",
+    "kind": "single",
+    "objectiveId": "3.5.2",
+    "subpoints": ["3.5.2.2", "3.5.2.5"],
+    "stem": "What is the output of the following code?",
+    "code": "s = \"  Hello World  \"\nt = s.strip().lower()\nprint(s.find(\"o\"), t.find(\"o\"))",
+    "output": "6 4\n",
+    "outputKey": true,
+    "options": [
+      { "text": "4 4", "correct": false, "rationale": "find() on s still counts the two leading spaces, because strip() returned a new string and left s unchanged." },
+      { "text": "6 6", "correct": false, "rationale": "t has no leading spaces, so its first \"o\" is two positions earlier." },
+      { "text": "6 4", "correct": true, "rationale": "In s the first \"o\" is at index 6 (after two spaces and \"Hell\"); in t it is at index 4." },
+      { "text": "4 6", "correct": false, "rationale": "This swaps the two results: s is the string that still has the leading spaces." }
+    ],
+    "explanation": "find() returns the index of the first match. In s, the two leading spaces take indexes 0 and 1, so \"Hello\" starts at 2 and its \"o\" is at 6. strip() and lower() return a new string \"hello world\", where the \"o\" is at 4. The original s is not changed."
+  },
+  {
+    "id": "3.5.2-02",
+    "kind": "order",
+    "objectiveId": "3.5.2",
+    "subpoints": ["3.5.2.3", "3.5.2.4"],
+    "stem": "Put the lines in order so the program prints `BREAD,MILK`.",
+    "mode": "code",
+    "lines": ["items = \"milk bread\".split()", "items.sort()", "text = \",\".join(items)", "print(text.upper())"],
+    "output": "BREAD,MILK\n",
+    "rationale": "The list must exist before it is sorted, sorted before it is joined, and joined before the text is printed.",
+    "explanation": "split() turns the text into the list [\"milk\", \"bread\"]. sort() puts it in alphabetical order, join() glues the items together with commas, and upper() returns the text in capitals."
+  }
+]

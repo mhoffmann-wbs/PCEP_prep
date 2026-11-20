@@ -1,0 +1,16 @@
+[
+  {
+    "id": "3.4.1-01",
+    "kind": "gap",
+    "objectiveId": "3.4.1",
+    "subpoints": ["3.4.1.3", "3.4.1.4", "3.4.1.5"],
+    "stem": "Fill the gaps so the program removes the pears and prints each remaining fruit with its count.",
+    "code": "stock = {\"apples\": 4, \"pears\": 0}\nstock[\"plums\"] = 7\ndel stock[__BLANK1__]\nfor fruit, n in stock.__BLANK2__():\n    print(fruit, n)",
+    "output": "apples 4\nplums 7\n",
+    "blanks": [
+      { "n": 1, "kind": "text", "accept": ["\"pears\"", "'pears'"], "rationale": "del removes a key-value pair by its key, written as a string." },
+      { "n": 2, "kind": "choice", "choices": ["keys", "values", "items"], "answer": "items", "rationale": "items() gives (key, value) pairs, which unpack into fruit and n." }
+    ],
+    "explanation": "Assigning to a new key adds a pair, and del stock[\"pears\"] removes one. Dictionaries keep insertion order, so the loop sees apples, then plums. items() is the method that gives both the key and the value."
+  }
+]
