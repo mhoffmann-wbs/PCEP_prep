@@ -136,5 +136,64 @@
       { "text": "first_pet = \"dog\"", "correct": true, "rationale": "`first_pet` moves to `\"dog\"`, while `second_pet` still refers to `\"cat\"`." }
     ],
     "explanation": "`second_pet = first_pet` makes `second_pet` refer to the value `first_pet` has at that moment, `\"cat\"`. It is not a lasting link. Assigning a new value to `first_pet` moves only that name, so the program prints `dog cat`."
+  },
+  {
+    "id": "1.3.2-10",
+    "kind": "single",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.3"],
+    "stem": "A program stores the price of one coffee in euros. Which name is both valid and the most meaningful?",
+    "options": [
+      {"text": "`coffee_price`", "correct": true, "rationale": "Valid, and it says exactly what the value is."},
+      {"text": "`x1`", "correct": false, "rationale": "Valid, but it says nothing about the value, so a reader has to guess."},
+      {"text": "`coffee-price`", "correct": false, "rationale": "Invalid: `-` is the minus operator, so Python reads this as `coffee` minus `price`."},
+      {"text": "`data`", "correct": false, "rationale": "Valid, but far too general: almost any value could be called data."}
+    ],
+    "explanation": "A good name passes Python's rules and tells the reader what the value is. `coffee_price` does both. `x1` and `data` are valid but vague, and `coffee-price` is not a name at all, because Python reads the hyphen as a minus."
+  },
+  {
+    "id": "1.3.2-11",
+    "kind": "gap",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.3", "1.3.2.4"],
+    "stem": "Fill the gaps with valid names that say what the values mean: the number of tickets bought (3) and the price of one ticket (12). The last line must print the total.",
+    "code": "__BLANK1__ = 3\n__BLANK2__ = 12\nprint(ticket_count * ticket_price)",
+    "output": "36\n",
+    "blanks": [
+      {"n": 1, "kind": "choice", "choices": ["n", "3_tickets", "ticket_count", "ticket count"], "answer": "ticket_count", "rationale": "`ticket_count` is valid and says what the 3 is. `n` is vague, `3_tickets` starts with a digit and `ticket count` contains a space."},
+      {"n": 2, "kind": "choice", "choices": ["ticket-price", "ticket_price", "p", "price of ticket"], "answer": "ticket_price", "rationale": "`ticket_price` is valid and clear. `ticket-price` has a minus sign, `p` says little and `price of ticket` has spaces."}
+    ],
+    "explanation": "A name must follow Python's rules (no digit first, no spaces or hyphens) and describe the value. `ticket_count` and `ticket_price` do both, so the last line reads like a sentence and prints `36`."
+  },
+  {
+    "id": "1.3.2-12",
+    "kind": "single",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.5"],
+    "stem": "A program needs a value that is never meant to change: the maximum number of seats on a bus. Which assignment follows PEP 8?",
+    "options": [
+      {"text": "`maxSeats = 40`", "correct": false, "rationale": "Camel case is not PEP 8 style for any name here."},
+      {"text": "`max_seats = 40`", "correct": false, "rationale": "This is the right style for an ordinary variable, but a value that never changes is a constant and gets capitals."},
+      {"text": "`MAX_SEATS = 40`", "correct": true, "rationale": "Constants are written in upper case with underscores between the words."},
+      {"text": "`Max_Seats = 40`", "correct": false, "rationale": "Mixing capitals and underscores like this matches no PEP 8 convention."}
+    ],
+    "explanation": "PEP 8 uses `snake_case` for ordinary variables and `UPPER_CASE` with underscores for constants, values you never intend to change. Python won't stop you from changing a constant, so the capital letters are a signal to the reader. All four lines run, but only one follows the convention."
+  },
+  {
+    "id": "1.3.2-13",
+    "kind": "multi",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.5"],
+    "stem": "Which lines follow the PEP 8 recommendations for names and assignment? (Select TWO)",
+    "select": 2,
+    "options": [
+      {"text": "`first_name = \"Ana\"`", "correct": true, "rationale": "Lower-case snake_case, with one space each side of `=`."},
+      {"text": "`LastName = \"Lopez\"`", "correct": false, "rationale": "Capitalised words are not the style for a variable."},
+      {"text": "`age=31`", "correct": false, "rationale": "PEP 8 asks for a space on each side of `=`."},
+      {"text": "`SPEED_LIMIT = 50`", "correct": true, "rationale": "A constant in upper case with an underscore, spaced correctly."},
+      {"text": "`home city = \"Oslo\"`", "correct": false, "rationale": "Not valid at all: a name can't contain a space."},
+      {"text": "`room_number =  12`", "correct": false, "rationale": "Two spaces after `=`: PEP 8 asks for exactly one."}
+    ],
+    "explanation": "PEP 8 asks for `snake_case` variables, `UPPER_CASE` constants and exactly one space on each side of `=`. `home city` isn't even valid Python. The other wrong lines run fine, but they break the style guide."
   }
 ]

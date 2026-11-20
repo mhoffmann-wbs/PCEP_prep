@@ -318,5 +318,71 @@
       }
     ],
     "explanation": "The outer test `size == \"L\"` is true, so Python enters its block and meets the nested `if-else`. With `in_stock > 0`, the condition is `False` for 0, so the inner `else` prints `Out of stock`. The last line is outside every block and always prints `Thanks`."
+  },
+  {
+    "id": "2.1.3-10",
+    "kind": "single",
+    "objectiveId": "2.1.3",
+    "subpoints": ["2.1.3.1"],
+    "stem": "What does this program print?",
+    "code": "temp = 30\nhumid = True\nif temp > 25:\n    print(\"Hot\")\nif humid:\n    print(\"Sticky\")\nif temp > 35:\n    print(\"Stay in\")",
+    "output": "Hot\nSticky\n",
+    "options": [
+      {"text": "Only `Hot`, because the first true condition ends the checks", "correct": false, "rationale": "That is how an `if`/`elif` chain works. These are separate `if` statements, so every one is checked."},
+      {"text": "`Hot`, `Sticky` and `Stay in`, because every `if` runs", "correct": false, "rationale": "An `if` runs its block only when its own condition is true, and 30 is not over 35."},
+      {"text": "`Hot` and then `Sticky`, because each `if` is checked on its own", "correct": true, "rationale": "The first two conditions are true and the third is false."},
+      {"text": "Only `Sticky`, because the second `if` replaces the first", "correct": false, "rationale": "Nothing is replaced. An earlier `if` that ran stays done."}
+    ],
+    "explanation": "Each `if` that starts its own statement is checked on its own, so several can run in one pass. The first is true (30 is over 25), the second is true, and the third is false. Only an `elif` or `else` is tied to the `if` above it. Here the program prints `Hot` and then `Sticky`."
+  },
+  {
+    "id": "2.1.3-11",
+    "kind": "order",
+    "objectiveId": "2.1.3",
+    "subpoints": ["2.1.3.1"],
+    "stem": "Put the lines in order so the program prints `Wear a coat` and then `Have a good trip`.",
+    "mode": "code",
+    "lines": [
+      "temp = 4",
+      "if temp < 10:",
+      "    print(\"Wear a coat\")",
+      "if temp < 0:",
+      "    print(\"Watch for ice\")",
+      "print(\"Have a good trip\")"
+    ],
+    "altOrders": [[0, 3, 4, 1, 2, 5]],
+    "output": "Wear a coat\nHave a good trip\n",
+    "rationale": "`temp` is assigned first, each `if` is followed by its own block, and the unindented `print()` closes the program.",
+    "explanation": "The variable must exist before the conditions use it. Each `if` line comes directly before its own indented block, and the last `print()` is not indented, so it runs whatever the conditions say. With `temp = 4`, only the first condition is true. The two `if` statements are independent, so they may swap places."
+  },
+  {
+    "id": "2.1.3-12",
+    "kind": "single",
+    "objectiveId": "2.1.3",
+    "subpoints": ["2.1.3.5"],
+    "stem": "This code should print `Distinction` for 90 or more, `Pass` for 50 to 89 and `Fail` below 50. For a score of 95 it prints `Pass`. What is wrong?",
+    "code": "score = 95\nif score >= 50:\n    print(\"Pass\")\nelif score >= 90:\n    print(\"Distinction\")\nelse:\n    print(\"Fail\")",
+    "options": [
+      {"text": "The `else` branch is wrong, because it would also catch scores of 50 or more", "correct": false, "rationale": "Scores of 50 or more never reach the `else`; only scores below 50 do."},
+      {"text": "The `score >= 50` test comes first, so the Distinction branch can never run", "correct": true, "rationale": "Any score of 90 or more is also 50 or more, so the first branch always wins and the `elif` is unreachable."},
+      {"text": "The `elif` should be a second `if`, otherwise it is never checked", "correct": false, "rationale": "Making it a separate `if` would print two lines for 95. The real problem is the order of the tests."},
+      {"text": "The comparison `>=` should be `>`, because 90 itself is not included", "correct": false, "rationale": "The operator is fine. Even `score > 90` would be skipped, since the earlier test matches first."}
+    ],
+    "explanation": "In an `if`/`elif` chain, the first true condition wins and the rest are skipped. Because `score >= 50` is tested first, every score of 90 or more is caught there, and the Distinction branch can never run. Testing the most specific condition first (`score >= 90`) fixes it."
+  },
+  {
+    "id": "2.1.3-13",
+    "kind": "single",
+    "objectiveId": "2.1.3",
+    "subpoints": ["2.1.3.5"],
+    "stem": "What can be said about the condition `n <= 10` in this code?",
+    "code": "n = 7\nif n > 10:\n    print(\"big\")\nelif n <= 10:\n    print(\"small\")",
+    "options": [
+      {"text": "It is never true, so `print(\"small\")` can't run", "correct": false, "rationale": "It is true whenever `n` is 10 or less, as with 7 here."},
+      {"text": "It is needed, otherwise `print(\"small\")` would run for every `n`", "correct": false, "rationale": "Without a condition the branch would run only when `n > 10` is false. The condition doesn't add that information."},
+      {"text": "It tests the wrong value and should be `n < 10`", "correct": false, "rationale": "With `n < 10`, the value 10 would match no branch. The existing operator is correct."},
+      {"text": "It is redundant: reaching it already means `n > 10` was false", "correct": true, "rationale": "The test repeats what the failed first test already proved, so `else` would do the same."}
+    ],
+    "explanation": "The `elif` is only reached when `n > 10` was false, which means `n <= 10` is already certain. The test is redundant: a plain `else` behaves the same and is easier to read. The branch itself is reachable, and 7 does print `small`."
   }
 ]

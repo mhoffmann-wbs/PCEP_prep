@@ -133,5 +133,37 @@
       { "text": "print(\"Coffee\"", "correct": false, "rationale": "The bracket is never closed, so Python reports a `SyntaxError` and nothing at all is printed." }
     ],
     "explanation": "A line ending in a colon must be followed by an indented block with at least one statement. Here that block is the inserted line. Since `hungry` is `True`, `print(\"Coffee\")` runs after `Morning`, and `Done` is at the outer level, so it runs last."
+  },
+  {
+    "id": "1.2.1-10",
+    "kind": "multi",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.1", "1.2.1.2"],
+    "stem": "Which words in this code are keywords? (Select THREE)",
+    "code": "if score >= 50 and passed:\n    print(\"Well done\")\nelse:\n    print(\"Try again\")",
+    "select": 3,
+    "options": [
+      {"text": "`if`", "correct": true, "rationale": "A reserved word that starts a conditional statement."},
+      {"text": "`and`", "correct": true, "rationale": "A reserved word: the logical operator is a keyword."},
+      {"text": "`else`", "correct": true, "rationale": "A reserved word that starts the fallback branch."},
+      {"text": "`print`", "correct": false, "rationale": "This is a built-in function. It is not reserved, even though it looks special."},
+      {"text": "`score`", "correct": false, "rationale": "A name the programmer chose for a value, so it is a variable, not a keyword."},
+      {"text": "`passed`", "correct": false, "rationale": "Another programmer-chosen name, so it is a variable and not a keyword."}
+    ],
+    "explanation": "Keywords are reserved words that belong to the language and can't be used as names. `if`, `and` and `else` are keywords. `print` is a built-in function, and `score` and `passed` are names chosen by the programmer, so none of those three is a keyword."
+  },
+  {
+    "id": "1.2.1-11",
+    "kind": "single",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.2"],
+    "stem": "In the line `total = price * 3 + fee`, what is the part `price * 3 + fee`?",
+    "options": [
+      {"text": "A keyword", "correct": false, "rationale": "Keywords are single reserved words such as `if`. Nothing here is reserved."},
+      {"text": "A complete statement", "correct": false, "rationale": "The whole line is the statement. This part is only a piece of it, and it has no instruction of its own."},
+      {"text": "A variable name", "correct": false, "rationale": "A name refers to a value. This part calculates a value from several pieces."},
+      {"text": "An expression", "correct": true, "rationale": "It combines names, numbers and operators into one value, so it is an expression."}
+    ],
+    "explanation": "An expression produces a value, and `price * 3 + fee` works one out. The complete line `total = price * 3 + fee` is an assignment statement, and `total` is a variable name. No keyword appears in this line at all."
   }
 ]

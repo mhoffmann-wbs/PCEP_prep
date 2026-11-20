@@ -317,5 +317,142 @@
       }
     ],
     "explanation": "The `def` only creates the function. To run its body you call it: its name followed by round brackets. The call sits between the two `print` lines, so `Rain later` appears between them."
+  },
+  {
+    "id": "4.1.1-10",
+    "kind": "single",
+    "objectiveId": "4.1.1",
+    "subpoints": [
+      "4.1.1.1"
+    ],
+    "stem": "A script reads a file of orders, removes the invalid ones and prints a report. The author writes one function for each of these three steps and calls them in turn. How does this help?",
+    "options": [
+      {
+        "text": "Python runs the three functions faster than the same steps written as plain lines",
+        "correct": false,
+        "rationale": "Functions don't add speed. The same steps take the same time inside or outside a function."
+      },
+      {
+        "text": "Each step has a name and one job, so it is easier to read, test and change on its own",
+        "correct": true,
+        "rationale": "This is decomposition: a big job is split into small named parts that can be understood and fixed separately."
+      },
+      {
+        "text": "The functions run on their own, in alphabetical order, so the author need not call them",
+        "correct": false,
+        "rationale": "A function body runs only when it is called. Nothing runs automatically in alphabetical order."
+      },
+      {
+        "text": "Any variable created inside one of the functions can be read by the other two",
+        "correct": false,
+        "rationale": "Variables created inside a function are local. The other functions can't see them."
+      }
+    ],
+    "explanation": "Splitting a program into functions is called decomposition. Each function does one job and has a name that says what it is, so the main code reads like a list of steps. A bug in the cleaning step can be found and fixed in one small function without touching the rest. Functions don't make code faster, and they only run when they are called."
+  },
+  {
+    "id": "4.1.1-11",
+    "kind": "insert",
+    "objectiveId": "4.1.1",
+    "subpoints": [
+      "4.1.1.1",
+      "4.1.1.5"
+    ],
+    "stem": "Which line, inserted at the marked spot, reuses the function so that the program prints a second greeting for Ben?",
+    "code": "def greet(name):\n    print(\"Hello,\", name)\n\ngreet(\"Ana\")\n# >>> INSERT <<<",
+    "output": "Hello, Ana\nHello, Ben\n",
+    "options": [
+      {
+        "text": "print(greet(\"Ben\"))",
+        "correct": false,
+        "rationale": "This prints `Hello, Ben`, and then `None`, because `greet` returns nothing and `print()` shows that."
+      },
+      {
+        "text": "greet",
+        "correct": false,
+        "rationale": "Without brackets this only names the function. It is not a call, so nothing is printed."
+      },
+      {
+        "text": "greet(\"Ben\")",
+        "correct": true,
+        "rationale": "Calling the same function with a new argument reuses the code that is already written."
+      },
+      {
+        "text": "def greet(\"Ben\"):",
+        "correct": false,
+        "rationale": "This is not a call. A `def` line needs parameter names, so a string there is a `SyntaxError`."
+      }
+    ],
+    "explanation": "Reuse means writing the steps once and calling them many times with different arguments. The call `greet(\"Ben\")` runs the same body with `name` set to `\"Ben\"`. Leaving out the brackets does not call the function, and a call wrapped in `print()` would also print the returned `None`."
+  },
+  {
+    "id": "4.1.1-12",
+    "kind": "single",
+    "objectiveId": "4.1.1",
+    "subpoints": [
+      "4.1.1.3"
+    ],
+    "stem": "A program contains the definition `def show_menu():`. Which call runs this function?",
+    "options": [
+      {
+        "text": "`Show_menu()`",
+        "correct": false,
+        "rationale": "Python is case-sensitive, so `Show_menu` is a different name and raises a `NameError`."
+      },
+      {
+        "text": "`show-menu()`",
+        "correct": false,
+        "rationale": "`show-menu` is read as `show` minus `menu`, which is not the function's name."
+      },
+      {
+        "text": "`show_menu()`",
+        "correct": true,
+        "rationale": "The name matches exactly, with the same letters, case and underscore."
+      },
+      {
+        "text": "`showmenu()`",
+        "correct": false,
+        "rationale": "The underscore is part of the name. Without it this is another name that was never defined."
+      }
+    ],
+    "explanation": "A function name is an identifier: letters, digits and underscores, not starting with a digit and not a keyword. Names are case-sensitive and every character counts, so a call must use exactly the name from the `def` line. A hyphen is never part of a name, because Python reads it as the minus operator."
+  },
+  {
+    "id": "4.1.1-13",
+    "kind": "multi",
+    "objectiveId": "4.1.1",
+    "subpoints": [
+      "4.1.1.3"
+    ],
+    "stem": "Which of these are valid names for a function? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`total_price`",
+        "correct": true,
+        "rationale": "Letters and an underscore only, and it is not a keyword."
+      },
+      {
+        "text": "`2fast`",
+        "correct": false,
+        "rationale": "A name must not start with a digit."
+      },
+      {
+        "text": "`_helper`",
+        "correct": true,
+        "rationale": "A name may start with an underscore, so this is valid."
+      },
+      {
+        "text": "`price list`",
+        "correct": false,
+        "rationale": "A space ends the name. Use an underscore instead."
+      },
+      {
+        "text": "`class`",
+        "correct": false,
+        "rationale": "`class` is a keyword, so it can't be used as a name."
+      }
+    ],
+    "explanation": "Valid function names start with a letter or underscore, continue with letters, digits or underscores, and are not keywords. `total_price` and `_helper` follow these rules. `2fast` starts with a digit, `price list` has a space and `class` is reserved by Python."
   }
 ]

@@ -140,5 +140,35 @@
       {"text": "total = (price - discount) * qty / 1", "correct": false, "rationale": "`/` always gives a float, so this prints `30.0`, not `30`."}
     ],
     "explanation": "Without brackets, `*` is applied before `-`. To subtract the discount from the price first, wrap that part in brackets: `(12 - 2) * 3` is 30. Dividing by 1 with `/` would turn the result into the float `30.0`."
+  },
+  {
+    "id": "1.4.1-10",
+    "kind": "insert",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.2", "1.4.1.5"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `ha-ha-ha`?",
+    "code": "laugh = \"ha\"\n# >>> INSERT <<<\nprint(result)",
+    "output": "ha-ha-ha\n",
+    "options": [
+      {"text": "result = laugh * 2 + \"-\" + laugh", "correct": false, "rationale": "`laugh * 2` is `haha`, so this gives `haha-ha`."},
+      {"text": "result = (laugh + \"-\") * 2 + laugh", "correct": true, "rationale": "The brackets repeat `ha-` twice, then `ha` is added once: `ha-ha-ha`."},
+      {"text": "result = laugh + \"-\" * 2 + laugh", "correct": false, "rationale": "Only the hyphen is repeated, because `*` comes before `+`. This gives `ha--ha`."},
+      {"text": "result = (laugh + \"-\") * 3 + laugh", "correct": false, "rationale": "This repeats `ha-` three times, giving `ha-ha-ha-ha`."}
+    ],
+    "explanation": "`*` repeats a string and is applied before `+` joins, unless brackets change that. `(laugh + \"-\") * 2` is `\"ha-ha-\"`, and adding `laugh` once more finishes it as `ha-ha-ha`. The other lines repeat the wrong part or put the hyphens in the wrong places."
+  },
+  {
+    "id": "1.4.1-11",
+    "kind": "single",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.2"],
+    "stem": "Which expression raises a `TypeError` when Python evaluates it?",
+    "options": [
+      {"text": "`\"5\" * 5`", "correct": false, "rationale": "Valid: it repeats the text five times and gives `\"55555\"`."},
+      {"text": "`5 * \"5\"`", "correct": false, "rationale": "Valid: the number may come first, and the result is the same `\"55555\"`."},
+      {"text": "`\"5\" + 5`", "correct": true, "rationale": "`+` can't join text and a number, so this raises a `TypeError`."},
+      {"text": "`\"5\" + \"5\"`", "correct": false, "rationale": "Valid: two strings are joined into `\"55\"`."}
+    ],
+    "explanation": "With strings, `+` joins only strings, and `*` repeats a string a whole number of times, with the number on either side. `\"5\" + 5` mixes text and a number in a `+`, which Python refuses. `\"5\" + \"5\"` is `\"55\"`, and `\"5\" * 5` and `5 * \"5\"` are both `\"55555\"`."
   }
 ]

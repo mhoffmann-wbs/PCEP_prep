@@ -271,5 +271,69 @@
       }
     ],
     "explanation": "The program calls `sqrt` without any module prefix. That works only if the name `sqrt` itself was imported, which is what `from math import sqrt` does. `math.sqrt(16)` returns the float `4.0`."
+  },
+  {
+    "id": "5.2.1-09",
+    "kind": "single",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.1"
+    ],
+    "stem": "Which statement about importing existing code is true?",
+    "options": [
+      {
+        "text": "It lets a program reuse code that someone else already wrote and tested.",
+        "correct": true,
+        "rationale": "Reuse saves time and avoids new mistakes."
+      },
+      {
+        "text": "It makes the program run faster than the same code written by hand.",
+        "correct": false,
+        "rationale": "Importing is about reuse; it does not speed up the code."
+      },
+      {
+        "text": "It copies the module's source text into your file for good.",
+        "correct": false,
+        "rationale": "The module stays in its own file; the import only makes it available."
+      },
+      {
+        "text": "It is needed before any built-in function such as `print` can be used.",
+        "correct": false,
+        "rationale": "Built-in functions are always available without any import."
+      }
+    ],
+    "explanation": "Importing lets you build on tested code instead of rewriting it. The module stays in its own file, so a fix there benefits every program that imports it."
+  },
+  {
+    "id": "5.2.1-10",
+    "kind": "single",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.1"
+    ],
+    "stem": "Ten of your scripts all need the same date-formatting helper. What is the best way to share it?",
+    "options": [
+      {
+        "text": "Paste a copy of the function into each script.",
+        "correct": false,
+        "rationale": "Ten copies would each have to be fixed separately when a bug turns up."
+      },
+      {
+        "text": "Retype the helper from memory in every script.",
+        "correct": false,
+        "rationale": "This invites typing mistakes and wastes time."
+      },
+      {
+        "text": "Keep it in one module and import it in each script.",
+        "correct": true,
+        "rationale": "One place to fix and improve; every script gets the update."
+      },
+      {
+        "text": "Rename it so that Python loads it automatically.",
+        "correct": false,
+        "rationale": "Python never loads your own code unless you import it."
+      }
+    ],
+    "explanation": "A module is a file of code that other programs can import. Keeping shared code in one place means one fix updates every program that uses it."
   }
 ]

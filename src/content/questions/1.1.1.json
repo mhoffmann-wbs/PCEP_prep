@@ -300,5 +300,35 @@
       }
     ],
     "explanation": "Lexical and syntax errors are found before anything runs, so they stop the program before `Recipe: pancakes` is printed. A semantic error in valid code is only found when Python reaches it. `\"Eggs: \" + 2` tries to add a number to text, so the first line prints and then a `TypeError` stops the program."
+  },
+  {
+    "id": "1.1.1-10",
+    "kind": "single",
+    "objectiveId": "1.1.1",
+    "subpoints": ["1.1.1.1"],
+    "stem": "Which sentence best describes the semantics of a Python instruction?",
+    "options": [
+      {"text": "The list of tokens it may use, such as keywords and operators", "correct": false, "rationale": "This describes lexis: the words and symbols the language allows."},
+      {"text": "What it means and what it does when it runs", "correct": true, "rationale": "Semantics is about meaning and effect, not about spelling or grammar."},
+      {"text": "The grammar rules that say how its tokens must be arranged", "correct": false, "rationale": "This describes syntax: the rules for combining tokens."},
+      {"text": "The bytecode CPython creates from it before running it", "correct": false, "rationale": "Bytecode is an internal form made by the compiler. It is not one of the three layers of a language."}
+    ],
+    "explanation": "Semantics is the meaning layer. Lexis is the vocabulary of tokens, syntax is the grammar that arranges them, and semantics is what the instruction actually does. Code can have perfect lexis and syntax and still do the wrong thing, because only the meaning decides that."
+  },
+  {
+    "id": "1.1.1-11",
+    "kind": "multi",
+    "objectiveId": "1.1.1",
+    "subpoints": ["1.1.1.1", "1.1.1.2"],
+    "stem": "Which statements about lexis, syntax and semantics are true? (Select TWO)",
+    "select": 2,
+    "options": [
+      {"text": "A line can use only valid tokens and still break the syntax rules", "correct": true, "rationale": "Every token may be real, but the arrangement can still be wrong, as in an `if` line with no colon."},
+      {"text": "A line can follow every syntax rule and still have wrong semantics", "correct": true, "rationale": "Grammar is no guarantee of meaning: `average = 8 + 6 / 2` is valid but does not compute an average."},
+      {"text": "Semantics is the list of words and symbols that Python accepts", "correct": false, "rationale": "That list is the lexis. Semantics is about meaning."},
+      {"text": "Syntax decides what the result of a calculation will be", "correct": false, "rationale": "The result of a calculation comes from what the code means, which is semantics. Syntax only governs the arrangement."},
+      {"text": "Lexis is only checked after the whole program has finished running", "correct": false, "rationale": "Tokens are recognised before anything runs, so a lexical error stops the program before its first line."}
+    ],
+    "explanation": "A line passes through the layers in turn: its tokens must exist (lexis), they must be arranged by the grammar (syntax), and only then does the meaning matter (semantics). So valid tokens can still break the grammar, and a grammatically perfect line can still mean the wrong thing."
   }
 ]

@@ -302,5 +302,78 @@
       }
     ],
     "explanation": "[::-1] is the short way to get a reversed copy of a list: leaving out start and stop means \"the whole list\", and the step -1 walks it from the last item to the first."
+  },
+  {
+    "id": "3.1.1-10",
+    "kind": "single",
+    "objectiveId": "3.1.1",
+    "subpoints": [
+      "3.1.1.2"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "order = [\"tea\", 2, 4.5, True]\nprint(len(order), type(order[1]), order[3])",
+    "output": "4 <class 'int'> True\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "4 <class 'str'> True",
+        "correct": false,
+        "rationale": "Index 1 holds the number 2, not a string; quotes decide whether a value is a string."
+      },
+      {
+        "text": "3 <class 'int'> True",
+        "correct": false,
+        "rationale": "The list has four items, so `len` returns 4."
+      },
+      {
+        "text": "4 <class 'int'> True",
+        "correct": true,
+        "rationale": "`len` counts all four items, `order[1]` is the integer 2, and `order[3]` is `True`."
+      },
+      {
+        "text": "4 <class 'float'> 4.5",
+        "correct": false,
+        "rationale": "Index 1 is the integer 2 (the float 4.5 is at index 2), and index 3 is `True`, not 4.5."
+      }
+    ],
+    "explanation": "A list can hold values of different types at once: here a string, an integer, a float and a boolean. Each item keeps its own type, and `len` counts every item regardless of type."
+  },
+  {
+    "id": "3.1.1-11",
+    "kind": "multi",
+    "objectiveId": "3.1.1",
+    "subpoints": [
+      "3.1.1.2"
+    ],
+    "stem": "Which of the following expressions create a list holding values of different data types? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`[1, \"one\", 1.0]`",
+        "correct": true,
+        "rationale": "Square brackets create a list, and its items may be an integer, a string and a float."
+      },
+      {
+        "text": "`[\"a\", [1, 2], None]`",
+        "correct": true,
+        "rationale": "A list can even contain another list and `None` next to a string."
+      },
+      {
+        "text": "`(1, \"one\", 1.0)`",
+        "correct": false,
+        "rationale": "Round brackets create a tuple, not a list."
+      },
+      {
+        "text": "`list(1, \"one\", 1.0)`",
+        "correct": false,
+        "rationale": "`list()` accepts a single iterable, so three arguments raise a `TypeError`."
+      },
+      {
+        "text": "`\"1, one, 1.0\"`",
+        "correct": false,
+        "rationale": "Quotes make this one string; it holds no separate items."
+      }
+    ],
+    "explanation": "A list literal uses square brackets with items separated by commas, and the items need not share a type. Round brackets build a tuple, and `list()` takes one iterable rather than a series of values."
   }
 ]

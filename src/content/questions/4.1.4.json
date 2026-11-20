@@ -326,5 +326,134 @@
       }
     ],
     "explanation": "`\"Milo\"` fills `name`, and the keyword arguments `species=\"cat\"` and `age=3` go into the dictionary `details`. `.items()` gives each key with its value, in the order they were passed, so `print(key, \"=\", value)` prints `species = cat` and `age = 3`."
+  },
+  {
+    "id": "4.1.4-10",
+    "kind": "single",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.2",
+      "4.1.4.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def collect(*items):\n    return items\n\nprint(collect())",
+    "output": "()\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "()",
+        "correct": true,
+        "rationale": "With no arguments, `*items` is an empty tuple."
+      },
+      {
+        "text": "[]",
+        "correct": false,
+        "rationale": "`*items` always collects into a tuple, never into a list."
+      },
+      {
+        "text": "None",
+        "correct": false,
+        "rationale": "The function returns `items`, which is an empty tuple, not `None`."
+      },
+      {
+        "text": "(None,)",
+        "correct": false,
+        "rationale": "No argument was passed, so nothing is collected, not even `None`."
+      }
+    ],
+    "explanation": "The name with a star collects all extra positional arguments into a tuple. If the call passes none, the tuple is empty and prints as `()`. It is never `None`, and it is never a list."
+  },
+  {
+    "id": "4.1.4-11",
+    "kind": "gap",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.2"
+    ],
+    "stem": "Complete the code so that it prints the number of collected values and the first one.",
+    "code": "def show(*parts):\n    print(__BLANK1__(parts), parts[__BLANK2__])\n\nshow(\"a\", \"b\", \"c\")",
+    "output": "3 a\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "len",
+          "sum",
+          "max"
+        ],
+        "answer": "len",
+        "rationale": "`len()` counts the items in the tuple. `sum` would fail on strings, and `max` would give the largest string, `c`."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "0",
+          "1",
+          "3"
+        ],
+        "answer": "0",
+        "rationale": "The first item of a tuple has index 0. Index 1 is `b`, and index 3 is out of range."
+      }
+    ],
+    "explanation": "`parts` is a tuple, so `len(parts)` counts the three arguments and `parts[0]` is the first one, like in any tuple."
+  },
+  {
+    "id": "4.1.4-12",
+    "kind": "single",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def initials(*words):\n    result = \"\"\n    for w in words:\n        result += w[0]\n    return result\n\nprint(initials(\"blue\", \"red\", \"green\"))",
+    "output": "brg\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "blue",
+        "correct": false,
+        "rationale": "This is only the first argument. The loop visits all of them."
+      },
+      {
+        "text": "b",
+        "correct": false,
+        "rationale": "The loop adds the first letter of every word, not only the first word's."
+      },
+      {
+        "text": "b r g",
+        "correct": false,
+        "rationale": "The letters are joined with `+=`, with no spaces between them."
+      },
+      {
+        "text": "brg",
+        "correct": true,
+        "rationale": "The loop visits `\"blue\"`, `\"red\"` and `\"green\"` and appends the first letter of each."
+      }
+    ],
+    "explanation": "`*words` collects the three arguments into a tuple, and the `for` loop walks through it. Each pass adds the first letter of the current word to `result`: `b`, then `r`, then `g`."
+  },
+  {
+    "id": "4.1.4-13",
+    "kind": "order",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.3",
+      "4.1.4.2"
+    ],
+    "stem": "Put the lines in order so the program prints `10`.",
+    "mode": "code",
+    "lines": [
+      "def total(*nums):",
+      "    result = 0",
+      "    for n in nums:",
+      "        result += n",
+      "    return result",
+      "print(total(2, 3, 5))"
+    ],
+    "output": "10\n",
+    "rationale": "`result` must be set before the loop adds to it, the loop must come before `return`, and the function must be defined before the call.",
+    "explanation": "The loop visits every value in the tuple `nums` and adds it to `result`: 2 + 3 + 5. The `return` is indented one level only, so it runs after the loop has finished."
   }
 ]

@@ -138,5 +138,131 @@
       {"text": "note = \"milk/nrice\"", "correct": false, "rationale": "An escape sequence starts with a backslash `\\`, not a slash `/`, so this prints `milk/nrice` and has 10 characters."}
     ],
     "explanation": "The escape sequence `\\n` puts a line break inside the string. It is typed as two characters but stored as one, so `len()` counts 4 + 1 + 4 = 9. When the string is printed, the line break makes `rice` appear on its own line."
+  },
+  {
+    "id": "3.5.1-10",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.4"],
+    "stem": "What is the output of the following code?",
+    "code": "note = \"\"\"Dear Sam,\nThanks!\"\"\"\nprint(len(note))",
+    "output": "17\n",
+    "outputKey": true,
+    "options": [
+      {"text": "17", "correct": true, "rationale": "9 characters in the first line, 1 for the line break and 7 in the second line."},
+      {"text": "16", "correct": false, "rationale": "The line break between the two lines is a character too and is counted."},
+      {"text": "18", "correct": false, "rationale": "Nothing follows `Thanks!` before the closing quotes, so there is no extra line break."},
+      {"text": "2", "correct": false, "rationale": "`len` counts characters, not lines."}
+    ],
+    "explanation": "A triple-quoted string may span several lines, and each line break inside it becomes one newline character in the string. Here 9 + 1 + 7 = 17 characters."
+  },
+  {
+    "id": "3.5.1-11",
+    "kind": "gap",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.4"],
+    "stem": "Complete the code so that `poem` is a string spanning two lines and the program prints `1`.",
+    "code": "poem = __BLANK1__Roses are red,\nViolets are blue\"\"\"\nprint(poem.count(\"\\n\"))",
+    "output": "1\n",
+    "blanks": [
+      {"n": 1, "kind": "text", "accept": ["\"\"\"", "'''"], "rationale": "A string that continues over several lines starts with triple quotes, and it is closed here by the same kind of quotes."}
+    ],
+    "explanation": "Single quotes cannot span lines, but triple quotes can. The line break in the middle is stored as one newline character, which `count(\"\\n\")` finds once."
+  },
+  {
+    "id": "3.5.1-12",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.7"],
+    "stem": "What is the output of the following code?",
+    "code": "word = \"strawberry\"\nprint(word[2:8:2], word[::-4])",
+    "output": "rwe ybt\n",
+    "outputKey": true,
+    "options": [
+      {"text": "raw yrt", "correct": false, "rationale": "Letters are picked at the wrong positions; indexes start at 0 and the step is 2 or -4."},
+      {"text": "rwer ybt", "correct": false, "rationale": "The stop index 8 is not included, so the first slice has only three letters."},
+      {"text": "tre yrt", "correct": false, "rationale": "The first slice starts at index 2 (`r`), not at the end of the word."},
+      {"text": "rwe ybt", "correct": true, "rationale": "The first slice takes indexes 2, 4, 6 (`r`, `w`, `e`); the second starts at the end and moves back four letters at a time (`y`, `b`, `t`)."}
+    ],
+    "explanation": "A slice is `[start:stop:step]`. `word[2:8:2]` takes indexes 2, 4 and 6. With a negative step the default start is the last letter, so `word[::-4]` takes indexes 9, 5, 1."
+  },
+  {
+    "id": "3.5.1-13",
+    "kind": "gap",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.7"],
+    "stem": "Complete the slice so that the program prints the word backwards.",
+    "code": "word = \"stressed\"\nprint(word[__BLANK1__])",
+    "output": "desserts\n",
+    "blanks": [
+      {"n": 1, "kind": "text", "accept": ["::-1", "-1::-1"], "rationale": "A step of -1 walks from the last letter to the first, so leaving start and stop empty reverses the whole string."}
+    ],
+    "explanation": "With a negative step the slice runs from right to left. `[::-1]` uses the default start and stop for that direction, which cover the whole string."
+  },
+  {
+    "id": "3.5.1-14",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.8"],
+    "stem": "What is the output of the following code?",
+    "code": "word = \"plate\"\nword.replace(\"p\", \"s\")\nprint(word)",
+    "output": "plate\n",
+    "outputKey": true,
+    "options": [
+      {"text": "slate", "correct": false, "rationale": "`replace` returns a new string; here the result is thrown away, so `word` is unchanged."},
+      {"text": "plate", "correct": true, "rationale": "String methods never change the original string, and the returned copy was not stored."},
+      {"text": "None", "correct": false, "rationale": "`replace` returns a string, and `word` is not reassigned anyway."},
+      {"text": "TypeError", "correct": false, "rationale": "Calling a method is allowed; only assigning to an index or slice would raise this."}
+    ],
+    "explanation": "Strings are immutable, so `replace` builds a new string and leaves `word` untouched. To keep the change you would write `word = word.replace(\"p\", \"s\")`."
+  },
+  {
+    "id": "3.5.1-15",
+    "kind": "multi",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.8"],
+    "stem": "After `s = \"hello\"`, which statements raise a `TypeError`? (Select TWO)",
+    "select": 2,
+    "options": [
+      {"text": "`s[0] = \"J\"`", "correct": true, "rationale": "Strings do not support item assignment, because they are immutable."},
+      {"text": "`del s[1]`", "correct": true, "rationale": "Deleting a single character is also a change to the string, which is not allowed."},
+      {"text": "`s = \"J\" + s[1:]`", "correct": false, "rationale": "This builds a new string and rebinds `s`; the old string is not modified."},
+      {"text": "`s += \"!\"`", "correct": false, "rationale": "This creates a new string and rebinds `s`, so it is allowed."},
+      {"text": "`s = s.upper()`", "correct": false, "rationale": "`upper` returns a new string that is assigned to `s`, so no error occurs."}
+    ],
+    "explanation": "Immutable means an existing string cannot be changed in place, so assigning to or deleting one of its characters fails. Building a new string and rebinding the name always works."
+  },
+  {
+    "id": "3.5.1-16",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.10"],
+    "stem": "What is the output of the following code?",
+    "code": "msg = \"Meeting at noon\"\nprint(\"at\" in msg, \"AT\" in msg, \"meeting\" not in msg)",
+    "output": "True False True\n",
+    "outputKey": true,
+    "options": [
+      {"text": "True True True", "correct": false, "rationale": "Substring tests are case-sensitive, so `AT` is not found."},
+      {"text": "False False True", "correct": false, "rationale": "`at` is part of `Meeting at noon`, so the first test is `True`."},
+      {"text": "True False True", "correct": true, "rationale": "`at` is present; `AT` and lowercase `meeting` are not, because capitals matter."},
+      {"text": "True False False", "correct": false, "rationale": "`meeting` does not appear (the text has a capital M), so `not in` gives `True`."}
+    ],
+    "explanation": "The `in` operator checks whether a substring appears anywhere in a string, matching case exactly. `not in` is its opposite."
+  },
+  {
+    "id": "3.5.1-17",
+    "kind": "insert",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.10"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `valid`?",
+    "code": "email = \"anna@example.com\"\n# >>> INSERT <<<\n    print(\"valid\")",
+    "output": "valid\n",
+    "options": [
+      {"text": "if \"@\" in email:", "correct": true, "rationale": "The text contains `@`, so the test is true and the print runs."},
+      {"text": "if \"@\" not in email:", "correct": false, "rationale": "This is true only when there is no `@`, so nothing is printed."},
+      {"text": "if email in \"@\":", "correct": false, "rationale": "The operands are swapped; this asks whether the whole address is inside `@`, which is false."},
+      {"text": "if \".\" not in email:", "correct": false, "rationale": "The address contains a dot, so this test is false and nothing is printed."}
+    ],
+    "explanation": "`part in whole` is true when `part` occurs inside `whole`. The substring goes on the left, the string being searched on the right."
   }
 ]

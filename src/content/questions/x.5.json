@@ -313,5 +313,79 @@
     ],
     "explanation": "Each call checks one letter and returns that count plus the count for the rest of the word, `word[1:]`, which is one letter shorter. The empty string is the base case and returns 0. For `banana`: 0 + 1 + 0 + 1 + 0 + 1 + 0 = 3.",
     "output": "3\n"
+  },
+  {
+    "id": "x.5-10",
+    "kind": "single",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def total(n):\n    return n + total(n - 1)\n\ntry:\n    total(3)\nexcept RecursionError:\n    print(\"too deep\")",
+    "output": "too deep\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "6",
+        "correct": false,
+        "rationale": "The function never stops at a base case, so it never returns a sum."
+      },
+      {
+        "text": "too deep",
+        "correct": true,
+        "rationale": "With no base case the calls pile up until Python raises `RecursionError`, which is caught."
+      },
+      {
+        "text": "0",
+        "correct": false,
+        "rationale": "There is no base case returning 0 anywhere in this function."
+      },
+      {
+        "text": "Nothing is printed",
+        "correct": false,
+        "rationale": "The error is caught by the `except` branch, which prints the message."
+      }
+    ],
+    "explanation": "`total` has no base case: `n` goes 3, 2, 1, 0, -1 and so on forever. Python stops the runaway calls with `RecursionError`, and the `except` branch handles it."
+  },
+  {
+    "id": "x.5-11",
+    "kind": "multi",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.3"
+    ],
+    "stem": "Which calls end with a `RecursionError`? (Select TWO)",
+    "code": "def a(n):\n    if n == 0:\n        return 0\n    return n + a(n - 1)\n\ndef b(n):\n    if n <= 0:\n        return 0\n    return n + b(n - 1)\n\ndef c(n):\n    if n == 1:\n        return 1\n    return n * c(n - 1)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`a(3)`",
+        "correct": false,
+        "rationale": "3, 2, 1, 0 reaches the base case, so it returns."
+      },
+      {
+        "text": "`a(-1)`",
+        "correct": true,
+        "rationale": "`n` is never 0 when counting down from -1, so the base case is never met."
+      },
+      {
+        "text": "`b(-5)`",
+        "correct": false,
+        "rationale": "`n <= 0` is true immediately, so the base case returns at once."
+      },
+      {
+        "text": "`c(0)`",
+        "correct": true,
+        "rationale": "The base case is `n == 1`, and counting down from 0 never reaches it."
+      },
+      {
+        "text": "`c(4)`",
+        "correct": false,
+        "rationale": "4, 3, 2, 1 reaches the base case, so it returns 24."
+      }
+    ],
+    "explanation": "A recursive call chain ends only if it reaches the base case. `a` tests for exactly 0 and `c` for exactly 1, so starting below that point sends them past it. `b` uses `<=`, which catches any start value."
   }
 ]

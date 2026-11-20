@@ -306,5 +306,76 @@
       }
     ],
     "explanation": "Python looks up `tip` in the local names first. With `tip = 10` in the function, the local `tip` is found, so `total(20)` returns 30. The global `tip` is a separate name in the global namespace and stays 5."
+  },
+  {
+    "id": "4.1.5-10",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.5"
+    ],
+    "stem": "A programmer expects the program below to print `4`, as two sales of 3 leave 10 - 6 items. It prints something else. What does it print, and what does this show about globals?",
+    "code": "stock = 10\n\ndef sell():\n    global stock\n    stock -= 3\n\ndef restock():\n    global stock\n    stock = 5\n\nsell()\nrestock()\nsell()\nprint(stock)",
+    "options": [
+      {
+        "text": "It prints `4`, because every call of `sell()` takes 3 from the same variable",
+        "correct": false,
+        "rationale": "The `restock()` call in between sets `stock` to 5, so the second sale starts from 5, not 7."
+      },
+      {
+        "text": "It prints `2`, because `restock()` quietly changed the shared variable in between",
+        "correct": true,
+        "rationale": "`sell()` makes it 7, `restock()` sets it to 5, and `sell()` makes it 2. A global can be changed from anywhere."
+      },
+      {
+        "text": "It prints `5`, because `restock()` runs last and its value always wins",
+        "correct": false,
+        "rationale": "`sell()` still runs after `restock()` and takes 3 off, so the result is 2."
+      },
+      {
+        "text": "It prints `10`, because the global keyword makes a copy of the variable",
+        "correct": false,
+        "rationale": "`global` doesn't copy anything. It makes the function work on the real global variable."
+      }
+    ],
+    "explanation": "Every function that uses `global stock` works on the same variable, so a surprising value can come from any of them. Here the value goes 10, 7, 5, 2. Finding such a bug means reading all the functions that touch the variable. Functions that take parameters and return results make this much easier to follow."
+  },
+  {
+    "id": "4.1.5-11",
+    "kind": "multi",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.5"
+    ],
+    "stem": "Which of these are risks of relying on many global variables? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Any function can change them, so it is hard to find which one caused a wrong value",
+        "correct": true,
+        "rationale": "Changes can come from anywhere, which makes bugs difficult to trace."
+      },
+      {
+        "text": "Python cannot read a global variable inside a function without the `global` keyword",
+        "correct": false,
+        "rationale": "A function can read a global without `global`. The keyword is needed only to assign to it."
+      },
+      {
+        "text": "A function that depends on globals is hard to reuse and test on its own",
+        "correct": true,
+        "rationale": "It only works in a program that has exactly those globals, set up in the right state."
+      },
+      {
+        "text": "A program with more than three globals runs noticeably slower",
+        "correct": false,
+        "rationale": "The number of globals doesn't affect speed in any way that matters here."
+      },
+      {
+        "text": "Global variable names can't be used again as the names of function parameters",
+        "correct": false,
+        "rationale": "A parameter with the same name just hides the global inside the function."
+      }
+    ],
+    "explanation": "Globals create hidden connections between functions: any of them can change the value, and results depend on the order of calls. Such functions are hard to reuse and to test alone. Passing values in as arguments and sending results out with `return` keeps those connections visible."
   }
 ]

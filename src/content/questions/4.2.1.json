@@ -311,5 +311,72 @@
       }
     ],
     "explanation": "A `TypeError` comes from an operation that doesn't work with the types involved. `\"Max: \" + 21` tries to add a `str` and an `int`, which `+` can't do. The line before it has already printed `Readings: 3`, and `Finished` is never reached."
+  },
+  {
+    "id": "4.2.1-10",
+    "kind": "single",
+    "objectiveId": "4.2.1",
+    "subpoints": [
+      "4.2.1.1"
+    ],
+    "stem": "What happens when the following program runs?",
+    "code": "print(\"Start\")\nage = int(\"twelve\")\nprint(\"Done\")",
+    "output": "Start\n",
+    "raises": "ValueError",
+    "options": [
+      {
+        "text": "It prints `Start` and `Done`, and `age` gets the value 12",
+        "correct": false,
+        "rationale": "Python doesn't turn words into numbers. `int(\"twelve\")` can't do its job."
+      },
+      {
+        "text": "It prints nothing, because Python finds the problem before it runs any line",
+        "correct": false,
+        "rationale": "That describes a syntax error. This line is valid code, so `Start` is printed before the problem shows up."
+      },
+      {
+        "text": "It prints `Start`, then raises a `ValueError` and stops, so `Done` is never printed",
+        "correct": true,
+        "rationale": "The exception reports the problem at run time. Unhandled, it ends the program at that line."
+      },
+      {
+        "text": "It prints `Start` and `Done`, and `age` is set to `None`",
+        "correct": false,
+        "rationale": "Python does not replace a failed conversion with `None`. It raises an exception instead."
+      }
+    ],
+    "explanation": "An exception is how Python reports that an operation could not be done while the program is running. Here `int(\"twelve\")` has no sensible result, so Python raises a `ValueError` instead of carrying on with a wrong value. Nothing handles it, so the program stops and prints a traceback. `Start` was printed before the failure, and `Done` never runs."
+  },
+  {
+    "id": "4.2.1-11",
+    "kind": "single",
+    "objectiveId": "4.2.1",
+    "subpoints": [
+      "4.2.1.1"
+    ],
+    "stem": "A function receives a price that is not a number. Why is it often better for Python to raise an exception than to carry on quietly?",
+    "options": [
+      {
+        "text": "The program runs faster, because Python can skip the rest of the function",
+        "correct": false,
+        "rationale": "Speed is not the reason. Exceptions are about reporting problems, not about saving time."
+      },
+      {
+        "text": "The error stays invisible to the user, so the program never has to stop",
+        "correct": false,
+        "rationale": "The opposite is true: an exception makes the problem visible instead of hiding it."
+      },
+      {
+        "text": "An exception is the same as a syntax error, so it is found before the program starts",
+        "correct": false,
+        "rationale": "A syntax error is found before the program runs. An exception happens while it runs."
+      },
+      {
+        "text": "The problem is reported where it happens, so no wrong result is used later",
+        "correct": true,
+        "rationale": "Stopping, or handling the exception, prevents the program from calculating with bad data."
+      }
+    ],
+    "explanation": "Exceptions give programs a way to say that something went wrong at run time, instead of silently producing wrong results. They stop the normal flow at the point of the problem, and a program can catch the exception and recover, or it ends with a clear message that names the kind of error."
   }
 ]
