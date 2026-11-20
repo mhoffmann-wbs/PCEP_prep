@@ -175,6 +175,12 @@ function ExerciseView({ exercise: ex }: { exercise: Exercise }) {
             Files available to <code className="font-mono">open()</code>: {Object.keys(ex.files).join(', ')}
           </p>
         )}
+        {ex.kind === 'io' && ex.cases.some((c) => c.stdin) && (
+          <p className="mt-3 text-sm text-slate-600">
+            Check runs your program once for each test input. Any prompt text you give <code className="font-mono">input()</code> is left out
+            when your output is compared, so word it as you like.
+          </p>
+        )}
       </section>
 
       <RunnerPanel

@@ -83,11 +83,18 @@ def _check(scope, check):
     return result
 
 
-def pcep_run(src, checks_json="[]"):
+def _quiet_input(prompt=""):
+    """input() that doesn't print its prompt, so exercise output can be compared exactly."""
+    return builtins.input()
+
+
+def pcep_run(src, checks_json="[]", quiet_input=False):
     """Run src as main.py, then the exercise checks (if any) in its globals.
     Returns JSON: {"error": null or the error, "checks": [...]}."""
     linecache.cache[FILENAME] = (len(src), None, src.splitlines(True), FILENAME)
     scope = {"__name__": "__main__", "__builtins__": builtins}
+    if quiet_input:
+        scope["input"] = _quiet_input
     error = None
     try:
         exec(compile(src, FILENAME, "exec"), scope)

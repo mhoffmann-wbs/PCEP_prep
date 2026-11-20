@@ -11,6 +11,8 @@ export interface RunRequest {
   files?: Record<string, string>
   /** Exercise checks evaluated in the program's globals after it runs without an error. */
   checks?: FunctionCheck[]
+  /** input() doesn't print its prompt (exercise checks compare output exactly). */
+  quietInput?: boolean
 }
 
 /**
@@ -62,7 +64,7 @@ export interface RunHooks {
   onStderr?: (text: string) => void
 }
 
-type Harness = { reset: (files: string) => void; run: (src: string, checks: string) => string; files: () => string }
+type Harness = { reset: (files: string) => void; run: (src: string, checks: string, quietInput: boolean) => string; files: () => string }
 
 const harnesses = new WeakMap<PyodideAPI, Harness>()
 
@@ -101,6 +103,6 @@ export function runPython(py: PyodideAPI, req: RunRequest, hooks: RunHooks = {})
   py.setStderr({ write: err.write })
   py.setStdin({ stdin: () => lines.shift() })
   h.reset(JSON.stringify(req.files ?? {}))
-  const { error, checks } = JSON.parse(h.run(req.code, JSON.stringify(req.checks ?? []))) as Pick<RunResult, 'error' | 'checks'>
+  const { error, checks } = JSON.parse(h.run(req.code, JSON.stringify(req.checks ?? []), req.quietInput ?? false)) as Pick<RunResult, 'error' | 'checks'>
   return { stdout: out.text(), stderr: err.text(), error, files: JSON.parse(h.files()), checks }
 }

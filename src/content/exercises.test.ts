@@ -80,6 +80,11 @@ describe('checkExercise', () => {
     expect(report.rows[0]!.details[0]).toMatch(/^printed:\n\[17, 20\]\nexpected:\n\[17, 20\]\n\[18/)
   })
 
+  it('ignores prompts passed to input()', async () => {
+    const ex: Exercise = { ...io, kind: 'io', cases: [{ stdin: 'Mo\n', stdout: 'Hi, Mo\n' }] }
+    expect((await check(ex, 'name = input("Your name? ")\nprint("Hi,", name)', pys[0])).passed).toBe(true)
+  })
+
   it('checks printed output and raised exceptions of function calls', async () => {
     const ex: Exercise = {
       ...fn,

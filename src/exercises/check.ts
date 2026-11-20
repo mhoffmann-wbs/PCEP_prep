@@ -1,5 +1,7 @@
 // Grades an exercise attempt by running it. The runner is passed in, so the
 // page uses the worker and the content tests use Pyodide in Node directly.
+// Prompts passed to input() are not printed while checking, so learners can
+// word them however they like.
 import type { Exercise } from '../content/schema'
 import type { PyError, RunRequest, RunResult } from '../python/runtime'
 
@@ -30,7 +32,7 @@ const quote = (text: string) => (text.trimEnd() === '' ? '(nothing)' : text.trim
 
 export async function checkExercise(ex: Exercise, code: string, run: Run): Promise<CheckReport> {
   if (ex.kind === 'function') {
-    const result = await run({ code, files: ex.files, checks: ex.checks })
+    const result = await run({ code, files: ex.files, checks: ex.checks, quietInput: true })
     if (result.error) return { passed: false, rows: [], error: result.error }
     const rows = result.checks.map((r, i): CheckRow => {
       const check = ex.checks[i]!
@@ -53,7 +55,7 @@ export async function checkExercise(ex: Exercise, code: string, run: Run): Promi
   const rows: CheckRow[] = []
   let firstError: PyError | null = null
   for (const c of ex.cases) {
-    const result = await run({ code, stdin: c.stdin, files: ex.files })
+    const result = await run({ code, stdin: c.stdin, files: ex.files, quietInput: true })
     const details: string[] = []
     if (result.error) {
       firstError ??= result.error
