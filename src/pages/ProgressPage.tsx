@@ -1,5 +1,6 @@
 import { type ChangeEvent, useState } from 'react'
 import { Link } from 'react-router'
+import { ExamSettings } from '../components/ExamSettings'
 import { Inline } from '../components/Inline'
 import { EXAM_PROFILES, OBJECTIVE_BY_ID } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
@@ -80,6 +81,11 @@ export default function ProgressPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="rounded-lg border border-slate-200 bg-white p-4">
+        <h2 className="mb-3 font-semibold">Exam settings</h2>
+        <ExamSettings parts={['track', 'practice', 'mock']} />
       </section>
 
       <YourData />

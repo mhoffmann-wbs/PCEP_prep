@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
+import { ExamSettings } from '../components/ExamSettings'
 import { Inline } from '../components/Inline'
 import { OBJECTIVE_BY_ID } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
@@ -106,6 +107,7 @@ function ItemIndex() {
             ))}
           </select>
         </label>
+        <ExamSettings parts={['practice']} />
         <div className="flex flex-wrap gap-2" role="group" aria-label="Mastery filter">
           {MASTERY_LEVELS.map((level) => {
             const count = pool.filter((i) => masteryOf(progress.items[i.id]) === level.id).length

@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { ExamSettings } from '../components/ExamSettings'
 import { Inline } from '../components/Inline'
 import { EXAM_PROFILES, OBJECTIVE_BY_ID } from '../content/blueprint'
 import { useProgress } from '../progress/store'
@@ -20,6 +21,9 @@ export default function HomePage() {
           Learn, check and practise everything on the {exam.name} syllabus: {exam.items} questions in {exam.minutes} minutes,{' '}
           {exam.passPercent}% to pass.
         </p>
+      </section>
+      <section className="max-w-2xl">
+        <ExamSettings parts={['track']} />
       </section>
       <section className="grid gap-4 sm:grid-cols-3">
         {PILLARS.map((p) => (

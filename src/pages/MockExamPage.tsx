@@ -3,7 +3,8 @@ import { Link } from 'react-router'
 import { EXAM_PROFILES } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
 import type { Item } from '../content/schema'
-import { getProgress, recordAnswer, recordMockResult } from '../progress/store'
+import { ExamSettings } from '../components/ExamSettings'
+import { getProgress, recordAnswer, recordMockResult, useProgress } from '../progress/store'
 import { freshResponse } from '../quiz/answer'
 import { type Response, grade, isAnswered } from '../quiz/grade'
 import { ItemView } from '../quiz/ItemView'
@@ -67,6 +68,7 @@ export default function MockExamPage() {
 }
 
 function MockIntro({ onStart }: { onStart: () => void }) {
+  useProgress() // re-render when the track or the extras toggle changes
   const preview = newExam()
   const profile = EXAM_PROFILES[preview.exam]
   return (
@@ -77,6 +79,7 @@ function MockIntro({ onStart }: { onStart: () => void }) {
         {preview.exam === '30-03' ? ' This mock draws one question per syllabus objective, like the real exam.' : ' This mock draws each block’s number of questions from the syllabus.'}{' '}
         There is no feedback until you submit, the code cannot be run, and you can flag questions and review them before submitting.
       </p>
+      <ExamSettings parts={['mock']} />
       {preview.extended && (
         <p className="text-sm text-slate-600">
           It also includes one question per PCEP-30-02 extra topic, scored separately, so it runs at the real pace with more questions.

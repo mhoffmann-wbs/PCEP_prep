@@ -1,11 +1,12 @@
 import { type ReactNode, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
+import { ExamSettings } from '../components/ExamSettings'
 import { Inline } from '../components/Inline'
 import { EXAM_PROFILES, OBJECTIVE_BY_ID } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
 import type { Item } from '../content/schema'
 import { weakAreaItems } from '../progress/readiness'
-import { type Progress, getProgress, recordAnswer } from '../progress/store'
+import { type Progress, getProgress, recordAnswer, useProgress } from '../progress/store'
 import { freshResponse } from '../quiz/answer'
 import { type Response, grade, isAnswered } from '../quiz/grade'
 import { ItemRun } from '../quiz/ItemRun'
@@ -67,7 +68,7 @@ export default function PracticePage() {
     const items = focus ? buildFocusSet(pool, weights, mix, streakOf) : buildMixedSet(pool, weights, mix)
     return <PracticeSession key={`mix|${mix}|${focus}|${round}`} items={items} label={`Mixed set${suffix}`} onAgain={again} />
   }
-  if (!objectiveId && !sectionId) return <PracticePicker progress={progress} pool={pool} />
+  if (!objectiveId && !sectionId) return <PracticePicker />
 
   const section = practiceSections(progress).find((s) => s.id === sectionId)
   const items = pool.filter((i) => (objectiveId ? i.objectiveId === objectiveId : section?.objectiveIds.includes(i.objectiveId)))
@@ -83,7 +84,9 @@ export default function PracticePage() {
   )
 }
 
-function PracticePicker({ progress, pool }: { progress: Progress; pool: Item[] }) {
+function PracticePicker() {
+  const progress = useProgress()
+  const pool = practicePool(ITEMS, progress)
   const [focus, setFocus] = useState(false)
   const count = (ids: string[]) => pool.filter((i) => ids.includes(i.objectiveId)).length
   return (
@@ -113,6 +116,7 @@ function PracticePicker({ progress, pool }: { progress: Progress; pool: Item[] }
         </div>
         <p className="mt-2 text-xs text-slate-500">{MODES.find((m) => m.focus === focus)!.hint}</p>
       </div>
+      <ExamSettings parts={['practice']} />
       <section className="rounded-lg border border-slate-200 bg-white p-4">
         <h2 className="font-semibold">Mixed set</h2>
         <p className="mt-1 text-sm text-slate-600">

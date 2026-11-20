@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { render, screen, waitForElementToBeRemoved, within } from '@testing-library/react'
+import { act, cleanup, render, screen, waitForElementToBeRemoved, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { RouterProvider, createMemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it } from 'vitest'
@@ -7,7 +7,9 @@ import { routes } from '../app/routes'
 import { ITEMS } from '../content/bank'
 import { LESSONS } from '../content/lessons'
 import type { Item } from '../content/schema'
-import { getProgress, resetProgress } from '../progress/store'
+import { getProgress, resetProgress, setTrack as storeSetTrack } from '../progress/store'
+
+const setTrack = (t: '30-03' | '30-02') => act(() => storeSetTrack(t))
 
 /** Renders the app at `path` and waits for the lazy-loaded page to replace the fallback. */
 async function renderAt(path: string) {
@@ -143,6 +145,35 @@ describe('mock exam', () => {
     expect(getProgress().mockResults).toHaveLength(1)
     await user.click(screen.getByRole('button', { name: 'Review answers' }))
     expect(screen.queryByRole('button', { name: /Run/ })).not.toBeInTheDocument()
+  })
+})
+
+describe('exam track', () => {
+  it('switches to PCEP-30-02 and filters practice, with the extras on by default', async () => {
+    const user = userEvent.setup()
+    await renderAt('/')
+    await user.click(screen.getByRole('radio', { name: /^PCEP-30-02/ }))
+    expect(getProgress()).toMatchObject({ track: '30-02', extrasInPractice: true, extrasInMock: true })
+    expect(screen.getByText(/30 questions in 40 minutes/)).toBeInTheDocument()
+    cleanup()
+
+    await renderAt('/practice')
+    expect(screen.queryByText(/File Handling and Module Imports/)).not.toBeInTheDocument()
+    expect(screen.getAllByText(/Use bitwise operators/).length).toBeGreaterThan(0)
+    await user.click(screen.getByRole('checkbox', { name: /Include PCEP-30-02 topics in practice/ }))
+    expect(screen.queryByText(/Use bitwise operators/)).not.toBeInTheDocument()
+  })
+
+  it('locks the mock extras on for PCEP-30-02 and lets 30-03 extend its mock', async () => {
+    const user = userEvent.setup()
+    await renderAt('/mock')
+    const box = screen.getByRole('checkbox', { name: /Include PCEP-30-02 topics in the mock exam/ })
+    expect(box).not.toBeChecked()
+    await user.click(box)
+    expect(getProgress().extrasInMock).toBe(true)
+    setTrack('30-02')
+    expect(await screen.findByText(/Always included in the PCEP-30-02 mock/)).toBeInTheDocument()
+    expect(screen.getByRole('checkbox', { name: /Include PCEP-30-02 topics in the mock exam/ })).toBeDisabled()
   })
 })
 
