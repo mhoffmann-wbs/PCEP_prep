@@ -163,7 +163,7 @@ Tooling:
 3. **Lessons** (done 2026-11-20, including the 6 extras): 35 lessons, heaviest sections first (3, 2, 4, 1, 5), with `<Runnable>` and predict-the-output blocks.
 4. **Question bank** (done 2026-11-20: 364 items, plus the 30-02 mock and the exam-track switch): about 310 core items plus about 54 for the 30-02 extras, written in parallel per objective file. Then the 30-02 mock exam and the exam-track switch.
 5. **Exercises and Playground** (done 2026-11-20: 58 exercises, CodeMirror editor, Playground permalinks): about 60 exercises.
-6. **Guides and polish**: cheat sheet, exam-day guide, mobile pass, accessibility of ordering items.
+6. **Guides and polish** (done 2026-11-20): cheat sheet, exam-day guide, mobile pass, accessibility of ordering items.
 7. **Later**: step-through visualizer (`sys.settrace` in Pyodide records line, locals and stdout for each step), flashcards with spaced review, and interactive `input()` through cross-origin isolation.
 
 **After 2027-11-30**: drop the 30-02 profile and extras, or keep them hidden behind a "retired exam" note.

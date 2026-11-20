@@ -248,7 +248,7 @@ function Order({ item, response, onChange, revealed }: { item: Of<'order'> } & O
             <span className="w-5 shrink-0 text-right text-xs text-slate-500" aria-hidden="true">
               {pos + 1}
             </span>
-            <span className={`min-w-0 flex-1 overflow-x-auto whitespace-pre ${mono ? 'font-mono text-sm' : ''}`}>{item.lines[lineIndex]}</span>
+            <span className={`min-w-0 flex-1 whitespace-pre-wrap break-words ${mono ? 'font-mono text-sm' : ''}`}>{item.lines[lineIndex]}</span>
             {!revealed && (
               <span className="flex shrink-0 gap-1">
                 {(['up', 'down'] as const).map((dir) => (

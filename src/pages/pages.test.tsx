@@ -49,6 +49,17 @@ describe('shell', () => {
     expect(screen.getByText(/Not affiliated with or endorsed by the Python Institute/)).toBeInTheDocument()
     expect(screen.getByText('5. File Handling and Module Imports')).toBeInTheDocument()
   })
+
+  it('opens the phone menu and closes it when a link is followed', async () => {
+    const user = userEvent.setup()
+    await renderAt('/')
+    const menu = screen.getByRole('button', { name: 'Menu' })
+    await user.click(menu)
+    expect(menu).toHaveAttribute('aria-expanded', 'true')
+    await user.click(screen.getByRole('link', { name: 'Exercises' }))
+    expect(await screen.findByRole('heading', { name: 'Exercises' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Menu' })).toHaveAttribute('aria-expanded', 'false')
+  })
 })
 
 describe('practice', () => {
@@ -58,7 +69,7 @@ describe('practice', () => {
     await renderAt('/practice?objective=4.1.2')
     const item = shownItem(ITEMS.filter((i) => i.objectiveId === '4.1.2'))
     expect(item).toBeDefined()
-    expect(screen.queryByRole('button', { name: /Run/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^Run/ })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Open in Playground' })).not.toBeInTheDocument()
 
     await answerAnything(user)
@@ -119,10 +130,10 @@ describe('item kinds', () => {
     if (order.kind !== 'order') throw new Error('expected an order item')
     // Bubble each line into place using only the up buttons.
     for (let target = 0; target < order.lines.length; target++) {
-      const rows = screen.getAllByRole('listitem')
+      const rows = within(screen.getByRole('list', { name: /in your order/ })).getAllByRole('listitem')
       const from = rows.findIndex((r) => r.textContent?.includes(order.lines[target]!))
       for (let pos = from; pos > target; pos--) {
-        const up = within(screen.getAllByRole('listitem')[pos]!).getByRole('button', { name: /up$/ })
+        const up = within(within(screen.getByRole('list', { name: /in your order/ })).getAllByRole('listitem')[pos]!).getByRole('button', { name: /up$/ })
         await user.click(up)
         // Focus follows the moved line, and the move is announced.
         expect(document.activeElement?.closest('li')?.textContent).toContain(order.lines[target]!.trim())
@@ -145,7 +156,7 @@ describe('mock exam', () => {
     expect(total).toBe(35)
     await user.click(screen.getByRole('button', { name: 'Flag for review' }))
     for (let n = 0; n < total; n++) {
-      expect(screen.queryByRole('button', { name: /Run/ })).not.toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: /^Run/ })).not.toBeInTheDocument()
       expect(screen.queryByRole('button', { name: 'Open in Playground' })).not.toBeInTheDocument()
       await user.click(screen.getByRole('button', { name: n + 1 === total ? 'Review' : 'Next' }))
     }
@@ -156,7 +167,7 @@ describe('mock exam', () => {
     expect(screen.getByText(/This is an estimate/)).toBeInTheDocument()
     expect(getProgress().mockResults).toHaveLength(1)
     await user.click(screen.getByRole('button', { name: 'Review answers' }))
-    expect(screen.queryByRole('button', { name: /Run/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^Run/ })).not.toBeInTheDocument()
   })
 })
 
