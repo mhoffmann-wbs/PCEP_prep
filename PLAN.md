@@ -161,7 +161,7 @@ Tooling:
 1. **Pyodide spike** (done 2026-11-20): the worker runner, timeout, stdin box, virtual FS and error explainer. Then the build-time test that checks item outputs.
 2. **Quiz engine** (done 2026-11-20): render and grade all 5 kinds; practice (Run unlocked after Check); mock exam; results by section and objective.
 3. **Lessons** (done 2026-11-20, including the 6 extras): 35 lessons, heaviest sections first (3, 2, 4, 1, 5), with `<Runnable>` and predict-the-output blocks.
-4. **Question bank**: about 310 core items plus about 54 for the 30-02 extras, written in parallel per objective file. Then the 30-02 mock exam and the exam-track switch.
+4. **Question bank** (done 2026-11-20: 364 items, plus the 30-02 mock and the exam-track switch): about 310 core items plus about 54 for the 30-02 extras, written in parallel per objective file. Then the 30-02 mock exam and the exam-track switch.
 5. **Exercises and Playground**: about 60 exercises.
 6. **Guides and polish**: cheat sheet, exam-day guide, mobile pass, accessibility of ordering items.
 7. **Later**: step-through visualizer (`sys.settrace` in Pyodide records line, locals and stdout for each step), flashcards with spaced review, and interactive `input()` through cross-origin isolation.
