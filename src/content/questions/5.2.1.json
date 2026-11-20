@@ -16,7 +16,7 @@
       {
         "text": "Every module is loaded when Python starts, so `import` only checks the module's spelling.",
         "correct": false,
-        "rationale": "A module is loaded only when you import it, which keeps Python small and quick to start."
+        "rationale": "Most modules are loaded only when you import them, which keeps Python small and quick to start."
       },
       {
         "text": "They reuse tested code and keep programs short.",

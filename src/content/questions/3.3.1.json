@@ -202,7 +202,7 @@
         "rationale": "That is the difference from remove(), which raises KeyError."
       },
       {
-        "text": "A tuple can be stored in a set, but a list can't.",
+        "text": "A tuple of numbers or strings can be stored in a set, but a list can't.",
         "correct": true,
         "rationale": "Set items must be immutable (hashable); a list raises TypeError."
       },

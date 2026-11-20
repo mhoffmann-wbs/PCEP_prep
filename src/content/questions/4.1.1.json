@@ -211,7 +211,7 @@
       {
         "text": "`show_menu[]`",
         "correct": false,
-        "rationale": "Calls use round brackets. Square brackets are for indexing, which doesn't call anything."
+        "rationale": "Calls use round brackets. Empty square brackets after a name aren't valid Python at all: this line is a `SyntaxError`."
       }
     ],
     "explanation": "You invoke a function by writing its name followed by round brackets. The call can stand alone or be part of a bigger statement, such as an assignment. Writing the name without brackets doesn't run anything."

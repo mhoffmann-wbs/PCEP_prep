@@ -115,7 +115,7 @@
     "stem": "Which statement about tuples and lists is true?",
     "options": [
       {
-        "text": "A tuple can be a dictionary key, but a list can't.",
+        "text": "A tuple of numbers or strings can be a dictionary key, but a list can't.",
         "correct": true,
         "rationale": "Dictionary keys must not change, so an immutable tuple (of immutable items) qualifies and a list does not."
       },

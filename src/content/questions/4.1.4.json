@@ -3,16 +3,35 @@
     "id": "4.1.4-01",
     "kind": "single",
     "objectiveId": "4.1.4",
-    "subpoints": ["4.1.4.1", "4.1.4.2"],
+    "subpoints": [
+      "4.1.4.1",
+      "4.1.4.2"
+    ],
     "stem": "What is the output of the following code?",
     "code": "def pack(*items):\n    print(len(items), items)\n\npack(\"tent\", \"torch\")\npack(\"map\")",
     "output": "2 ('tent', 'torch')\n1 ('map',)\n",
     "outputKey": true,
     "options": [
-      { "text": "2 ['tent', 'torch']\n1 ['map']", "correct": false, "rationale": "`*items` collects the values into a tuple, shown in round brackets, not into a list." },
-      { "text": "2 ('tent', 'torch')\n1 ('map',)", "correct": true, "rationale": "`*items` collects the positional arguments into a tuple, and a one-item tuple is shown with a trailing comma." },
-      { "text": "2 ('tent', 'torch')\n1 ('map')", "correct": false, "rationale": "A tuple with one item is always shown with a trailing comma, so it is not mistaken for a value in brackets." },
-      { "text": "2 ('tent', 'torch')\n1 map", "correct": false, "rationale": "Even a single collected argument is put in a tuple; `*items` never turns into the bare value." }
+      {
+        "text": "2 ['tent', 'torch']\n1 ['map']",
+        "correct": false,
+        "rationale": "`*items` collects the values into a tuple, shown in round brackets, not into a list."
+      },
+      {
+        "text": "2 ('tent', 'torch')\n1 ('map',)",
+        "correct": true,
+        "rationale": "`*items` collects the positional arguments into a tuple, and a one-item tuple is shown with a trailing comma."
+      },
+      {
+        "text": "2 ('tent', 'torch')\n1 ('map')",
+        "correct": false,
+        "rationale": "A tuple with one item is always shown with a trailing comma, so it is not mistaken for a value in brackets."
+      },
+      {
+        "text": "2 ('tent', 'torch')\n1 map",
+        "correct": false,
+        "rationale": "Even a single collected argument is put in a tuple; `*items` never turns into the bare value."
+      }
     ],
     "explanation": "The star in `*items` collects all the positional arguments of a call into a tuple. The first call gives the tuple `('tent', 'torch')` with length 2. The second gives a tuple with one item, which Python prints as `('map',)`."
   },
@@ -20,16 +39,35 @@
     "id": "4.1.4-02",
     "kind": "single",
     "objectiveId": "4.1.4",
-    "subpoints": ["4.1.4.4", "4.1.4.5"],
+    "subpoints": [
+      "4.1.4.4",
+      "4.1.4.5"
+    ],
     "stem": "What is the output of the following code?",
     "code": "def forecast(**kwargs):\n    print(type(kwargs), len(kwargs))\n\nforecast(rain=12, sun=6)",
     "output": "<class 'dict'> 2\n",
     "outputKey": true,
     "options": [
-      { "text": "<class 'tuple'> 2", "correct": false, "rationale": "A tuple is what `*args` builds. Two stars collect keyword arguments into a dictionary." },
-      { "text": "<class 'list'> 2", "correct": false, "rationale": "Neither `*args` nor `**kwargs` builds a list; `**kwargs` is a dictionary." },
-      { "text": "<class 'dict'> 2", "correct": true, "rationale": "`**kwargs` collects keyword arguments into a dictionary, here with two key: value pairs." },
-      { "text": "<class 'dict'> 4", "correct": false, "rationale": "`len()` of a dictionary counts its pairs, not its keys and values separately." }
+      {
+        "text": "<class 'tuple'> 2",
+        "correct": false,
+        "rationale": "A tuple is what `*args` builds. Two stars collect keyword arguments into a dictionary."
+      },
+      {
+        "text": "<class 'list'> 2",
+        "correct": false,
+        "rationale": "Neither `*args` nor `**kwargs` builds a list; `**kwargs` is a dictionary."
+      },
+      {
+        "text": "<class 'dict'> 2",
+        "correct": true,
+        "rationale": "`**kwargs` collects keyword arguments into a dictionary, here with two key: value pairs."
+      },
+      {
+        "text": "<class 'dict'> 4",
+        "correct": false,
+        "rationale": "`len()` of a dictionary counts its pairs, not its keys and values separately."
+      }
     ],
     "explanation": "Two stars in front of a parameter collect every extra keyword argument into a dictionary. `rain=12, sun=6` becomes `{'rain': 12, 'sun': 6}`, so the type is `dict` and `len()` counts 2 pairs."
   },
@@ -37,16 +75,35 @@
     "id": "4.1.4-03",
     "kind": "single",
     "objectiveId": "4.1.4",
-    "subpoints": ["4.1.4.1", "4.1.4.3"],
+    "subpoints": [
+      "4.1.4.1",
+      "4.1.4.3"
+    ],
     "stem": "What is the output of the following code?",
     "code": "def cheapest(*prices):\n    low = prices[0]\n    for p in prices:\n        if p < low:\n            low = p\n    return low\n\nprint(cheapest(4.5, 2, 3.75), cheapest(9))",
     "output": "2 9\n",
     "outputKey": true,
     "options": [
-      { "text": "2.0 9", "correct": false, "rationale": "The function returns the value that was passed in, the int `2`; nothing converts it to a float." },
-      { "text": "4.5 9", "correct": false, "rationale": "`low` starts as the first price, but the loop replaces it whenever it finds a smaller one." },
-      { "text": "2 (9,)", "correct": false, "rationale": "`prices` is a tuple, but the function returns one item from it, `prices[0]`, not the tuple itself." },
-      { "text": "2 9", "correct": true, "rationale": "The loop walks through the tuple and keeps the smallest value; with one argument, that argument is the smallest." }
+      {
+        "text": "2.0 9",
+        "correct": false,
+        "rationale": "The function returns the value that was passed in, the int `2`; nothing converts it to a float."
+      },
+      {
+        "text": "4.5 9",
+        "correct": false,
+        "rationale": "`low` starts as the first price, but the loop replaces it whenever it finds a smaller one."
+      },
+      {
+        "text": "2 (9,)",
+        "correct": false,
+        "rationale": "`prices` is a tuple, but the function returns one item from it, `prices[0]`, not the tuple itself."
+      },
+      {
+        "text": "2 9",
+        "correct": true,
+        "rationale": "The loop walks through the tuple and keeps the smallest value; with one argument, that argument is the smallest."
+      }
     ],
     "explanation": "`*prices` collects the arguments into a tuple, and the `for` loop visits each one. In the first call `low` starts at 4.5 and drops to 2; 3.75 is not smaller. In the second call the tuple is `(9,)`, so `low` is 9 and the loop changes nothing."
   },
@@ -54,15 +111,33 @@
     "id": "4.1.4-04",
     "kind": "single",
     "objectiveId": "4.1.4",
-    "subpoints": ["4.1.4.4"],
+    "subpoints": [
+      "4.1.4.4"
+    ],
     "stem": "What happens when this code runs?",
     "code": "def settings(**options):\n    for key in options:\n        print(key, options[key])\n\nsettings(\"dark\", volume=7)",
     "raises": "TypeError",
     "options": [
-      { "text": "It stops with a `TypeError`, because `**options` collects keyword arguments only.", "correct": true, "rationale": "The function has no parameter that can take a positional argument, so `\"dark\"` cannot go anywhere: `takes 0 positional arguments but 1 was given`." },
-      { "text": "It prints `volume 7` and silently ignores the extra positional value `\"dark\"`, which has no parameter.", "correct": false, "rationale": "Python never silently drops an argument; a value with nowhere to go is an error." },
-      { "text": "It prints `0 dark` and then `volume 7` on the next line.", "correct": false, "rationale": "`**options` does not invent keys for positional values; it only collects `name=value` arguments." },
-      { "text": "It stops with a `SyntaxError`, because `\"dark\"` comes before a keyword.", "correct": false, "rationale": "Positional arguments before keyword arguments is the correct order, so the call is valid syntax; it fails only when it runs." }
+      {
+        "text": "It stops with a `TypeError`, because `**options` collects keyword arguments only.",
+        "correct": true,
+        "rationale": "The function has no parameter that can take a positional argument, so `\"dark\"` cannot go anywhere: `takes 0 positional arguments but 1 was given`."
+      },
+      {
+        "text": "It prints `volume 7` and silently ignores the extra positional value `\"dark\"`, which has no parameter.",
+        "correct": false,
+        "rationale": "Python never silently drops an argument; a value with nowhere to go is an error."
+      },
+      {
+        "text": "It prints `0 dark` and then `volume 7` on the next line.",
+        "correct": false,
+        "rationale": "`**options` does not invent keys for positional values; it only collects `name=value` arguments."
+      },
+      {
+        "text": "It stops with a `SyntaxError`, because `\"dark\"` comes before a keyword.",
+        "correct": false,
+        "rationale": "Positional arguments before keyword arguments is the correct order, so the call is valid syntax; it fails only when it runs."
+      }
     ],
     "explanation": "`**options` collects extra keyword arguments into a dictionary, but it cannot take positional arguments. The call passes `\"dark\"` by position, and there is no parameter for it, so Python raises `TypeError: settings() takes 0 positional arguments but 1 was given`."
   },
@@ -70,16 +145,36 @@
     "id": "4.1.4-05",
     "kind": "single",
     "objectiveId": "4.1.4",
-    "subpoints": ["4.1.4.7", "4.1.4.1", "4.1.4.4"],
+    "subpoints": [
+      "4.1.4.7",
+      "4.1.4.1",
+      "4.1.4.4"
+    ],
     "stem": "What is the output of the following code?",
     "code": "def order(dish, size=\"regular\", *extras, **notes):\n    print(dish, size, extras, notes)\n\norder(\"curry\", \"large\", \"rice\", \"naan\", spice=\"hot\")",
     "output": "curry large ('rice', 'naan') {'spice': 'hot'}\n",
     "outputKey": true,
     "options": [
-      { "text": "curry regular ('large', 'rice', 'naan') {'spice': 'hot'}", "correct": false, "rationale": "A default is used only when no argument fills that parameter; here the second positional value `\"large\"` fills `size`." },
-      { "text": "curry large ('rice', 'naan') {'spice': 'hot'}", "correct": true, "rationale": "Named parameters are filled by position first, the leftover positional values go to `extras` and the leftover keyword argument to `notes`." },
-      { "text": "curry large ['rice', 'naan'] {'spice': 'hot'}", "correct": false, "rationale": "The leftover positional values are collected in a tuple, which prints with round brackets." },
-      { "text": "curry large ('rice', 'naan', 'hot') {}", "correct": false, "rationale": "A keyword argument is never put into the `*` tuple; `spice=\"hot\"` goes into the `**` dictionary." }
+      {
+        "text": "curry regular ('large', 'rice', 'naan') {'spice': 'hot'}",
+        "correct": false,
+        "rationale": "A default is used only when no argument fills that parameter; here the second positional value `\"large\"` fills `size`."
+      },
+      {
+        "text": "curry large ('rice', 'naan') {'spice': 'hot'}",
+        "correct": true,
+        "rationale": "Named parameters are filled by position first, the leftover positional values go to `extras` and the leftover keyword argument to `notes`."
+      },
+      {
+        "text": "curry large ['rice', 'naan'] {'spice': 'hot'}",
+        "correct": false,
+        "rationale": "The leftover positional values are collected in a tuple, which prints with round brackets."
+      },
+      {
+        "text": "curry large ('rice', 'naan', 'hot') {}",
+        "correct": false,
+        "rationale": "A keyword argument is never put into the `*` tuple; `spice=\"hot\"` goes into the `**` dictionary."
+      }
     ],
     "explanation": "Python fills `dish` and `size` by position with `\"curry\"` and `\"large\"`, so the default `\"regular\"` is not used. The remaining positional values `\"rice\"` and `\"naan\"` go into the tuple `extras`. The keyword argument `spice=\"hot\"` matches no named parameter, so it goes into the dictionary `notes`."
   },
@@ -87,16 +182,42 @@
     "id": "4.1.4-06",
     "kind": "multi",
     "objectiveId": "4.1.4",
-    "subpoints": ["4.1.4.7"],
+    "subpoints": [
+      "4.1.4.7"
+    ],
     "stem": "Which function definitions are valid? (Select TWO)",
     "select": 2,
     "options": [
-      { "text": "`def log(level, tag=\"app\", *lines, **meta):`", "correct": true, "rationale": "This follows the required order: a normal parameter, a parameter with a default, `*args`, then `**kwargs` last." },
-      { "text": "`def draw(*shapes, color=\"red\", **style):`", "correct": true, "rationale": "A parameter after `*shapes` is keyword-only, which is allowed, and `**style` comes last." },
-      { "text": "`def mix(**parts, *colors):`", "correct": false, "rationale": "`**kwargs` must be the last parameter, so nothing may follow it: `SyntaxError`." },
-      { "text": "`def tip(rate=10, bill, *extras):`", "correct": false, "rationale": "A parameter without a default cannot follow one with a default: `SyntaxError`." },
-      { "text": "`def pack(*items, **labels, size):`", "correct": false, "rationale": "Nothing may follow `**labels`, not even a normal parameter: `SyntaxError`." },
-      { "text": "`def cook(*steps, *notes):`", "correct": false, "rationale": "Only one `*` parameter is allowed in a definition." }
+      {
+        "text": "`def log(level, tag=\"app\", *lines, **meta):`",
+        "correct": true,
+        "rationale": "This follows the required order: a normal parameter, a parameter with a default, `*args`, then `**kwargs` last."
+      },
+      {
+        "text": "`def draw(*shapes, color=\"red\", **style):`",
+        "correct": true,
+        "rationale": "A parameter after `*shapes` is keyword-only, which is allowed, and `**style` comes last."
+      },
+      {
+        "text": "`def mix(**parts, *colors):`",
+        "correct": false,
+        "rationale": "`**kwargs` must be the last parameter, so nothing may follow it: `SyntaxError`."
+      },
+      {
+        "text": "`def tip(rate=10, bill, *extras):`",
+        "correct": false,
+        "rationale": "A parameter without a default cannot follow one with a default: `SyntaxError`."
+      },
+      {
+        "text": "`def pack(*items, **labels, size):`",
+        "correct": false,
+        "rationale": "Nothing may follow `**labels`, not even a normal parameter: `SyntaxError`."
+      },
+      {
+        "text": "`def cook(*steps, *notes):`",
+        "correct": false,
+        "rationale": "Only one `*` parameter is allowed in a definition."
+      }
     ],
     "explanation": "The order in a definition is: normal parameters, parameters with defaults, `*args`, keyword-only parameters, then `**kwargs` last. Only one `*` parameter and one `**` parameter are allowed. The `log` and `draw` definitions follow these rules; the others break one of them."
   },
@@ -104,40 +225,105 @@
     "id": "4.1.4-07",
     "kind": "gap",
     "objectiveId": "4.1.4",
-    "subpoints": ["4.1.4.5", "4.1.4.6"],
+    "subpoints": [
+      "4.1.4.5",
+      "4.1.4.6"
+    ],
     "stem": "Complete the code so that it prints each name with its price and then `Has tea? True`.",
     "code": "def receipt(**items):\n    for name, price in items.__BLANK1__():\n        print(name, price)\n    print(\"Has tea?\", __BLANK2__ in items)\n\nreceipt(tea=3, cake=4)",
     "output": "tea 3\ncake 4\nHas tea? True\n",
     "blanks": [
-      { "n": 1, "kind": "choice", "choices": ["items", "keys", "values"], "answer": "items", "rationale": "`.items()` gives each key together with its value, so the loop can unpack them into `name` and `price`." },
-      { "n": 2, "kind": "text", "accept": ["\"tea\"", "'tea'"], "rationale": "The keyword `tea=3` arrives as the string key `\"tea\"`, and `in` checks the keys of a dictionary." }
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "items",
+          "keys",
+          "values"
+        ],
+        "answer": "items",
+        "rationale": "`.items()` gives each key together with its value, so the loop can unpack them into `name` and `price`."
+      },
+      {
+        "n": 2,
+        "kind": "text",
+        "accept": [
+          "\"tea\"",
+          "'tea'"
+        ],
+        "rationale": "The keyword `tea=3` arrives as the string key `\"tea\"`, and `in` checks the keys of a dictionary."
+      }
     ],
     "explanation": "`**items` is a dictionary: `{'tea': 3, 'cake': 4}`. Looping over `.items()` gives pairs like `('tea', 3)`, which are unpacked into `name` and `price`. `.keys()` or `.values()` would give single values that cannot be unpacked into two names. Keyword names become string keys, so the check is `\"tea\" in items`."
   },
   {
     "id": "4.1.4-08",
-    "kind": "order",
+    "kind": "insert",
     "objectiveId": "4.1.4",
-    "subpoints": ["4.1.4.7"],
-    "stem": "Put these parameters in the order a valid function definition requires.",
-    "mode": "values",
-    "lines": ["city", "nights=1", "*stops", "travel=\"train\"", "**extras"],
-    "rationale": "Normal parameters come first, then parameters with defaults, then `*args`, then keyword-only parameters, and `**kwargs` is always last.",
-    "explanation": "The only valid order is `def plan(city, nights=1, *stops, travel=\"train\", **extras):`. `city` has no default, so it must come before `nights=1`. A parameter after `*stops` such as `travel` can only be passed by keyword. `**extras` must close the list."
+    "subpoints": [
+      "4.1.4.1",
+      "4.1.4.4",
+      "4.1.4.7"
+    ],
+    "stem": "Which definition, inserted at the marked line, makes the program print `Rome 2 ('Pisa',) bus {'food': True}`?",
+    "code": "# >>> INSERT <<<\n    print(city, nights, stops, travel, extras)\n\nplan(\"Rome\", 2, \"Pisa\", travel=\"bus\", food=True)",
+    "output": "Rome 2 ('Pisa',) bus {'food': True}\n",
+    "options": [
+      {
+        "text": "def plan(city, *stops, nights=1, travel=\"train\", **extras):",
+        "correct": false,
+        "rationale": "This is valid, but `nights` now comes after `*stops`, so it can only be passed by keyword: `*stops` collects both `2` and `\"Pisa\"`, and `nights` keeps its default 1."
+      },
+      {
+        "text": "def plan(city, nights=1, *stops, travel=\"train\", **extras):",
+        "correct": true,
+        "rationale": "Positional parameters and defaults first, then `*stops`, then the keyword-only `travel`, then `**extras`: `2` fills `nights`, `\"Pisa\"` goes into `stops`, and `food=True` into `extras`."
+      },
+      {
+        "text": "def plan(city, nights=1, **extras, *stops, travel=\"train\"):",
+        "correct": false,
+        "rationale": "`**extras` must be the last parameter, so this definition is a `SyntaxError`."
+      },
+      {
+        "text": "def plan(**extras, city, nights=1, *stops, travel=\"train\"):",
+        "correct": false,
+        "rationale": "`**kwargs` can never come first: nothing may follow it, so this is a `SyntaxError`."
+      }
+    ],
+    "explanation": "In a definition, `**kwargs` always comes last. The usual order is: normal parameters, parameters with defaults, `*args`, keyword-only parameters, `**kwargs`. With that order, the call fills `city` and `nights` by position, `*stops` collects the remaining positional value `\"Pisa\"` into a tuple, `travel=\"bus\"` sets the keyword-only parameter, and the unknown keyword `food=True` lands in the `extras` dictionary."
   },
   {
     "id": "4.1.4-09",
     "kind": "insert",
     "objectiveId": "4.1.4",
-    "subpoints": ["4.1.4.6", "4.1.4.4"],
+    "subpoints": [
+      "4.1.4.6",
+      "4.1.4.4"
+    ],
     "stem": "Which line, inserted at the marked spot, makes the program print `Milo`, `species = cat` and `age = 3` on three lines?",
     "code": "def show_pet(name, **details):\n    print(name)\n    for key, value in details.items():\n        # >>> INSERT <<<\n\nshow_pet(\"Milo\", species=\"cat\", age=3)",
     "output": "Milo\nspecies = cat\nage = 3\n",
     "options": [
-      { "text": "print(details[key], \"=\", value)", "correct": false, "rationale": "`details[key]` is the value, not the key, so this prints `cat = cat`." },
-      { "text": "print(key, \"=\", details)", "correct": false, "rationale": "`details` is the whole dictionary, so every line would show all the pairs." },
-      { "text": "print(value, \"=\", key)", "correct": false, "rationale": "This swaps the two, printing `cat = species`." },
-      { "text": "print(key, \"=\", value)", "correct": true, "rationale": "Each pair from `.items()` gives the key, such as `species`, and its value, such as `cat`." }
+      {
+        "text": "print(details[key], \"=\", value)",
+        "correct": false,
+        "rationale": "`details[key]` is the value, not the key, so this prints `cat = cat`."
+      },
+      {
+        "text": "print(key, \"=\", details)",
+        "correct": false,
+        "rationale": "`details` is the whole dictionary, so every line would show all the pairs."
+      },
+      {
+        "text": "print(value, \"=\", key)",
+        "correct": false,
+        "rationale": "This swaps the two, printing `cat = species`."
+      },
+      {
+        "text": "print(key, \"=\", value)",
+        "correct": true,
+        "rationale": "Each pair from `.items()` gives the key, such as `species`, and its value, such as `cat`."
+      }
     ],
     "explanation": "`\"Milo\"` fills `name`, and the keyword arguments `species=\"cat\"` and `age=3` go into the dictionary `details`. `.items()` gives each key with its value, in the order they were passed, so `print(key, \"=\", value)` prints `species = cat` and `age = 3`."
   }

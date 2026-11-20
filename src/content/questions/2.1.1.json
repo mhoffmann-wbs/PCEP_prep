@@ -89,14 +89,14 @@
         "rationale": "The condition is true, but Python cannot run the code at all because the `if` line has no colon."
       },
       {
-        "text": "Nothing is printed",
+        "text": "Nothing is printed, and the program ends without an error",
         "correct": false,
-        "rationale": "Python checks the syntax before running anything, and the missing colon is an error."
+        "rationale": "Python does report a problem: it checks the syntax before running anything, finds the missing colon and stops with an error."
       },
       {
-        "text": "A `SyntaxError` is raised",
+        "text": "Nothing is printed: Python reports a `SyntaxError`",
         "correct": true,
-        "rationale": "Every `if` line must end with a colon, and this one has none."
+        "rationale": "Every `if` line must end with a colon. Python checks this before running any line, so not even `pages = 120` runs."
       },
       {
         "text": "An `IndentationError` is raised",
