@@ -1,0 +1,39 @@
+[
+  {
+    "id": "3.1.3-e1",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.1",
+      "3.1.3.3",
+      "3.1.3.4"
+    ],
+    "kind": "function",
+    "title": "Book a seat",
+    "prompt": "A cinema stores its seats as a list of rows. Each row is a list of strings, either `\"free\"` or `\"taken\"`.\n\nWrite a function `book(seats, row, col)` that looks at the seat at that row and column (both count from 0). If it is `\"free\"`, change it to `\"taken\"` in the list and return `True`. If it is already taken, change nothing and return `False`.\n\nFor example, with `seats = [[\"free\", \"taken\"], [\"free\", \"free\"]]`, `book(seats, 1, 0)` returns `True` and row 1 becomes `[\"taken\", \"free\"]`.",
+    "starter": "def book(seats, row, col):\n    # check seats[row][col], change it if it is free\n    pass\n",
+    "solution": "def book(seats, row, col):\n    if seats[row][col] == \"free\":\n        seats[row][col] = \"taken\"\n        return True\n    return False\n",
+    "hints": [
+      "`seats[row][col]` first picks the row, then the seat in it.",
+      "You can assign to it too: `seats[row][col] = \"taken\"`.",
+      "Return `True` after the assignment, and `False` in the other case."
+    ],
+    "checks": [
+      {
+        "call": "(lambda s: (book(s, 1, 0), s))([[\"free\", \"taken\"], [\"free\", \"free\"]])",
+        "expect": "(True, [[\"free\", \"taken\"], [\"taken\", \"free\"]])"
+      },
+      {
+        "call": "(lambda s: (book(s, 0, 1), s))([[\"free\", \"taken\"], [\"free\", \"free\"]])",
+        "expect": "(False, [[\"free\", \"taken\"], [\"free\", \"free\"]])"
+      },
+      {
+        "call": "(lambda s: (book(s, 0, 2), s))([[\"taken\", \"free\", \"free\"]])",
+        "expect": "(True, [[\"taken\", \"free\", \"taken\"]])"
+      },
+      {
+        "call": "(lambda s: (book(s, 0, 0), book(s, 0, 0), s))([[\"free\"]])",
+        "expect": "(True, False, [[\"taken\"]])"
+      }
+    ]
+  }
+]

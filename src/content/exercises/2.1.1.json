@@ -1,0 +1,44 @@
+[
+  {
+    "id": "2.1.1-e1",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.1",
+      "2.1.1.2",
+      "2.1.1.3",
+      "2.1.1.4"
+    ],
+    "kind": "function",
+    "title": "Tall enough to ride",
+    "prompt": "A fun fair ride lets in visitors who are at least 120 cm tall.\n\nWrite a function `can_ride(height)` that returns the text `\"Ride\"` when the height is 120 or more, and `\"Too short\"` otherwise.\n\nFor example, `can_ride(130)` returns `\"Ride\"`.",
+    "starter": "def can_ride(height):\n    # return \"Ride\" or \"Too short\"\n    pass\n",
+    "solution": "def can_ride(height):\n    if height >= 120:\n        return \"Ride\"\n    else:\n        return \"Too short\"\n",
+    "hints": [
+      "You need a condition that compares the height with 120.",
+      "Exactly 120 cm is allowed, so think about `>` versus `>=`.",
+      "`if height >= 120:` return one text, `else:` return the other."
+    ],
+    "checks": [
+      {
+        "call": "can_ride(130)",
+        "expect": "\"Ride\""
+      },
+      {
+        "call": "can_ride(119)",
+        "expect": "\"Too short\""
+      },
+      {
+        "call": "can_ride(120)",
+        "expect": "\"Ride\""
+      },
+      {
+        "call": "can_ride(90)",
+        "expect": "\"Too short\""
+      },
+      {
+        "call": "can_ride(121)",
+        "expect": "\"Ride\""
+      }
+    ]
+  }
+]

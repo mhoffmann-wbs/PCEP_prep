@@ -1,0 +1,80 @@
+[
+  {
+    "id": "4.1.2-e1",
+    "objectiveId": "4.1.2",
+    "subpoints": [
+      "4.1.2.1",
+      "4.1.2.4"
+    ],
+    "kind": "function",
+    "title": "Celsius to Fahrenheit",
+    "prompt": "A travel app shows temperatures in both units.\n\nWrite a function `to_fahrenheit(celsius)` that **returns** the temperature in Fahrenheit: multiply by 9, divide by 5 and add 32. Don't print it.\n\nFor example, `to_fahrenheit(100)` returns `212.0`.",
+    "starter": "def to_fahrenheit(celsius):\n    # return the converted temperature\n    pass\n",
+    "solution": "def to_fahrenheit(celsius):\n    return celsius * 9 / 5 + 32\n",
+    "hints": [
+      "The function should hand the answer back with `return`, not display it with `print()`.",
+      "The formula is `celsius * 9 / 5 + 32`.",
+      "`return celsius * 9 / 5 + 32`"
+    ],
+    "checks": [
+      {
+        "call": "to_fahrenheit(100)",
+        "expect": "212.0"
+      },
+      {
+        "call": "to_fahrenheit(0)",
+        "expect": "32.0"
+      },
+      {
+        "call": "to_fahrenheit(-40)",
+        "expect": "-40.0"
+      },
+      {
+        "call": "to_fahrenheit(25) + 1",
+        "expect": "78.0"
+      }
+    ]
+  },
+  {
+    "id": "4.1.2-e2",
+    "objectiveId": "4.1.2",
+    "subpoints": [
+      "4.1.2.5",
+      "4.1.2.6",
+      "4.1.2.7",
+      "4.1.2.8"
+    ],
+    "kind": "function",
+    "title": "Lowest and highest price",
+    "prompt": "A shop wants to know the cheapest and the most expensive item in a list of prices.\n\nWrite a function `price_range(prices)` that returns **two values**: the lowest price and the highest price. If the list is empty, return `None` instead.\n\nFor example, `price_range([4, 9, 2, 7])` returns `(2, 9)`, which you can get with `return low, high`.",
+    "starter": "def price_range(prices):\n    # if the list is empty, return None\n    # otherwise return the lowest and the highest price\n    pass\n",
+    "solution": "def price_range(prices):\n    if len(prices) == 0:\n        return None\n    return min(prices), max(prices)\n",
+    "hints": [
+      "Handle the empty list first: `if len(prices) == 0:` and `return None`.",
+      "The built-in functions `min()` and `max()` work on a list.",
+      "`return min(prices), max(prices)`, written after the `if` check."
+    ],
+    "checks": [
+      {
+        "call": "price_range([4, 9, 2, 7])",
+        "expect": "(2, 9)"
+      },
+      {
+        "call": "price_range([5])",
+        "expect": "(5, 5)"
+      },
+      {
+        "call": "price_range([3.5, 1.25])",
+        "expect": "(1.25, 3.5)"
+      },
+      {
+        "call": "price_range([])",
+        "expect": "None"
+      },
+      {
+        "call": "price_range([8, 3])[0]",
+        "expect": "3"
+      }
+    ]
+  }
+]

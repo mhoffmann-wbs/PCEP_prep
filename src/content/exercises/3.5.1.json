@@ -1,0 +1,44 @@
+[
+  {
+    "id": "3.5.1-e1",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.5",
+      "3.5.1.6",
+      "3.5.1.7",
+      "3.5.1.9"
+    ],
+    "kind": "function",
+    "title": "Hide the card number",
+    "prompt": "Write a function `mask(card)` that takes a card number as a string and returns a string of the same length where every character except the last four is replaced by `\"*\"`. If the string has four characters or fewer, return it unchanged.\n\nFor example, `mask(\"12345678\")` returns `\"****5678\"`.",
+    "starter": "def mask(card):\n    # stars for everything but the last four characters\n    pass\n",
+    "solution": "def mask(card):\n    if len(card) <= 4:\n        return card\n    return \"*\" * (len(card) - 4) + card[-4:]\n",
+    "hints": [
+      "`len(card) - 4` is the number of characters to hide, and `\"*\" * n` repeats a star `n` times.",
+      "The last four characters are the slice `card[-4:]`.",
+      "Join the two parts with `+`."
+    ],
+    "checks": [
+      {
+        "call": "mask(\"12345678\")",
+        "expect": "\"****5678\""
+      },
+      {
+        "call": "mask(\"1234\")",
+        "expect": "\"1234\""
+      },
+      {
+        "call": "mask(\"123\")",
+        "expect": "\"123\""
+      },
+      {
+        "call": "mask(\"\")",
+        "expect": "\"\""
+      },
+      {
+        "call": "mask(\"4000123412341234\")",
+        "expect": "\"************1234\""
+      }
+    ]
+  }
+]

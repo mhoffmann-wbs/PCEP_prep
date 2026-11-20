@@ -1,0 +1,47 @@
+[
+  {
+    "id": "4.1.4-e1",
+    "objectiveId": "4.1.4",
+    "subpoints": [
+      "4.1.4.1",
+      "4.1.4.2",
+      "4.1.4.3",
+      "4.1.4.4",
+      "4.1.4.5",
+      "4.1.4.6",
+      "4.1.4.7"
+    ],
+    "kind": "function",
+    "title": "Order total",
+    "prompt": "A café till adds up the prices of any number of items, plus any number of named extras.\n\nWrite a function `order_total(*prices, **extras)` that returns the sum of all `prices` plus the sum of all the values in `extras`.\n\nFor example, `order_total(3, 4, tip=2, packaging=1)` returns `10`. With no arguments at all it returns `0`.",
+    "starter": "def order_total(*prices, **extras):\n    # prices is a tuple, extras is a dictionary\n    pass\n",
+    "solution": "def order_total(*prices, **extras):\n    total = 0\n    for price in prices:\n        total = total + price\n    for name in extras:\n        total = total + extras[name]\n    return total\n",
+    "hints": [
+      "Start with `total = 0`, then loop over `prices` (a tuple) and add each one.",
+      "`extras` is a dictionary: loop over its keys with `for name in extras:` and add `extras[name]`.",
+      "The built-ins `sum(prices)` and `sum(extras.values())` also work."
+    ],
+    "checks": [
+      {
+        "call": "order_total(3, 4, tip=2, packaging=1)",
+        "expect": "10"
+      },
+      {
+        "call": "order_total()",
+        "expect": "0"
+      },
+      {
+        "call": "order_total(5)",
+        "expect": "5"
+      },
+      {
+        "call": "order_total(tip=2)",
+        "expect": "2"
+      },
+      {
+        "call": "order_total(1.5, 2.5, bag=0.5)",
+        "expect": "4.5"
+      }
+    ]
+  }
+]

@@ -1,0 +1,43 @@
+[
+  {
+    "id": "2.2.4-e1",
+    "objectiveId": "2.2.4",
+    "subpoints": [
+      "2.2.4.1",
+      "2.2.4.2",
+      "2.2.4.4"
+    ],
+    "kind": "function",
+    "title": "Pricey items",
+    "prompt": "A list of baskets holds prices: each basket is a list of numbers, such as `[[2, 9], [], [12]]`.\n\nWrite a function `count_pricey(baskets, limit)` that returns how many prices in all baskets are strictly greater than `limit`. Use a loop inside a loop.\n\nFor example, `count_pricey([[2, 9], [], [12]], 5)` returns `2`.",
+    "starter": "def count_pricey(baskets, limit):\n    # outer loop over baskets, inner loop over prices\n    pass\n",
+    "solution": "def count_pricey(baskets, limit):\n    count = 0\n    for basket in baskets:\n        for price in basket:\n            if price > limit:\n                count = count + 1\n    return count\n",
+    "hints": [
+      "The outer loop gives you one basket at a time; each basket is itself a list you can loop over.",
+      "Put an `if price > limit:` inside the inner loop and add 1 to a counter.",
+      "Make sure `count = 0` is set once, before both loops."
+    ],
+    "checks": [
+      {
+        "call": "count_pricey([[2, 9], [], [12]], 5)",
+        "expect": "2"
+      },
+      {
+        "call": "count_pricey([], 5)",
+        "expect": "0"
+      },
+      {
+        "call": "count_pricey([[5, 5], [5]], 5)",
+        "expect": "0"
+      },
+      {
+        "call": "count_pricey([[6, 7], [8], [1, 9, 10]], 6)",
+        "expect": "4"
+      },
+      {
+        "call": "count_pricey([[1], [2]], 0)",
+        "expect": "2"
+      }
+    ]
+  }
+]

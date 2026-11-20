@@ -7,7 +7,7 @@ import { useProgress } from '../progress/store'
 const PILLARS = [
   { to: '/learn', title: 'Learn', text: 'One lesson per syllabus objective, written for people new to Python.' },
   { to: '/practice', title: 'Check', text: 'Practice questions in five formats with explanations, and a timed mock exam.' },
-  { to: '/playground', title: 'Do', text: 'Run real Python in your browser. No installation needed.' },
+  { to: '/exercises', title: 'Do', text: 'Write small programs that are checked in your browser, or experiment in the Playground. No installation needed.' },
 ]
 
 export default function HomePage() {

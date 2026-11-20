@@ -1,0 +1,106 @@
+[
+  {
+    "id": "2.1.2-e1",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.2",
+      "2.1.2.3",
+      "2.1.2.5"
+    ],
+    "kind": "function",
+    "title": "Mark to grade",
+    "prompt": "Write a function `grade(mark)` that turns a mark from 0 to 100 into a letter:\n\n- 90 or more: `\"A\"`\n- 75 or more: `\"B\"`\n- 50 or more: `\"C\"`\n- anything lower: `\"F\"`\n\nFor example, `grade(80)` returns `\"B\"`.",
+    "starter": "def grade(mark):\n    # use if, elif and else\n    pass\n",
+    "solution": "def grade(mark):\n    if mark >= 90:\n        return \"A\"\n    elif mark >= 75:\n        return \"B\"\n    elif mark >= 50:\n        return \"C\"\n    else:\n        return \"F\"\n",
+    "hints": [
+      "Check the highest limit first. Conditions are tried in order and the first true one wins.",
+      "Use `if`, then `elif` twice, then `else` for the fallback.",
+      "If you check `mark >= 50` first, every passing mark becomes `\"C\"`."
+    ],
+    "checks": [
+      {
+        "call": "grade(100)",
+        "expect": "\"A\""
+      },
+      {
+        "call": "grade(90)",
+        "expect": "\"A\""
+      },
+      {
+        "call": "grade(89)",
+        "expect": "\"B\""
+      },
+      {
+        "call": "grade(75)",
+        "expect": "\"B\""
+      },
+      {
+        "call": "grade(74)",
+        "expect": "\"C\""
+      },
+      {
+        "call": "grade(50)",
+        "expect": "\"C\""
+      },
+      {
+        "call": "grade(49)",
+        "expect": "\"F\""
+      },
+      {
+        "call": "grade(0)",
+        "expect": "\"F\""
+      }
+    ]
+  },
+  {
+    "id": "2.1.2-e2",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.2",
+      "2.1.2.3",
+      "2.1.2.4"
+    ],
+    "kind": "io",
+    "title": "What to wear",
+    "prompt": "Read the temperature in degrees as a whole number with `input()` and `int()`, then print one word:\n\n- below 0: `Freezing`\n- below 10: `Cold`\n- below 20: `Mild`\n- otherwise: `Warm`\n\nFor example, an input of `5` prints `Cold`.",
+    "starter": "temp = int(input())\n\n",
+    "solution": "temp = int(input())\nif temp < 0:\n    print(\"Freezing\")\nelif temp < 10:\n    print(\"Cold\")\nelif temp < 20:\n    print(\"Mild\")\nelse:\n    print(\"Warm\")\n",
+    "hints": [
+      "Convert the input with `int()` before comparing it with numbers.",
+      "Start with the lowest limit: `if temp < 0`, then `elif temp < 10`, and so on.",
+      "Each limit is exclusive, so use `<` and not `<=`."
+    ],
+    "cases": [
+      {
+        "stdin": "-5",
+        "stdout": "Freezing\n"
+      },
+      {
+        "stdin": "0",
+        "stdout": "Cold\n"
+      },
+      {
+        "stdin": "9",
+        "stdout": "Cold\n"
+      },
+      {
+        "stdin": "10",
+        "stdout": "Mild\n"
+      },
+      {
+        "stdin": "19",
+        "stdout": "Mild\n"
+      },
+      {
+        "stdin": "20",
+        "stdout": "Warm\n"
+      },
+      {
+        "stdin": "31",
+        "stdout": "Warm\n"
+      }
+    ]
+  }
+]

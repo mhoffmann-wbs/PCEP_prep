@@ -1,0 +1,83 @@
+[
+  {
+    "id": "x.3-e1",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.2",
+      "x.3.3"
+    ],
+    "kind": "function",
+    "title": "Expensive item alarm",
+    "prompt": "Write a function `check_basket(prices)` that looks through a list of prices with a `for` loop. If it finds a price over 20, it prints `Expensive: ` followed by that price and stops looking. If no price is over 20, it prints `Everything is cheap`.\n\nUse `break` and a `for ... else`, so the final message comes from the `else` block.\n\nFor example, `check_basket([5, 30, 8])` prints:\n\n```\nExpensive: 30\n```\n\nand `check_basket([5, 8])` prints `Everything is cheap`.",
+    "starter": "def check_basket(prices):\n    # for ... else: break when you find a price over 20\n    pass\n",
+    "solution": "def check_basket(prices):\n    for price in prices:\n        if price > 20:\n            print('Expensive:', price)\n            break\n    else:\n        print('Everything is cheap')\n",
+    "hints": [
+      "The `else` block of a loop runs only if the loop finished without `break`.",
+      "Inside the loop, `if price > 20:` print and `break`. Put `else:` at the same indentation as `for`.",
+      "`for price in prices:` / `if price > 20:` / print + `break`, then `else:` / print the cheap message."
+    ],
+    "checks": [
+      {
+        "call": "check_basket([5, 30, 8])",
+        "prints": "Expensive: 30"
+      },
+      {
+        "call": "check_basket([5, 8])",
+        "prints": "Everything is cheap"
+      },
+      {
+        "call": "check_basket([])",
+        "prints": "Everything is cheap"
+      },
+      {
+        "call": "check_basket([25, 40])",
+        "prints": "Expensive: 25"
+      },
+      {
+        "call": "check_basket([20, 20])",
+        "prints": "Everything is cheap"
+      }
+    ]
+  },
+  {
+    "id": "x.3-e2",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.1",
+      "x.3.3",
+      "x.3.4"
+    ],
+    "kind": "function",
+    "title": "Find the book",
+    "prompt": "Write a function `find_book(shelf, title)` that returns the index of `title` in the list `shelf`, or `-1` if it is not there. Do not use `index()` or `in`: use a `while` loop with a counter, `break` when you find the title, and an `else` block on the loop for the not-found case.\n\nFor example, `find_book([\"Dune\", \"Emma\", \"Ulysses\"], \"Emma\")` returns `1`, and looking for `\"Hamlet\"` returns `-1`.",
+    "starter": "def find_book(shelf, title):\n    # while i < len(shelf): break when found; else: return -1\n    pass\n",
+    "solution": "def find_book(shelf, title):\n    i = 0\n    while i < len(shelf):\n        if shelf[i] == title:\n            break\n        i += 1\n    else:\n        return -1\n    return i\n",
+    "hints": [
+      "Keep a counter `i` starting at 0 and move it forward inside the loop.",
+      "The loop's `else` runs when the condition becomes false without a `break`: that is exactly the 'not found' case.",
+      "`while i < len(shelf):` / `if shelf[i] == title: break` / `i += 1`, then `else: return -1`, and after the loop `return i`."
+    ],
+    "checks": [
+      {
+        "call": "find_book([\"Dune\", \"Emma\", \"Ulysses\"], \"Emma\")",
+        "expect": "1"
+      },
+      {
+        "call": "find_book([\"Dune\", \"Emma\", \"Ulysses\"], \"Hamlet\")",
+        "expect": "-1"
+      },
+      {
+        "call": "find_book([], \"Dune\")",
+        "expect": "-1"
+      },
+      {
+        "call": "find_book([\"Dune\", \"Emma\", \"Dune\"], \"Dune\")",
+        "expect": "0"
+      },
+      {
+        "call": "find_book([\"Dune\", \"Emma\", \"Ulysses\"], \"Ulysses\")",
+        "expect": "2"
+      }
+    ]
+  }
+]

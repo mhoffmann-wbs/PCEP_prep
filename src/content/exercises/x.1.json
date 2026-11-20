@@ -1,0 +1,37 @@
+[
+  {
+    "id": "x.1-e1",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.2"
+    ],
+    "kind": "function",
+    "title": "Number badges",
+    "prompt": "A locker room labels each locker with its number in three number systems.\n\nWrite a function `badges(n)` that returns a list of three strings: `n` in binary, in octal and in hexadecimal, in that order. Use the built-in conversion functions.\n\nFor example, `badges(10)` returns `['0b1010', '0o12', '0xa']`.",
+    "starter": "def badges(n):\n    # return [binary, octal, hexadecimal] strings\n    pass\n",
+    "solution": "def badges(n):\n    return [bin(n), oct(n), hex(n)]\n",
+    "hints": [
+      "Python has one built-in function for each number system, named after it.",
+      "`bin()`, `oct()` and `hex()` each take an integer and return a string.",
+      "`return [bin(n), oct(n), hex(n)]`"
+    ],
+    "checks": [
+      {
+        "call": "badges(10)",
+        "expect": "['0b1010', '0o12', '0xa']"
+      },
+      {
+        "call": "badges(0)",
+        "expect": "['0b0', '0o0', '0x0']"
+      },
+      {
+        "call": "badges(255)",
+        "expect": "['0b11111111', '0o377', '0xff']"
+      },
+      {
+        "call": "badges(64)",
+        "expect": "['0b1000000', '0o100', '0x40']"
+      }
+    ]
+  }
+]

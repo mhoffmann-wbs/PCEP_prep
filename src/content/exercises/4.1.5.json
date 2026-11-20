@@ -1,0 +1,39 @@
+[
+  {
+    "id": "4.1.5-e1",
+    "objectiveId": "4.1.5",
+    "subpoints": [
+      "4.1.5.1",
+      "4.1.5.2",
+      "4.1.5.4"
+    ],
+    "kind": "function",
+    "title": "Pages read",
+    "prompt": "A reading tracker keeps a running total in the global variable `pages_read`, which starts at `0`.\n\nWrite a function `log_pages(count)` that adds `count` to the global `pages_read`. The function changes the global; it returns nothing.\n\nThe checks run in order and the total carries over from one check to the next, so don't change the starting value.",
+    "starter": "pages_read = 0\n\ndef log_pages(count):\n    # add count to the global pages_read\n    pass\n",
+    "solution": "pages_read = 0\n\ndef log_pages(count):\n    global pages_read\n    pages_read = pages_read + count\n",
+    "hints": [
+      "Changing a global variable from inside a function needs a declaration at the top of the function.",
+      "Start the function body with `global pages_read`.",
+      "`global pages_read` then `pages_read = pages_read + count`."
+    ],
+    "checks": [
+      {
+        "call": "(log_pages(10), pages_read)[-1]",
+        "expect": "10"
+      },
+      {
+        "call": "(log_pages(5), pages_read)[-1]",
+        "expect": "15"
+      },
+      {
+        "call": "log_pages(0)",
+        "expect": "None"
+      },
+      {
+        "call": "pages_read",
+        "expect": "15"
+      }
+    ]
+  }
+]

@@ -128,7 +128,7 @@ One MDX lesson per objective, so 35 in total, at `lessons/<objectiveId>.mdx`. Th
 
 **Error explainer**: maps the exception type (and common message patterns) to a beginner explanation and a link to lesson 4.2.1. Covers `SyntaxError`, `IndentationError`, `NameError`, `TypeError`, `ValueError`, `IndexError`, `KeyError`, `ZeroDivisionError`, `AttributeError`, `FileNotFoundError` and `UnboundLocalError`.
 
-**Exercises**: `exercises/<objectiveId>-<n>.json` (or MDX): prompt, starter code, hidden tests, hints (revealed one at a time) and a solution (revealed after an attempt or on request). Tests run in the same worker:
+**Exercises**: `exercises/<objectiveId>.json` (an array per objective, ids `<objectiveId>-e<n>`): prompt, starter code, checks, hints (revealed one at a time) and a solution (shown on request). Checks run in the same worker and the learner sees which ones failed and why:
 - `kind: "function"`: Python test code calls the learner's function, e.g. `assert average([2, 4]) == 3`.
 - `kind: "io"`: given stdin, compare stdout (normalised).
 
@@ -162,7 +162,7 @@ Tooling:
 2. **Quiz engine** (done 2026-11-20): render and grade all 5 kinds; practice (Run unlocked after Check); mock exam; results by section and objective.
 3. **Lessons** (done 2026-11-20, including the 6 extras): 35 lessons, heaviest sections first (3, 2, 4, 1, 5), with `<Runnable>` and predict-the-output blocks.
 4. **Question bank** (done 2026-11-20: 364 items, plus the 30-02 mock and the exam-track switch): about 310 core items plus about 54 for the 30-02 extras, written in parallel per objective file. Then the 30-02 mock exam and the exam-track switch.
-5. **Exercises and Playground**: about 60 exercises.
+5. **Exercises and Playground** (done 2026-11-20: 58 exercises, CodeMirror editor, Playground permalinks): about 60 exercises.
 6. **Guides and polish**: cheat sheet, exam-day guide, mobile pass, accessibility of ordering items.
 7. **Later**: step-through visualizer (`sys.settrace` in Pyodide records line, locals and stdout for each step), flashcards with spaced review, and interactive `input()` through cross-origin isolation.
 

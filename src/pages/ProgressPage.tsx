@@ -4,6 +4,7 @@ import { ExamSettings } from '../components/ExamSettings'
 import { Inline } from '../components/Inline'
 import { EXAM_PROFILES, OBJECTIVE_BY_ID } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
+import { EXERCISES } from '../content/exercises'
 import { objectiveReadiness, weightedReadiness } from '../progress/readiness'
 import { exportProgress, importProgress, useProgress } from '../progress/store'
 import { objectiveWeights, practiceObjectives, practicePool } from '../quiz/pools'
@@ -35,11 +36,16 @@ export default function ProgressPage() {
         </p>
       </section>
 
-      <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         <Stat label="Weighted readiness" value={pct(weightedReadiness(rows, weights))} />
         <Stat label="Last mock (estimate)" value={lastMock ? `${lastMock.percent}%` : '–'} hint={`pass at ${profile.passPercent}%`} />
         <Stat label="Questions answered" value={String(Object.keys(progress.items).length)} hint={`of ${pool.length}`} />
         <Stat label="Mocks taken" value={String(progress.mockResults.length)} />
+        <Stat
+          label="Exercises solved"
+          value={String(EXERCISES.filter((e) => progress.exercises[e.id]?.solvedAt).length)}
+          hint={`of ${EXERCISES.length}`}
+        />
       </section>
 
       <section className="rounded-lg border border-slate-200 bg-white p-4">

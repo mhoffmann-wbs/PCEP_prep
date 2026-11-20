@@ -1,0 +1,44 @@
+[
+  {
+    "id": "2.2.2-e1",
+    "objectiveId": "2.2.2",
+    "subpoints": [
+      "2.2.2.1",
+      "2.2.2.2",
+      "2.2.2.3",
+      "2.2.2.4"
+    ],
+    "kind": "function",
+    "title": "Count the vowels",
+    "prompt": "Write a function `count_vowels(text)` that returns how many vowels (`a e i o u`, upper or lower case) the string `text` contains. Loop over the characters with `for`.\n\nFor example, `count_vowels(\"Banana\")` returns `3`.",
+    "starter": "def count_vowels(text):\n    # loop over the characters and count the vowels\n    pass\n",
+    "solution": "def count_vowels(text):\n    count = 0\n    for ch in text:\n        if ch in \"aeiouAEIOU\":\n            count = count + 1\n    return count\n",
+    "hints": [
+      "A `for` loop over a string gives one character at a time.",
+      "Start `count = 0` before the loop and add 1 for each vowel.",
+      "`ch in \"aeiouAEIOU\"` is True when `ch` is a vowel."
+    ],
+    "checks": [
+      {
+        "call": "count_vowels(\"Banana\")",
+        "expect": "3"
+      },
+      {
+        "call": "count_vowels(\"\")",
+        "expect": "0"
+      },
+      {
+        "call": "count_vowels(\"rhythm\")",
+        "expect": "0"
+      },
+      {
+        "call": "count_vowels(\"AEIOU\")",
+        "expect": "5"
+      },
+      {
+        "call": "count_vowels(\"Python is fun\")",
+        "expect": "3"
+      }
+    ]
+  }
+]

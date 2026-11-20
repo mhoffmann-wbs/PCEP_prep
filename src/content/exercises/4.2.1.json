@@ -1,0 +1,26 @@
+[
+  {
+    "id": "4.2.1-e1",
+    "objectiveId": "4.2.1",
+    "subpoints": ["4.2.1.2", "4.2.1.3", "4.2.1.4", "4.2.1.5"],
+    "kind": "function",
+    "title": "Cause each error on purpose",
+    "prompt": "Knowing which operation raises which exception is half the battle when reading tracebacks. Here you cause each one yourself.\n\nWrite a function `trigger(kind)` that does one ordinary operation that makes Python raise the matching built-in exception:\n\n- `\"value\"` raises `ValueError`\n- `\"type\"` raises `TypeError`\n- `\"zero\"` raises `ZeroDivisionError`\n- `\"index\"` raises `IndexError`\n- `\"key\"` raises `KeyError`\n- `\"name\"` raises `NameError`\n\nFor any other `kind`, return the string `\"no error\"`. Let Python raise the exception from a real mistake (like turning `\"abc\"` into a number); don't write `raise` yourself.",
+    "starter": "def trigger(kind):\n    if kind == \"value\":\n        pass  # an operation that raises ValueError\n    # add a branch for each of the other kinds\n    return \"no error\"\n",
+    "solution": "def trigger(kind):\n    if kind == \"value\":\n        int(\"abc\")\n    elif kind == \"type\":\n        \"cups: \" + 3\n    elif kind == \"zero\":\n        10 / 0\n    elif kind == \"index\":\n        [\"tea\", \"milk\"][5]\n    elif kind == \"key\":\n        {\"tea\": 2}[\"coffee\"]\n    elif kind == \"name\":\n        print(sugar)\n    return \"no error\"\n",
+    "hints": [
+      "Each branch needs only one line: an operation that goes wrong. Think of what you've seen fail in the lessons: converting text, mixing types, dividing, looking things up.",
+      "`int(\"abc\")` raises `ValueError`, `\"a\" + 1` raises `TypeError`, and using a variable that was never assigned raises `NameError`.",
+      "An index past the end of a list raises `IndexError`; a missing key in a dictionary raises `KeyError`; dividing by `0` raises `ZeroDivisionError`."
+    ],
+    "checks": [
+      { "call": "trigger(\"value\")", "raises": "ValueError" },
+      { "call": "trigger(\"type\")", "raises": "TypeError" },
+      { "call": "trigger(\"zero\")", "raises": "ZeroDivisionError" },
+      { "call": "trigger(\"index\")", "raises": "IndexError" },
+      { "call": "trigger(\"key\")", "raises": "KeyError" },
+      { "call": "trigger(\"name\")", "raises": "NameError" },
+      { "call": "trigger(\"calm\")", "expect": "\"no error\"" }
+    ]
+  }
+]

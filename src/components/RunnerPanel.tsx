@@ -15,12 +15,14 @@ interface Props {
   autoRun?: boolean
   onCodeChange?: (code: string) => void
   minLines?: number
+  /** Show the box for input() lines. */
+  showStdin?: boolean
   /** Extra buttons next to Run, e.g. an exercise's Check. */
   renderActions?: (code: string) => ReactNode
 }
 
 /** Code box, input box, Run button and output with error explanations. */
-export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRun = false, onCodeChange, minLines = 10, renderActions }: Props) {
+export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRun = false, onCodeChange, minLines = 10, showStdin = true, renderActions }: Props) {
   const [code, setCode] = useState(initialCode)
   const [stdin, setStdin] = useState(initialStdin)
   const { status, output, outcome, loadError, run } = usePythonRunner()
@@ -50,15 +52,17 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRu
           <CodeEditor value={code} onChange={edit} onRun={start} label="Code" minLines={minLines} />
         </div>
       </div>
-      <label className="block">
-        <span className="text-sm font-medium text-slate-700">Input (one line per input() call)</span>
-        <textarea
-          className="mt-1 block h-16 w-full rounded border border-slate-300 bg-white p-2 font-mono text-sm"
-          value={stdin}
-          spellCheck={false}
-          onChange={(e) => setStdin(e.target.value)}
-        />
-      </label>
+      {showStdin && (
+        <label className="block">
+          <span className="text-sm font-medium text-slate-700">Input (one line per input() call)</span>
+          <textarea
+            className="mt-1 block h-16 w-full rounded border border-slate-300 bg-white p-2 font-mono text-sm"
+            value={stdin}
+            spellCheck={false}
+            onChange={(e) => setStdin(e.target.value)}
+          />
+        </label>
+      )}
       <div className="flex items-center gap-3">
         <button
           type="button"

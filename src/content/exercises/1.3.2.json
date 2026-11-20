@@ -1,0 +1,43 @@
+[
+  {
+    "id": "1.3.2-e1",
+    "objectiveId": "1.3.2",
+    "subpoints": [
+      "1.3.2.1",
+      "1.3.2.3",
+      "1.3.2.5"
+    ],
+    "kind": "function",
+    "title": "Trip cost",
+    "prompt": "Write a function `trip_total(nights, price_per_night, cleaning_fee)` that returns the total price of a stay: the nights times the price per night, plus the one-off cleaning fee.\n\nStore the room cost in a variable with a clear name (lowercase with underscores, as PEP 8 recommends) before returning the total.\n\nFor example, `trip_total(3, 80, 25)` returns `265`.",
+    "starter": "def trip_total(nights, price_per_night, cleaning_fee):\n    # store the room cost in a variable, then add the fee\n    pass\n",
+    "solution": "def trip_total(nights, price_per_night, cleaning_fee):\n    room_cost = nights * price_per_night\n    total = room_cost + cleaning_fee\n    return total\n",
+    "hints": [
+      "Work in two steps: first the cost of the nights, then the total.",
+      "`room_cost = nights * price_per_night`",
+      "`total = room_cost + cleaning_fee`, then `return total`."
+    ],
+    "checks": [
+      {
+        "call": "trip_total(3, 80, 25)",
+        "expect": "265"
+      },
+      {
+        "call": "trip_total(1, 100, 0)",
+        "expect": "100"
+      },
+      {
+        "call": "trip_total(7, 45, 30)",
+        "expect": "345"
+      },
+      {
+        "call": "trip_total(0, 90, 20)",
+        "expect": "20"
+      },
+      {
+        "call": "trip_total(2, 59.5, 10)",
+        "expect": "129.0"
+      }
+    ]
+  }
+]

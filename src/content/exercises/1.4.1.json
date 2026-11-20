@@ -1,0 +1,87 @@
+[
+  {
+    "id": "1.4.1-e1",
+    "objectiveId": "1.4.1",
+    "subpoints": [
+      "1.4.1.1",
+      "1.4.1.5"
+    ],
+    "kind": "function",
+    "title": "Growing colony",
+    "prompt": "A colony of bacteria doubles every hour. Write a function `bacteria(start, hours)` that returns how many bacteria there are after `hours` hours, starting from `start`. Use the `**` operator.\n\nFor example, `bacteria(5, 3)` returns `40`. After 0 hours the number hasn't changed.",
+    "starter": "def bacteria(start, hours):\n    # start doubles `hours` times\n    pass\n",
+    "solution": "def bacteria(start, hours):\n    return start * 2 ** hours\n",
+    "hints": [
+      "Doubling once multiplies by 2, doubling `hours` times multiplies by 2 to the power `hours`.",
+      "In `start * 2 ** hours` the power is calculated first, which is what you want.",
+      "`return start * 2 ** hours`"
+    ],
+    "checks": [
+      {
+        "call": "bacteria(5, 3)",
+        "expect": "40"
+      },
+      {
+        "call": "bacteria(1, 0)",
+        "expect": "1"
+      },
+      {
+        "call": "bacteria(3, 1)",
+        "expect": "6"
+      },
+      {
+        "call": "bacteria(10, 4)",
+        "expect": "160"
+      },
+      {
+        "call": "bacteria(2, 10)",
+        "expect": "2048"
+      }
+    ]
+  },
+  {
+    "id": "1.4.1-e2",
+    "objectiveId": "1.4.1",
+    "subpoints": [
+      "1.4.1.6",
+      "1.4.1.7",
+      "1.4.1.8"
+    ],
+    "kind": "function",
+    "title": "Ride check",
+    "prompt": "A fairground ride lets you on if you are at least 120 cm tall, and also either at least 8 years old or with an adult.\n\nWrite a function `can_ride(height_cm, age, with_adult)` that returns `True` or `False`. `with_adult` is already a Boolean.\n\nFor example, `can_ride(130, 6, True)` returns `True`, and `can_ride(130, 6, False)` returns `False`.",
+    "starter": "def can_ride(height_cm, age, with_adult):\n    # combine the conditions with and / or\n    pass\n",
+    "solution": "def can_ride(height_cm, age, with_adult):\n    return height_cm >= 120 and (age >= 8 or with_adult)\n",
+    "hints": [
+      "Write the rule as one Boolean expression. Each condition on its own is a comparison like `height_cm >= 120`.",
+      "The age and adult conditions are alternatives (`or`); the height condition is required as well (`and`). Brackets show which part belongs together.",
+      "`return height_cm >= 120 and (age >= 8 or with_adult)`"
+    ],
+    "checks": [
+      {
+        "call": "can_ride(130, 6, True)",
+        "expect": "True"
+      },
+      {
+        "call": "can_ride(130, 6, False)",
+        "expect": "False"
+      },
+      {
+        "call": "can_ride(119, 10, True)",
+        "expect": "False"
+      },
+      {
+        "call": "can_ride(120, 8, False)",
+        "expect": "True"
+      },
+      {
+        "call": "can_ride(150, 7, False)",
+        "expect": "False"
+      },
+      {
+        "call": "can_ride(120, 5, True)",
+        "expect": "True"
+      }
+    ]
+  }
+]

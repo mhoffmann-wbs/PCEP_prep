@@ -1,0 +1,71 @@
+[
+  {
+    "id": "3.5.2-e1",
+    "objectiveId": "3.5.2",
+    "subpoints": [
+      "3.5.2.1",
+      "3.5.2.3",
+      "3.5.2.4"
+    ],
+    "kind": "function",
+    "title": "Tidy a name",
+    "prompt": "A form lets people type their name carelessly, with extra spaces and odd capitals. Write a function `tidy_name(raw)` that returns the name with no spaces at the start or end, exactly one space between words, and each word starting with a capital letter followed by small letters.\n\nFor example, `tidy_name(\"  aNNa   maRIa \")` returns `\"Anna Maria\"`.",
+    "starter": "def tidy_name(raw):\n    # split into words, join them with single spaces, fix the capitals\n    pass\n",
+    "solution": "def tidy_name(raw):\n    words = raw.split()\n    return \" \".join(words).title()\n",
+    "hints": [
+      "`split()` with no argument ignores extra whitespace and returns a list of words.",
+      "`\" \".join(words)` glues the words back together with one space.",
+      "`title()` fixes the capitals. Return `\" \".join(raw.split()).title()`."
+    ],
+    "checks": [
+      {
+        "call": "tidy_name(\"  aNNa   maRIa \")",
+        "expect": "\"Anna Maria\""
+      },
+      {
+        "call": "tidy_name(\"bo\")",
+        "expect": "\"Bo\""
+      },
+      {
+        "call": "tidy_name(\"   \")",
+        "expect": "\"\""
+      },
+      {
+        "call": "tidy_name(\"LEO  van   DIJK\")",
+        "expect": "\"Leo Van Dijk\""
+      }
+    ]
+  },
+  {
+    "id": "3.5.2-e2",
+    "objectiveId": "3.5.2",
+    "subpoints": [
+      "3.5.2.2",
+      "3.5.2.5"
+    ],
+    "kind": "io",
+    "title": "Mail domain",
+    "prompt": "Read one email address from input. It may have spaces around it, so remove them first.\n\nIf the address contains an `@`, print everything after the `@`. If not, print `invalid`.\n\nFor example, the input `  mia@example.com ` gives `example.com`.",
+    "starter": "address = input()\n# remove the spaces, find the @, print the part after it\n",
+    "solution": "address = input().strip()\nat = address.find(\"@\")\nif at == -1:\n    print(\"invalid\")\nelse:\n    print(address[at + 1:])\n",
+    "hints": [
+      "`strip()` removes spaces at both ends of a string and returns a new string, so store it.",
+      "`find(\"@\")` returns the index of the `@`, or `-1` when it is missing.",
+      "The domain starts one place after the `@`: `address[at + 1:]`."
+    ],
+    "cases": [
+      {
+        "stdin": "  mia@example.com \n",
+        "stdout": "example.com\n"
+      },
+      {
+        "stdin": "nobody.example.com\n",
+        "stdout": "invalid\n"
+      },
+      {
+        "stdin": "x@y.net\n",
+        "stdout": "y.net\n"
+      }
+    ]
+  }
+]

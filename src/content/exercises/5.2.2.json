@@ -1,0 +1,43 @@
+[
+  {
+    "id": "5.2.2-e1",
+    "objectiveId": "5.2.2",
+    "subpoints": [
+      "5.2.2.1",
+      "5.2.2.2",
+      "5.2.2.5"
+    ],
+    "kind": "function",
+    "title": "Smallest square room",
+    "prompt": "Floor tiles are 1 m by 1 m. Write a function `square_side(area)` that returns the side, in whole metres, of the smallest square room that can hold a floor of `area` square metres. Use `math.sqrt()` and `math.ceil()`.\n\nFor example, `square_side(30)` returns `6`, because 5 m is too small (25 m2) and 6 m is enough (36 m2). The result must be an integer.",
+    "starter": "import math\n\ndef square_side(area):\n    # square root, rounded up\n    pass\n",
+    "solution": "import math\n\ndef square_side(area):\n    return math.ceil(math.sqrt(area))\n",
+    "hints": [
+      "The side of a square with area `a` is the square root of `a`, but a fraction of a metre isn't enough, so round up.",
+      "`math.sqrt` gives a float; `math.ceil` rounds up and returns an int.",
+      "`return math.ceil(math.sqrt(area))`"
+    ],
+    "checks": [
+      {
+        "call": "square_side(30)",
+        "expect": "6"
+      },
+      {
+        "call": "square_side(36)",
+        "expect": "6"
+      },
+      {
+        "call": "square_side(37)",
+        "expect": "7"
+      },
+      {
+        "call": "square_side(1)",
+        "expect": "1"
+      },
+      {
+        "call": "square_side(50)",
+        "expect": "8"
+      }
+    ]
+  }
+]

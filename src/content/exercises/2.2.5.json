@@ -1,0 +1,80 @@
+[
+  {
+    "id": "2.2.5-e1",
+    "objectiveId": "2.2.5",
+    "subpoints": [
+      "2.2.5.1",
+      "2.2.5.2",
+      "2.2.5.4"
+    ],
+    "kind": "function",
+    "title": "Sum until stop",
+    "prompt": "Write a function `sum_until_stop(numbers)` that adds up the numbers in a list with these rules:\n\n- a negative number is skipped (use `continue`),\n- a `0` ends the loop at once (use `break`), and nothing after it counts.\n\nFor example, `sum_until_stop([4, -2, 6, 0, 9])` returns `10`.",
+    "starter": "def sum_until_stop(numbers):\n    total = 0\n    # loop, using continue and break\n    return total\n",
+    "solution": "def sum_until_stop(numbers):\n    total = 0\n    for n in numbers:\n        if n < 0:\n            continue\n        if n == 0:\n            break\n        total = total + n\n    return total\n",
+    "hints": [
+      "Test for the negative number and the zero inside the loop, before adding.",
+      "`continue` jumps to the next number; `break` leaves the loop completely.",
+      "`if n < 0: continue`, then `if n == 0: break`, then `total = total + n`."
+    ],
+    "checks": [
+      {
+        "call": "sum_until_stop([4, -2, 6, 0, 9])",
+        "expect": "10"
+      },
+      {
+        "call": "sum_until_stop([])",
+        "expect": "0"
+      },
+      {
+        "call": "sum_until_stop([0, 5])",
+        "expect": "0"
+      },
+      {
+        "call": "sum_until_stop([-1, -2])",
+        "expect": "0"
+      },
+      {
+        "call": "sum_until_stop([3, 4, 5])",
+        "expect": "12"
+      }
+    ]
+  },
+  {
+    "id": "2.2.5-e2",
+    "objectiveId": "2.2.5",
+    "subpoints": [
+      "2.2.5.1",
+      "2.2.5.2",
+      "2.2.5.4"
+    ],
+    "kind": "io",
+    "title": "Shouting list",
+    "prompt": "Read words with `input()` until the word `quit`. For every word, print it in upper case with `.upper()`, except:\n\n- a word starting with `#` is a comment and is skipped,\n- `quit` ends the program and is not printed.\n\nFor example, the input `hi`, `#note`, `bye`, `quit` prints `HI` and `BYE` on two lines.",
+    "starter": "while True:\n    word = input()\n    # skip comments, stop at quit, otherwise print in upper case\n",
+    "solution": "while True:\n    word = input()\n    if word == \"quit\":\n        break\n    if word.startswith(\"#\"):\n        continue\n    print(word.upper())\n",
+    "hints": [
+      "`while True:` repeats forever, so you must leave with `break`.",
+      "Check `quit` first with `break`, then check `#` with `continue`.",
+      "`word.startswith(\"#\")` is True for comment words."
+    ],
+    "cases": [
+      {
+        "stdin": "hi\n#note\nbye\nquit\n",
+        "stdout": "HI\nBYE\n"
+      },
+      {
+        "stdin": "quit\n",
+        "stdout": ""
+      },
+      {
+        "stdin": "cat\nquit\ndog\n",
+        "stdout": "CAT\n"
+      },
+      {
+        "stdin": "#a\n#b\nx\nquit\n",
+        "stdout": "X\n"
+      }
+    ]
+  }
+]

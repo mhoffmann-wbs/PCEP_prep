@@ -1,0 +1,45 @@
+[
+  {
+    "id": "x.2-e1",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.1"
+    ],
+    "kind": "function",
+    "title": "Washing machine settings",
+    "prompt": "A washing machine stores its options as bits in one integer: 1 is quick wash, 2 is extra rinse, 4 is eco mode.\n\nWrite a function `update(settings, turn_on, turn_off)` that returns `settings` with the bits in `turn_on` switched on and the bits in `turn_off` switched off. Use the bitwise operators `|`, `&` and `~`, not `+` or `-`.\n\nFor example, `update(1, 4, 0)` returns `5`, and `update(7, 0, 2)` returns `5`.",
+    "starter": "def update(settings, turn_on, turn_off):\n    # switch bits on with |, switch bits off with & and ~\n    pass\n",
+    "solution": "def update(settings, turn_on, turn_off):\n    settings = settings | turn_on\n    return settings & ~turn_off\n",
+    "hints": [
+      "Two different operations: first switch bits on, then switch bits off.",
+      "`|` sets bits. To clear bits, combine `&` with `~turn_off`, which has zeros exactly where you want to clear.",
+      "`return (settings | turn_on) & ~turn_off`"
+    ],
+    "checks": [
+      {
+        "call": "update(1, 4, 0)",
+        "expect": "5"
+      },
+      {
+        "call": "update(7, 0, 2)",
+        "expect": "5"
+      },
+      {
+        "call": "update(5, 2, 4)",
+        "expect": "3"
+      },
+      {
+        "call": "update(5, 0, 0)",
+        "expect": "5"
+      },
+      {
+        "call": "update(0, 0, 7)",
+        "expect": "0"
+      },
+      {
+        "call": "update(3, 3, 3)",
+        "expect": "0"
+      }
+    ]
+  }
+]

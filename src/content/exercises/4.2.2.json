@@ -1,0 +1,77 @@
+[
+  {
+    "id": "4.2.2-e1",
+    "objectiveId": "4.2.2",
+    "subpoints": [
+      "4.2.2.1",
+      "4.2.2.2",
+      "4.2.2.3",
+      "4.2.2.4"
+    ],
+    "kind": "function",
+    "title": "Pizza sharing",
+    "prompt": "A pizza has some slices and some friends want to share them. Both numbers arrive as text.\n\nWrite a function `share(slices_text, friends_text)` that converts both with `int()` and returns `slices // friends` (whole slices each).\n\n- If either text isn't a whole number, return the text `\"invalid\"`.\n- If the number of friends is `0`, return the text `\"nobody\"`.\n\nFor example, `share(\"12\", \"4\")` returns `3`.",
+    "starter": "def share(slices_text, friends_text):\n    # use try with two except branches\n    pass\n",
+    "solution": "def share(slices_text, friends_text):\n    try:\n        slices = int(slices_text)\n        friends = int(friends_text)\n        return slices // friends\n    except ValueError:\n        return \"invalid\"\n    except ZeroDivisionError:\n        return \"nobody\"\n",
+    "hints": [
+      "Put the conversions and the division in a `try` block.",
+      "`int(\"x\")` raises `ValueError`; dividing by zero raises `ZeroDivisionError`. Give each its own `except` branch.",
+      "`except ValueError:` returns `\"invalid\"`, and `except ZeroDivisionError:` returns `\"nobody\"`."
+    ],
+    "checks": [
+      {
+        "call": "share(\"12\", \"4\")",
+        "expect": "3"
+      },
+      {
+        "call": "share(\"7\", \"2\")",
+        "expect": "3"
+      },
+      {
+        "call": "share(\"12\", \"0\")",
+        "expect": "\"nobody\""
+      },
+      {
+        "call": "share(\"twelve\", \"4\")",
+        "expect": "\"invalid\""
+      },
+      {
+        "call": "share(\"12\", \"x\")",
+        "expect": "\"invalid\""
+      }
+    ]
+  },
+  {
+    "id": "4.2.2-e2",
+    "objectiveId": "4.2.2",
+    "subpoints": [
+      "4.2.2.1",
+      "4.2.2.2",
+      "4.2.2.4"
+    ],
+    "kind": "io",
+    "title": "Ask until it is a number",
+    "prompt": "A booking form asks for the number of guests and must not crash on a typo.\n\nWrite a program that reads a line with `input()` and converts it with `int()`. While the conversion fails, print `Not a number, try again.` and read another line. When a number is accepted, print `Booked for` followed by the number, for example `Booked for 4`.\n\nFor example, if the user types `four` and then `4`, the program prints:\n\n```\nNot a number, try again.\nBooked for 4\n```",
+    "starter": "# keep asking until int() works\n",
+    "solution": "while True:\n    try:\n        guests = int(input(\"Guests: \"))\n        break\n    except ValueError:\n        print(\"Not a number, try again.\")\nprint(\"Booked for\", guests)\n",
+    "hints": [
+      "Use `while True:` with a `try` inside, and leave the loop with `break` once the conversion works.",
+      "Put `guests = int(input())` and `break` in the `try` block; print the message in `except ValueError:`.",
+      "After the loop, `print(\"Booked for\", guests)`."
+    ],
+    "cases": [
+      {
+        "stdin": "4\n",
+        "stdout": "Booked for 4\n"
+      },
+      {
+        "stdin": "four\n4\n",
+        "stdout": "Not a number, try again.\nBooked for 4\n"
+      },
+      {
+        "stdin": "a\n2.5\n\n6\n",
+        "stdout": "Not a number, try again.\nNot a number, try again.\nNot a number, try again.\nBooked for 6\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "5.2.3-e1",
+    "objectiveId": "5.2.3",
+    "subpoints": [
+      "5.2.3.1",
+      "5.2.3.2",
+      "5.2.3.3",
+      "5.2.3.4",
+      "5.2.3.5",
+      "5.2.3.6"
+    ],
+    "kind": "io",
+    "title": "Dinner planner",
+    "prompt": "Plan some dinners with a seeded generator, so the same seed always gives the same plan.\n\nRead a whole number from `input()` and use it as the seed. Then, in exactly this order:\n\n1. Pick tonight's dinner with `random.choice(dinners)` and print `Tonight: ` followed by the dinner.\n2. Pick three different dinners for the week with `random.sample(dinners, 3)` and print `Week: ` followed by the list.\n\nBecause the result depends on the exact calls, make no other `random` calls. With the input `7` the program prints:\n\n```\nTonight: curry\nWeek: ['tacos', 'soup', 'pasta']\n```",
+    "starter": "import random\n\ndinners = [\"pasta\", \"tacos\", \"curry\", \"soup\", \"pizza\", \"salad\"]\n\n# read the seed and call random.seed() with it\n\n# print tonight's dinner (random.choice), then the week (random.sample)\n",
+    "solution": "import random\n\ndinners = [\"pasta\", \"tacos\", \"curry\", \"soup\", \"pizza\", \"salad\"]\n\nseed = int(input())\nrandom.seed(seed)\n\nprint(\"Tonight:\", random.choice(dinners))\nprint(\"Week:\", random.sample(dinners, 3))\n",
+    "hints": [
+      "`input()` gives a string; convert it with `int()` before passing it to `random.seed()`.",
+      "Seed first, then call `random.choice(dinners)`, then `random.sample(dinners, 3)`. The order matters.",
+      "`print(\"Week:\", random.sample(dinners, 3))` prints the list as it is."
+    ],
+    "cases": [
+      {
+        "stdin": "7\n",
+        "stdout": "Tonight: curry\nWeek: ['tacos', 'soup', 'pasta']\n"
+      },
+      {
+        "stdin": "1\n",
+        "stdout": "Tonight: tacos\nWeek: ['pizza', 'pasta', 'curry']\n"
+      },
+      {
+        "stdin": "42\n",
+        "stdout": "Tonight: salad\nWeek: ['pasta', 'salad', 'curry']\n"
+      }
+    ]
+  }
+]

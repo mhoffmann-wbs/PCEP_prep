@@ -1,0 +1,82 @@
+[
+  {
+    "id": "x.5-e1",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.1",
+      "x.5.2"
+    ],
+    "kind": "function",
+    "title": "Add up the digits",
+    "prompt": "Write a recursive function `digit_sum(n)` that returns the sum of the digits of a whole number `n` (0 or more). The function must call itself.\n\nFor example, `digit_sum(305)` returns `8`, and `digit_sum(7)` returns `7`.\n\nHint for the idea: `n % 10` is the last digit and `n // 10` is the number without it.",
+    "starter": "def digit_sum(n):\n    # base case first, then call digit_sum on a smaller number\n    pass\n",
+    "solution": "def digit_sum(n):\n    if n < 10:\n        return n\n    return n % 10 + digit_sum(n // 10)\n",
+    "hints": [
+      "What is the answer for a number with only one digit? That is your base case.",
+      "For bigger numbers: last digit plus the digit sum of everything before it.",
+      "`if n < 10: return n` then `return n % 10 + digit_sum(n // 10)`"
+    ],
+    "checks": [
+      {
+        "call": "digit_sum(305)",
+        "expect": "8"
+      },
+      {
+        "call": "digit_sum(7)",
+        "expect": "7"
+      },
+      {
+        "call": "digit_sum(0)",
+        "expect": "0"
+      },
+      {
+        "call": "digit_sum(1234)",
+        "expect": "10"
+      },
+      {
+        "call": "digit_sum(9990)",
+        "expect": "27"
+      }
+    ]
+  },
+  {
+    "id": "x.5-e2",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.4",
+      "x.5.5"
+    ],
+    "kind": "function",
+    "title": "Doubling coins",
+    "prompt": "Write a generator function `doubles(start, count)` that yields `count` numbers: `start`, then twice that, then twice that again, and so on. Use `yield`, not `return` with a list.\n\nFor example, `list(doubles(3, 4))` is `[3, 6, 12, 24]`, and `list(doubles(5, 0))` is `[]`.",
+    "starter": "def doubles(start, count):\n    # yield start, then keep doubling, count values in all\n    pass\n",
+    "solution": "def doubles(start, count):\n    value = start\n    for _ in range(count):\n        yield value\n        value = value * 2\n",
+    "hints": [
+      "A generator hands out one value at a time with `yield` and remembers where it stopped.",
+      "Keep a variable `value`; repeat `count` times: yield it, then double it.",
+      "`for _ in range(count):` / `yield value` / `value = value * 2`"
+    ],
+    "checks": [
+      {
+        "call": "list(doubles(3, 4))",
+        "expect": "[3, 6, 12, 24]"
+      },
+      {
+        "call": "list(doubles(5, 0))",
+        "expect": "[]"
+      },
+      {
+        "call": "next(doubles(5, 2))",
+        "expect": "5"
+      },
+      {
+        "call": "list(doubles(1, 6))",
+        "expect": "[1, 2, 4, 8, 16, 32]"
+      },
+      {
+        "call": "type(doubles(1, 1)).__name__",
+        "expect": "'generator'"
+      }
+    ]
+  }
+]

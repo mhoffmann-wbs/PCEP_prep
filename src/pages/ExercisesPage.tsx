@@ -198,6 +198,7 @@ function ExerciseView({ exercise: ex }: { exercise: Exercise }) {
         initialCode={resets === 0 ? (stat?.code ?? ex.starter) : ex.starter}
         initialStdin={ex.kind === 'io' ? ex.cases[0]!.stdin : ''}
         files={ex.files}
+        showStdin={ex.kind === 'io'}
         onCodeChange={(code) => setExerciseCode(ex.id, code)}
         renderActions={(code) => (
           <>

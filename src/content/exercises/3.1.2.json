@@ -1,0 +1,76 @@
+[
+  {
+    "id": "3.1.2-e1",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.3",
+      "3.1.2.4",
+      "3.1.2.7"
+    ],
+    "kind": "function",
+    "title": "Tidy the to-do list",
+    "prompt": "A to-do list is a list of task names.\n\nWrite a function `tidy(tasks, done)` that returns a new list: the tasks in alphabetical order, with the first task equal to `done` removed. If `done` is not in the list, nothing is removed. The list that was passed in must not change.\n\nFor example, `tidy([\"wash\", \"cook\", \"bake\"], \"cook\")` returns `[\"bake\", \"wash\"]`.",
+    "starter": "def tidy(tasks, done):\n    # copy the list, remove done if it is there, return the sorted result\n    pass\n",
+    "solution": "def tidy(tasks, done):\n    left = tasks[:]\n    if done in left:\n        left.remove(done)\n    return sorted(left)\n",
+    "hints": [
+      "`remove()` raises an error when the item is missing, so test with `in` first. Work on a copy so the original stays as it was.",
+      "`sorted(x)` returns a new sorted list; `x.sort()` sorts in place and returns `None`.",
+      "`left = tasks[:]`, then `if done in left: left.remove(done)`, then `return sorted(left)`."
+    ],
+    "checks": [
+      {
+        "call": "tidy([\"wash\", \"cook\", \"bake\"], \"cook\")",
+        "expect": "[\"bake\", \"wash\"]"
+      },
+      {
+        "call": "tidy([\"wash\", \"cook\"], \"read\")",
+        "expect": "[\"cook\", \"wash\"]"
+      },
+      {
+        "call": "tidy([\"mop\", \"mop\", \"dust\"], \"mop\")",
+        "expect": "[\"dust\", \"mop\"]"
+      },
+      {
+        "call": "tidy([\"nap\"], \"nap\")",
+        "expect": "[]"
+      },
+      {
+        "call": "(lambda t: (tidy(t, \"b\"), t))([\"c\", \"b\", \"a\"])",
+        "expect": "([\"a\", \"c\"], [\"c\", \"b\", \"a\"])"
+      }
+    ]
+  },
+  {
+    "id": "3.1.2-e2",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.5",
+      "3.1.2.6",
+      "3.1.2.8"
+    ],
+    "kind": "io",
+    "title": "Price check",
+    "prompt": "A program reads a shopping receipt. The first input line is the number of items. Each following line is the price of one item, a whole number.\n\nPrint two lines: how many items cost more than 10, and the highest price. Store the prices in a list and process the list with a loop. The number of items is at least 1.\n\nFor example, with inputs `3`, `4`, `12`, `20` the output is:\n\n```\n2\n20\n```",
+    "starter": "count = int(input())\nprices = []\n# read count prices into the list\n\n# then count the prices above 10 and find the highest\n",
+    "solution": "count = int(input())\nprices = []\nfor _ in range(count):\n    prices.append(int(input()))\n\nabove = 0\nhighest = prices[0]\nfor p in prices:\n    if p > 10:\n        above += 1\n    if p > highest:\n        highest = p\nprint(above)\nprint(highest)\n",
+    "hints": [
+      "Use `for _ in range(count):` to read the prices one by one and `append()` each as an `int`.",
+      "Start `above` at 0 and `highest` at `prices[0]`, then update them inside a `for p in prices:` loop.",
+      "`if p > 10: above += 1` and `if p > highest: highest = p`."
+    ],
+    "cases": [
+      {
+        "stdin": "3\n4\n12\n20\n",
+        "stdout": "2\n20\n"
+      },
+      {
+        "stdin": "1\n7\n",
+        "stdout": "0\n7\n"
+      },
+      {
+        "stdin": "5\n11\n3\n10\n9\n10\n",
+        "stdout": "1\n11\n"
+      }
+    ]
+  }
+]

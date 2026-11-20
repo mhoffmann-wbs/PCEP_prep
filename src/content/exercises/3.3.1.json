@@ -1,0 +1,43 @@
+[
+  {
+    "id": "3.3.1-e1",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.2",
+      "3.3.1.4",
+      "3.3.1.6"
+    ],
+    "kind": "function",
+    "title": "First repeat",
+    "prompt": "A game shows player names as they join a lobby. Write a function `first_repeat(names)` that returns the first name that has already appeared earlier in the list. If every name is different, return `None`.\n\nFor example, `first_repeat([\"Ana\", \"Bo\", \"Cy\", \"Bo\", \"Ana\"])` returns `\"Bo\"`, because `\"Bo\"` is the first name to show up a second time.\n\nUse a set to remember the names you have seen.",
+    "starter": "def first_repeat(names):\n    # keep a set of names seen so far\n    pass\n",
+    "solution": "def first_repeat(names):\n    seen = set()\n    for name in names:\n        if name in seen:\n            return name\n        seen.add(name)\n    return None\n",
+    "hints": [
+      "Start with `seen = set()` (not `{}`, which is a dictionary).",
+      "Inside a loop over `names`: if the name is `in seen`, return it; otherwise `add()` it.",
+      "After the loop, `return None`."
+    ],
+    "checks": [
+      {
+        "call": "first_repeat([\"Ana\", \"Bo\", \"Cy\", \"Bo\", \"Ana\"])",
+        "expect": "\"Bo\""
+      },
+      {
+        "call": "first_repeat([\"Ana\", \"Bo\", \"Cy\"])",
+        "expect": "None"
+      },
+      {
+        "call": "first_repeat([])",
+        "expect": "None"
+      },
+      {
+        "call": "first_repeat([\"Di\", \"Di\"])",
+        "expect": "\"Di\""
+      },
+      {
+        "call": "first_repeat([\"x\", \"y\", \"x\", \"y\", \"y\"])",
+        "expect": "\"x\""
+      }
+    ]
+  }
+]

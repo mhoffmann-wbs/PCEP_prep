@@ -1,0 +1,42 @@
+[
+  {
+    "id": "5.2.1-e1",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.2",
+      "5.2.1.3"
+    ],
+    "kind": "function",
+    "title": "Circle area",
+    "prompt": "Write a function `circle_area(radius)` that returns the area of a circle, rounded to 2 decimal places. Import the `math` module at the top and use its constant `math.pi` instead of typing the number yourself.\n\nThe area is `pi * radius ** 2`. For example, `circle_area(1)` returns `3.14`.",
+    "starter": "# import the math module here\n\ndef circle_area(radius):\n    # return pi * radius ** 2, rounded to 2 decimals\n    pass\n",
+    "solution": "import math\n\ndef circle_area(radius):\n    return round(math.pi * radius ** 2, 2)\n",
+    "hints": [
+      "Put `import math` on its own line at the top.",
+      "`math.pi` is a value, not a function, so no brackets. Round with `round(value, 2)`.",
+      "`return round(math.pi * radius ** 2, 2)`"
+    ],
+    "checks": [
+      {
+        "call": "circle_area(1)",
+        "expect": "3.14"
+      },
+      {
+        "call": "circle_area(3)",
+        "expect": "28.27"
+      },
+      {
+        "call": "circle_area(5)",
+        "expect": "78.54"
+      },
+      {
+        "call": "circle_area(0)",
+        "expect": "0.0"
+      },
+      {
+        "call": "circle_area(2.5)",
+        "expect": "19.63"
+      }
+    ]
+  }
+]

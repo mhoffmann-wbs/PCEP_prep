@@ -1,0 +1,42 @@
+[
+  {
+    "id": "x.6-e1",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.2",
+      "x.6.3"
+    ],
+    "kind": "function",
+    "title": "Splitting the bill",
+    "prompt": "Write a function `split_bill(prices, item, people)` that looks up `prices[item]` (a dictionary) and divides it by `people`. Handle problems with a `try` and these `except` branches, from most specific to most general:\n\n- a missing item (`KeyError`): return `\"unknown item\"`\n- zero people (`ZeroDivisionError`): return `\"nobody to pay\"`\n- anything else (`Exception`): return `\"something went wrong\"`\n\nIf all is well, return `\"each pays \"` followed by the share as text, for example `\"each pays 1.5\"`.",
+    "starter": "def split_bill(prices, item, people):\n    # try: look up and divide; add except branches, specific first\n    pass\n",
+    "solution": "def split_bill(prices, item, people):\n    try:\n        share = prices[item] / people\n    except KeyError:\n        return 'unknown item'\n    except ZeroDivisionError:\n        return 'nobody to pay'\n    except Exception:\n        return 'something went wrong'\n    return 'each pays ' + str(share)\n",
+    "hints": [
+      "Put the risky lookup and division inside `try`. Python uses the first `except` that matches.",
+      "Write `except KeyError`, then `except ZeroDivisionError`, and `except Exception` last. If `Exception` came first it would catch everything.",
+      "Order the three branches as listed, and build the happy-path text after the `try` block with `str(share)`."
+    ],
+    "checks": [
+      {
+        "call": "split_bill({\"tea\": 6}, \"tea\", 4)",
+        "expect": "\"each pays 1.5\""
+      },
+      {
+        "call": "split_bill({\"tea\": 6}, \"cake\", 2)",
+        "expect": "\"unknown item\""
+      },
+      {
+        "call": "split_bill({\"tea\": 6}, \"tea\", 0)",
+        "expect": "\"nobody to pay\""
+      },
+      {
+        "call": "split_bill({\"tea\": 6}, \"tea\", \"two\")",
+        "expect": "\"something went wrong\""
+      },
+      {
+        "call": "split_bill({\"tea\": 6}, \"tea\", 3)",
+        "expect": "\"each pays 2.0\""
+      }
+    ]
+  }
+]

@@ -1,0 +1,78 @@
+[
+  {
+    "id": "1.4.2-e1",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.1",
+      "1.4.2.2",
+      "1.4.2.3",
+      "1.4.2.4",
+      "1.4.2.5",
+      "1.4.2.6"
+    ],
+    "kind": "io",
+    "title": "Celsius to Fahrenheit",
+    "prompt": "Read a temperature in degrees Celsius with `input()` (it can have decimals), convert it with `celsius * 9 / 5 + 32`, and print only the Fahrenheit number.\n\nFor example, if the input is `20`, the program prints:\n\n```\n68.0\n```",
+    "starter": "# read the temperature, convert it, print the result\n",
+    "solution": "celsius = float(input())\nfahrenheit = celsius * 9 / 5 + 32\nprint(fahrenheit)\n",
+    "hints": [
+      "`input()` always returns a string. Convert it to a number before calculating.",
+      "Use `float()` so that decimals such as `37.5` work.",
+      "`celsius = float(input())`, then calculate and `print` the result."
+    ],
+    "cases": [
+      {
+        "stdin": "20\n",
+        "stdout": "68.0\n"
+      },
+      {
+        "stdin": "0\n",
+        "stdout": "32.0\n"
+      },
+      {
+        "stdin": "-40\n",
+        "stdout": "-40.0\n"
+      },
+      {
+        "stdin": "37.5\n",
+        "stdout": "99.5\n"
+      }
+    ]
+  },
+  {
+    "id": "1.4.2-e2",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.1",
+      "1.4.2.2",
+      "1.4.2.3",
+      "1.4.2.4",
+      "1.4.2.5",
+      "1.4.2.6"
+    ],
+    "kind": "io",
+    "title": "Next birthday",
+    "prompt": "Read a name and then an age, each on its own line, with `input()`. Print one line saying how old the person will be next year.\n\nFor example, with the input `Maya` and `29`, the program prints:\n\n```\nMaya will be 30 next year\n```",
+    "starter": "# read the name, read the age, print the sentence\n",
+    "solution": "name = input()\nage = int(input())\nprint(name, \"will be\", age + 1, \"next year\")\n",
+    "hints": [
+      "Two `input()` calls: the first line is the name, the second the age. Only the age needs converting.",
+      "`age = int(input())`, then you can add 1 to it.",
+      "`print(name, \"will be\", age + 1, \"next year\")`"
+    ],
+    "cases": [
+      {
+        "stdin": "Maya\n29\n",
+        "stdout": "Maya will be 30 next year\n"
+      },
+      {
+        "stdin": "Tom\n9\n",
+        "stdout": "Tom will be 10 next year\n"
+      },
+      {
+        "stdin": "Li\n99\n",
+        "stdout": "Li will be 100 next year\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "1.1.1-e1",
+    "objectiveId": "1.1.1",
+    "subpoints": [
+      "1.1.1.1",
+      "1.1.1.2"
+    ],
+    "kind": "io",
+    "title": "Three kinds of bug",
+    "prompt": "The program below should print the total and the average of three exam marks, but it has two bugs: one that stops Python before anything runs, and one that gives a wrong answer.\n\nFix both so that it prints exactly:\n\n```\nTotal: 24\nAverage: 8.0\n```",
+    "starter": "mark1 = 8\nmark2 = 6\nmark3 = 10\ntotal = mark1 + mark2 + mark3\nprint(\"Total:\", total\naverage = total / 2\nprint(\"Average:\", average)\n",
+    "solution": "mark1 = 8\nmark2 = 6\nmark3 = 10\ntotal = mark1 + mark2 + mark3\nprint(\"Total:\", total)\naverage = total / 3\nprint(\"Average:\", average)\n",
+    "hints": [
+      "Run the program and read the error message. Python checks the whole program before it runs anything, so one broken line stops everything.",
+      "The first `print` is missing its closing bracket. The second bug runs fine but gives the wrong number: how many marks are there?",
+      "Close the bracket, then divide by `3` instead of `2`."
+    ],
+    "cases": [
+      {
+        "stdout": "Total: 24\nAverage: 8.0\n"
+      }
+    ]
+  }
+]

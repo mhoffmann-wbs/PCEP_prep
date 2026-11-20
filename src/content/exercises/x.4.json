@@ -1,0 +1,74 @@
+[
+  {
+    "id": "x.4-e1",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.1",
+      "x.4.2"
+    ],
+    "kind": "function",
+    "title": "Short pet names",
+    "prompt": "Write a function `short_names(names, limit)` that returns a new list with the names that have at most `limit` letters, each one in capital letters. Keep the original order. Use a list comprehension with an `if`.\n\nFor example, `short_names([\"Rex\", \"Bella\", \"Mo\"], 3)` returns `[\"REX\", \"MO\"]`.",
+    "starter": "def short_names(names, limit):\n    # one list comprehension with an if\n    pass\n",
+    "solution": "def short_names(names, limit):\n    return [name.upper() for name in names if len(name) <= limit]\n",
+    "hints": [
+      "The shape is `[expression for item in items if condition]`.",
+      "The expression is `name.upper()`; the condition compares `len(name)` with `limit`.",
+      "`return [name.upper() for name in names if len(name) <= limit]`"
+    ],
+    "checks": [
+      {
+        "call": "short_names([\"Rex\", \"Bella\", \"Mo\"], 3)",
+        "expect": "[\"REX\", \"MO\"]"
+      },
+      {
+        "call": "short_names([\"Rex\", \"Bella\"], 2)",
+        "expect": "[]"
+      },
+      {
+        "call": "short_names([], 5)",
+        "expect": "[]"
+      },
+      {
+        "call": "short_names([\"Luna\", \"Max\", \"Coco\"], 4)",
+        "expect": "[\"LUNA\", \"MAX\", \"COCO\"]"
+      }
+    ]
+  },
+  {
+    "id": "x.4-e2",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.1",
+      "x.4.3"
+    ],
+    "kind": "function",
+    "title": "Times table grid",
+    "prompt": "Write a function `times_table(n)` that returns an `n` by `n` multiplication table as a list of lists: row `r` and column `c` (both counted from 1) hold `r * c`. Use a list comprehension inside a list comprehension.\n\nFor example, `times_table(3)` returns `[[1, 2, 3], [2, 4, 6], [3, 6, 9]]`.",
+    "starter": "def times_table(n):\n    # a comprehension whose items are comprehensions\n    pass\n",
+    "solution": "def times_table(n):\n    return [[r * c for c in range(1, n + 1)] for r in range(1, n + 1)]\n",
+    "hints": [
+      "The outer comprehension builds the rows, and each row is itself a list built by an inner comprehension.",
+      "Use `range(1, n + 1)` for both numbers so they start at 1.",
+      "`return [[r * c for c in range(1, n + 1)] for r in range(1, n + 1)]`"
+    ],
+    "checks": [
+      {
+        "call": "times_table(3)",
+        "expect": "[[1, 2, 3], [2, 4, 6], [3, 6, 9]]"
+      },
+      {
+        "call": "times_table(1)",
+        "expect": "[[1]]"
+      },
+      {
+        "call": "times_table(0)",
+        "expect": "[]"
+      },
+      {
+        "call": "times_table(4)[3]",
+        "expect": "[4, 8, 12, 16]"
+      }
+    ]
+  }
+]

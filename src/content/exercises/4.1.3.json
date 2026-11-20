@@ -1,0 +1,80 @@
+[
+  {
+    "id": "4.1.3-e1",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.1",
+      "4.1.3.2",
+      "4.1.3.3",
+      "4.1.3.4"
+    ],
+    "kind": "function",
+    "title": "Cost of an order",
+    "prompt": "A bakery prices its rolls one by one.\n\nWrite a function `order_cost(price, quantity=1, delivery=0)` that returns `price * quantity + delivery`.\n\nFor example, `order_cost(2, 3)` returns `6`, and `order_cost(2, delivery=4)` returns `6` too. The last two parameters must have the default values shown.",
+    "starter": "def order_cost(price, quantity=1, delivery=0):\n    # return the total cost\n    pass\n",
+    "solution": "def order_cost(price, quantity=1, delivery=0):\n    return price * quantity + delivery\n",
+    "hints": [
+      "The defaults are written in the `def` line, as `quantity=1` and `delivery=0`. They are already in the starter.",
+      "Return the product of price and quantity, plus the delivery fee.",
+      "`return price * quantity + delivery`"
+    ],
+    "checks": [
+      {
+        "call": "order_cost(5)",
+        "expect": "5"
+      },
+      {
+        "call": "order_cost(2, 3)",
+        "expect": "6"
+      },
+      {
+        "call": "order_cost(2, delivery=4)",
+        "expect": "6"
+      },
+      {
+        "call": "order_cost(delivery=1, price=3, quantity=2)",
+        "expect": "7"
+      },
+      {
+        "call": "order_cost(1.5, 4, 2)",
+        "expect": "8.0"
+      }
+    ]
+  },
+  {
+    "id": "4.1.3-e2",
+    "objectiveId": "4.1.3",
+    "subpoints": [
+      "4.1.3.5"
+    ],
+    "kind": "function",
+    "title": "Print the date",
+    "prompt": "Different countries write dates differently, so a calendar tool takes the separator as a keyword argument.\n\nWrite a function `show_date(day, month, year, sep=\"/\", end=\"\\n\")` that prints the three numbers with one `print()` call, passing `sep` and `end` on to it.\n\nFor example, `show_date(20, 11, 2026)` prints:\n\n```\n20/11/2026\n```\n\nand `show_date(20, 11, 2026, sep=\".\")` prints `20.11.2026`.",
+    "starter": "def show_date(day, month, year, sep=\"/\", end=\"\\n\"):\n    # one print() call, using sep and end\n    pass\n",
+    "solution": "def show_date(day, month, year, sep=\"/\", end=\"\\n\"):\n    print(day, month, year, sep=sep, end=end)\n",
+    "hints": [
+      "`print()` accepts the keyword arguments `sep=` and `end=`.",
+      "Call `print(day, month, year, ...)` and give the keywords your own parameters' values.",
+      "`print(day, month, year, sep=sep, end=end)`"
+    ],
+    "checks": [
+      {
+        "call": "show_date(20, 11, 2026)",
+        "prints": "20/11/2026"
+      },
+      {
+        "call": "show_date(5, 3, 2027, sep=\".\")",
+        "prints": "5.3.2027"
+      },
+      {
+        "call": "(show_date(1, 2, 2028, end=\" and \"), show_date(3, 4, 2029))[-1]",
+        "expect": "None",
+        "prints": "1/2/2028 and 3/4/2029"
+      },
+      {
+        "call": "show_date(year=2030, month=6, day=7, sep=\"-\")",
+        "prints": "7-6-2030"
+      }
+    ]
+  }
+]
