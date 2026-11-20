@@ -1,0 +1,275 @@
+[
+  {
+    "id": "5.2.1-01",
+    "kind": "single",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.1"
+    ],
+    "stem": "Why do programmers import modules such as `math` instead of writing the same functions themselves?",
+    "options": [
+      {
+        "text": "Imported functions run without being called, as soon as the `import` line runs.",
+        "correct": false,
+        "rationale": "Importing makes the module's functions available; each one still runs only when you call it."
+      },
+      {
+        "text": "Every module is loaded when Python starts, so `import` only checks the module's spelling.",
+        "correct": false,
+        "rationale": "A module is loaded only when you import it, which keeps Python small and quick to start."
+      },
+      {
+        "text": "They reuse tested code and keep programs short.",
+        "correct": true,
+        "rationale": "Standard library modules are written and tested already, and a call like `math.sqrt(x)` says what it does in one word."
+      },
+      {
+        "text": "`import` copies the module's source code into your file, so you can edit it there.",
+        "correct": false,
+        "rationale": "Your file doesn't change. `import` loads the module and gives you a name to reach its contents."
+      }
+    ],
+    "explanation": "A module is a file of ready-made code. Importing it saves you from writing and testing that code yourself, keeps your program short and readable, and keeps related tools grouped under one name. The module is loaded when the `import` runs, and its functions run only when you call them."
+  },
+  {
+    "id": "5.2.1-02",
+    "kind": "single",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.2",
+      "5.2.1.3"
+    ],
+    "stem": "What happens when this code runs?",
+    "code": "import math\nprint(sqrt(25))",
+    "raises": "NameError",
+    "options": [
+      {
+        "text": "It prints `5.0`",
+        "correct": false,
+        "rationale": "That is what `print(math.sqrt(25))` would print. Without the `math.` prefix, Python can't find `sqrt`."
+      },
+      {
+        "text": "It prints `5`",
+        "correct": false,
+        "rationale": "Even with the right prefix, `sqrt()` returns a float, `5.0`. Here the call fails anyway."
+      },
+      {
+        "text": "It raises `AttributeError`",
+        "correct": false,
+        "rationale": "`AttributeError` comes from asking a module for a name it doesn't have, such as `math.square`. Here the module isn't used at all."
+      },
+      {
+        "text": "It raises `NameError`",
+        "correct": true,
+        "rationale": "`import math` defines only the name `math`. The function must be written `math.sqrt`, so `sqrt` on its own is not defined."
+      }
+    ],
+    "explanation": "After `import math`, the module is available under the name `math`, and its contents are reached with dot notation: `math.sqrt(25)`. The bare name `sqrt` was never defined, so Python raises `NameError: name 'sqrt' is not defined`. To call `sqrt` without the prefix, you'd need `from math import sqrt`."
+  },
+  {
+    "id": "5.2.1-03",
+    "kind": "single",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.2",
+      "5.2.1.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "import math as m\nfrom math import floor\nprint(m.ceil(4.2), floor(4.8))",
+    "output": "5 4\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "5 4",
+        "correct": true,
+        "rationale": "`m` is another name for the `math` module, so `m.ceil(4.2)` rounds up to 5, and the directly imported `floor` rounds 4.8 down to 4."
+      },
+      {
+        "text": "4 5",
+        "correct": false,
+        "rationale": "This swaps the two functions: `ceil()` rounds up and `floor()` rounds down."
+      },
+      {
+        "text": "4 4",
+        "correct": false,
+        "rationale": "`ceil()` rounds any fraction up, so 4.2 becomes 5."
+      },
+      {
+        "text": "5 5",
+        "correct": false,
+        "rationale": "`floor()` always rounds down, so 4.8 becomes 4."
+      }
+    ],
+    "explanation": "`import math as m` makes the module available as `m`, so `m.ceil` is `math.ceil`. `from math import floor` brings the name `floor` in directly, without a prefix. `ceil(4.2)` is 5 and `floor(4.8)` is 4."
+  },
+  {
+    "id": "5.2.1-04",
+    "kind": "single",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.3"
+    ],
+    "stem": "What happens when this code runs?",
+    "code": "import math\nprint(math.squareroot(9))",
+    "raises": "AttributeError",
+    "options": [
+      {
+        "text": "It raises `ModuleNotFoundError`",
+        "correct": false,
+        "rationale": "The `import math` line works. That error would come from importing a module that doesn't exist."
+      },
+      {
+        "text": "It raises `AttributeError`",
+        "correct": true,
+        "rationale": "The module `math` exists, but it has no name `squareroot` (the function is `sqrt`), so the dot lookup fails."
+      },
+      {
+        "text": "It raises `NameError`",
+        "correct": false,
+        "rationale": "The name `math` is defined by the import. The problem is the name after the dot."
+      },
+      {
+        "text": "It prints `3.0`",
+        "correct": false,
+        "rationale": "Python doesn't guess what you meant. Only `math.sqrt(9)` gives `3.0`."
+      }
+    ],
+    "explanation": "`math.squareroot` asks the `math` module for an object called `squareroot`. The module exists, so there is no `ModuleNotFoundError`, and `math` is defined, so there is no `NameError`. A missing name inside a real module raises `AttributeError: module 'math' has no attribute 'squareroot'`."
+  },
+  {
+    "id": "5.2.1-05",
+    "kind": "multi",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.2",
+      "5.2.1.3"
+    ],
+    "stem": "Which lines, placed before `print(pi > 3)`, make the program print `True`? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`from math import pi`",
+        "correct": true,
+        "rationale": "This brings the name `pi` straight into the program, so `pi` works without a prefix."
+      },
+      {
+        "text": "`from math import *`",
+        "correct": true,
+        "rationale": "The star imports every public name from `math`, `pi` included. It works, though it's best avoided in real code."
+      },
+      {
+        "text": "`import math`",
+        "correct": false,
+        "rationale": "This defines only `math`. The constant would have to be written `math.pi`, so `pi` alone raises `NameError`."
+      },
+      {
+        "text": "`import pi from math`",
+        "correct": false,
+        "rationale": "This mixes up the word order and is a syntax error. The correct form is `from math import pi`."
+      },
+      {
+        "text": "`import math as pi`",
+        "correct": false,
+        "rationale": "This makes `pi` a name for the whole module, and comparing a module with 3 raises `TypeError`."
+      }
+    ],
+    "explanation": "`print(pi > 3)` uses the bare name `pi`, so the import must create that name. `from math import pi` and `from math import *` both do. `import math` creates only `math`, and `import math as pi` makes `pi` mean the module itself, not the number."
+  },
+  {
+    "id": "5.2.1-06",
+    "kind": "gap",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.2",
+      "5.2.1.3"
+    ],
+    "stem": "Fill the gaps so the program prints `9`, the value `9.7` rounded down.",
+    "code": "__BLANK1__ math\nprint(math.__BLANK2__(9.7))",
+    "output": "9\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "text",
+        "accept": [
+          "import"
+        ],
+        "rationale": "The `import` keyword loads the module and defines the name `math`."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "floor",
+          "ceil",
+          "sqrt"
+        ],
+        "answer": "floor",
+        "rationale": "`floor()` rounds down, giving 9. `ceil()` would give 10, and `sqrt()` would give a float near 3.11."
+      }
+    ],
+    "explanation": "`import math` loads the module. Its functions are then reached with dot notation, so `math.floor(9.7)` calls the module's `floor` function, which rounds down to the whole number 9."
+  },
+  {
+    "id": "5.2.1-07",
+    "kind": "order",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.2",
+      "5.2.1.3"
+    ],
+    "stem": "Put the lines in order so the program prints the area of a circle with radius 2, `12.6`.",
+    "mode": "code",
+    "lines": [
+      "import math as m",
+      "radius = 2",
+      "area = m.pi * radius ** 2",
+      "print(round(area, 1))"
+    ],
+    "altOrders": [
+      [
+        1,
+        0,
+        2,
+        3
+      ]
+    ],
+    "output": "12.6\n",
+    "rationale": "The module must be imported, under the name `m`, before `m.pi` is used, and `radius` must exist before the area is calculated. The import and `radius = 2` may come in either order.",
+    "explanation": "`import math as m` makes the module available as `m`, so `m.pi` is the constant 3.141592653589793. The area is pi times 2 squared, about 12.566, and `round(area, 1)` gives 12.6. `m.pi` has no brackets, because it is a value, not a function."
+  },
+  {
+    "id": "5.2.1-08",
+    "kind": "insert",
+    "objectiveId": "5.2.1",
+    "subpoints": [
+      "5.2.1.2",
+      "5.2.1.3"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `4.0`?",
+    "code": "# >>> INSERT <<<\nprint(sqrt(16))",
+    "output": "4.0\n",
+    "options": [
+      {
+        "text": "from math import sqrt",
+        "correct": true,
+        "rationale": "This puts the name `sqrt` straight into the program, so it can be called without a prefix."
+      },
+      {
+        "text": "import math",
+        "correct": false,
+        "rationale": "This defines only `math`. The call would have to be `math.sqrt(16)`, so `sqrt` alone raises `NameError`."
+      },
+      {
+        "text": "import sqrt from math",
+        "correct": false,
+        "rationale": "The words are in the wrong order, which is a `SyntaxError`. The correct form starts with `from`."
+      },
+      {
+        "text": "from math import ceil",
+        "correct": false,
+        "rationale": "This imports only `ceil`. The name `sqrt` is still undefined, so the call raises `NameError`."
+      }
+    ],
+    "explanation": "The program calls `sqrt` without any module prefix. That works only if the name `sqrt` itself was imported, which is what `from math import sqrt` does. `math.sqrt(16)` returns the float `4.0`."
+  }
+]

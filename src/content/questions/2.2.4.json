@@ -1,0 +1,145 @@
+[
+  {
+    "id": "2.2.4-01",
+    "kind": "single",
+    "objectiveId": "2.2.4",
+    "subpoints": ["2.2.4.1", "2.2.4.3"],
+    "stem": "How many `*` characters does the following code print?",
+    "code": "for i in range(2, 5):\n    for j in range(i):\n        print(\"*\", end=\"\")\n    print()",
+    "output": "**\n***\n****\n",
+    "options": [
+      {"text": "12", "correct": false, "rationale": "This multiplies 3 outer rounds by 4, but the inner loop depends on `i` and runs a different number of times each round."},
+      {"text": "3", "correct": false, "rationale": "This counts only the outer rounds; each outer round prints a whole row of stars."},
+      {"text": "9", "correct": true, "rationale": "The inner loop runs 2, then 3, then 4 times, and 2 + 3 + 4 is 9."},
+      {"text": "14", "correct": false, "rationale": "This also counts rows of 0 and 1 stars, but the outer range starts at 2."}
+    ],
+    "explanation": "The outer range gives i = 2, 3, 4. For each i, the inner loop runs range(i), so i times, printing one * each time. That gives 2 + 3 + 4 = 9 stars. The empty print() only ends each row."
+  },
+  {
+    "id": "2.2.4-02",
+    "kind": "single",
+    "objectiveId": "2.2.4",
+    "subpoints": ["2.2.4.3", "2.2.4.1"],
+    "stem": "What is the output of the following code?",
+    "code": "for color in [\"red\", \"blue\"]:\n    for size in \"SM\":\n        print(color, size)",
+    "output": "red S\nred M\nblue S\nblue M\n",
+    "outputKey": true,
+    "options": [
+      {"text": "red S\nblue S\nred M\nblue M", "correct": false, "rationale": "This changes the outer variable fastest, but the inner variable is the one that changes on every line."},
+      {"text": "red S\nblue M", "correct": false, "rationale": "The inner loop runs completely for every colour, not once in total."},
+      {"text": "red SM\nblue SM", "correct": false, "rationale": "Looping over the string \"SM\" gives one character at a time, so each size is printed on its own line."},
+      {"text": "red S\nred M\nblue S\nblue M", "correct": true, "rationale": "For each colour, the inner loop runs completely, through S and then M."}
+    ],
+    "explanation": "The outer loop picks \"red\", then the inner loop runs all the way through \"SM\": red S, red M. Only then does the outer loop move on to \"blue\", and the inner loop runs again: blue S, blue M. The inner variable changes fastest."
+  },
+  {
+    "id": "2.2.4-03",
+    "kind": "single",
+    "objectiveId": "2.2.4",
+    "subpoints": ["2.2.4.4"],
+    "stem": "What is the output of the following code?",
+    "code": "baskets = [[2, 5], [4], [1, 3, 6]]\nfor basket in baskets:\n    total = 0\n    for price in basket:\n        total = total + price\nprint(total)",
+    "output": "10\n",
+    "outputKey": true,
+    "options": [
+      {"text": "10", "correct": true, "rationale": "`total` is reset for every basket, so after the loops it holds only the last basket total, 1 + 3 + 6."},
+      {"text": "21", "correct": false, "rationale": "This adds up every price, but `total = 0` inside the outer loop starts again for each basket."},
+      {"text": "7", "correct": false, "rationale": "This is the first basket total; the outer loop goes on to the other baskets afterwards."},
+      {"text": "6", "correct": false, "rationale": "This is only the last price, but the inner loop adds all the prices of the last basket."}
+    ],
+    "explanation": "total = 0 sits inside the outer loop, so each basket starts again from 0. The totals are 7, 4 and 10. The print is not indented, so it runs once, after both loops, and shows the last basket total, 10."
+  },
+  {
+    "id": "2.2.4-04",
+    "kind": "single",
+    "objectiveId": "2.2.4",
+    "subpoints": ["2.2.4.2", "2.2.4.3"],
+    "stem": "What is the output of the following code?",
+    "code": "for a in range(1, 4):\n    for b in range(1, 4):\n        if a + b == 4:\n            print(a, b)",
+    "output": "1 3\n2 2\n3 1\n",
+    "outputKey": true,
+    "options": [
+      {"text": "1 3\n3 1", "correct": false, "rationale": "The pair where `a` and `b` are both 2 is also tested and adds up to 4."},
+      {"text": "1 3\n2 2\n3 1", "correct": true, "rationale": "Every pair is tested, and three of them add up to 4."},
+      {"text": "1 3", "correct": false, "rationale": "The inner loop runs again for every value of `a`, so later pairs are checked too."},
+      {"text": "3 1\n2 2\n1 3", "correct": false, "rationale": "The outer variable `a` goes up from 1, so pairs starting with 1 come first."}
+    ],
+    "explanation": "The outer loop takes a = 1, 2, 3, and for each one the inner loop takes b = 1, 2, 3, so 9 pairs are tested in order. The if prints only pairs that add up to 4: (1, 3), (2, 2) and (3, 1), in that order."
+  },
+  {
+    "id": "2.2.4-05",
+    "kind": "single",
+    "objectiveId": "2.2.4",
+    "subpoints": ["2.2.4.4", "2.2.4.3"],
+    "stem": "What happens when the following code runs?",
+    "code": "seats = [[\"A1\", \"A2\"], [\"B1\"]]\nfor r in range(2):\n    for c in range(2):\n        print(seats[r][c])",
+    "raises": "IndexError",
+    "options": [
+      {"text": "It prints `A1`, `A2` and `B1` and finishes without any error at all.", "correct": false, "rationale": "The loops always try two seats per row, and the second row has only one."},
+      {"text": "It raises an `IndexError` straight away, before printing anything at all.", "correct": false, "rationale": "Python runs the lookups one at a time, so the valid ones are printed before the bad one."},
+      {"text": "It prints `A1`, `A2` and `B1`, then raises an `IndexError`.", "correct": true, "rationale": "Row 1 has only one seat, so `seats[1][1]` does not exist, but the first three lookups work."},
+      {"text": "It prints `A1` and `B1`, then stops.", "correct": false, "rationale": "The inner loop runs for every row, so `A2` is printed too, and the program ends with an error, not quietly."}
+    ],
+    "explanation": "The loops ask for seats[0][0], seats[0][1], seats[1][0] and seats[1][1], in that order. The first three exist and print A1, A2 and B1. The second row [\"B1\"] has no index 1, so the last lookup raises IndexError: list index out of range."
+  },
+  {
+    "id": "2.2.4-06",
+    "kind": "multi",
+    "objectiveId": "2.2.4",
+    "subpoints": ["2.2.4.1", "2.2.4.3"],
+    "stem": "Which statements about the following code are true? (Select TWO)",
+    "code": "for x in range(3):\n    print(\"outer\")\n    for y in range(2):\n        print(\"inner\")",
+    "select": 2,
+    "options": [
+      {"text": "`inner` is printed 6 times.", "correct": true, "rationale": "The inner body runs 2 times for each of the 3 outer rounds: 3 × 2 = 6."},
+      {"text": "`outer` is printed 3 times.", "correct": true, "rationale": "This line is in the outer body, so it runs once per outer round."},
+      {"text": "`outer` is printed 6 times.", "correct": false, "rationale": "Only lines inside the inner loop run 3 × 2 times; this one runs once per outer round."},
+      {"text": "`inner` is printed 2 times.", "correct": false, "rationale": "The inner loop runs completely again in every outer round, not just once."},
+      {"text": "The first two lines printed are both `outer`.", "correct": false, "rationale": "After the first `outer`, the inner loop runs completely before the outer loop prints again."},
+      {"text": "The last line printed is `outer`.", "correct": false, "rationale": "Each outer round ends with its inner loop, so the last line is `inner`."}
+    ],
+    "explanation": "Each outer round prints outer once, then runs the inner loop, which prints inner twice. With 3 outer rounds, the output is outer, inner, inner repeated three times: 3 lines of outer and 6 lines of inner, ending with inner."
+  },
+  {
+    "id": "2.2.4-07",
+    "kind": "gap",
+    "objectiveId": "2.2.4",
+    "subpoints": ["2.2.4.4", "2.2.4.1"],
+    "stem": "Complete the code so it prints the total of each team: `14`, then `21`.",
+    "code": "scores = [[8, 6], [9, 7, 5]]\nfor team in scores:\n    __BLANK1__\n    for s in __BLANK2__:\n        total = total + s\n    print(total)",
+    "output": "14\n21\n",
+    "blanks": [
+      {"n": 1, "kind": "text", "accept": ["total = 0", "total=0", "total =0", "total= 0"], "rationale": "Resetting `total` inside the outer loop, before the inner loop, starts each team again from 0."},
+      {"n": 2, "kind": "choice", "choices": ["team", "scores", "s", "total"], "answer": "team", "rationale": "The inner loop must go through the numbers of the current team. `scores` would give whole lists, `s` is not defined yet, and `total` is a number, which is not iterable."}
+    ],
+    "explanation": "The outer loop takes one team (one inner list) at a time. total = 0 inside the outer loop starts each team from 0. The inner loop goes through that team's scores and adds them up, and the print in the outer body shows each team total: 8 + 6 = 14, then 9 + 7 + 5 = 21."
+  },
+  {
+    "id": "2.2.4-08",
+    "kind": "order",
+    "objectiveId": "2.2.4",
+    "subpoints": ["2.2.4.1", "2.2.4.3", "2.2.4.4"],
+    "stem": "Put the lines in order so the program prints the two rows `1 2 3` and `2 4 6`.",
+    "mode": "code",
+    "lines": ["for i in range(1, 3):", "    line = \"\"", "    for j in range(1, 4):", "        line = line + str(i * j) + \" \"", "    print(line)"],
+    "output": "1 2 3 \n2 4 6 \n",
+    "rationale": "Each row starts with an empty `line` inside the outer loop, the inner loop adds three products to it, and the row is printed after the inner loop finishes.",
+    "explanation": "The outer loop picks the row number i (1, then 2). line = \"\" starts each row empty. The inner loop takes j = 1, 2, 3 and adds i * j and a space. Once the inner loop is done, print(line) shows the row, so the output is 1 2 3 and then 2 4 6."
+  },
+  {
+    "id": "2.2.4-09",
+    "kind": "insert",
+    "objectiveId": "2.2.4",
+    "subpoints": ["2.2.4.2", "2.2.4.4"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `3`?",
+    "code": "shelves = [[\"jam\", \"tea\"], [\"rice\"], [\"tea\", \"oil\", \"tea\"]]\ncount = 0\nfor shelf in shelves:\n    for item in shelf:\n        # >>> INSERT <<<\n            count = count + 1\nprint(count)",
+    "output": "3\n",
+    "options": [
+      {"text": "if item == \"tea\":", "correct": true, "rationale": "Each item is checked once, and \"tea\" appears three times across the shelves."},
+      {"text": "if shelf == \"tea\":", "correct": false, "rationale": "`shelf` is a whole list, never the string \"tea\", so this prints 0."},
+      {"text": "if \"tea\" in shelf:", "correct": false, "rationale": "This is true for every item on a shelf that holds tea, so it counts all 2 + 3 items and prints 5."},
+      {"text": "if item == \"jam\":", "correct": false, "rationale": "There is only one \"jam\", so this prints 1."}
+    ],
+    "explanation": "The outer loop takes each shelf (a list), and the inner loop takes each item on that shelf. The if inside the inner loop decides which items to count. \"tea\" is on the first shelf once and on the third shelf twice, so count ends at 3."
+  }
+]

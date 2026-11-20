@@ -1,0 +1,343 @@
+[
+  {
+    "id": "2.2.1-01",
+    "kind": "single",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.1",
+      "2.2.1.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "cookies = 10\neaten = 0\nwhile cookies > 3:\n    cookies -= 3\n    eaten += 3\nprint(cookies, eaten)",
+    "output": "1 9\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "4 6",
+        "correct": false,
+        "rationale": "When `cookies` is 4, `4 > 3` is still true, so one more iteration runs."
+      },
+      {
+        "text": "1 9",
+        "correct": true,
+        "rationale": "The loop runs while more than 3 cookies are left: 10, 7, 4, then 1 stops it."
+      },
+      {
+        "text": "-2 12",
+        "correct": false,
+        "rationale": "When `cookies` is 1, `1 > 3` is false, so the loop stops before going below zero."
+      },
+      {
+        "text": "1 6",
+        "correct": false,
+        "rationale": "`eaten` grows by 3 in every iteration, and there are three iterations."
+      }
+    ],
+    "explanation": "Trace each check: 10 > 3, so 7 and 3 eaten; 7 > 3, so 4 and 6 eaten; 4 > 3, so 1 and 9 eaten; 1 > 3 is `False`, so the loop ends. `print()` shows `1 9`."
+  },
+  {
+    "id": "2.2.1-02",
+    "kind": "single",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.2",
+      "2.2.1.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "i = 1\ncount = 0\nwhile i <= 10:\n    count += 1\n    i += 3\nprint(count, i)",
+    "output": "4 13\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "3 10",
+        "correct": false,
+        "rationale": "`<=` lets `i` equal 10 through, so the block runs a fourth time."
+      },
+      {
+        "text": "4 10",
+        "correct": false,
+        "rationale": "After the iteration with `i` = 10, the update makes `i` 13 before the loop ends."
+      },
+      {
+        "text": "3 13",
+        "correct": false,
+        "rationale": "`count` goes up once for every iteration, and there are four of them."
+      },
+      {
+        "text": "4 13",
+        "correct": true,
+        "rationale": "The block runs for `i` = 1, 4, 7 and 10, then `i` is 13 and the condition fails."
+      }
+    ],
+    "explanation": "`i` takes the values 1, 4, 7, 10: all are `<= 10`, so the block runs 4 times. The last update makes `i` 13, and `13 <= 10` is `False`. After the loop, `i` keeps that value, the first one that made the condition false."
+  },
+  {
+    "id": "2.2.1-03",
+    "kind": "single",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.4"
+    ],
+    "stem": "Which of these loops never ends?",
+    "options": [
+      {
+        "text": "`n = 1`, then `while n < 8:` with `n += 2` in the block",
+        "correct": false,
+        "rationale": "`n` reaches 9, and `9 < 8` is false, so this loop stops."
+      },
+      {
+        "text": "`n = 10`, then `while n > 0:` with `n -= 3` in the block",
+        "correct": false,
+        "rationale": "`n` goes 10, 7, 4, 1, -2, and `-2 > 0` is false, so it stops."
+      },
+      {
+        "text": "`n = 1`, then `while n != 8:` with `n += 2` in the block",
+        "correct": true,
+        "rationale": "`n` goes 1, 3, 5, 7, 9, …: it jumps over 8, so `n != 8` stays true forever."
+      },
+      {
+        "text": "`n = 20`, then `while n != 0:` with `n -= 5` in the block",
+        "correct": false,
+        "rationale": "`n` goes 20, 15, 10, 5, 0, and hits 0 exactly, so it stops."
+      }
+    ],
+    "explanation": "A `while` loop stops only when its condition becomes false. A step of 2 from 1 gives odd numbers only, so `n` is never exactly 8 and `n != 8` is always true: an infinite loop. Using `<` instead of `!=` is safer, because the loop stops even when the variable jumps past the target."
+  },
+  {
+    "id": "2.2.1-04",
+    "kind": "single",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.2"
+    ],
+    "stem": "What happens when you run this code?",
+    "code": "while spoons < 4:\n    spoons += 1\nprint(spoons)",
+    "raises": "NameError",
+    "options": [
+      {
+        "text": "A `NameError` is raised",
+        "correct": true,
+        "rationale": "`spoons` has no value yet when the `while` line checks it."
+      },
+      {
+        "text": "`4` is printed",
+        "correct": false,
+        "rationale": "The loop-control variable was never initialized, so the first check fails with an error."
+      },
+      {
+        "text": "`0` is printed",
+        "correct": false,
+        "rationale": "Python does not give new variables a starting value of 0; they must be assigned first."
+      },
+      {
+        "text": "The loop runs forever",
+        "correct": false,
+        "rationale": "The program never gets into the loop: the very first check of the condition fails."
+      }
+    ],
+    "explanation": "A loop-control variable must be initialized before the loop. Here `spoons` is used in `spoons < 4` before anything was assigned to it, so Python stops with `NameError: name 'spoons' is not defined`."
+  },
+  {
+    "id": "2.2.1-05",
+    "kind": "single",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.3",
+      "2.2.1.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "stock = [5, 3, 0, 2]\ni = 0\nsold = 0\nwhile (n := stock[i]) > 0:\n    sold += n\n    i += 1\nprint(sold, n)",
+    "output": "8 0\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "10 2",
+        "correct": false,
+        "rationale": "The loop stops at the first 0, so the 2 after it is never read."
+      },
+      {
+        "text": "8 3",
+        "correct": false,
+        "rationale": "`:=` stores every value it reads, including the 0 that ended the loop."
+      },
+      {
+        "text": "10 0",
+        "correct": false,
+        "rationale": "The block does not run for the 0, and the loop never reaches the 2."
+      },
+      {
+        "text": "8 0",
+        "correct": true,
+        "rationale": "The loop adds 5 and 3, then reads 0, which stops it; `n` keeps that last value."
+      }
+    ],
+    "explanation": "Each check reads `stock[i]`, stores it in `n` with `:=`, and compares it with 0. Values 5 and 3 pass and are added (`sold` is 8). The third check stores 0 in `n`, `0 > 0` is `False`, and the loop ends. `n` keeps the value 0."
+  },
+  {
+    "id": "2.2.1-06",
+    "kind": "multi",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.1",
+      "2.2.1.3",
+      "2.2.1.4"
+    ],
+    "stem": "Which statements about this program are true? (Select TWO)",
+    "code": "level = 0\nwhile level < 4:\n    level += 2\n    print(\"Level\", level)\nprint(\"Done at\", level)",
+    "output": "Level 2\nLevel 4\nDone at 4\n",
+    "select": 2,
+    "options": [
+      {
+        "text": "The block runs exactly 2 times.",
+        "correct": true,
+        "rationale": "`level` is 0 and then 2 at the checks that pass; at 4 the condition fails."
+      },
+      {
+        "text": "After the loop, `level` holds 4.",
+        "correct": true,
+        "rationale": "4 is the first value that makes `level < 4` false, and the variable keeps it."
+      },
+      {
+        "text": "The block runs 4 times.",
+        "correct": false,
+        "rationale": "`level` goes up by 2, not 1, so only two iterations fit below 4."
+      },
+      {
+        "text": "The last line printed inside the loop is `Level 6`.",
+        "correct": false,
+        "rationale": "After `Level 4`, the check `4 < 4` is false, so the block does not run again."
+      },
+      {
+        "text": "The condition `level < 4` is checked exactly 2 times.",
+        "correct": false,
+        "rationale": "It is checked once more than the block runs: 3 times, the last one giving `False`."
+      },
+      {
+        "text": "Without the line `level += 2`, the loop would run once and stop.",
+        "correct": false,
+        "rationale": "Without the update, `level` stays 0 and `0 < 4` stays true, so the loop would never end."
+      }
+    ],
+    "explanation": "Trace the checks: 0 < 4 (block runs, prints `Level 2`), 2 < 4 (prints `Level 4`), 4 < 4 is `False`. So the block runs twice, the condition is checked three times, and `level` ends as 4. Removing the update would create an infinite loop."
+  },
+  {
+    "id": "2.2.1-07",
+    "kind": "gap",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.1",
+      "2.2.1.2"
+    ],
+    "stem": "The list holds rain readings and ends with the sentinel value `-1`. Complete the loop so it adds up the readings before the sentinel and prints `Total: 36`.",
+    "code": "readings = [12, 9, 15, -1, 20]\ni = 0\ntotal = 0\nwhile readings[i] __BLANK1__ -1:\n    total += readings[i]\n    i __BLANK2__ 1\nprint(\"Total:\", total)",
+    "output": "Total: 36\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "!=",
+          "==",
+          "<"
+        ],
+        "answer": "!=",
+        "rationale": "The loop should keep going as long as the current reading is not the sentinel. With `==` or `<`, the very first check is false and the total stays 0."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "+=",
+          "-="
+        ],
+        "answer": "+=",
+        "rationale": "The index must move forward to the next reading. `-=` makes it go backwards to the end of the list."
+      }
+    ],
+    "explanation": "The loop-control variable `i` starts at 0 and goes up by 1 each time. Readings 12, 9 and 15 are not `-1`, so they are added: 36. At index 3 the reading is the sentinel `-1`, the condition is `False`, and the loop stops before the 20."
+  },
+  {
+    "id": "2.2.1-08",
+    "kind": "order",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.1",
+      "2.2.1.2",
+      "2.2.1.3"
+    ],
+    "stem": "Put the lines in order so the program prints `4 120`: the number of weeks it takes to save at least 100, saving 30 a week.",
+    "mode": "code",
+    "lines": [
+      "savings = 0",
+      "weeks = 0",
+      "while savings < 100:",
+      "    savings += 30",
+      "    weeks += 1",
+      "print(weeks, savings)"
+    ],
+    "altOrders": [
+      [
+        1,
+        0,
+        2,
+        3,
+        4,
+        5
+      ],
+      [
+        0,
+        1,
+        2,
+        4,
+        3,
+        5
+      ],
+      [
+        1,
+        0,
+        2,
+        4,
+        3,
+        5
+      ]
+    ],
+    "output": "4 120\n",
+    "rationale": "Both variables are initialized before the loop, both are updated inside it, and the result is printed after it.",
+    "explanation": "The loop checks `savings < 100` before each iteration: 0, 30, 60 and 90 pass, so four weeks are counted and `savings` ends at 120. The two starting lines can swap, and so can the two updates inside the loop."
+  },
+  {
+    "id": "2.2.1-09",
+    "kind": "insert",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.1",
+      "2.2.1.5"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `Packing 3`, `Packing 1` and `Packing 4`, one per line?",
+    "code": "orders = [3, 1, 4, 0, 2]\ni = 0\n# >>> INSERT <<<\n    print(\"Packing\", n)\n    i += 1",
+    "output": "Packing 3\nPacking 1\nPacking 4\n",
+    "options": [
+      {
+        "text": "while (n := orders[i]) != 0:",
+        "correct": true,
+        "rationale": "Each check stores the next order in `n` and stops at the 0."
+      },
+      {
+        "text": "while n := orders[i] != 0:",
+        "correct": false,
+        "rationale": "Without brackets, `!=` is worked out first, so `n` holds `True` and the program prints `Packing True`."
+      },
+      {
+        "text": "while (n = orders[i]) != 0:",
+        "correct": false,
+        "rationale": "`=` is a statement and can't be used inside a condition; this is a `SyntaxError`."
+      },
+      {
+        "text": "while (n := orders[i]) == 0:",
+        "correct": false,
+        "rationale": "The first order is 3, so `3 == 0` is false and the loop body never runs."
+      }
+    ],
+    "explanation": "The walrus operator `:=` stores a value and gives it back, so `(n := orders[i]) != 0` reads an order, keeps it in `n`, and compares it with 0. The brackets make the assignment happen before the comparison. The loop prints 3, 1 and 4 and stops at the 0."
+  }
+]

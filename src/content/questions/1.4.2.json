@@ -1,0 +1,314 @@
+[
+  {
+    "id": "1.4.2-01",
+    "kind": "single",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "print(\"tea\", \"milk\", sep=\", \", end=\"; \")\nprint(\"sugar\")",
+    "output": "tea, milk; sugar\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "tea, milk;\nsugar",
+        "correct": false,
+        "rationale": "`end=\"; \"` replaces the default new line, so nothing moves `sugar` to a new line."
+      },
+      {
+        "text": "tea, milk; sugar",
+        "correct": true,
+        "rationale": "`sep` goes between the two values and `end` replaces the new line, so the second `print()` carries on on the same line."
+      },
+      {
+        "text": "tea milk; sugar",
+        "correct": false,
+        "rationale": "`sep=\", \"` replaces the default space between the values."
+      },
+      {
+        "text": "tea, milk\n; sugar",
+        "correct": false,
+        "rationale": "`end` is printed after the last value on the same line; there is no new line before it."
+      }
+    ],
+    "explanation": "`sep` is the text placed between the values: `tea, milk`. `end` is the text placed after the last value instead of the usual new line: `; `. Because no new line was printed, the next `print(\"sugar\")` continues on the same line, and it ends with a normal new line."
+  },
+  {
+    "id": "1.4.2-02",
+    "kind": "single",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.2",
+      "1.4.2.3"
+    ],
+    "stem": "A program runs `age = input(\"Age? \")` and the user types `25`. What is the type of `age`?",
+    "options": [
+      {
+        "text": "`int`",
+        "correct": false,
+        "rationale": "`25` looks like a whole number, but `input()` does not convert it. You would need `int(input(\"Age? \"))`."
+      },
+      {
+        "text": "`float`",
+        "correct": false,
+        "rationale": "`input()` never returns a number; `float()` would be needed to get a float."
+      },
+      {
+        "text": "`str`",
+        "correct": true,
+        "rationale": "`input()` always returns a string, whatever the user types."
+      },
+      {
+        "text": "`bool`",
+        "correct": false,
+        "rationale": "`input()` returns the typed text, not a truth value."
+      }
+    ],
+    "explanation": "`input()` reads one line of text and returns it as a `str`. The variable `age` holds the string `\"25\"`. To calculate with it, convert it first, for example with `int(age)`."
+  },
+  {
+    "id": "1.4.2-03",
+    "kind": "single",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.3",
+      "1.4.2.4"
+    ],
+    "stem": "The variable `answer` holds the text a user typed. What happens when this code runs?",
+    "code": "answer = \"3.5\"  # what input() returned\nprint(int(answer) + 1)",
+    "raises": "ValueError",
+    "options": [
+      {
+        "text": "`4.5` is printed",
+        "correct": false,
+        "rationale": "That would need `float(answer)`; `int()` cannot read a decimal string."
+      },
+      {
+        "text": "`4` is printed",
+        "correct": false,
+        "rationale": "`int()` cuts off decimals of a float such as `3.5`, but not of the string `\"3.5\"`; the string is rejected instead."
+      },
+      {
+        "text": "A `TypeError` is raised",
+        "correct": false,
+        "rationale": "The type (a string) is allowed; it is the value inside the text that `int()` cannot read, which is a `ValueError`."
+      },
+      {
+        "text": "A `ValueError` is raised",
+        "correct": true,
+        "rationale": "`int()` only accepts text that spells a whole number, and `\"3.5\"` has a decimal point."
+      }
+    ],
+    "explanation": "`int(\"3.5\")` fails with `ValueError: invalid literal for int() with base 10: '3.5'`, because the text is not a whole number. To read a decimal, use `float(answer)`, or `int(float(answer))` if you want to cut off the decimals."
+  },
+  {
+    "id": "1.4.2-04",
+    "kind": "single",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "a = int(7.9)\nb = float(\"4\")\nc = str(12) + str(3)\nprint(a, b, c)",
+    "output": "7 4.0 123\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "7 4.0 123",
+        "correct": true,
+        "rationale": "`int(7.9)` cuts off the decimals, `float(\"4\")` gives `4.0`, and two strings joined with `+` give `\"123\"`."
+      },
+      {
+        "text": "8 4.0 15",
+        "correct": false,
+        "rationale": "`int()` does not round, and `+` between two strings joins them instead of adding."
+      },
+      {
+        "text": "7 4 123",
+        "correct": false,
+        "rationale": "`float()` always gives a float, which prints with `.0`."
+      },
+      {
+        "text": "8 4.0 123",
+        "correct": false,
+        "rationale": "`int()` truncates: `int(7.9)` is `7`, not `8`. Use `round()` to round."
+      }
+    ],
+    "explanation": "`int(7.9)` drops the decimal part and gives `7`. `float(\"4\")` turns the text into the float `4.0`. `str(12)` and `str(3)` are the strings `\"12\"` and `\"3\"`, and `+` joins them into `\"123\"`."
+  },
+  {
+    "id": "1.4.2-05",
+    "kind": "single",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.3",
+      "1.4.2.5"
+    ],
+    "stem": "Both variables hold text that `input()` returned. What is the output?",
+    "code": "qty = \"3\"    # what input() returned\nprice = \"2\"  # what input() returned\nprint(qty + price, int(qty) * int(price), qty * int(price))",
+    "output": "32 6 33\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "5 6 6",
+        "correct": false,
+        "rationale": "`qty` and `price` are strings, so `qty + price` joins them and `qty * int(price)` repeats `\"3\"`."
+      },
+      {
+        "text": "32 6 33",
+        "correct": true,
+        "rationale": "Two strings are joined, two ints are multiplied, and a string times an int is repeated."
+      },
+      {
+        "text": "32 6 6",
+        "correct": false,
+        "rationale": "`qty` is still the string `\"3\"`, so multiplying it by `2` repeats the text instead of doing maths."
+      },
+      {
+        "text": "5 6 33",
+        "correct": false,
+        "rationale": "`qty + price` joins two strings into `\"32\"`; only converted values are added as numbers."
+      }
+    ],
+    "explanation": "`input()` returns strings, so `qty + price` is `\"3\" + \"2\"`, which joins them into `\"32\"`. After converting both, `int(qty) * int(price)` is `3 * 2 = 6`. In `qty * int(price)` only `price` was converted, so the string `\"3\"` is repeated 2 times: `\"33\"`."
+  },
+  {
+    "id": "1.4.2-06",
+    "kind": "multi",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.2",
+      "1.4.2.5"
+    ],
+    "stem": "Which ways of reading a value leave `n` holding an `int`, so that `n + 1` adds 1 to the number the user typed? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`n = int(input(\"How many? \"))`",
+        "correct": true,
+        "rationale": "`input()` runs first and returns the text, then `int()` converts it to a whole number."
+      },
+      {
+        "text": "`text = input(\"How many? \")` followed by `n = int(text)`",
+        "correct": true,
+        "rationale": "The same conversion done in two steps: the string is stored first, then converted."
+      },
+      {
+        "text": "`n = input(\"How many? \")`",
+        "correct": false,
+        "rationale": "`n` is a string, so `n + 1` raises a `TypeError`."
+      },
+      {
+        "text": "`n = input(int(\"How many? \"))`",
+        "correct": false,
+        "rationale": "The conversion is in the wrong place: `int(\"How many? \")` raises a `ValueError` before `input()` even runs."
+      },
+      {
+        "text": "`n = str(input(\"How many? \"))`",
+        "correct": false,
+        "rationale": "`str()` keeps the value a string; it does not make a number."
+      },
+      {
+        "text": "`n = float(input(\"How many? \"))`",
+        "correct": false,
+        "rationale": "`n + 1` works, but `n` is a `float`, not an `int`: typing `4` gives `5.0`."
+      }
+    ],
+    "explanation": "`input()` always returns a string. To get an `int`, wrap the result in `int()`, either directly as `int(input(...))` or in a second step. Converting the prompt instead of the result, or using `str()` or `float()`, does not give an `int`."
+  },
+  {
+    "id": "1.4.2-07",
+    "kind": "gap",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.1",
+      "1.4.2.4",
+      "1.4.2.6"
+    ],
+    "stem": "Complete the tip calculator so it prints `Total: 15.0`. The variable `bill_text` stands for what `input()` returned.",
+    "code": "bill_text = \"12.5\"  # what input() returned\nbill = __BLANK1__(bill_text)\ntip = bill * 20 / 100\nprint(\"Total: \" + __BLANK2__(bill + tip))",
+    "output": "Total: 15.0\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "float",
+          "int",
+          "str"
+        ],
+        "answer": "float",
+        "rationale": "The bill has a decimal point, so only `float()` can convert it. `int(\"12.5\")` raises a `ValueError`, and `str()` leaves it as text."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "str",
+          "int",
+          "float"
+        ],
+        "answer": "str",
+        "rationale": "`+` can only join a string to another string, so the number must become a string with `str()`."
+      }
+    ],
+    "explanation": "The program reads, converts, processes and prints. `float(\"12.5\")` gives `12.5`; the tip is `12.5 * 20 / 100 = 2.5`, so the total is `15.0`. Joining it to `\"Total: \"` with `+` needs `str(15.0)`, which is `\"15.0\"`."
+  },
+  {
+    "id": "1.4.2-08",
+    "kind": "order",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.5",
+      "1.4.2.6"
+    ],
+    "stem": "Put the lines in order so the program converts a typed temperature and prints `20.0 C is 68.0 F`.",
+    "mode": "code",
+    "lines": [
+      "text = \"20\"  # what input() returned",
+      "celsius = float(text)",
+      "fahrenheit = celsius * 9 / 5 + 32",
+      "print(celsius, \"C is\", fahrenheit, \"F\")"
+    ],
+    "output": "20.0 C is 68.0 F\n",
+    "rationale": "Each line uses a variable made by the line before it: read, then convert, then calculate, then print.",
+    "explanation": "This is the read-convert-process-output pattern. The text must exist before `float()` converts it, the number must exist before the formula uses it, and the result must exist before `print()` shows it. `20.0 * 9 / 5 + 32` is `68.0`."
+  },
+  {
+    "id": "1.4.2-09",
+    "kind": "insert",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.3",
+      "1.4.2.4",
+      "1.4.2.5"
+    ],
+    "stem": "Both variables hold text that `input()` returned. Which line, inserted at the marked spot, makes the program print `12`?",
+    "code": "first = \"7\"   # what input() returned\nsecond = \"5\"  # what input() returned\n# >>> INSERT <<<\nprint(total)",
+    "output": "12\n",
+    "options": [
+      {
+        "text": "total = int(first) + int(second)",
+        "correct": true,
+        "rationale": "Both strings are converted to ints before adding, so `7 + 5` gives `12`."
+      },
+      {
+        "text": "total = first + second",
+        "correct": false,
+        "rationale": "The values are strings, so `+` joins them into `75`."
+      },
+      {
+        "text": "total = float(first) + float(second)",
+        "correct": false,
+        "rationale": "This adds the numbers, but as floats, so it prints `12.0`."
+      },
+      {
+        "text": "total = int(first) + second",
+        "correct": false,
+        "rationale": "Only one side was converted, and adding an int to a string raises a `TypeError`."
+      }
+    ],
+    "explanation": "Values from `input()` are strings, so they must be converted before doing maths. `int(\"7\") + int(\"5\")` is `12`. Without conversion, `+` joins text; with `float()`, the result is `12.0`."
+  }
+]

@@ -31,5 +31,115 @@
       { "text": "Hi Ada\nNone", "correct": true, "rationale": "greet() prints a greeting and, with no return statement, returns None." }
     ],
     "explanation": "A function without a return statement returns None. The call prints \"Hi Ada\" while it runs, then x is None, and print(x) shows None."
+  },
+  {
+    "id": "4.1.2-03",
+    "kind": "single",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.5"],
+    "stem": "What is the output of the following code?",
+    "code": "def pack_lunch():\n    print(\"Sandwich\")\n    return \"packed\"\n    print(\"Apple\")\n\nstatus = pack_lunch()\nprint(status)",
+    "output": "Sandwich\npacked\n",
+    "outputKey": true,
+    "options": [
+      { "text": "Sandwich\npacked", "correct": true, "rationale": "The function prints `Sandwich`, then `return` ends it, and the caller prints `packed`." },
+      { "text": "Sandwich\nApple\npacked", "correct": false, "rationale": "The line after `return` never runs, because `return` ends the call at once." },
+      { "text": "packed", "correct": false, "rationale": "`print(\"Sandwich\")` runs inside the call, before the returned value is printed." },
+      { "text": "Sandwich\nApple", "correct": false, "rationale": "`return` ends the function before `Apple`, and the returned `packed` is printed by the caller." }
+    ],
+    "explanation": "The call runs the body from the top. It prints `Sandwich`, then reaches `return \"packed\"`, which ends the call immediately, so `print(\"Apple\")` is skipped. The returned string is stored in `status`, and `print(status)` shows `packed`."
+  },
+  {
+    "id": "4.1.2-04",
+    "kind": "single",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.6"],
+    "stem": "What is the output of the following code?",
+    "code": "def trip_cost():\n    train = 40\n    hotel = 90\n    return train, hotel\n\nresult = trip_cost()\nprint(result)",
+    "output": "(40, 90)\n",
+    "outputKey": true,
+    "options": [
+      { "text": "40 90", "correct": false, "rationale": "This is what `print(train, hotel)` would show. `result` holds one tuple, which prints with brackets." },
+      { "text": "[40, 90]", "correct": false, "rationale": "Several values after `return` are packed into a tuple, which uses round brackets, not a list." },
+      { "text": "130", "correct": false, "rationale": "The comma separates two values; it doesn't add them." },
+      { "text": "(40, 90)", "correct": true, "rationale": "`return train, hotel` gives back one tuple holding both values." }
+    ],
+    "explanation": "Writing several values after `return`, separated by commas, packs them into one tuple. `result` refers to that tuple, so printing it shows `(40, 90)` with round brackets. To get the values separately, unpack it: `train, hotel = trip_cost()`."
+  },
+  {
+    "id": "4.1.2-05",
+    "kind": "single",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.2", "4.1.2.3"],
+    "stem": "What is the output of the following code?",
+    "code": "def shipping():\n    return 5\n\ncart = 20 + shipping() * 2\nprint(cart, shipping() > 4)",
+    "output": "30 True\n",
+    "outputKey": true,
+    "options": [
+      { "text": "50 True", "correct": false, "rationale": "`*` is worked out before `+`, so the call's value 5 is doubled first." },
+      { "text": "30 True", "correct": true, "rationale": "The calls are replaced by 5: 20 + 5 * 2 is 30, and 5 > 4 is `True`." },
+      { "text": "30 False", "correct": false, "rationale": "The second call also returns 5, and 5 is greater than 4." },
+      { "text": "25 True", "correct": false, "rationale": "`shipping()` is multiplied by 2 before it is added, so 10 is added, not 5." }
+    ],
+    "explanation": "A call to a function that returns a value can be used anywhere a value can. Each `shipping()` call is replaced by 5. So `cart` is 20 + 5 * 2 = 30 (multiplication first), and `shipping() > 4` is `5 > 4`, which is `True`."
+  },
+  {
+    "id": "4.1.2-06",
+    "kind": "single",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.5", "4.1.2.8"],
+    "stem": "What is the output of the following code?",
+    "code": "def find_room(guest):\n    bookings = [[\"Ana\", 12], [\"Ben\", 7]]\n    for pair in bookings:\n        if pair[0] == guest:\n            return pair[1]\n    return None\n\nroom = find_room(\"Cleo\")\nif room is None:\n    print(\"No booking\")\nelse:\n    print(\"Room\", room)",
+    "output": "No booking\n",
+    "outputKey": true,
+    "options": [
+      { "text": "Room None", "correct": false, "rationale": "The `if` checks for `None` first, so the `else` branch is not taken." },
+      { "text": "Room 7", "correct": false, "rationale": "No pair matches `\"Cleo\"`, so no room number is returned; the loop doesn't keep the last one." },
+      { "text": "No booking", "correct": true, "rationale": "No guest matches, so the function reaches `return None`, and the caller checks for it with `is None`." },
+      { "text": "Room 0", "correct": false, "rationale": "Nothing turns `None` into 0. The function returns `None` itself." }
+    ],
+    "explanation": "The loop compares each guest name with `\"Cleo\"`. None of them match, so the `return pair[1]` line never runs and the loop finishes. The function then reaches `return None`, which means \"there is no result\". The caller tests `room is None`, which is `True`, so it prints `No booking`."
+  },
+  {
+    "id": "4.1.2-07",
+    "kind": "multi",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.7"],
+    "stem": "Using the functions below, which calls return `None`? (Select THREE)",
+    "code": "def no_result():\n    total = 2 + 3\n\ndef stop_early():\n    return\n\ndef sign(n):\n    if n > 0:\n        return \"positive\"\n\ndef zero():\n    return 0",
+    "select": 3,
+    "options": [
+      { "text": "`no_result()`", "correct": true, "rationale": "The function has no `return` at all, so it gives back `None`." },
+      { "text": "`stop_early()`", "correct": true, "rationale": "A bare `return` with nothing after it gives back `None`." },
+      { "text": "`sign(-2)`", "correct": true, "rationale": "-2 > 0 is false, so the end of the body is reached without a `return`." },
+      { "text": "`sign(5)`", "correct": false, "rationale": "5 > 0 is true, so the function returns the string `\"positive\"`." },
+      { "text": "`zero()`", "correct": false, "rationale": "`return 0` gives back the number 0, which is a real value, not `None`." }
+    ],
+    "explanation": "A function returns `None` implicitly when it has no `return`, when it uses `return` with nothing after it, or when it reaches the end of its body without meeting a `return`. `sign(-2)` is the third case. `zero()` returns 0, which is falsy but is not `None`."
+  },
+  {
+    "id": "4.1.2-08",
+    "kind": "gap",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.1", "4.1.2.2"],
+    "stem": "Fill the gap so that the function gives back twice the number of cups, and the program prints `Flour: 6`.",
+    "code": "def double_recipe(cups):\n    __BLANK1__ cups * 2\n\nflour = double_recipe(3)\nprint(\"Flour:\", flour)",
+    "output": "Flour: 6\n",
+    "blanks": [
+      { "n": 1, "kind": "text", "accept": ["return"], "rationale": "`return` sends the value of `cups * 2` back to the caller, where it is stored in `flour`." }
+    ],
+    "explanation": "`return` followed by an expression hands that value back to the place where the function was called. `double_recipe(3)` works out 3 * 2 = 6 and returns it, the assignment stores it in `flour`, and `print` shows `Flour: 6`. With `print` instead, the function would return `None`."
+  },
+  {
+    "id": "4.1.2-09",
+    "kind": "order",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.1", "4.1.2.2", "4.1.2.3"],
+    "stem": "Put the lines in order so the program prints `135`.",
+    "mode": "code",
+    "lines": ["def total_minutes():", "    hours = 2", "    return hours * 60", "minutes = total_minutes()", "print(minutes + 15)"],
+    "output": "135\n",
+    "rationale": "`hours` must be set before `return` uses it, the function must be defined before it is called, and the result must be stored before it is printed.",
+    "explanation": "The function sets `hours` to 2 and returns 2 * 60 = 120. The `return` must be the last line of the body, because anything after it would never run. The call's value is stored in `minutes`, and `minutes + 15` uses it in an expression: 135."
   }
 ]

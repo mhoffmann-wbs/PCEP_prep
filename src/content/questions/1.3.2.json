@@ -1,0 +1,140 @@
+[
+  {
+    "id": "1.3.2-01",
+    "kind": "single",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.1", "1.3.2.2"],
+    "stem": "What is the output of the following code?",
+    "code": "cups = 2\ncups = cups + 3\nmilk = cups\ncups = 10\nprint(milk, cups)",
+    "output": "5 10\n",
+    "outputKey": true,
+    "options": [
+      { "text": "10 10", "correct": false, "rationale": "`milk = cups` is not a live link. Changing `cups` later doesn't change `milk`." },
+      { "text": "2 10", "correct": false, "rationale": "`cups` was already 5 when `milk = cups` ran, because of the line above it." },
+      { "text": "5 5", "correct": false, "rationale": "The last assignment makes `cups` refer to 10, so `cups` is no longer 5." },
+      { "text": "5 10", "correct": true, "rationale": "`milk` took the value 5 that `cups` had at that moment; `cups` later moved to 10." }
+    ],
+    "explanation": "`cups` starts at 2, and `cups = cups + 3` makes it 5. `milk = cups` makes `milk` refer to the same value, 5. `cups = 10` then moves only `cups` to a new value; `milk` still refers to 5."
+  },
+  {
+    "id": "1.3.2-02",
+    "kind": "single",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.2"],
+    "stem": "What is the output of the following code?",
+    "code": "a = 4\nb = a\na = a * 3\nc = a + b\nprint(a, b, c)",
+    "output": "12 4 16\n",
+    "outputKey": true,
+    "options": [
+      { "text": "12 12 24", "correct": false, "rationale": "`b = a` does not tie `b` to `a`. When `a` changes, `b` keeps referring to 4." },
+      { "text": "12 4 8", "correct": false, "rationale": "By the time `c` is worked out, `a` already refers to 12, not 4." },
+      { "text": "12 4 16", "correct": true, "rationale": "`a` is 12, `b` kept the old value 4, and `c` is 12 + 4." },
+      { "text": "4 4 8", "correct": false, "rationale": "`a = a * 3` gives `a` a new value, 12, so `a` is no longer 4." }
+    ],
+    "explanation": "`b = a` makes `b` refer to the value `a` has at that moment, 4. Then `a = a * 3` moves `a` to 12, while `b` stays at 4. Lines run from top to bottom, so `c = a + b` uses the current values: 12 + 4 = 16."
+  },
+  {
+    "id": "1.3.2-03",
+    "kind": "single",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.4"],
+    "stem": "Which of these is a valid Python identifier?",
+    "options": [
+      { "text": "`2nd_total`", "correct": false, "rationale": "An identifier must not start with a digit." },
+      { "text": "`_total2`", "correct": true, "rationale": "Letters, digits and underscores are allowed, and a name may start with an underscore." },
+      { "text": "`total-2`", "correct": false, "rationale": "`-` is the minus operator, so it can't be part of a name." },
+      { "text": "`total 2`", "correct": false, "rationale": "A name can't contain a space." }
+    ],
+    "explanation": "An identifier may contain letters, digits and underscores, must not start with a digit, must not contain spaces or symbols like `-`, and must not be a keyword. `_total2` follows every rule: it starts with an underscore and the digit comes later."
+  },
+  {
+    "id": "1.3.2-04",
+    "kind": "single",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.4"],
+    "stem": "What happens when this code is run?",
+    "code": "max-guests = 8\nprint(max-guests)",
+    "raises": "SyntaxError",
+    "options": [
+      { "text": "Python reports a `SyntaxError` before anything runs, as `-` can't be in a name", "correct": true, "rationale": "Python reads `max-guests` as `max` minus `guests`, and you can't assign a value to a subtraction." },
+      { "text": "It prints `8`, because Python reads `max-guests` as one variable name", "correct": false, "rationale": "A name may only contain letters, digits and underscores. `-` is always the minus operator." },
+      { "text": "It prints `0`, because `max-guests` subtracts the two values from each other", "correct": false, "rationale": "A subtraction can't be on the left of `=`, so the program never gets as far as printing." },
+      { "text": "Python reports a `NameError`, because `guests` was never given a value", "correct": false, "rationale": "A `NameError` would happen while running, but this program has a syntax error and never starts." }
+    ],
+    "explanation": "Identifiers can't contain `-`. Python reads the first line as `max - guests = 8`, which tries to assign to an expression, and reports `SyntaxError: cannot assign to expression here`. Syntax errors are found before any line runs, so nothing is printed. Use `max_guests` instead."
+  },
+  {
+    "id": "1.3.2-05",
+    "kind": "single",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.5"],
+    "stem": "Which assignment follows the PEP 8 recommendations for the variable name and the spacing?",
+    "options": [
+      { "text": "`shoppingList = []`", "correct": false, "rationale": "PEP 8 recommends `snake_case` for variables, not this camel-case style." },
+      { "text": "`ShoppingList = []`", "correct": false, "rationale": "Variable names should be all lower case with underscores; capital letters are not the PEP 8 style." },
+      { "text": "`shopping_list  =  []`", "correct": false, "rationale": "PEP 8 asks for exactly one space on each side of `=`, not several." },
+      { "text": "`shopping_list = []`", "correct": true, "rationale": "A lower-case `snake_case` name, with one space on each side of `=`." }
+    ],
+    "explanation": "PEP 8 is Python's style guide. For variables it recommends `snake_case`: lower-case words joined by underscores. Around `=` in an assignment it recommends exactly one space on each side. All four lines run, but only `shopping_list = []` follows both recommendations."
+  },
+  {
+    "id": "1.3.2-06",
+    "kind": "multi",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.3", "1.3.2.4"],
+    "stem": "A program stores how many nights a guest stays at a hotel. Which names are valid identifiers AND say clearly what the value means? (Select TWO)",
+    "select": 2,
+    "options": [
+      { "text": "`nights_booked`", "correct": true, "rationale": "Valid, and it tells the reader exactly what the number is." },
+      { "text": "`night_count`", "correct": true, "rationale": "Valid, and it clearly describes the value." },
+      { "text": "`n`", "correct": false, "rationale": "Valid, but a single letter doesn't say what the value means." },
+      { "text": "`2nights`", "correct": false, "rationale": "Invalid: an identifier must not start with a digit." },
+      { "text": "`nights-booked`", "correct": false, "rationale": "Invalid: `-` is the minus operator, so Python reads two names here." },
+      { "text": "`None`", "correct": false, "rationale": "Invalid: `None` is a keyword, and it doesn't describe the value either." }
+    ],
+    "explanation": "A good name has to pass Python's rules and also tell the reader what the value means. `n` is allowed but meaningless. `2nights`, `nights-booked` and `None` break the rules: a leading digit, a hyphen and a keyword. `nights_booked` and `night_count` are both valid and clear."
+  },
+  {
+    "id": "1.3.2-07",
+    "kind": "gap",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.1", "1.3.2.4"],
+    "stem": "Fill the gaps so the program stores the total in `total_cost` and prints `12`.",
+    "code": "item_price = 4\nitems_bought = 3\ntotal_cost __BLANK1__ __BLANK2__ * items_bought\nprint(total_cost)",
+    "output": "12\n",
+    "blanks": [
+      { "n": 1, "kind": "choice", "choices": ["=", "=="], "answer": "=", "rationale": "`=` assigns: it makes `total_cost` refer to the result. `==` only compares two values." },
+      { "n": 2, "kind": "choice", "choices": ["item_price", "Item_Price", "item-price", "itemprice"], "answer": "item_price", "rationale": "Names are case-sensitive and must be spelled exactly as they were created. `Item_Price` and `itemprice` are different names, and `item-price` is a subtraction." }
+    ],
+    "explanation": "An assignment puts the name on the left and an expression on the right of `=`. Python works out `item_price * items_bought`, which is 4 * 3 = 12, and makes `total_cost` refer to it. The name must match exactly: `Item_Price` or `itemprice` would raise a `NameError`, because those names were never created."
+  },
+  {
+    "id": "1.3.2-08",
+    "kind": "order",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.1", "1.3.2.2"],
+    "stem": "Put the lines in order so the program prints `12 5`.",
+    "mode": "code",
+    "lines": ["price = 3", "quantity = 4", "total = price * quantity", "quantity = 5", "print(total, quantity)"],
+    "altOrders": [[1, 0, 2, 3, 4]],
+    "output": "12 5\n",
+    "rationale": "Both values must exist before `total` is worked out, and `quantity` must change to 5 only after `total` used 4.",
+    "explanation": "Lines run from top to bottom, and each uses the values that exist at that moment. `total` is worked out as 3 * 4 = 12 while `quantity` is still 4. Changing `quantity` to 5 afterwards doesn't go back and change `total`. The first two lines may swap, because neither uses the other."
+  },
+  {
+    "id": "1.3.2-09",
+    "kind": "insert",
+    "objectiveId": "1.3.2",
+    "subpoints": ["1.3.2.2"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `dog cat`?",
+    "code": "first_pet = \"cat\"\nsecond_pet = first_pet\n# >>> INSERT <<<\nprint(first_pet, second_pet)",
+    "output": "dog cat\n",
+    "options": [
+      { "text": "second_pet = \"dog\"", "correct": false, "rationale": "This moves `second_pet`, not `first_pet`, so the program prints `cat dog`." },
+      { "text": "first_pet = second_pet = \"dog\"", "correct": false, "rationale": "This makes both names refer to `\"dog\"`, so the program prints `dog dog`." },
+      { "text": "First_pet = \"dog\"", "correct": false, "rationale": "Names are case-sensitive, so this creates a new variable and the program prints `cat cat`." },
+      { "text": "first_pet = \"dog\"", "correct": true, "rationale": "`first_pet` moves to `\"dog\"`, while `second_pet` still refers to `\"cat\"`." }
+    ],
+    "explanation": "`second_pet = first_pet` makes `second_pet` refer to the value `first_pet` has at that moment, `\"cat\"`. It is not a lasting link. Assigning a new value to `first_pet` moves only that name, so the program prints `dog cat`."
+  }
+]

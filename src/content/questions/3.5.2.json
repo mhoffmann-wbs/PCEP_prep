@@ -9,10 +9,10 @@
     "output": "6 4\n",
     "outputKey": true,
     "options": [
-      { "text": "4 4", "correct": false, "rationale": "find() on s still counts the two leading spaces, because strip() returned a new string and left s unchanged." },
-      { "text": "6 6", "correct": false, "rationale": "t has no leading spaces, so its first \"o\" is two positions earlier." },
-      { "text": "6 4", "correct": true, "rationale": "In s the first \"o\" is at index 6 (after two spaces and \"Hell\"); in t it is at index 4." },
-      { "text": "4 6", "correct": false, "rationale": "This swaps the two results: s is the string that still has the leading spaces." }
+      {"text": "4 4", "correct": false, "rationale": "find() on s still counts the two leading spaces, because strip() returned a new string and left s unchanged."},
+      {"text": "6 6", "correct": false, "rationale": "t has no leading spaces, so its first \"o\" is two positions earlier."},
+      {"text": "6 4", "correct": true, "rationale": "In s the first \"o\" is at index 6 (after two spaces and \"Hell\"); in t it is at index 4."},
+      {"text": "4 6", "correct": false, "rationale": "This swaps the two results: s is the string that still has the leading spaces."}
     ],
     "explanation": "find() returns the index of the first match. In s, the two leading spaces take indexes 0 and 1, so \"Hello\" starts at 2 and its \"o\" is at 6. strip() and lower() return a new string \"hello world\", where the \"o\" is at 4. The original s is not changed."
   },
@@ -27,5 +27,120 @@
     "output": "BREAD,MILK\n",
     "rationale": "The list must exist before it is sorted, sorted before it is joined, and joined before the text is printed.",
     "explanation": "split() turns the text into the list [\"milk\", \"bread\"]. sort() puts it in alphabetical order, join() glues the items together with commas, and upper() returns the text in capitals."
+  },
+  {
+    "id": "3.5.2-03",
+    "kind": "single",
+    "objectiveId": "3.5.2",
+    "subpoints": ["3.5.2.1"],
+    "stem": "What is the output of the following code?",
+    "code": "name = \"mARY ann\"\nprint(name.capitalize(), name.title(), name.swapcase())",
+    "output": "Mary ann Mary Ann Mary ANN\n",
+    "outputKey": true,
+    "options": [
+      {"text": "MARY ann Mary Ann Mary ANN", "correct": false, "rationale": "`capitalize()` does not only change the first letter: it also makes all the other letters small."},
+      {"text": "Mary Ann Mary ann Mary ANN", "correct": false, "rationale": "This swaps `capitalize()` and `title()`: `title()` is the one that capitalises every word."},
+      {"text": "Mary ann Mary Ann mary ANN", "correct": false, "rationale": "`swapcase()` turns the small `m` into a capital `M`, so the result starts with `Mary`."},
+      {"text": "Mary ann Mary Ann Mary ANN", "correct": true, "rationale": "`capitalize()` raises only the first character and lowers the rest, `title()` capitalises each word, and `swapcase()` flips every letter."}
+    ],
+    "explanation": "`capitalize()` makes the first character of the whole string capital and all the other letters small: `Mary ann`. `title()` makes the first letter of each word capital and the rest small: `Mary Ann`. `swapcase()` flips each letter, so `mARY ann` becomes `Mary ANN`."
+  },
+  {
+    "id": "3.5.2-04",
+    "kind": "single",
+    "objectiveId": "3.5.2",
+    "subpoints": ["3.5.2.6", "3.5.2.7"],
+    "stem": "What is the output of the following code?",
+    "code": "note = \"rain, rain, go away\"\nnote.replace(\"rain\", \"snow\")\nnote = note.replace(\"a\", \"A\", 2)\nprint(note)",
+    "output": "rAin, rAin, go away\n",
+    "outputKey": true,
+    "options": [
+      {"text": "rAin, rAin, go away", "correct": true, "rationale": "The first `replace()` result is thrown away, and the second one only replaces the first two `a` characters."},
+      {"text": "snow, snow, go AwAy", "correct": false, "rationale": "The first `replace()` returns a new string, but nothing stores it, so `note` still says `rain`."},
+      {"text": "rAin, rAin, go AwAy", "correct": false, "rationale": "The third argument, 2, limits `replace()` to the first two matches."},
+      {"text": "rain, rain, go away", "correct": false, "rationale": "The second `replace()` is assigned back to `note`, so its change is kept."}
+    ],
+    "explanation": "String methods never change the original string. Line 2 creates `\"snow, snow, go away\"` but does not store it, so `note` is unchanged. Line 3 replaces `a` with `A`, but only twice, counting from the left, and stores the result in `note`. That gives `rAin, rAin, go away`."
+  },
+  {
+    "id": "3.5.2-05",
+    "kind": "single",
+    "objectiveId": "3.5.2",
+    "subpoints": ["3.5.2.3"],
+    "stem": "What is the output of the following code?",
+    "code": "data = \"eggs,,milk, jam\"\nparts = data.split(\",\")\nprint(parts)",
+    "output": "['eggs', '', 'milk', ' jam']\n",
+    "outputKey": true,
+    "options": [
+      {"text": "['eggs', 'milk', 'jam']", "correct": false, "rationale": "Only `split()` with no argument drops empty pieces and whitespace. With a separator, every piece is kept exactly."},
+      {"text": "['eggs', '', 'milk', ' jam']", "correct": true, "rationale": "Splitting on `\",\"` cuts at every comma; two commas in a row leave an empty string, and the space before `jam` is kept."},
+      {"text": "['eggs', 'milk', ' jam']", "correct": false, "rationale": "Two separators in a row produce an empty string `''` between them."},
+      {"text": "['eggs', '', 'milk', 'jam']", "correct": false, "rationale": "`split(\",\")` does not trim spaces, so the last piece keeps its leading space: `' jam'`."}
+    ],
+    "explanation": "`split(\",\")` cuts the string at every comma and returns a list of the pieces. Between the two commas after `eggs` there is nothing, so one piece is the empty string `''`. The text after the last comma is `\" jam\"`, with its space, because splitting on a separator never removes whitespace."
+  },
+  {
+    "id": "3.5.2-06",
+    "kind": "single",
+    "objectiveId": "3.5.2",
+    "subpoints": ["3.5.2.2"],
+    "stem": "What is the output of the following code?",
+    "code": "trip = \"Berlin to Bern by bus\"\nprint(trip.find(\"Ber\"), trip.find(\"Ber\", 1), trip.find(\"bus \"))",
+    "output": "0 10 -1\n",
+    "outputKey": true,
+    "options": [
+      {"text": "1 11 -1", "correct": false, "rationale": "Indexes start at 0, so a match at the very beginning is at index 0."},
+      {"text": "0 10 18", "correct": false, "rationale": "`\"bus \"` ends with a space, but `bus` is at the end of the text, so this substring is not found."},
+      {"text": "0 10 -1", "correct": true, "rationale": "`Ber` first appears at index 0, the search from index 1 finds `Bern` at 10, and `\"bus \"` (with a space) does not appear at all."},
+      {"text": "0 0 -1", "correct": false, "rationale": "The second argument is where the search starts, so the `Ber` at index 0 is skipped."}
+    ],
+    "explanation": "`find()` returns the index of the first match. `Berlin` starts at index 0. With a start index of 1, the search skips that one and finds `Bern` at index 10 (`Berlin` plus a space is 7 characters, `to` plus a space is 3 more). `\"bus \"` with a trailing space is not in the string, so `find()` returns -1 rather than raising an error."
+  },
+  {
+    "id": "3.5.2-07",
+    "kind": "multi",
+    "objectiveId": "3.5.2",
+    "subpoints": ["3.5.2.1", "3.5.2.5", "3.5.2.6"],
+    "stem": "Which expressions evaluate to the string `\"tea\"`? (Select THREE)",
+    "select": 3,
+    "options": [
+      {"text": "`\"  tea\\n\".strip()`", "correct": true, "rationale": "`strip()` with no argument removes all whitespace from both ends, including the new line."},
+      {"text": "`\"TEA\".lower()`", "correct": true, "rationale": "`lower()` makes every letter small."},
+      {"text": "`\"t-e-a\".replace(\"-\", \"\")`", "correct": true, "rationale": "Replacing every dash with an empty string removes the dashes."},
+      {"text": "`\"tea!!\".rstrip(\"!a\")`", "correct": false, "rationale": "`rstrip(\"!a\")` removes any `!` or `a` from the right end, so the `a` of `tea` goes too, leaving `\"te\"`."},
+      {"text": "`\"TEA\".capitalize()`", "correct": false, "rationale": "`capitalize()` keeps the first character capital, so this gives `\"Tea\"`."},
+      {"text": "`\" tea \".lstrip()`", "correct": false, "rationale": "`lstrip()` trims only the left end, so the trailing space stays: `\"tea \"`."}
+    ],
+    "explanation": "`strip()` removes whitespace (spaces, tabs, new lines) from both ends, `lower()` makes every letter small, and `replace(\"-\", \"\")` deletes every dash. `rstrip(\"!a\")` treats its argument as a set of characters, so it also eats the final `a`. `capitalize()` leaves a capital `T`, and `lstrip()` keeps the space on the right."
+  },
+  {
+    "id": "3.5.2-08",
+    "kind": "gap",
+    "objectiveId": "3.5.2",
+    "subpoints": ["3.5.2.3", "3.5.2.4"],
+    "stem": "Fill the gaps so the program prints `kiwi|mango|lime`.",
+    "code": "raw = \"  kiwi mango  lime \"\nfruits = raw.__BLANK1__()\nprint(__BLANK2__.join(fruits))",
+    "output": "kiwi|mango|lime\n",
+    "blanks": [
+      {"n": 1, "kind": "choice", "choices": ["split", "strip", "lower"], "answer": "split", "rationale": "`split()` with no argument cuts on any run of whitespace and drops the empty pieces, giving `['kiwi', 'mango', 'lime']`."},
+      {"n": 2, "kind": "text", "accept": ["\"|\"", "'|'"], "rationale": "`join()` is called on the separator string, here `\"|\"`, and takes the list as its argument."}
+    ],
+    "explanation": "`raw.split()` returns the list `['kiwi', 'mango', 'lime']`: with no argument, it ignores the extra spaces at the ends and in the middle. Then `\"|\".join(fruits)` glues the items together with `|` between them, but not at the ends. With `strip()`, `fruits` would be a string, and `join()` would put `|` between every single character."
+  },
+  {
+    "id": "3.5.2-09",
+    "kind": "insert",
+    "objectiveId": "3.5.2",
+    "subpoints": ["3.5.2.1", "3.5.2.5", "3.5.2.7"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `Olivia`?",
+    "code": "name = \"  olivia \"\n# >>> INSERT <<<\nprint(name)",
+    "output": "Olivia\n",
+    "options": [
+      {"text": "name = name.strip().capitalize()", "correct": true, "rationale": "`strip()` removes the spaces first, then `capitalize()` makes the `o` a capital, and the result is stored back in `name`."},
+      {"text": "name.strip().capitalize()", "correct": false, "rationale": "The new string is created but never stored, so `name` is unchanged and still has its spaces and small `o`."},
+      {"text": "name = name.capitalize().strip()", "correct": false, "rationale": "`capitalize()` only changes the first character, which is a space here, so the `o` stays small: the result is `olivia`."},
+      {"text": "name = name.rstrip().capitalize()", "correct": false, "rationale": "`rstrip()` trims only the right end, so the two leading spaces remain and the `o` is not the first character."}
+    ],
+    "explanation": "String methods return new strings, so the result must be assigned to keep it. Methods in a chain run left to right: `strip()` returns `\"olivia\"`, and `capitalize()` on that returns `\"Olivia\"`. In the other order, `capitalize()` sees a space as the first character, so no letter becomes a capital."
   }
 ]

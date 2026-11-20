@@ -1,0 +1,314 @@
+[
+  {
+    "id": "x.2-01",
+    "kind": "single",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "print(9 & 5, 9 | 5, 9 ^ 5)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "1 12 13",
+        "correct": false,
+        "rationale": "This swaps `|` and `^`. `|` keeps every bit that is 1 in either number; `^` keeps only the bits that differ."
+      },
+      {
+        "text": "0 13 12",
+        "correct": false,
+        "rationale": "`1001` and `0101` share the last bit, so `&` gives 1, not 0."
+      },
+      {
+        "text": "1 13 12",
+        "correct": true,
+        "rationale": "`1001 & 0101` is `0001` (1), `1001 | 0101` is `1101` (13), and `1001 ^ 0101` is `1100` (12)."
+      },
+      {
+        "text": "1 13 59049",
+        "correct": false,
+        "rationale": "`^` is xor, not \"to the power of\". Power is `**`, and `9 ** 5` would be 59049."
+      }
+    ],
+    "explanation": "Write the numbers in binary: 9 is `1001` and 5 is `0101`. `&` keeps a 1 only where both have a 1: `0001` = 1. `|` keeps a 1 where either has a 1: `1101` = 13. `^` keeps a 1 where the bits differ: `1100` = 12.",
+    "output": "1 13 12\n"
+  },
+  {
+    "id": "x.2-02",
+    "kind": "single",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "floor = 6\nprint(~floor, -floor)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "-6 -6",
+        "correct": false,
+        "rationale": "`~x` is not the same as `-x`: it is always one less, `-x - 1`."
+      },
+      {
+        "text": "5 -6",
+        "correct": false,
+        "rationale": "This subtracts 1 from 6 but forgets the sign change. The rule is `~x == -x - 1`."
+      },
+      {
+        "text": "-7 6",
+        "correct": false,
+        "rationale": "`-floor` simply changes the sign, so it is -6, not 6."
+      },
+      {
+        "text": "-7 -6",
+        "correct": true,
+        "rationale": "`~6` is `-6 - 1` = -7, and `-6` is just the negative of 6."
+      }
+    ],
+    "explanation": "The bitwise not `~` flips every bit, and in Python that always gives `~x == -x - 1`. So `~6` is -6 - 1 = -7. The unary minus `-floor` only changes the sign, giving -6.",
+    "output": "-7 -6\n"
+  },
+  {
+    "id": "x.2-03",
+    "kind": "single",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.2"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "print(5 << 3, 50 >> 2)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "40 12",
+        "correct": true,
+        "rationale": "`5 << 3` is 5 × 2³ = 40, and `50 >> 2` is 50 // 4 = 12; the bits that fall off are lost."
+      },
+      {
+        "text": "40 12.5",
+        "correct": false,
+        "rationale": "A right shift is floor division by a power of 2, so the result is an integer, rounded down."
+      },
+      {
+        "text": "15 48",
+        "correct": false,
+        "rationale": "This multiplies by 3 and subtracts 2. Shifting by n places multiplies or divides by 2 to the power n."
+      },
+      {
+        "text": "8 200",
+        "correct": false,
+        "rationale": "This mixes up the directions: `<<` makes the number bigger and `>>` makes it smaller."
+      }
+    ],
+    "explanation": "`x << n` shifts the bits left by n places, which is `x * 2**n`: 5 × 8 = 40. `x >> n` shifts right, which is `x // 2**n`: 50 // 4 = 12, because the bits that drop off the right end are lost.",
+    "output": "40 12\n"
+  },
+  {
+    "id": "x.2-04",
+    "kind": "single",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.1",
+      "x.2.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "print(1 | 2 ^ 3 & 6)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "0",
+        "correct": false,
+        "rationale": "This works from left to right. `&` comes first, then `^`, then `|`."
+      },
+      {
+        "text": "3",
+        "correct": false,
+        "rationale": "This applies `^` before `&`. `&` has the higher priority."
+      },
+      {
+        "text": "1",
+        "correct": true,
+        "rationale": "`3 & 6` is 2 first, then `2 ^ 2` is 0, and finally `1 | 0` is 1."
+      },
+      {
+        "text": "7",
+        "correct": false,
+        "rationale": "This treats every operator as `|`. Each operator has its own priority and rule."
+      }
+    ],
+    "explanation": "Precedence decides the order: `&` first, then `^`, then `|`. `3 & 6` is `011 & 110` = `010` = 2. Next `2 ^ 2` is 0, because equal bits give 0. Last, `1 | 0` is 1.",
+    "output": "1\n"
+  },
+  {
+    "id": "x.2-05",
+    "kind": "single",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "a, b = 4, 3\nprint(a and b, a & b, a or b, a | b)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "True 0 True 7",
+        "correct": false,
+        "rationale": "`and` and `or` return one of their operands, not `True` or `False`."
+      },
+      {
+        "text": "0 0 7 7",
+        "correct": false,
+        "rationale": "`and` and `or` don't combine bits. They look at whole values: 4 is true, so `4 and 3` gives 3 and `4 or 3` gives 4."
+      },
+      {
+        "text": "3 7 4 0",
+        "correct": false,
+        "rationale": "This swaps `&` and `|`: `100 & 011` share no bits, so `&` gives 0, and `|` gives `111` = 7."
+      },
+      {
+        "text": "3 0 4 7",
+        "correct": true,
+        "rationale": "`and` returns its second operand, 3; `4 & 3` is 0; `or` returns the first true operand, 4; `4 | 3` is 7."
+      }
+    ],
+    "explanation": "`and` and `or` are Boolean operators. 4 is true, so `4 and 3` returns its second value, 3, and `4 or 3` returns its first value, 4. `&` and `|` work bit by bit: 4 is `100` and 3 is `011`. They share no 1 bits, so `4 & 3` is 0 and `4 | 3` is `111` = 7.",
+    "output": "3 0 4 7\n"
+  },
+  {
+    "id": "x.2-06",
+    "kind": "multi",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.1",
+      "x.2.2"
+    ],
+    "select": 3,
+    "stem": "Which expressions evaluate to `0`? (Select THREE)",
+    "options": [
+      {
+        "text": "`~-1`",
+        "correct": true,
+        "rationale": "`~x` is `-x - 1`, so `~-1` is 1 - 1 = 0."
+      },
+      {
+        "text": "`6 & 9`",
+        "correct": true,
+        "rationale": "`0110` and `1001` have no 1 bit in the same place, so `&` gives 0."
+      },
+      {
+        "text": "`5 ^ 5`",
+        "correct": true,
+        "rationale": "xor gives 1 only where bits differ. A number xor itself has no differing bits, so the result is 0."
+      },
+      {
+        "text": "`~0`",
+        "correct": false,
+        "rationale": "`~0` is `-0 - 1` = -1, not 0."
+      },
+      {
+        "text": "`3 | 0`",
+        "correct": false,
+        "rationale": "`|` keeps every 1 bit of either number, so `3 | 0` is still 3."
+      },
+      {
+        "text": "`2 << 0`",
+        "correct": false,
+        "rationale": "Shifting by zero places changes nothing, so the result is 2."
+      }
+    ],
+    "explanation": "Use the rules one by one. `~-1` = -(-1) - 1 = 0. `6 & 9`: `0110` and `1001` share no bits, so 0. `5 ^ 5`: identical bits never differ, so 0. The others give -1, 3 and 2."
+  },
+  {
+    "id": "x.2-07",
+    "kind": "gap",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.1",
+      "x.2.4"
+    ],
+    "stem": "Complete the code so that it switches on the timer setting and then checks it, printing `5 4`.",
+    "code": "ON, DIMMED, TIMER = 1, 2, 4\nlamp = ON\nlamp = lamp __BLANK1__ TIMER\nprint(lamp, lamp __BLANK2__ TIMER)",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "|",
+          "&",
+          "or"
+        ],
+        "answer": "|",
+        "rationale": "`|` switches a bit on: `001 | 100` is `101`, which is 5. `or` would just return the first true value, 1."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "&",
+          "|",
+          "^"
+        ],
+        "answer": "&",
+        "rationale": "`&` checks a bit: `101 & 100` is `100`, which is 4, a non-zero answer meaning the timer is on."
+      }
+    ],
+    "explanation": "Each setting is one bit: ON is `001`, DIMMED `010` and TIMER `100`. `lamp | TIMER` switches the timer bit on, giving `101` = 5. `lamp & TIMER` keeps only the timer bit, giving 4, so the timer is on. The Boolean `or` doesn't work here: `1 or 4` is simply 1.",
+    "output": "5 4\n"
+  },
+  {
+    "id": "x.2-08",
+    "kind": "order",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.3"
+    ],
+    "mode": "values",
+    "stem": "Put these operators in order of priority, from the one Python applies first to the one it applies last.",
+    "lines": [
+      "~",
+      "+",
+      ">>",
+      "&",
+      "^",
+      "|"
+    ],
+    "rationale": "Unary `~` binds tightest, then addition, then the shifts, then `&`, `^` and `|` in that order.",
+    "explanation": "Python's priority order is: `**`, then unary `~`, then `*` and `/`, then `+` and `-`, then the shifts `<<` and `>>`, then `&`, then `^`, then `|`. So in `x | y ^ z & w`, the `&` is done first and the `|` last."
+  },
+  {
+    "id": "x.2-09",
+    "kind": "insert",
+    "objectiveId": "x.2",
+    "subpoints": [
+      "x.2.2",
+      "x.2.3"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `24`?",
+    "code": "boxes = 3\n# >>> INSERT <<<\nprint(boxes)",
+    "options": [
+      {
+        "text": "boxes = boxes * 2 ^ 3",
+        "correct": false,
+        "rationale": "`^` is xor, not power. `*` goes first, so this is `6 ^ 3`, which is 5."
+      },
+      {
+        "text": "boxes = boxes << 8",
+        "correct": false,
+        "rationale": "Shifting by 8 places multiplies by 2⁸ = 256, giving 768. To multiply by 8 you shift by 3."
+      },
+      {
+        "text": "boxes = boxes >> 3",
+        "correct": false,
+        "rationale": "`>>` shifts right and makes the number smaller: 3 // 8 is 0."
+      },
+      {
+        "text": "boxes = boxes << 3",
+        "correct": true,
+        "rationale": "Shifting left by 3 places multiplies by 2³ = 8, and 3 × 8 = 24."
+      }
+    ],
+    "explanation": "`x << n` is the same as `x * 2**n`. To turn 3 into 24 you multiply by 8, which is 2³, so you shift left by 3 places. `>>` would divide, `<< 8` multiplies by 256, and `^` is xor, not power.",
+    "output": "24\n"
+  }
+]

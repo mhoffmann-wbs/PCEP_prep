@@ -1,0 +1,143 @@
+[
+  {
+    "id": "4.1.3-01",
+    "kind": "single",
+    "objectiveId": "4.1.3",
+    "subpoints": ["4.1.3.1"],
+    "stem": "In the code below, which names are the parameters of `mix_paint()`?",
+    "code": "def mix_paint(color, litres):\n    print(\"Mixing\", litres, \"litres of\", color)\n\nmix_paint(\"blue\", 2)",
+    "options": [
+      { "text": "`color` and `litres`", "correct": true, "rationale": "Parameters are the names written in the brackets of the `def` line." },
+      { "text": "`\"blue\"` and `2`", "correct": false, "rationale": "These are the arguments: the values passed in the call, not the names in the definition." },
+      { "text": "`mix_paint` and `print`", "correct": false, "rationale": "These are function names. Parameters are the names inside the brackets of the `def` line." },
+      { "text": "`color`, `litres`, `\"blue\"` and `2`", "correct": false, "rationale": "This mixes both groups: `color` and `litres` are parameters, while `\"blue\"` and `2` are arguments." }
+    ],
+    "explanation": "A parameter is a name in the function definition, like a labelled empty box. An argument is the value in a call that fills the box. Here `def mix_paint(color, litres):` defines the parameters `color` and `litres`, and the call `mix_paint(\"blue\", 2)` passes the arguments `\"blue\"` and `2`."
+  },
+  {
+    "id": "4.1.3-02",
+    "kind": "single",
+    "objectiveId": "4.1.3",
+    "subpoints": ["4.1.3.2", "4.1.3.3", "4.1.3.4"],
+    "stem": "What is the output of the following code?",
+    "code": "def book_room(guests, nights=1, breakfast=\"no\"):\n    print(guests, nights, breakfast)\n\nbook_room(2)\nbook_room(3, breakfast=\"yes\")\nbook_room(1, 4, \"yes\")",
+    "output": "2 1 no\n3 1 yes\n1 4 yes\n",
+    "outputKey": true,
+    "options": [
+      { "text": "2 1 no\n3 yes no\n1 4 yes", "correct": false, "rationale": "A keyword argument goes to the parameter it names, not to the next free position, so `\"yes\"` goes to `breakfast`." },
+      { "text": "2 1 no\n3 1 yes\n1 4 yes", "correct": true, "rationale": "Missing arguments take their defaults, the keyword argument overrides only `breakfast`, and the last call overrides both defaults by position." },
+      { "text": "2 1 no\n3 1 no\n1 4 yes", "correct": false, "rationale": "The keyword argument `breakfast=\"yes\"` overrides the default `\"no\"` for that call." },
+      { "text": "2 None None\n3 None yes\n1 4 yes", "correct": false, "rationale": "A parameter with a default never gets `None` by itself: when the argument is left out, its default value is used." }
+    ],
+    "explanation": "`book_room(2)` gives only `guests`, so `nights` and `breakfast` use their defaults: `2 1 no`. `book_room(3, breakfast=\"yes\")` overrides just `breakfast` by keyword, so `nights` stays 1: `3 1 yes`. `book_room(1, 4, \"yes\")` passes all three by position: `1 4 yes`."
+  },
+  {
+    "id": "4.1.3-03",
+    "kind": "single",
+    "objectiveId": "4.1.3",
+    "subpoints": ["4.1.3.2", "4.1.3.6"],
+    "stem": "What happens when you try to run this program?",
+    "code": "def send_card(to, message):\n    print(message, to)\n\nprint(\"Writing a card\")\nsend_card(to=\"Mia\", \"Happy birthday\")",
+    "raises": "SyntaxError",
+    "options": [
+      { "text": "It prints `Writing a card` and then `Happy birthday Mia`.", "correct": false, "rationale": "Python does not sort the arguments out for you: a positional argument must never follow a keyword argument." },
+      { "text": "It prints `Writing a card`, then stops with a `TypeError` when `send_card()` is called.", "correct": false, "rationale": "The problem is found while Python reads the code, not while it runs, so not even the first `print()` happens." },
+      { "text": "Nothing is printed: Python reports a `SyntaxError` before the program starts.", "correct": true, "rationale": "A positional argument after a keyword argument is a syntax error, so Python refuses to run any line of the file." },
+      { "text": "It prints `Writing a card` and then `Mia Happy birthday`.", "correct": false, "rationale": "The call is not valid at all, so nothing is matched to the parameters." }
+    ],
+    "explanation": "In a call, all positional arguments must come first, then the keyword arguments. `send_card(to=\"Mia\", \"Happy birthday\")` breaks this rule, which is `SyntaxError: positional argument follows keyword argument`. A syntax error is found before the program starts, so `Writing a card` is never printed."
+  },
+  {
+    "id": "4.1.3-04",
+    "kind": "single",
+    "objectiveId": "4.1.3",
+    "subpoints": ["4.1.3.6", "4.1.3.2"],
+    "stem": "Which exception does the last line raise?",
+    "code": "def water_plant(plant, litres=1):\n    print(\"Watering\", plant, \"with\", litres, \"l\")\n\nwater_plant(\"fern\", plant=\"cactus\")",
+    "raises": "TypeError",
+    "options": [
+      { "text": "`SyntaxError`", "correct": false, "rationale": "The positional argument comes before the keyword argument, so the call is written correctly; the problem only shows up when it runs." },
+      { "text": "`NameError`", "correct": false, "rationale": "`plant` is a real parameter of `water_plant()`, so the keyword name is known." },
+      { "text": "`ValueError`", "correct": false, "rationale": "Nothing is wrong with the values themselves; the call gives one parameter two values, which is a `TypeError`." },
+      { "text": "`TypeError`", "correct": true, "rationale": "`\"fern\"` already fills `plant` by position, so the keyword `plant=\"cactus\"` gives it a second value: `got multiple values for argument 'plant'`." }
+    ],
+    "explanation": "Arguments are matched by position first: `\"fern\"` goes to `plant`. Then the keyword argument `plant=\"cactus\"` tries to fill `plant` again. Python stops with `TypeError: water_plant() got multiple values for argument 'plant'`."
+  },
+  {
+    "id": "4.1.3-05",
+    "kind": "single",
+    "objectiveId": "4.1.3",
+    "subpoints": ["4.1.3.5"],
+    "stem": "What is the output of the following code?",
+    "code": "print(\"tea\", \"milk\", sep=\"&\", end=\"|\")\nprint(\"bread\")\nprint(\"jam\", \"butter\", sep=\"\")",
+    "output": "tea&milk|bread\njambutter\n",
+    "outputKey": true,
+    "options": [
+      { "text": "tea&milk|bread\njambutter", "correct": true, "rationale": "`sep` goes between the values, `end` replaces the newline, so `bread` continues on the same line." },
+      { "text": "tea&milk|\nbread\njambutter", "correct": false, "rationale": "`end=\"|\"` replaces the newline completely, so the next `print()` continues on the same line." },
+      { "text": "tea&milk&|bread\njambutter", "correct": false, "rationale": "`sep` is only put between values, never after the last one." },
+      { "text": "tea & milk|bread\njam butter", "correct": false, "rationale": "Setting `sep` replaces the default space; it does not add to it, and `sep=\"\"` means no space at all." }
+    ],
+    "explanation": "The first `print()` puts `&` between `tea` and `milk` and ends with `|` instead of a newline. So `bread` is printed right after it, followed by the usual newline. The last call uses an empty separator, so `jam` and `butter` are joined: `jambutter`."
+  },
+  {
+    "id": "4.1.3-06",
+    "kind": "multi",
+    "objectiveId": "4.1.3",
+    "subpoints": ["4.1.3.2", "4.1.3.4", "4.1.3.6"],
+    "stem": "Which calls of `plan_meal()` run without an error? (Select TWO)",
+    "select": 2,
+    "code": "def plan_meal(main, side=\"salad\", drink=\"water\"):\n    print(main, side, drink)",
+    "options": [
+      { "text": "`plan_meal(\"soup\", drink=\"juice\")`", "correct": true, "rationale": "`\"soup\"` fills `main`, the keyword overrides `drink`, and `side` uses its default." },
+      { "text": "`plan_meal(side=\"rice\", main=\"fish\")`", "correct": true, "rationale": "Keyword arguments may come in any order, and every parameter without a default gets a value." },
+      { "text": "`plan_meal(drink=\"tea\")`", "correct": false, "rationale": "`main` has no default, so leaving it out raises `TypeError` (missing 1 required positional argument)." },
+      { "text": "`plan_meal(main=\"pasta\", \"bread\")`", "correct": false, "rationale": "A positional argument after a keyword argument is a `SyntaxError`." },
+      { "text": "`plan_meal(\"pie\", \"chips\", \"cola\", \"tea\")`", "correct": false, "rationale": "The function has three parameters, so four arguments raise `TypeError` (takes from 1 to 3 positional arguments)." },
+      { "text": "`plan_meal(\"stew\", main=\"curry\")`", "correct": false, "rationale": "`\"stew\"` already fills `main` by position, so the keyword gives it a second value: `TypeError`." }
+    ],
+    "explanation": "A valid call gives every parameter without a default exactly one value, puts positional arguments before keyword arguments, and passes no more arguments than there are parameters. Only `plan_meal(\"soup\", drink=\"juice\")` and `plan_meal(side=\"rice\", main=\"fish\")` follow all these rules."
+  },
+  {
+    "id": "4.1.3-07",
+    "kind": "gap",
+    "objectiveId": "4.1.3",
+    "subpoints": ["4.1.3.5"],
+    "stem": "Complete the code so that it prints `Shopping list: eggs, flour, sugar` on one line.",
+    "code": "print(\"Shopping list:\", __BLANK1__=\" \")\nprint(\"eggs\", \"flour\", \"sugar\", __BLANK2__=\", \")",
+    "output": "Shopping list: eggs, flour, sugar\n",
+    "blanks": [
+      { "n": 1, "kind": "choice", "choices": ["end", "sep"], "answer": "end", "rationale": "`end=\" \"` replaces the newline with a space, so the second `print()` continues on the same line." },
+      { "n": 2, "kind": "text", "accept": ["sep"], "rationale": "`sep=\", \"` puts a comma and a space between the three values." }
+    ],
+    "explanation": "The first `print()` has only one value, so a `sep` would have nothing to separate; `end=\" \"` is what stops it from starting a new line. In the second call, `sep=\", \"` goes between `eggs`, `flour` and `sugar`, and the default `end` finishes the line."
+  },
+  {
+    "id": "4.1.3-08",
+    "kind": "order",
+    "objectiveId": "4.1.3",
+    "subpoints": ["4.1.3.3", "4.1.3.4", "4.1.3.2"],
+    "stem": "Put the lines in order so the program prints `Oslo 3 1`, then `Rome 4 2`, then `Paris 5 1`.",
+    "mode": "code",
+    "lines": ["def trip(city, days=3, bags=1):", "    print(city, days, bags)", "trip(\"Oslo\")", "trip(\"Rome\", bags=2, days=4)", "trip(\"Paris\", 5)"],
+    "output": "Oslo 3 1\nRome 4 2\nParis 5 1\n",
+    "rationale": "The function must be defined before it is called, its body goes right under the `def` line, and the calls follow the order of the output.",
+    "explanation": "`trip(\"Oslo\")` uses both defaults: `Oslo 3 1`. `trip(\"Rome\", bags=2, days=4)` overrides both by keyword: `Rome 4 2`. `trip(\"Paris\", 5)` overrides `days` by position and keeps the default `bags`: `Paris 5 1`."
+  },
+  {
+    "id": "4.1.3-09",
+    "kind": "insert",
+    "objectiveId": "4.1.3",
+    "subpoints": ["4.1.3.2", "4.1.3.4", "4.1.3.6"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `lamp 25 USD`?",
+    "code": "def label(item, price, currency=\"EUR\"):\n    print(item, price, currency)\n\n# >>> INSERT <<<",
+    "output": "lamp 25 USD\n",
+    "options": [
+      { "text": "label(\"lamp\", currency=\"USD\")", "correct": false, "rationale": "`price` has no default, so leaving it out raises `TypeError`." },
+      { "text": "label(price=25, \"lamp\", currency=\"USD\")", "correct": false, "rationale": "A positional argument after a keyword argument is a `SyntaxError`." },
+      { "text": "label(\"lamp\", 25, \"USD\")", "correct": true, "rationale": "The three positional arguments fill `item`, `price` and `currency` in order, overriding the default." },
+      { "text": "label(\"USD\", 25, \"lamp\")", "correct": false, "rationale": "Positional arguments are matched by order, so this prints `USD 25 lamp`." }
+    ],
+    "explanation": "The target output needs `item=\"lamp\"`, `price=25` and `currency=\"USD\"`. Passing them in the order of the parameters does exactly that, and the third argument overrides the default `\"EUR\"`."
+  }
+]

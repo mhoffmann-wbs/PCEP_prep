@@ -1,0 +1,316 @@
+[
+  {
+    "id": "3.1.3-01",
+    "kind": "single",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.1",
+      "3.1.3.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "seats = [\n    [\"A1\", \"A2\", \"A3\"],\n    [\"B1\", \"B2\", \"B3\"],\n    [\"C1\", \"C2\", \"C3\"],\n]\nprint(seats[2][0], seats[-2][-1])",
+    "output": "C1 B3\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "A3 C2",
+        "correct": false,
+        "rationale": "This reads the indexes as column first. The first index picks the row."
+      },
+      {
+        "text": "B1 B3",
+        "correct": false,
+        "rationale": "This counts rows from 1. Index 2 is the third row, \"C\"."
+      },
+      {
+        "text": "C1 B1",
+        "correct": false,
+        "rationale": "-1 picks the last item of the row, not the first."
+      },
+      {
+        "text": "C1 B3",
+        "correct": true,
+        "rationale": "seats[2] is the third row and [0] its first seat; seats[-2] is the middle row and [-1] its last seat."
+      }
+    ],
+    "explanation": "Indexes are read left to right. seats[2] is the row ['C1', 'C2', 'C3'], and [0] picks \"C1\". seats[-2] is the second row from the end, ['B1', 'B2', 'B3'], and [-1] picks its last seat, \"B3\"."
+  },
+  {
+    "id": "3.1.3-02",
+    "kind": "single",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.1",
+      "3.1.3.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "grid = [[\".\"] * 3] * 2\ngrid[1][1] = \"X\"\nprint(grid)",
+    "output": "[['.', 'X', '.'], ['.', 'X', '.']]\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "[['.', '.', '.'], ['.', 'X', '.']]",
+        "correct": false,
+        "rationale": "This would be right if each row were a separate list, but * 2 repeats one row object twice."
+      },
+      {
+        "text": "[['.', 'X', '.'], ['.', 'X', '.']]",
+        "correct": true,
+        "rationale": "The outer * 2 repeats the same inner list, so both rows are one and the same list."
+      },
+      {
+        "text": "[['.', '.', '.'], ['.', '.', '.']]",
+        "correct": false,
+        "rationale": "Assigning to grid[1][1] does change the row; it is not a copy."
+      },
+      {
+        "text": "An error is raised, because `*` can't repeat a list",
+        "correct": false,
+        "rationale": "* works on lists: it repeats their items, which is how the rows were built."
+      }
+    ],
+    "explanation": "[\".\"] * 3 makes one row ['.', '.', '.']. The outer * 2 puts that same row into the outer list twice; it does not copy it. grid[1][1] = \"X\" changes the shared row, so the change shows up in both places. To get independent rows, build each one separately, for example with append() in a loop."
+  },
+  {
+    "id": "3.1.3-03",
+    "kind": "single",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.2",
+      "3.1.3.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "hotel = [\n    [[3, 1], [1, 4], [2, 5]],\n    [[6, 2], [2, 1]],\n]\nprint(hotel[0][2][1], len(hotel), len(hotel[0]))",
+    "output": "5 2 3\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "5 2 3",
+        "correct": true,
+        "rationale": "Floor 0, room 2, bed 1 holds 5; the hotel has 2 floors, and floor 0 has 3 rooms."
+      },
+      {
+        "text": "5 5 3",
+        "correct": false,
+        "rationale": "len() counts only the top level: the two floors, not the five rooms inside them."
+      },
+      {
+        "text": "4 2 3",
+        "correct": false,
+        "rationale": "Index 2 is the third room, [2, 5], not the second one."
+      },
+      {
+        "text": "5 2 6",
+        "correct": false,
+        "rationale": "len(hotel[0]) counts the rooms on the floor, 3; it doesn't count the numbers inside them."
+      }
+    ],
+    "explanation": "Each index goes one level deeper. hotel[0] is the first floor, [0][2] is its third room [2, 5], and [0][2][1] is 5. len() counts only the items at the level you give it: hotel has 2 floors, and hotel[0] has 3 rooms."
+  },
+  {
+    "id": "3.1.3-04",
+    "kind": "single",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.1",
+      "3.1.3.3"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "table = [[1, 2, 3], [4, 5, 6]]\nprint(table[1][2])\nprint(table[2][1])",
+    "raises": "IndexError",
+    "options": [
+      {
+        "text": "It prints `6` and then `6`.",
+        "correct": false,
+        "rationale": "The first index always picks the row. It does not swap with the column."
+      },
+      {
+        "text": "It prints `6` and then `None`.",
+        "correct": false,
+        "rationale": "A missing row is an error, not None."
+      },
+      {
+        "text": "It prints `6`, then raises `IndexError`.",
+        "correct": true,
+        "rationale": "table[1][2] is 6, but there is no row with index 2."
+      },
+      {
+        "text": "It prints `6`, then raises `TypeError`.",
+        "correct": false,
+        "rationale": "Two integer indexes are a valid way to index; the problem is that the row does not exist."
+      }
+    ],
+    "explanation": "table has 2 rows (indexes 0 and 1) and 3 columns (indexes 0, 1 and 2). table[1][2] is row 1, column 2: the value 6. table[2] asks for a third row, which does not exist, so Python raises IndexError: list index out of range."
+  },
+  {
+    "id": "3.1.3-05",
+    "kind": "single",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "plan = [[\"jam\"], [\"tea\", \"rice\"]]\ncopy = plan[:]\ncopy[0].append(\"honey\")\ncopy[1] = [\"salt\"]\nprint(plan)",
+    "output": "[['jam', 'honey'], ['tea', 'rice']]\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "[['jam'], ['tea', 'rice']]",
+        "correct": false,
+        "rationale": "plan[:] is not a deep copy: copy[0] is the very same inner list as plan[0]."
+      },
+      {
+        "text": "[['jam', 'honey'], ['salt']]",
+        "correct": false,
+        "rationale": "copy is a new outer list, so putting a new list into copy[1] does not touch plan[1]."
+      },
+      {
+        "text": "[['jam'], ['salt']]",
+        "correct": false,
+        "rationale": "This mixes up the two changes: append() changes the shared row, while assigning to copy[1] doesn't touch plan."
+      },
+      {
+        "text": "[['jam', 'honey'], ['tea', 'rice']]",
+        "correct": true,
+        "rationale": "The slice copies the outer list only, so the inner lists are shared, but replacing copy[1] only changes the copy."
+      }
+    ],
+    "explanation": "plan[:] makes a new outer list, but its items are the same inner lists. copy[0].append(\"honey\") changes the first inner list, which plan also holds. copy[1] = [\"salt\"] puts a different list into the copy's second slot; plan's second slot still holds ['tea', 'rice']."
+  },
+  {
+    "id": "3.1.3-06",
+    "kind": "multi",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.1",
+      "3.1.3.3"
+    ],
+    "stem": "Given the matrix below, which expressions have the value `6`? (Select TWO)",
+    "code": "m = [[1, 2, 3], [4, 5, 6]]",
+    "select": 2,
+    "options": [
+      {
+        "text": "`m[1][2]`",
+        "correct": true,
+        "rationale": "Row 1 is [4, 5, 6], and index 2 in it is 6."
+      },
+      {
+        "text": "`m[-1][-1]`",
+        "correct": true,
+        "rationale": "The last row, then the last item in it: 6."
+      },
+      {
+        "text": "`m[2][1]`",
+        "correct": false,
+        "rationale": "There is no row 2; m has only rows 0 and 1, so this raises IndexError."
+      },
+      {
+        "text": "`m[1, 2]`",
+        "correct": false,
+        "rationale": "A comma inside one pair of brackets makes a tuple, which raises TypeError. Use one pair of brackets per level."
+      },
+      {
+        "text": "`len(m[0]) + len(m)`",
+        "correct": false,
+        "rationale": "This is 3 columns plus 2 rows: 5."
+      },
+      {
+        "text": "`m[0][-1] + 2`",
+        "correct": false,
+        "rationale": "m[0][-1] is 3, so this is 5."
+      }
+    ],
+    "explanation": "In m[r][c] the first index picks a row and the second picks an item in that row. The value 6 sits in the last row and the last column, so both m[1][2] and m[-1][-1] reach it."
+  },
+  {
+    "id": "3.1.3-07",
+    "kind": "gap",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.1",
+      "3.1.3.4"
+    ],
+    "stem": "Complete the code so it prints `[['.', '.'], ['.', '.'], ['X', '.']]`.",
+    "code": "board = []\nfor row in range(3):\n    board.append([\".\"] * __BLANK1__)\nboard[__BLANK2__][0] = \"X\"\nprint(board)",
+    "output": "[['.', '.'], ['.', '.'], ['X', '.']]\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "text",
+        "accept": [
+          "2"
+        ],
+        "rationale": "Each row needs two columns, so the one-item list is repeated twice."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "1",
+          "2",
+          "3"
+        ],
+        "answer": "2",
+        "rationale": "The \"X\" goes in the third row, which has index 2."
+      }
+    ],
+    "explanation": "The loop runs three times and appends a new two-item row each time, so the rows are separate lists. board[2][0] is the first cell of the third row; changing it leaves the other rows alone."
+  },
+  {
+    "id": "3.1.3-08",
+    "kind": "order",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.2",
+      "3.1.3.3",
+      "3.1.3.4"
+    ],
+    "stem": "Put the lines in order so the program prints `[5, 60]`.",
+    "mode": "code",
+    "lines": [
+      "cube = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]",
+      "layer = cube[1]",
+      "row = layer[0]",
+      "row[1] = 60",
+      "print(cube[1][0])"
+    ],
+    "output": "[5, 60]\n",
+    "rationale": "Each line uses the name made by the line before it, and the print() must come after the change.",
+    "explanation": "cube[1] is the second layer, [[5, 6], [7, 8]], and layer[0] is its first row, [5, 6]. row is not a copy: it is the same list that sits inside cube, so row[1] = 60 changes cube[1][0][1]. Printing cube[1][0] then shows [5, 60]."
+  },
+  {
+    "id": "3.1.3-09",
+    "kind": "insert",
+    "objectiveId": "3.1.3",
+    "subpoints": [
+      "3.1.3.1",
+      "3.1.3.4"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `[[1, 0], [0, 1]]`?",
+    "code": "grid = [[0, 0], [0, 0]]\ngrid[0][0] = 1\n# >>> INSERT <<<\nprint(grid)",
+    "output": "[[1, 0], [0, 1]]\n",
+    "options": [
+      {
+        "text": "grid[1] = 1",
+        "correct": false,
+        "rationale": "This replaces the whole second row with the number 1, giving [[1, 0], 1]."
+      },
+      {
+        "text": "grid[1, 1] = 1",
+        "correct": false,
+        "rationale": "One pair of brackets with a comma uses a tuple as the index, which raises TypeError."
+      },
+      {
+        "text": "grid[1][1] = 1",
+        "correct": true,
+        "rationale": "Row 1, column 1 is the bottom-right cell."
+      },
+      {
+        "text": "grid[2][2] = 1",
+        "correct": false,
+        "rationale": "Indexes start at 0, so a 2 by 2 grid has no row 2; this raises IndexError."
+      }
+    ],
+    "explanation": "To change one value in a nested list, give one index per level: grid[1] picks the second row and [1] the second item in it. Assigning to that spot changes the grid to [[1, 0], [0, 1]]."
+  }
+]

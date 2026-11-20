@@ -1,0 +1,310 @@
+[
+  {
+    "id": "3.2.1-01",
+    "kind": "single",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "a = (\"tea\")\nb = (\"tea\",)\nc = ()\nprint(len(a), len(b), len(c))",
+    "output": "3 1 0\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "1 1 0",
+        "correct": false,
+        "rationale": "Without a comma, the brackets are only grouping brackets, so a is a string, not a tuple."
+      },
+      {
+        "text": "3 1 0",
+        "correct": true,
+        "rationale": "a is just the string \"tea\" (3 characters), b is a one-item tuple, and c is an empty tuple."
+      },
+      {
+        "text": "3 2 0",
+        "correct": false,
+        "rationale": "The trailing comma does not add an empty item; it is what makes b a tuple with one item."
+      },
+      {
+        "text": "3 1 1",
+        "correct": false,
+        "rationale": "() is an empty tuple, with no items at all."
+      }
+    ],
+    "explanation": "It is the comma that makes a tuple. (\"tea\") is the string \"tea\", whose length is its 3 characters. (\"tea\",) is a tuple holding one item. () is the empty tuple, with length 0."
+  },
+  {
+    "id": "3.2.1-02",
+    "kind": "single",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.2"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "temps = (12, 15, 11, 18, 20, 9)\nprint(temps[-3], temps[::2], temps[4:5])",
+    "output": "18 (12, 11, 20) (20,)\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "18 (12, 11, 20) 20",
+        "correct": false,
+        "rationale": "temps[4:5] is a slice, so it gives a one-item tuple, not the item on its own."
+      },
+      {
+        "text": "11 (12, 11, 20) (20,)",
+        "correct": false,
+        "rationale": "-1 is the last item (9), -2 is 20, and -3 is 18."
+      },
+      {
+        "text": "18 (12, 11, 20) (20,)",
+        "correct": true,
+        "rationale": "-3 is the third item from the end, ::2 takes every second item, and a slice of a tuple is always a tuple."
+      },
+      {
+        "text": "18 [12, 11, 20] [20]",
+        "correct": false,
+        "rationale": "Slicing a tuple gives a new tuple, not a list."
+      }
+    ],
+    "explanation": "Indexes and slices work on tuples just as on lists. temps[-3] counts back from the end: 9, 20, 18. temps[::2] takes indexes 0, 2 and 4. temps[4:5] contains only index 4, and because it is a slice the result is the one-item tuple (20,)."
+  },
+  {
+    "id": "3.2.1-03",
+    "kind": "single",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.1",
+      "3.2.1.3"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "point = (4, 7)\npoint = point + (9,)\nprint(point)\npoint[0] = 5",
+    "raises": "TypeError",
+    "options": [
+      {
+        "text": "It raises `TypeError` on the second line, because a tuple can't change.",
+        "correct": false,
+        "rationale": "point + (9,) does not change the old tuple; it builds a new one and gives it the name point."
+      },
+      {
+        "text": "It prints `(4, 7, 9)`, then raises `AttributeError`.",
+        "correct": false,
+        "rationale": "AttributeError is for a missing method such as append(); item assignment raises a different error."
+      },
+      {
+        "text": "It prints `(4, 7, 9)` and finishes without an error.",
+        "correct": false,
+        "rationale": "Tuples are immutable, so point[0] = 5 is not allowed."
+      },
+      {
+        "text": "It prints `(4, 7, 9)`, then raises `TypeError`.",
+        "correct": true,
+        "rationale": "+ builds a new tuple, which is allowed, but assigning to one item of a tuple is not."
+      }
+    ],
+    "explanation": "point + (9,) joins two tuples into a brand-new tuple, (4, 7, 9), and the name point now refers to it. Nothing was changed in place, so this works. point[0] = 5 tries to replace an item inside a tuple, which raises TypeError: 'tuple' object does not support item assignment."
+  },
+  {
+    "id": "3.2.1-04",
+    "kind": "single",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.3"
+    ],
+    "stem": "Which statement about tuples and lists is true?",
+    "options": [
+      {
+        "text": "A tuple can be a dictionary key, but a list can't.",
+        "correct": true,
+        "rationale": "Dictionary keys must not change, so an immutable tuple (of immutable items) qualifies and a list does not."
+      },
+      {
+        "text": "Tuples have the same methods as lists, including `append()`.",
+        "correct": false,
+        "rationale": "Tuples only have count() and index(); calling append() raises AttributeError."
+      },
+      {
+        "text": "A single item of a tuple can be deleted with `del t[0]`.",
+        "correct": false,
+        "rationale": "del t[0] raises TypeError, because a tuple's items can't be removed."
+      },
+      {
+        "text": "Slicing a tuple gives a list, which can then be changed.",
+        "correct": false,
+        "rationale": "A slice of a tuple is a new tuple, not a list."
+      }
+    ],
+    "explanation": "A tuple is immutable: once made, it can't gain, lose or replace items, and it only has the read-only methods count() and index(). Because it can't change, a tuple whose items are also immutable can be a dictionary key. A list is mutable, so it can't."
+  },
+  {
+    "id": "3.2.1-05",
+    "kind": "single",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.4",
+      "3.2.1.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "recipes = ((\"pancakes\", (\"flour\", \"milk\", \"eggs\")), (\"toast\", [\"bread\", \"butter\"]))\nrecipes[1][1].append(\"jam\")\nprint(recipes[0][1][-1], len(recipes[1][1]))",
+    "output": "eggs 3\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "eggs 2",
+        "correct": false,
+        "rationale": "The list inside the tuple is mutable, so append() really adds \"jam\" to it."
+      },
+      {
+        "text": "eggs 3",
+        "correct": true,
+        "rationale": "recipes[0][1] is the tuple of pancake ingredients, and the list inside the second recipe can still grow."
+      },
+      {
+        "text": "An error is raised, because the tuple can't be changed",
+        "correct": false,
+        "rationale": "The tuple's own items are not replaced; only the list it holds changes, and that is allowed."
+      },
+      {
+        "text": "milk 3",
+        "correct": false,
+        "rationale": "-1 picks the last item of the ingredients, \"eggs\"."
+      }
+    ],
+    "explanation": "Use one index per level. recipes[0] is the pancake recipe, [0][1] is its ingredient tuple, and [0][1][-1] is \"eggs\". recipes[1][1] is a list stored inside a tuple. The tuple stops you from replacing that list, but the list itself can change, so append() makes it ['bread', 'butter', 'jam'], with length 3."
+  },
+  {
+    "id": "3.2.1-06",
+    "kind": "multi",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.1"
+    ],
+    "stem": "Which lines create a tuple with exactly one item? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`t = (\"rain\",)`",
+        "correct": true,
+        "rationale": "The trailing comma makes this a tuple holding one string."
+      },
+      {
+        "text": "`t = \"rain\",`",
+        "correct": true,
+        "rationale": "The comma alone makes a tuple; brackets are optional."
+      },
+      {
+        "text": "`t = (\"rain\")`",
+        "correct": false,
+        "rationale": "Without a comma the brackets only group, so t is the string \"rain\"."
+      },
+      {
+        "text": "`t = tuple(\"rain\")`",
+        "correct": false,
+        "rationale": "tuple() takes each character of the string, giving four items."
+      },
+      {
+        "text": "`t = [\"rain\"]`",
+        "correct": false,
+        "rationale": "Square brackets make a list, not a tuple."
+      },
+      {
+        "text": "`t = tuple()`",
+        "correct": false,
+        "rationale": "tuple() with no argument makes an empty tuple."
+      }
+    ],
+    "explanation": "It is the comma that makes a tuple, so a one-item tuple needs a trailing comma, with or without round brackets. tuple(\"rain\") splits the string into its characters, and tuple() is empty."
+  },
+  {
+    "id": "3.2.1-07",
+    "kind": "gap",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.3",
+      "3.2.1.4",
+      "3.2.1.5"
+    ],
+    "stem": "Complete the code so that it prints `Lisbon -9.1 3`.",
+    "code": "trip = (\"Lisbon\", (38.7, -9.1), [\"bus\", \"tram\"])\nname, coords, transport = trip\ntransport.__BLANK1__(\"ferry\")\nprint(name, coords[__BLANK2__], len(trip[2]))",
+    "output": "Lisbon -9.1 3\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "append",
+          "extend",
+          "insert"
+        ],
+        "answer": "append",
+        "rationale": "append() adds \"ferry\" as one item. The list inside the tuple can change even though the tuple can't."
+      },
+      {
+        "n": 2,
+        "kind": "text",
+        "accept": [
+          "1",
+          "-1"
+        ],
+        "rationale": "-9.1 is the second item of the coordinates tuple, at index 1 (or -1)."
+      }
+    ],
+    "explanation": "Unpacking gives each item of trip its own name; transport is the same list that trip holds, not a copy. Appending to it changes trip[2], so len(trip[2]) is 3. coords is the tuple (38.7, -9.1), and index 1 picks -9.1."
+  },
+  {
+    "id": "3.2.1-08",
+    "kind": "order",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.1",
+      "3.2.1.2",
+      "3.2.1.3"
+    ],
+    "stem": "Put the lines in order so the program prints `('L', 'S')`.",
+    "mode": "code",
+    "lines": [
+      "sizes = (\"S\", \"M\")",
+      "sizes = sizes + (\"L\",)",
+      "sizes = sizes * 2",
+      "print(sizes[2:4])"
+    ],
+    "output": "('L', 'S')\n",
+    "rationale": "\"L\" must be joined on before the tuple is doubled, otherwise the slice [2:4] would give ('S', 'M').",
+    "explanation": "Each line builds a new tuple and gives it the name sizes. Adding (\"L\",) gives ('S', 'M', 'L'), and * 2 gives ('S', 'M', 'L', 'S', 'M', 'L'). The slice [2:4] takes indexes 2 and 3: ('L', 'S')."
+  },
+  {
+    "id": "3.2.1-09",
+    "kind": "insert",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.1",
+      "3.2.1.3"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `('Mon', 'Tue', 'Wed')`?",
+    "code": "days = (\"Mon\", \"Tue\")\n# >>> INSERT <<<\nprint(days)",
+    "output": "('Mon', 'Tue', 'Wed')\n",
+    "options": [
+      {
+        "text": "days.append(\"Wed\")",
+        "correct": false,
+        "rationale": "Tuples have no append() method, so this raises AttributeError."
+      },
+      {
+        "text": "days += (\"Wed\",)",
+        "correct": true,
+        "rationale": "+= joins a one-item tuple to days, building a new tuple and giving it the name days."
+      },
+      {
+        "text": "days += (\"Wed\")",
+        "correct": false,
+        "rationale": "Without the comma, (\"Wed\") is a string, and a tuple can't be joined to a string: TypeError."
+      },
+      {
+        "text": "days[2] = \"Wed\"",
+        "correct": false,
+        "rationale": "Tuples are immutable and index 2 doesn't exist; assigning to an item raises TypeError."
+      }
+    ],
+    "explanation": "A tuple can't change, but you can build a new one and reuse the name. days += (\"Wed\",) is short for days = days + (\"Wed\",). The trailing comma matters: it makes (\"Wed\",) a tuple."
+  }
+]

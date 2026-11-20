@@ -1,0 +1,322 @@
+[
+  {
+    "id": "2.1.3-01",
+    "kind": "single",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.2",
+      "2.1.3.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "member = False\ntotal = 80\nif total > 50:\n    if member:\n        print(\"Free delivery\")\n    else:\n        print(\"Delivery: 3 euros\")\nelse:\n    print(\"Delivery: 6 euros\")",
+    "output": "Delivery: 3 euros\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Free delivery",
+        "correct": false,
+        "rationale": "The inner block needs `member` to be true, but it is `False`."
+      },
+      {
+        "text": "Delivery: 6 euros",
+        "correct": false,
+        "rationale": "The outer `else` only runs when `total > 50` is false, and `80 > 50` is true."
+      },
+      {
+        "text": "Delivery: 3 euros\nDelivery: 6 euros",
+        "correct": false,
+        "rationale": "The two `else` lines belong to different `if`s, and the outer one is skipped because its `if` was true."
+      },
+      {
+        "text": "Delivery: 3 euros",
+        "correct": true,
+        "rationale": "The outer test is true, and inside it `member` is false, so the inner `else` runs."
+      }
+    ],
+    "explanation": "Trace from the outside in. `80 > 50` is `True`, so Python enters the outer block and skips the outer `else`. Inside, `member` is `False`, so the inner `else` (the one at the same indentation as the inner `if`) prints `Delivery: 3 euros`."
+  },
+  {
+    "id": "2.1.3-02",
+    "kind": "single",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.2",
+      "2.1.3.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "temperature = 15\nraining = True\nif temperature > 20:\n    if raining:\n        print(\"Warm rain\")\n    else:\n        print(\"Sunny and warm\")\nprint(\"Check again later\")",
+    "output": "Check again later\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Warm rain\nCheck again later",
+        "correct": false,
+        "rationale": "The inner `if` is never reached, because `15 > 20` is false."
+      },
+      {
+        "text": "Check again later",
+        "correct": true,
+        "rationale": "The outer test is false, so everything inside it, including the inner `else`, is skipped."
+      },
+      {
+        "text": "Sunny and warm\nCheck again later",
+        "correct": false,
+        "rationale": "The `else` is indented under the outer block, so it belongs to the inner `if` and is skipped with it."
+      },
+      {
+        "text": "Sunny and warm",
+        "correct": false,
+        "rationale": "The `else` pairs with `if raining:`, not with the outer `if`, and the last line is outside every block."
+      }
+    ],
+    "explanation": "`15 > 20` is `False`, so Python skips the whole outer block. The `else` lines up with `if raining:`, so it is part of that skipped block too. Only the unindented last line runs."
+  },
+  {
+    "id": "2.1.3-03",
+    "kind": "single",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.3",
+      "2.1.3.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "fruit = \"pear\"\nif fruit == \"apple\" or \"banana\":\n    print(\"Fruit salad\")\nelse:\n    print(\"Something else\")",
+    "output": "Fruit salad\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Fruit salad",
+        "correct": true,
+        "rationale": "The condition means `(fruit == \"apple\") or \"banana\"`, and the non-empty string `\"banana\"` is truthy."
+      },
+      {
+        "text": "Something else",
+        "correct": false,
+        "rationale": "This would be right for `fruit == \"apple\" or fruit == \"banana\"`, but `or \"banana\"` is always truthy."
+      },
+      {
+        "text": "banana",
+        "correct": false,
+        "rationale": "The value of the condition decides the branch; it is not printed."
+      },
+      {
+        "text": "True",
+        "correct": false,
+        "rationale": "Only the chosen block's `print()` runs; the condition itself is never printed."
+      }
+    ],
+    "explanation": "`==` is worked out before `or`, so the condition is `(fruit == \"apple\") or \"banana\"`. The first part is `False`, so `or` gives `\"banana\"`, a non-empty string, which counts as true. The correct test is `fruit == \"apple\" or fruit == \"banana\"`."
+  },
+  {
+    "id": "2.1.3-04",
+    "kind": "single",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.1",
+      "2.1.3.3",
+      "2.1.3.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "a = True\nb = False\nc = False\nif a or b and c:\n    print(\"one\")\nif (a or b) and c:\n    print(\"two\")\nif not a or c:\n    print(\"three\")\nprint(\"end\")",
+    "output": "one\nend\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "one\ntwo\nend",
+        "correct": false,
+        "rationale": "The brackets make `or` happen first, and then `True and False` is `False`."
+      },
+      {
+        "text": "end",
+        "correct": false,
+        "rationale": "`a or b and c` means `a or (b and c)`, which is `True` because `a` is true."
+      },
+      {
+        "text": "one\nend",
+        "correct": true,
+        "rationale": "Only the first condition is true; `and` binds tighter than `or`."
+      },
+      {
+        "text": "one\nthree\nend",
+        "correct": false,
+        "rationale": "`not a` is `False` and `c` is `False`, so `not a or c` is `False`."
+      }
+    ],
+    "explanation": "The three `if`s are separate, so each is checked. `a or b and c` is `a or (b and c)` = `True or False` = `True`: `one` prints. `(a or b) and c` is `True and False` = `False`. `not a or c` is `False or False` = `False`. The last line always prints `end`."
+  },
+  {
+    "id": "2.1.3-05",
+    "kind": "single",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.2",
+      "2.1.3.5"
+    ],
+    "stem": "Which `print()` call in this code can never run, whatever values `age` and `student` hold?",
+    "code": "age = 30\nstudent = True\nif age < 18:\n    print(\"Child price\")\n    if age > 65:\n        print(\"Senior price\")\nelif student:\n    print(\"Student price\")\nelse:\n    print(\"Adult price\")",
+    "options": [
+      {
+        "text": "`print(\"Senior price\")`",
+        "correct": true,
+        "rationale": "It sits inside `if age < 18:`, and no age is both under 18 and over 65."
+      },
+      {
+        "text": "`print(\"Child price\")`",
+        "correct": false,
+        "rationale": "Any age under 18, such as 10, runs it."
+      },
+      {
+        "text": "`print(\"Student price\")`",
+        "correct": false,
+        "rationale": "An age of 18 or more with `student` set to `True` reaches it, as in this program."
+      },
+      {
+        "text": "`print(\"Adult price\")`",
+        "correct": false,
+        "rationale": "An age of 18 or more with `student` set to `False` reaches the `else`."
+      }
+    ],
+    "explanation": "The inner `if age > 65:` is only checked when `age < 18` is already true. Both can't be true at once, so the inner condition contradicts the outer one and its block is unreachable."
+  },
+  {
+    "id": "2.1.3-06",
+    "kind": "multi",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.3"
+    ],
+    "stem": "Given `hour = 10` and `holiday = False`, which conditions are `True`? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`9 <= hour < 17 and not holiday`",
+        "correct": true,
+        "rationale": "`9 <= 10 < 17` is true and `not False` is true, so `and` gives `True`."
+      },
+      {
+        "text": "`holiday or hour == 10`",
+        "correct": true,
+        "rationale": "`or` needs only one true side, and `hour == 10` is true."
+      },
+      {
+        "text": "`hour < 9 or hour > 17`",
+        "correct": false,
+        "rationale": "10 is neither below 9 nor above 17, so both sides are false."
+      },
+      {
+        "text": "`not (hour > 8)`",
+        "correct": false,
+        "rationale": "`hour > 8` is `True`, so `not` turns it into `False`."
+      },
+      {
+        "text": "`hour > 8 and holiday`",
+        "correct": false,
+        "rationale": "`and` needs both sides true, and `holiday` is `False`."
+      }
+    ],
+    "explanation": "`and` is true only when both sides are true; `or` when at least one is; `not` flips a value. A chained comparison such as `9 <= hour < 17` means `9 <= hour and hour < 17`."
+  },
+  {
+    "id": "2.1.3-07",
+    "kind": "gap",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.2",
+      "2.1.3.4"
+    ],
+    "stem": "Complete the ticket checker so that a 20-year-old with a student card gets `Student ticket`.",
+    "code": "age = 20\nhas_card = True\nif age < 12:\n    print(\"Child ticket\")\nelse:\n    __BLANK1__ has_card:\n        print(\"Student ticket\")\n    __BLANK2__:\n        print(\"Adult ticket\")",
+    "output": "Student ticket\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "if",
+          "elif",
+          "else"
+        ],
+        "answer": "if",
+        "rationale": "A new decision inside the `else` block must start with its own `if`. An `elif` needs an `if` before it at the same level, and `else` takes no condition."
+      },
+      {
+        "n": 2,
+        "kind": "text",
+        "accept": [
+          "else"
+        ],
+        "rationale": "The inner fallback, at the same indentation as the inner `if`, is `else:`."
+      }
+    ],
+    "explanation": "`20 < 12` is `False`, so the outer `else` block runs. Inside it is a nested `if-else`: `has_card` is `True`, so `Student ticket` prints."
+  },
+  {
+    "id": "2.1.3-08",
+    "kind": "order",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.2",
+      "2.1.3.4"
+    ],
+    "stem": "Put the lines in order so the program prints `Bonus day` and then `2`.",
+    "mode": "code",
+    "lines": [
+      "points = 0",
+      "weekend = True",
+      "if weekend:",
+      "    points += 2",
+      "    if points > 1:",
+      "        print(\"Bonus day\")",
+      "print(points)"
+    ],
+    "altOrders": [
+      [
+        1,
+        0,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    ],
+    "output": "Bonus day\n2\n",
+    "rationale": "The variables come first; inside the outer `if`, the points must be added before the nested `if` tests them, and the total is printed last, outside every block.",
+    "explanation": "The two starting values can be set in either order. `weekend` is `True`, so the outer block runs: `points` becomes 2, then the nested test `2 > 1` is true and `Bonus day` prints. Finally the unindented `print(points)` shows `2`."
+  },
+  {
+    "id": "2.1.3-09",
+    "kind": "insert",
+    "objectiveId": "2.1.3",
+    "subpoints": [
+      "2.1.3.2",
+      "2.1.3.3"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `Out of stock` and then `Thanks`?",
+    "code": "size = \"L\"\nin_stock = 0\nif size == \"L\":\n    # >>> INSERT <<<\n        print(\"Order placed\")\n    else:\n        print(\"Out of stock\")\nprint(\"Thanks\")",
+    "output": "Out of stock\nThanks\n",
+    "options": [
+      {
+        "text": "if in_stock > 0:",
+        "correct": true,
+        "rationale": "`0 > 0` is false, so the nested `else` prints `Out of stock`."
+      },
+      {
+        "text": "if in_stock == 0:",
+        "correct": false,
+        "rationale": "This is true for 0, so it prints `Order placed` for an item that is not in stock."
+      },
+      {
+        "text": "elif in_stock > 0:",
+        "correct": false,
+        "rationale": "An `elif` must follow an `if` at the same indentation, and there is none inside this block, so this is a `SyntaxError`."
+      },
+      {
+        "text": "if in_stock >= 0:",
+        "correct": false,
+        "rationale": "`0 >= 0` is true, so `Order placed` prints."
+      }
+    ],
+    "explanation": "The outer test `size == \"L\"` is true, so Python enters its block and meets the nested `if-else`. With `in_stock > 0`, the condition is `False` for 0, so the inner `else` prints `Out of stock`. The last line is outside every block and always prints `Thanks`."
+  }
+]

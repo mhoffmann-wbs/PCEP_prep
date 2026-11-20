@@ -1,0 +1,337 @@
+[
+  {
+    "id": "3.3.1-01",
+    "kind": "single",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.1",
+      "3.3.1.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "visited = {\"Spain\", \"Japan\", \"Spain\", \"Peru\"}\nvisited.add(\"Japan\")\nvisited.add(\"Chile\")\nprint(len(visited), sorted(visited))",
+    "output": "4 ['Chile', 'Japan', 'Peru', 'Spain']\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "4 ['Chile', 'Japan', 'Peru', 'Spain']",
+        "correct": true,
+        "rationale": "Each country is stored once, and sorted() returns the items as an alphabetical list."
+      },
+      {
+        "text": "6 ['Chile', 'Japan', 'Japan', 'Peru', 'Spain', 'Spain']",
+        "correct": false,
+        "rationale": "A set never stores a value twice, so the repeated \"Spain\" and the second \"Japan\" disappear."
+      },
+      {
+        "text": "4 ['Spain', 'Japan', 'Peru', 'Chile']",
+        "correct": false,
+        "rationale": "sorted() puts the items in alphabetical order; a set does not remember the order you wrote."
+      },
+      {
+        "text": "5 ['Chile', 'Japan', 'Peru', 'Spain']",
+        "correct": false,
+        "rationale": "Adding \"Japan\" again changes nothing, because it is already in the set."
+      }
+    ],
+    "explanation": "The braces hold \"Spain\" twice, but a set keeps one copy, so it starts with 3 countries. add(\"Japan\") changes nothing because \"Japan\" is already there; add(\"Chile\") brings the total to 4. sorted() turns the set into a list in alphabetical order."
+  },
+  {
+    "id": "3.3.1-02",
+    "kind": "single",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.2",
+      "3.3.1.4"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "guests = {}\nguests.add(\"Mia\")\nprint(len(guests))",
+    "raises": "AttributeError",
+    "options": [
+      {
+        "text": "It prints `1`.",
+        "correct": false,
+        "rationale": "This would be true for guests = set(), but {} does not make a set."
+      },
+      {
+        "text": "It prints `0`, because `add()` only works on a set that already has items.",
+        "correct": false,
+        "rationale": "add() works on an empty set too; the real problem is that guests is not a set at all."
+      },
+      {
+        "text": "It raises `AttributeError`, because `{}` is an empty dictionary.",
+        "correct": true,
+        "rationale": "Empty braces make a dict, and a dict has no add() method."
+      },
+      {
+        "text": "It raises `KeyError`, because `\"Mia\"` is not there yet.",
+        "correct": false,
+        "rationale": "add() never needs the item to be present; KeyError comes from remove() on a missing item."
+      }
+    ],
+    "explanation": "{} creates an empty dictionary, not an empty set. A dictionary has no add() method, so Python raises AttributeError: 'dict' object has no attribute 'add'. To start with an empty set, write guests = set()."
+  },
+  {
+    "id": "3.3.1-03",
+    "kind": "single",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.5",
+      "3.3.1.6"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "pets = {\"cat\", \"dog\", \"fish\"}\npets.discard(\"rabbit\")\npets.discard(\"fish\")\npets.remove(\"dog\")\nprint(sorted(pets), \"dog\" not in pets)",
+    "output": "['cat'] True\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "['cat'] False",
+        "correct": false,
+        "rationale": "\"dog\" was removed, so \"dog\" not in pets is True."
+      },
+      {
+        "text": "['cat'] True",
+        "correct": true,
+        "rationale": "discard() removes \"fish\" and ignores the missing \"rabbit\", and remove() takes \"dog\" away."
+      },
+      {
+        "text": "['cat', 'fish'] True",
+        "correct": false,
+        "rationale": "discard() does remove an item that is there; it only stays silent when the item is missing."
+      },
+      {
+        "text": "It raises `KeyError` at `discard(\"rabbit\")`.",
+        "correct": false,
+        "rationale": "discard() does nothing for a missing item. Only remove() raises KeyError."
+      }
+    ],
+    "explanation": "discard(\"rabbit\") finds nothing to remove and quietly does nothing. discard(\"fish\") removes \"fish\", and remove(\"dog\") removes \"dog\", which is there, so no error. Only \"cat\" is left, and \"dog\" not in pets is True."
+  },
+  {
+    "id": "3.3.1-04",
+    "kind": "single",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.3"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "toppings = {\"olives\", \"cheese\", \"ham\"}\nordered = sorted(toppings)\nprint(ordered[0])\nprint(toppings[0])",
+    "raises": "TypeError",
+    "options": [
+      {
+        "text": "It prints `cheese` and then `olives`.",
+        "correct": false,
+        "rationale": "A set does not keep the order you wrote, so it has no item 0 at all."
+      },
+      {
+        "text": "It raises `TypeError` at `sorted(toppings)`, because a set can't be sorted.",
+        "correct": false,
+        "rationale": "sorted() accepts a set and returns a new sorted list."
+      },
+      {
+        "text": "It prints `cheese`, then raises `IndexError`.",
+        "correct": false,
+        "rationale": "IndexError means a position is out of range; a set has no positions at all, so the error is a different one."
+      },
+      {
+        "text": "It prints `cheese`, then raises `TypeError`.",
+        "correct": true,
+        "rationale": "sorted() returns a list, which has indexes, but the set itself has none."
+      }
+    ],
+    "explanation": "sorted(toppings) builds the list ['cheese', 'ham', 'olives'], so ordered[0] is \"cheese\". A set has no order and therefore no indexes, so toppings[0] raises TypeError: 'set' object is not subscriptable."
+  },
+  {
+    "id": "3.3.1-05",
+    "kind": "single",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.1",
+      "3.3.1.2"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "letters = set(\"banana\")\nwords = {\"banana\"}\nnums = {1, True, 1.0, 2}\nprint(len(letters), len(words), len(nums))",
+    "output": "3 1 2\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "3 1 2",
+        "correct": true,
+        "rationale": "set(\"banana\") keeps the letters b, a and n; {\"banana\"} holds one string; 1, True and 1.0 are equal, so they count once."
+      },
+      {
+        "text": "6 1 4",
+        "correct": false,
+        "rationale": "A set drops repeated values, so neither the repeated letters nor the equal numbers are kept twice."
+      },
+      {
+        "text": "3 1 4",
+        "correct": false,
+        "rationale": "True == 1 and 1.0 == 1 in Python, so the set keeps only one of the three."
+      },
+      {
+        "text": "1 1 2",
+        "correct": false,
+        "rationale": "set() takes each character of a string separately; only braces around the string keep it whole."
+      }
+    ],
+    "explanation": "set(\"banana\") treats the string as a collection of characters and keeps one copy of each: b, a, n. {\"banana\"} is a set with one item, the whole string. In nums, 1, True and 1.0 are all equal, so the set keeps only one of them, plus 2."
+  },
+  {
+    "id": "3.3.1-06",
+    "kind": "multi",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.1",
+      "3.3.1.2",
+      "3.3.1.3",
+      "3.3.1.4",
+      "3.3.1.5"
+    ],
+    "stem": "Which statements about sets are true? (Select THREE)",
+    "select": 3,
+    "options": [
+      {
+        "text": "Adding a value that is already in a set changes nothing and raises no error.",
+        "correct": true,
+        "rationale": "A set holds each value at most once, so add() of an existing value has no effect."
+      },
+      {
+        "text": "`discard(x)` does nothing if `x` is not in the set.",
+        "correct": true,
+        "rationale": "That is the difference from remove(), which raises KeyError."
+      },
+      {
+        "text": "A tuple can be stored in a set, but a list can't.",
+        "correct": true,
+        "rationale": "Set items must be immutable (hashable); a list raises TypeError."
+      },
+      {
+        "text": "`{}` creates an empty set.",
+        "correct": false,
+        "rationale": "{} is an empty dictionary; an empty set is written set()."
+      },
+      {
+        "text": "`s[0]` gives the item that was added first.",
+        "correct": false,
+        "rationale": "Sets have no order and no indexes; s[0] raises TypeError."
+      },
+      {
+        "text": "`remove(x)` quietly does nothing if `x` is missing.",
+        "correct": false,
+        "rationale": "remove() raises KeyError for a missing item; discard() is the quiet one."
+      }
+    ],
+    "explanation": "Sets store each value once, have no order (so no indexes), and only accept immutable items. Use set() for an empty set. remove() raises KeyError for a missing item, while discard() quietly ignores it."
+  },
+  {
+    "id": "3.3.1-07",
+    "kind": "gap",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.2",
+      "3.3.1.4",
+      "3.3.1.6"
+    ],
+    "stem": "Complete the code so that it prints `new: hi`, `new: yo`, `new: hey` and then `3`, each on its own line.",
+    "code": "seen = __BLANK1__\nfor word in [\"hi\", \"yo\", \"hi\", \"hey\"]:\n    if word __BLANK2__ seen:\n        print(\"new:\", word)\n    seen.add(word)\nprint(len(seen))",
+    "output": "new: hi\nnew: yo\nnew: hey\n3\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "text",
+        "accept": [
+          "set()",
+          "set([])",
+          "set(())",
+          "set(\"\")",
+          "set('')"
+        ],
+        "rationale": "set() makes an empty set. {} would make an empty dictionary, which has no add() method."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "in",
+          "not in"
+        ],
+        "answer": "not in",
+        "rationale": "A word is new when it is not in the set yet."
+      }
+    ],
+    "explanation": "seen starts as an empty set. For each word, not in checks whether it has been seen before; if not, the word is printed. add() then stores it, and adding \"hi\" a second time changes nothing. The set ends with 3 words."
+  },
+  {
+    "id": "3.3.1-08",
+    "kind": "order",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.2",
+      "3.3.1.4",
+      "3.3.1.5",
+      "3.3.1.6"
+    ],
+    "stem": "Put the lines in order so the program prints `['fig'] False`.",
+    "mode": "code",
+    "lines": [
+      "basket = set()",
+      "basket.add(\"plum\")",
+      "basket.add(\"fig\")",
+      "basket.remove(\"plum\")",
+      "print(sorted(basket), \"plum\" in basket)"
+    ],
+    "altOrders": [
+      [
+        0,
+        2,
+        1,
+        3,
+        4
+      ],
+      [
+        0,
+        1,
+        3,
+        2,
+        4
+      ]
+    ],
+    "output": "['fig'] False\n",
+    "rationale": "The set must exist first, \"plum\" must be added before remove() takes it out, and the print() comes last. Adding \"fig\" can happen at any point after the set is created.",
+    "explanation": "basket = set() makes an empty set. remove(\"plum\") only works once \"plum\" is in the set; called earlier it would raise KeyError. After the removal only \"fig\" is left, and \"plum\" in basket is False."
+  },
+  {
+    "id": "3.3.1-09",
+    "kind": "insert",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.5"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `['milk', 'peanuts']`?",
+    "code": "allergies = {\"peanuts\", \"shellfish\"}\nallergies.add(\"milk\")\n# >>> INSERT <<<\nprint(sorted(allergies))",
+    "output": "['milk', 'peanuts']\n",
+    "options": [
+      {
+        "text": "allergies.discard(\"Shellfish\")",
+        "correct": false,
+        "rationale": "Strings must match exactly; \"Shellfish\" is not in the set, so discard() quietly does nothing."
+      },
+      {
+        "text": "allergies.remove(\"eggs\")",
+        "correct": false,
+        "rationale": "\"eggs\" is not in the set, so remove() raises KeyError."
+      },
+      {
+        "text": "del allergies[1]",
+        "correct": false,
+        "rationale": "A set has no positions, so it can't be indexed; this raises TypeError."
+      },
+      {
+        "text": "allergies.discard(\"shellfish\")",
+        "correct": true,
+        "rationale": "discard() removes \"shellfish\", leaving milk and peanuts."
+      }
+    ],
+    "explanation": "To take an item out of a set, name the item itself: discard(\"shellfish\") or remove(\"shellfish\"). Sets have no indexes, so del with a position does not work. sorted() then prints the remaining items in alphabetical order."
+  }
+]

@@ -1,0 +1,314 @@
+[
+  {
+    "id": "x.1-01",
+    "kind": "single",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "print(0o17, 0x1A, 0b110)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "15 26 6",
+        "correct": true,
+        "rationale": "`0o17` is 1 × 8 + 7 = 15, `0x1A` is 1 × 16 + 10 = 26, and `0b110` is 4 + 2 = 6. Python prints integers in decimal."
+      },
+      {
+        "text": "17 1A 110",
+        "correct": false,
+        "rationale": "The prefix only says how the literal is written. `print()` always shows an integer in decimal, not in the system it was typed in."
+      },
+      {
+        "text": "0o17 0x1a 0b110",
+        "correct": false,
+        "rationale": "Only `oct()`, `hex()` and `bin()` produce text with a prefix. A literal is just an `int`, printed in decimal."
+      },
+      {
+        "text": "15 26 110",
+        "correct": false,
+        "rationale": "`0b110` is a binary literal too, so it is printed in decimal as 6, like the other two."
+      }
+    ],
+    "explanation": "The prefixes `0o`, `0x` and `0b` mean octal, hexadecimal and binary. Convert each one: `0o17` = 1 × 8 + 7 = 15; `0x1A` = 1 × 16 + 10 = 26 (A stands for 10); `0b110` = 4 + 2 + 0 = 6. They are ordinary integers, and `print()` shows integers in decimal, so the output is `15 26 6`.",
+    "output": "15 26 6\n"
+  },
+  {
+    "id": "x.1-02",
+    "kind": "single",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.2"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "rooms = 10\nprint(bin(rooms), hex(rooms + 5))",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "1010 f",
+        "correct": false,
+        "rationale": "`bin()` and `hex()` keep the prefix in the string they return: `0b` and `0x`."
+      },
+      {
+        "text": "0b1010 0xf",
+        "correct": true,
+        "rationale": "10 is `1010` in binary, and 15 is `f` in hexadecimal. Both strings start with their prefix, and `hex()` uses lower-case letters."
+      },
+      {
+        "text": "0b1010 0xF",
+        "correct": false,
+        "rationale": "`hex()` writes the digits A to F in lower case, so 15 becomes `0xf`."
+      },
+      {
+        "text": "0b1010 0x15",
+        "correct": false,
+        "rationale": "This writes 15 with decimal digits after the prefix. In hexadecimal, 15 is the single digit `f`."
+      }
+    ],
+    "explanation": "`bin(10)` returns the string `'0b1010'` because 10 = 8 + 2. `rooms + 5` is 15, and `hex(15)` returns `'0xf'`: hexadecimal uses the letters a to f for 10 to 15, and `hex()` writes them in lower case. `print()` shows both strings separated by a space.",
+    "output": "0b1010 0xf\n"
+  },
+  {
+    "id": "x.1-03",
+    "kind": "single",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "rain_mm = 4.2e3\ndrop = 5e-2\nprint(rain_mm, drop, type(2e1).__name__)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "4200 0.05 int",
+        "correct": false,
+        "rationale": "A literal with `e` in it is always a float, even without a decimal point, so it prints with `.0`, and its type is `float`."
+      },
+      {
+        "text": "4200.0 -500.0 float",
+        "correct": false,
+        "rationale": "A negative exponent makes the number small, not negative: `5e-2` is 5 × 10⁻², which is 0.05."
+      },
+      {
+        "text": "4200.0 0.05 float",
+        "correct": true,
+        "rationale": "`4.2e3` is 4.2 × 1000 = 4200.0, `5e-2` is 5 ÷ 100 = 0.05, and every `e` literal is a `float`."
+      },
+      {
+        "text": "4200.0 0.05 int",
+        "correct": false,
+        "rationale": "`2e1` is 20.0. The `e` makes it a `float`, even though the value is a whole number."
+      }
+    ],
+    "explanation": "In scientific notation, `e` means \"times 10 to the power of\". `4.2e3` = 4.2 × 10³ = 4200.0. `5e-2` = 5 × 10⁻² = 0.05: a negative exponent makes the number small. A literal written with `e` is always a `float`, so `type(2e1).__name__` is `'float'`.",
+    "output": "4200.0 0.05 float\n"
+  },
+  {
+    "id": "x.1-04",
+    "kind": "single",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.1"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "lock_code = 0o718\nprint(lock_code)",
+    "options": [
+      {
+        "text": "It prints `718`",
+        "correct": false,
+        "rationale": "The `0o` prefix means octal, and octal has no digit 8, so Python does not accept this literal."
+      },
+      {
+        "text": "It prints `0o718`",
+        "correct": false,
+        "rationale": "Even a valid octal literal would be printed in decimal, without the prefix. Here the literal is not valid at all."
+      },
+      {
+        "text": "It prints `462`",
+        "correct": false,
+        "rationale": "This treats `8` as if it were allowed. Octal digits only go from 0 to 7, so the code never runs."
+      },
+      {
+        "text": "It raises a `SyntaxError`",
+        "correct": true,
+        "rationale": "Octal only uses the digits 0 to 7, so `0o718` is not a valid literal: `invalid digit '8' in octal literal`."
+      }
+    ],
+    "explanation": "The `0o` prefix tells Python that the digits are octal (base 8), and octal only has the digits 0 to 7. Python checks literals before running anything, so it stops with `SyntaxError: invalid digit '8' in octal literal`, and nothing is printed.",
+    "raises": "SyntaxError"
+  },
+  {
+    "id": "x.1-05",
+    "kind": "single",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "price = 1_299\nshipping = 1_0\nprint(price + shipping)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "1300.0",
+        "correct": false,
+        "rationale": "An underscore is not a decimal point. `1_0` is the integer 10, not 1.0."
+      },
+      {
+        "text": "1309",
+        "correct": true,
+        "rationale": "Python ignores the underscores: `1_299` is 1299 and `1_0` is 10, so the sum is 1309."
+      },
+      {
+        "text": "1_309",
+        "correct": false,
+        "rationale": "Underscores only help you read a literal. Python prints the number without them."
+      },
+      {
+        "text": "129910",
+        "correct": false,
+        "rationale": "`+` adds two integers; it does not join their digits like text."
+      }
+    ],
+    "explanation": "Single underscores between digits only group them for the reader, and Python ignores them. So `1_299` is 1299 and `1_0` is 10. Both are integers, and 1299 + 10 = 1309. `print()` shows the result without underscores.",
+    "output": "1309\n"
+  },
+  {
+    "id": "x.1-06",
+    "kind": "multi",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.1",
+      "x.1.3"
+    ],
+    "select": 3,
+    "stem": "Which literals are integers equal to 16? (Select THREE)",
+    "options": [
+      {
+        "text": "`0x10`",
+        "correct": true,
+        "rationale": "In hexadecimal, `10` means 1 × 16 + 0 = 16."
+      },
+      {
+        "text": "`0o20`",
+        "correct": true,
+        "rationale": "In octal, `20` means 2 × 8 + 0 = 16."
+      },
+      {
+        "text": "`0b10000`",
+        "correct": true,
+        "rationale": "In binary, the columns are worth 16, 8, 4, 2 and 1, so `10000` is 16."
+      },
+      {
+        "text": "`1.6e1`",
+        "correct": false,
+        "rationale": "This equals 16.0, but a literal with `e` is always a float, not an integer."
+      },
+      {
+        "text": "`0x16`",
+        "correct": false,
+        "rationale": "The digits after `0x` are hexadecimal: `16` there means 1 × 16 + 6 = 22."
+      },
+      {
+        "text": "`0o16`",
+        "correct": false,
+        "rationale": "The digits after `0o` are octal: `16` there means 1 × 8 + 6 = 14."
+      }
+    ],
+    "explanation": "Work out each literal in decimal. `0x10` = 16, `0o20` = 2 × 8 = 16, and `0b10000` = 16. `0x16` is 22 and `0o16` is 14, because the digits mean something different in each system. `1.6e1` is 16.0, which is a float, not an integer."
+  },
+  {
+    "id": "x.1-07",
+    "kind": "gap",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.1",
+      "x.1.2"
+    ],
+    "stem": "Complete the code so that it prints `0o17 15` and then `15`.",
+    "code": "tiles = 0b1111\nprint(__BLANK1__(tiles), tiles)\nprint(int(\"17\", __BLANK2__))",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "oct",
+          "hex",
+          "bin",
+          "str"
+        ],
+        "answer": "oct",
+        "rationale": "`oct()` returns the octal spelling with its `0o` prefix: 15 is `'0o17'`."
+      },
+      {
+        "n": 2,
+        "kind": "text",
+        "accept": [
+          "8",
+          "0o10",
+          "0b1000",
+          "0x8"
+        ],
+        "rationale": "The second argument of `int()` is the base the text is written in. `'17'` in base 8 is 1 × 8 + 7 = 15."
+      }
+    ],
+    "explanation": "`0b1111` is 8 + 4 + 2 + 1 = 15. To print `0o17`, the function must turn 15 into an octal string, which is what `oct()` does. `int(\"17\", 8)` reads the text `17` as an octal number, which is 15 again.",
+    "output": "0o17 15\n15\n"
+  },
+  {
+    "id": "x.1-08",
+    "kind": "order",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.1",
+      "x.1.3",
+      "x.1.4"
+    ],
+    "mode": "values",
+    "stem": "Put these literals in order from the smallest value to the largest.",
+    "lines": [
+      "5e-1",
+      "0b11",
+      "0o7",
+      "0xA",
+      "1_2"
+    ],
+    "rationale": "In decimal the values are 0.5, 3, 7, 10 and 12.",
+    "explanation": "Convert each literal to decimal first. `5e-1` is 5 × 10⁻¹ = 0.5. `0b11` is 2 + 1 = 3. `0o7` is 7. `0xA` is 10, because A stands for 10. `1_2` is just 12; the underscore is ignored."
+  },
+  {
+    "id": "x.1-09",
+    "kind": "insert",
+    "objectiveId": "x.1",
+    "subpoints": [
+      "x.1.3",
+      "x.1.4"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `2500.0`?",
+    "code": "# >>> INSERT <<<\nprint(area)",
+    "options": [
+      {
+        "text": "area = 2_500",
+        "correct": false,
+        "rationale": "This is the integer 2500, so it prints `2500` without `.0`."
+      },
+      {
+        "text": "area = 2.5e-3",
+        "correct": false,
+        "rationale": "A negative exponent makes the number small: this is 0.0025."
+      },
+      {
+        "text": "area = 2.5e3",
+        "correct": true,
+        "rationale": "2.5 × 10³ is 2500, and a literal with `e` is a float, so it prints `2500.0`."
+      },
+      {
+        "text": "area = 25e3",
+        "correct": false,
+        "rationale": "This is 25 × 1000 = 25000.0, ten times too big."
+      }
+    ],
+    "explanation": "`2.5e3` means 2.5 × 10³ = 2500, and any literal written with `e` is a float, so `print()` shows `2500.0`. `2_500` has the right value but is an integer, so it prints without `.0`.",
+    "output": "2500.0\n"
+  }
+]

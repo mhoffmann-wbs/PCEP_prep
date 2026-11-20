@@ -1,0 +1,331 @@
+[
+  {
+    "id": "3.1.2-01",
+    "kind": "single",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.1",
+      "3.1.2.2",
+      "3.1.2.8"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "queue = [\"Ana\", \"Ben\", \"Cleo\"]\nqueue.insert(1, \"Dev\")\nqueue.append(\"Eli\")\nqueue.insert(10, \"Fay\")\nprint(queue.index(\"Ben\"), len(queue))",
+    "output": "2 6\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "1 6",
+        "correct": false,
+        "rationale": "insert(1, \"Dev\") puts \"Dev\" at index 1 and shifts \"Ben\" one place to the right."
+      },
+      {
+        "text": "2 5",
+        "correct": false,
+        "rationale": "An index past the end is not ignored: insert() then puts the item at the end."
+      },
+      {
+        "text": "2 6",
+        "correct": true,
+        "rationale": "\"Dev\" pushes \"Ben\" from index 1 to index 2, and the list ends up with six names."
+      },
+      {
+        "text": "An `IndexError` is raised by `insert(10, \"Fay\")`",
+        "correct": false,
+        "rationale": "insert() never raises an error for a big index; the item simply goes at the end."
+      }
+    ],
+    "explanation": "Trace the list step by step. insert(1, \"Dev\") gives ['Ana', 'Dev', 'Ben', 'Cleo']. append(\"Eli\") adds a fifth name at the end. insert(10, \"Fay\") uses an index past the end, so \"Fay\" also goes at the end. \"Ben\" is now at index 2, and the list has 6 items."
+  },
+  {
+    "id": "3.1.2-02",
+    "kind": "single",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "tasks = [\"shop\", \"cook\", \"clean\", \"read\", \"nap\"]\ntasks.remove(\"clean\")\ndone = tasks.pop(1)\ndel tasks[-1]\nprint(done, tasks)",
+    "output": "cook ['shop', 'read']\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "shop ['cook', 'read']",
+        "correct": false,
+        "rationale": "This counts indexes from 1. Index 1 is the second item, \"cook\"."
+      },
+      {
+        "text": "nap ['shop', 'cook']",
+        "correct": false,
+        "rationale": "pop() without an argument takes the last item, but pop(1) takes the item at index 1."
+      },
+      {
+        "text": "None ['shop', 'read']",
+        "correct": false,
+        "rationale": "remove() returns None, but pop() returns the item it removed."
+      },
+      {
+        "text": "cook ['shop', 'read']",
+        "correct": true,
+        "rationale": "pop(1) removes and returns the item at index 1, and del removes the last item."
+      }
+    ],
+    "explanation": "remove(\"clean\") deletes the item equal to \"clean\": ['shop', 'cook', 'read', 'nap']. pop(1) removes the item at index 1, \"cook\", and returns it, so done is \"cook\": ['shop', 'read', 'nap']. del tasks[-1] removes the last item, \"nap\"."
+  },
+  {
+    "id": "3.1.2-03",
+    "kind": "single",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "prices = [4.5, 1.2, 3.0]\ncheap = sorted(prices)\nresult = prices.sort(reverse=True)\nprint(cheap, prices, result)",
+    "output": "[1.2, 3.0, 4.5] [4.5, 3.0, 1.2] None\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "[1.2, 3.0, 4.5] [4.5, 3.0, 1.2] None",
+        "correct": true,
+        "rationale": "sorted() returns a new list, while sort() changes prices itself and returns None."
+      },
+      {
+        "text": "[1.2, 3.0, 4.5] [4.5, 1.2, 3.0] None",
+        "correct": false,
+        "rationale": "sort() works in place: it reorders prices itself."
+      },
+      {
+        "text": "[1.2, 3.0, 4.5] [4.5, 3.0, 1.2] [4.5, 3.0, 1.2]",
+        "correct": false,
+        "rationale": "sort() changes the list but gives back None, not the sorted list."
+      },
+      {
+        "text": "[4.5, 3.0, 1.2] [4.5, 3.0, 1.2] None",
+        "correct": false,
+        "rationale": "sorted() made cheap as a separate new list, so sorting prices later does not change it."
+      }
+    ],
+    "explanation": "sorted(prices) builds a new list in ascending order and leaves prices alone. prices.sort(reverse=True) then reorders prices itself, largest first. Like most list methods, sort() returns None, so result is None."
+  },
+  {
+    "id": "3.1.2-04",
+    "kind": "single",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.1",
+      "3.1.2.3",
+      "3.1.2.7"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "fruit = [\"pear\", \"plum\", \"fig\"]\nif \"kiwi\" not in fruit:\n    fruit.append(\"kiwi\")\nfruit.remove(\"Pear\")\nprint(fruit)",
+    "raises": "ValueError",
+    "options": [
+      {
+        "text": "It prints `['plum', 'fig', 'kiwi']`.",
+        "correct": false,
+        "rationale": "\"Pear\" and \"pear\" are different strings, so remove() does not find a match."
+      },
+      {
+        "text": "It raises `ValueError`, because no item equals `\"Pear\"`.",
+        "correct": true,
+        "rationale": "Strings must match exactly, capital letters included, and remove() fails when nothing matches."
+      },
+      {
+        "text": "It prints `['pear', 'plum', 'fig', 'kiwi']`, because remove() skips missing items.",
+        "correct": false,
+        "rationale": "remove() does not skip quietly: a missing item raises an error."
+      },
+      {
+        "text": "It raises `KeyError`, because `\"Pear\"` is missing.",
+        "correct": false,
+        "rationale": "KeyError belongs to dictionaries (and sets); a missing list item raises a different error."
+      }
+    ],
+    "explanation": "\"kiwi\" is not in the list, so it is appended. Then remove(\"Pear\") looks for an item equal to \"Pear\". Comparisons are case-sensitive, so \"pear\" does not match, and remove() raises ValueError: list.remove(x): x not in list. The print() line never runs."
+  },
+  {
+    "id": "3.1.2-05",
+    "kind": "single",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.5",
+      "3.1.2.6"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "temps = [18, 21, 25, 19]\nwarm = 0\nfor t in temps:\n    if t > 20:\n        warm += 1\n    t = t + 10\nprint(warm, temps)",
+    "output": "2 [18, 21, 25, 19]\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "2 [28, 31, 35, 29]",
+        "correct": false,
+        "rationale": "t is just a name for the current value; assigning to it does not change the item stored in the list."
+      },
+      {
+        "text": "0 [18, 21, 25, 19]",
+        "correct": false,
+        "rationale": "warm starts at 0 once, before the loop, and grows by 1 for 21 and for 25."
+      },
+      {
+        "text": "2 [18, 21, 25, 19]",
+        "correct": true,
+        "rationale": "Two values are above 20, and changing the loop variable t does not change the list."
+      },
+      {
+        "text": "4 [18, 21, 25, 19]",
+        "correct": false,
+        "rationale": "Only values greater than 20 are counted; 18 and 19 are not."
+      }
+    ],
+    "explanation": "warm is initialized to 0 before the loop. The loop visits 18, 21, 25 and 19 in turn; 21 and 25 are greater than 20, so warm ends at 2. The line t = t + 10 only gives the loop variable a new value. To change the items themselves, you would need their indexes, such as temps[i] = ..."
+  },
+  {
+    "id": "3.1.2-06",
+    "kind": "multi",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.1",
+      "3.1.2.3",
+      "3.1.2.8"
+    ],
+    "stem": "After `bag = [\"pen\", \"map\"]`, which statements leave `len(bag)` equal to 3? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`bag.append([\"key\", \"cup\"])`",
+        "correct": true,
+        "rationale": "append() adds exactly one item, and here that item is a list."
+      },
+      {
+        "text": "`bag.insert(0, \"key\")`",
+        "correct": true,
+        "rationale": "insert() adds one item, at the front."
+      },
+      {
+        "text": "`bag.append(\"key\", \"cup\")`",
+        "correct": false,
+        "rationale": "append() takes exactly one argument, so this raises TypeError."
+      },
+      {
+        "text": "`bag = bag + [\"key\", \"cup\"]`",
+        "correct": false,
+        "rationale": "+ joins two lists item by item, giving four items."
+      },
+      {
+        "text": "`bag.remove(\"pen\")`",
+        "correct": false,
+        "rationale": "remove() takes an item away, leaving one."
+      },
+      {
+        "text": "`bag.index(\"map\")`",
+        "correct": false,
+        "rationale": "index() only looks up a position (1); it does not change the list."
+      }
+    ],
+    "explanation": "len() counts the top-level items. Appending a list adds one item that happens to be a list, and insert() adds one item. Joining with + adds both new items, remove() shrinks the list, and index() leaves it as it is."
+  },
+  {
+    "id": "3.1.2-07",
+    "kind": "gap",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.2",
+      "3.1.2.5",
+      "3.1.2.7"
+    ],
+    "stem": "Complete the code so that it prints `socks at 2` and then `towel missing`.",
+    "code": "packed = [\"passport\", \"charger\", \"socks\"]\nfor item in [\"socks\", \"towel\"]:\n    if item __BLANK1__ packed:\n        print(item, \"at\", packed.__BLANK2__(item))\n    else:\n        print(item, \"missing\")",
+    "output": "socks at 2\ntowel missing\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "in",
+          "not in"
+        ],
+        "answer": "in",
+        "rationale": "The position is printed only when the item is in the list; otherwise index() would fail."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "index",
+          "count",
+          "pop"
+        ],
+        "answer": "index",
+        "rationale": "index() returns the position of the first matching item: \"socks\" is at index 2."
+      }
+    ],
+    "explanation": "The loop visits \"socks\" and then \"towel\". \"socks\" in packed is True, so index(\"socks\") gives 2. \"towel\" is not in the list, so the else branch prints \"towel missing\". Checking with in first avoids the ValueError that index() raises for a missing item."
+  },
+  {
+    "id": "3.1.2-08",
+    "kind": "order",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.4",
+      "3.1.2.5",
+      "3.1.2.6"
+    ],
+    "stem": "Put the lines in order so the program prints `[7, 9]`.",
+    "mode": "code",
+    "lines": [
+      "scores = [9, 3, 7]",
+      "best = []",
+      "for s in scores:",
+      "    if s > 5:",
+      "        best.append(s)",
+      "print(sorted(best))"
+    ],
+    "altOrders": [
+      [
+        1,
+        0,
+        2,
+        3,
+        4,
+        5
+      ]
+    ],
+    "output": "[7, 9]\n",
+    "rationale": "best must start as an empty list before the loop, the if and append() go inside the loop, and the sorted result is printed once at the end.",
+    "explanation": "best is initialized to an empty list. The loop visits 9, 3 and 7, and appends the scores above 5, so best becomes [9, 7]. sorted(best) returns them in ascending order: [7, 9]. The first two lines can swap places, because neither uses the other."
+  },
+  {
+    "id": "3.1.2-09",
+    "kind": "insert",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.1",
+      "3.1.2.4"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `['bread', 'eggs', 'milk']`?",
+    "code": "shopping = [\"milk\", \"bread\"]\n# >>> INSERT <<<\nshopping.sort()\nprint(shopping)",
+    "output": "['bread', 'eggs', 'milk']\n",
+    "options": [
+      {
+        "text": "shopping.append(\"eggs\")",
+        "correct": true,
+        "rationale": "append() adds \"eggs\" to the list, and sort() then puts all three items in order."
+      },
+      {
+        "text": "shopping.insert(\"eggs\")",
+        "correct": false,
+        "rationale": "insert() needs two arguments, an index and the item, so this raises TypeError."
+      },
+      {
+        "text": "shopping = shopping.append(\"eggs\")",
+        "correct": false,
+        "rationale": "append() returns None, so shopping becomes None and shopping.sort() fails."
+      },
+      {
+        "text": "shopping + [\"eggs\"]",
+        "correct": false,
+        "rationale": "+ builds a new list, but nothing stores it, so shopping is unchanged."
+      }
+    ],
+    "explanation": "append() changes the list in place. After it, shopping is ['milk', 'bread', 'eggs'], and sort() puts the strings in alphabetical order: ['bread', 'eggs', 'milk']."
+  }
+]

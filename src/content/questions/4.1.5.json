@@ -1,0 +1,141 @@
+[
+  {
+    "id": "4.1.5-01",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": ["4.1.5.3", "4.1.5.1"],
+    "stem": "What is the output of the following code?",
+    "code": "weather = \"sunny\"\n\ndef forecast():\n    weather = \"rainy\"\n    print(\"Tomorrow:\", weather)\n\nforecast()\nprint(\"Today:\", weather)",
+    "output": "Tomorrow: rainy\nToday: sunny\n",
+    "outputKey": true,
+    "options": [
+      { "text": "Tomorrow: rainy\nToday: rainy", "correct": false, "rationale": "Without `global`, an assignment inside a function does not change the global variable." },
+      { "text": "Tomorrow: sunny\nToday: sunny", "correct": false, "rationale": "Inside the function, the local `weather` is found first, so it prints `rainy`." },
+      { "text": "Tomorrow: rainy\nToday: sunny", "correct": true, "rationale": "The assignment inside the function creates a local `weather` that shadows the global one; the global keeps `\"sunny\"`." },
+      { "text": "Tomorrow: sunny\nToday: rainy", "correct": false, "rationale": "This swaps the two scopes: the local value is used inside the function, the global one outside." }
+    ],
+    "explanation": "`weather = \"rainy\"` inside `forecast()` creates a new local variable in the function's own namespace. It shadows the global `weather` only inside the function. After the call, the top-level `print()` sees the global, which is still `\"sunny\"`."
+  },
+  {
+    "id": "4.1.5-02",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": ["4.1.5.4", "4.1.5.2"],
+    "stem": "Which exception does this code raise?",
+    "code": "lives = 3\n\ndef lose_life():\n    lives -= 1\n    print(\"Lives left:\", lives)\n\nlose_life()",
+    "raises": "UnboundLocalError",
+    "options": [
+      { "text": "`NameError`", "correct": false, "rationale": "The name is known: Python has decided that `lives` is a local variable, so the problem is that this local has no value yet." },
+      { "text": "`SyntaxError`", "correct": false, "rationale": "The code is written correctly; the problem only shows up when the function runs." },
+      { "text": "`TypeError`", "correct": false, "rationale": "Subtracting 1 from a number is fine; the trouble is which `lives` the function uses." },
+      { "text": "`UnboundLocalError`", "correct": true, "rationale": "`-=` is an assignment, so `lives` is local in the whole function, and it is read before it has a value." }
+    ],
+    "explanation": "Python decides before the function runs which names are local. Because `lives -= 1` assigns to `lives`, it is local in the whole of `lose_life()`. To compute `lives - 1`, Python must read the local `lives`, which has no value yet: `UnboundLocalError: cannot access local variable 'lives' where it is not associated with a value`. Adding `global lives` at the top of the function would fix it."
+  },
+  {
+    "id": "4.1.5-03",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": ["4.1.5.4", "4.1.5.1"],
+    "stem": "What is the output of the following code?",
+    "code": "balance = 50\n\ndef spend(amount):\n    global balance\n    balance = balance - amount\n\ndef refund(amount):\n    balance = amount\n    return balance\n\nspend(20)\nrefund(100)\nspend(5)\nprint(balance)",
+    "output": "25\n",
+    "outputKey": true,
+    "options": [
+      { "text": "25", "correct": true, "rationale": "Only `spend()` changes the global: 50 - 20 - 5 is 25. `refund()` sets a local `balance` that disappears when it returns." },
+      { "text": "95", "correct": false, "rationale": "`refund()` has no `global` line, so its `balance = amount` creates a local variable instead of setting the global to 100." },
+      { "text": "45", "correct": false, "rationale": "Both calls of `spend()` change the global, not only the last one." },
+      { "text": "30", "correct": false, "rationale": "The second call `spend(5)` also subtracts from the global." }
+    ],
+    "explanation": "`spend()` declares `global balance`, so it changes the global: 50 becomes 30. `refund()` has no `global` line, so `balance = amount` creates a local variable; the global stays 30, and the returned value is not used. `spend(5)` then makes it 25."
+  },
+  {
+    "id": "4.1.5-04",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": ["4.1.5.1", "4.1.5.2"],
+    "stem": "What happens when this code runs?",
+    "code": "def make_list():\n    groceries = [\"eggs\", \"rice\"]\n    print(len(groceries))\n\nmake_list()\nprint(groceries)",
+    "raises": "NameError",
+    "options": [
+      { "text": "It prints `2` and then `['eggs', 'rice']`.", "correct": false, "rationale": "A local variable does not leak out of its function; it is gone after the call ends." },
+      { "text": "It prints `2`, then stops with a `NameError`.", "correct": true, "rationale": "`groceries` is local to `make_list()`, so the top-level `print()` cannot find it." },
+      { "text": "It stops with a `NameError` before printing anything.", "correct": false, "rationale": "The call runs first and prints `2`; the error only comes from the last line." },
+      { "text": "It prints `2`, then stops with an `UnboundLocalError`.", "correct": false, "rationale": "`UnboundLocalError` happens inside a function that reads a local too early. At the top level, an unknown name is a `NameError`." }
+    ],
+    "explanation": "Names created inside a function live in that function's local namespace, which disappears when the call ends. So `make_list()` prints `2`, but at the top level Python looks for `groceries` among the global and built-in names, finds nothing, and raises `NameError: name 'groceries' is not defined`."
+  },
+  {
+    "id": "4.1.5-05",
+    "kind": "single",
+    "objectiveId": "4.1.5",
+    "subpoints": ["4.1.5.5"],
+    "stem": "Which statement about using many global variables is true?",
+    "options": [
+      { "text": "Globals make functions easier to reuse in other programs, because a function that uses `global` no longer needs any parameters.", "correct": false, "rationale": "The opposite is true: a function that reads and writes globals only works in a program that has exactly those globals." },
+      { "text": "A function that only works with globals always gives the same result for the same call, no matter which other functions ran before it.", "correct": false, "rationale": "With globals, a result can depend on what other functions changed earlier, so the same call can give different answers." },
+      { "text": "Any function may change a global, so when its value is wrong, you may have to search the whole program to find the cause.", "correct": true, "rationale": "This is the hidden-effects problem: changes can come from anywhere, which makes bugs hard to track down." },
+      { "text": "Python raises a `SyntaxError` as soon as a single function changes more than one global variable with the `global` keyword.", "correct": false, "rationale": "There is no such limit; `global` may list any number of names. The risks are about clarity, not errors." }
+    ],
+    "explanation": "Programs that rely on many globals are hard to manage: any function can change them, results depend on the order functions ran in, the functions are hard to reuse and test, and names can clash. The usual fix is to pass values in as arguments and send results out with `return`."
+  },
+  {
+    "id": "4.1.5-06",
+    "kind": "multi",
+    "objectiveId": "4.1.5",
+    "subpoints": ["4.1.5.2", "4.1.5.3", "4.1.5.1"],
+    "stem": "Which statements about how Python finds a name used inside a function are true? (Select TWO)",
+    "select": 2,
+    "options": [
+      { "text": "Python looks in the function's local names first, then in the global names, then among the built-in names.", "correct": true, "rationale": "This is the lookup order; a `NameError` comes only when the name is in none of them." },
+      { "text": "If a function assigns to a name anywhere in its body, that name is local in the whole function.", "correct": true, "rationale": "Python decides this before the function runs, which is why reading such a name too early raises `UnboundLocalError`." },
+      { "text": "A function can only read a global variable if it first declares it with `global`.", "correct": false, "rationale": "Reading a global works without anything special; `global` is needed only to change it." },
+      { "text": "Parameters are global names, so they can still be used after the function returns.", "correct": false, "rationale": "Parameters are local; using one outside its function raises `NameError`." },
+      { "text": "A local variable keeps its value from one call of the function to the next.", "correct": false, "rationale": "Every call starts with a fresh local namespace, so local values are not remembered." },
+      { "text": "Assigning to a local variable that has the same name as a global one also changes the global.", "correct": false, "rationale": "The local one only shadows the global inside the function; the global keeps its value." }
+    ],
+    "explanation": "Each call gets its own local namespace. A name used in the function is looked up in the local names, then the global names, then the built-ins. Any assignment to a name in the body makes it local everywhere in that body, and a local name shadows a global one without changing it."
+  },
+  {
+    "id": "4.1.5-07",
+    "kind": "gap",
+    "objectiveId": "4.1.5",
+    "subpoints": ["4.1.5.4"],
+    "stem": "Complete the code so that each call of `log_visit()` adds 1 to the global `visits`, and the program prints `2`.",
+    "code": "visits = 0\n\ndef log_visit():\n    __BLANK1__ visits\n    visits += 1\n\nlog_visit()\nlog_visit()\nprint(visits)",
+    "output": "2\n",
+    "blanks": [
+      { "n": 1, "kind": "text", "accept": ["global"], "rationale": "`global visits` tells Python that `visits` in this function means the global variable, so `+=` changes it." }
+    ],
+    "explanation": "Without a declaration, `visits += 1` would make `visits` local and raise `UnboundLocalError`. The line `global visits` at the top of the function makes every use of `visits` in it refer to the global variable, so the two calls raise it from 0 to 2."
+  },
+  {
+    "id": "4.1.5-08",
+    "kind": "order",
+    "objectiveId": "4.1.5",
+    "subpoints": ["4.1.5.4"],
+    "stem": "Put the lines in order so the program prints `5`.",
+    "mode": "code",
+    "lines": ["def add_star():", "    global stars", "    stars = stars + 1", "stars = 4", "add_star()", "print(stars)"],
+    "altOrders": [[3, 0, 1, 2, 4, 5]],
+    "output": "5\n",
+    "rationale": "The `global` line must come before the name is used in the function, and the global needs a value before `add_star()` is called.",
+    "explanation": "`global stars` must be the first line of the body; after `stars = stars + 1` it would be a `SyntaxError`. The function body only runs when `add_star()` is called, so `stars = 4` may come before or after the definition, as long as it is before the call. The call raises the global from 4 to 5, and then it is printed."
+  },
+  {
+    "id": "4.1.5-09",
+    "kind": "insert",
+    "objectiveId": "4.1.5",
+    "subpoints": ["4.1.5.3", "4.1.5.2"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `30 5`?",
+    "code": "tip = 5\n\ndef total(bill):\n    # >>> INSERT <<<\n    return bill + tip\n\nprint(total(20), tip)",
+    "output": "30 5\n",
+    "options": [
+      { "text": "tip = 10", "correct": true, "rationale": "This creates a local `tip` that shadows the global one inside the function, so the function returns 30 while the global stays 5." },
+      { "text": "global tip", "correct": false, "rationale": "This only lets the function use the global `tip`, which is 5, so it returns 25." },
+      { "text": "bill = 10", "correct": false, "rationale": "This replaces the argument 20 with 10, so the function returns 15." },
+      { "text": "tip = tip + 5", "correct": false, "rationale": "The assignment makes `tip` local in the whole function, so reading it on the right-hand side raises `UnboundLocalError`." }
+    ],
+    "explanation": "Python looks up `tip` in the local names first. With `tip = 10` in the function, the local `tip` is found, so `total(20)` returns 30. The global `tip` is a separate name in the global namespace and stays 5."
+  }
+]

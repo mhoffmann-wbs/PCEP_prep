@@ -1,0 +1,307 @@
+[
+  {
+    "id": "x.6-01",
+    "kind": "single",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.2",
+      "x.6.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "stock = {\"pens\": 12}\ntry:\n    print(stock[\"pencils\"])\nexcept IndexError:\n    print(\"position\")\nexcept LookupError:\n    print(\"lookup\")\nexcept KeyError:\n    print(\"key\")",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "key",
+        "correct": false,
+        "rationale": "`KeyError` matches, but Python runs the first matching branch, and `except LookupError` comes earlier."
+      },
+      {
+        "text": "lookup",
+        "correct": true,
+        "rationale": "The missing key raises `KeyError`, which is a kind of `LookupError`, and that branch is the first match."
+      },
+      {
+        "text": "position",
+        "correct": false,
+        "rationale": "`IndexError` is for list positions; a missing dictionary key raises `KeyError`, which is not an `IndexError`."
+      },
+      {
+        "text": "lookup\nkey",
+        "correct": false,
+        "rationale": "Only one `except` branch runs, even when several would match."
+      }
+    ],
+    "explanation": "`stock[\"pencils\"]` raises `KeyError`. Python checks the branches from top to bottom. `IndexError` doesn't match. `LookupError` does, because `KeyError` is under `LookupError`, so `lookup` is printed. The `except KeyError` branch can never run here: it is unreachable.",
+    "output": "lookup\n"
+  },
+  {
+    "id": "x.6-02",
+    "kind": "single",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.1"
+    ],
+    "stem": "Which statement about the built-in exception hierarchy is true?",
+    "options": [
+      {
+        "text": "`SystemExit` is a subclass of `Exception`",
+        "correct": false,
+        "rationale": "`SystemExit` sits beside `Exception`, directly under `BaseException`."
+      },
+      {
+        "text": "`ZeroDivisionError` is a subclass of `LookupError`",
+        "correct": false,
+        "rationale": "`ZeroDivisionError` is under `ArithmeticError`; `LookupError` groups `IndexError` and `KeyError`."
+      },
+      {
+        "text": "`KeyboardInterrupt` is under `BaseException` but not under `Exception`",
+        "correct": true,
+        "rationale": "It sits beside `Exception`, so `except Exception:` doesn't catch it."
+      },
+      {
+        "text": "`Exception` is the root of every exception class",
+        "correct": false,
+        "rationale": "The root is `BaseException`; `Exception` is one of its children."
+      }
+    ],
+    "explanation": "`BaseException` is the root of the tree. Its children include `SystemExit`, `KeyboardInterrupt` and `Exception`. Ordinary errors such as `ArithmeticError` and `LookupError` are under `Exception`. Because `KeyboardInterrupt` is not under `Exception`, a plain `except Exception:` still lets the user stop a program with Ctrl+C."
+  },
+  {
+    "id": "x.6-03",
+    "kind": "single",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def unit_price(total, count):\n    print(\"dividing\")\n    return total / count\n\ndef show(total, count):\n    price = unit_price(total, count)\n    print(\"price\", price)\n\ntry:\n    show(12, 0)\n    print(\"shown\")\nexcept ZeroDivisionError:\n    print(\"no items\")\nprint(\"end\")",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "no items\nend",
+        "correct": false,
+        "rationale": "`unit_price()` prints `dividing` before it tries the division."
+      },
+      {
+        "text": "dividing\nprice None\nno items\nend",
+        "correct": false,
+        "rationale": "When the division fails, `show()` stops at once; it never reaches its `print()`."
+      },
+      {
+        "text": "dividing\nno items\nshown\nend",
+        "correct": false,
+        "rationale": "After the exception, the rest of the `try` block is skipped, so `shown` is never printed."
+      },
+      {
+        "text": "dividing\nno items\nend",
+        "correct": true,
+        "rationale": "The error travels from `unit_price()` up through `show()` to the `try`, skipping every line after it."
+      }
+    ],
+    "explanation": "`show(12, 0)` calls `unit_price()`, which prints `dividing` and then raises `ZeroDivisionError`. Neither function handles it, so it travels up to the `try` in the main code, skipping the rest of `show()` and the line `print(\"shown\")`. The `except` branch prints `no items`, and the program continues with `end`.",
+    "output": "dividing\nno items\nend\n"
+  },
+  {
+    "id": "x.6-04",
+    "kind": "single",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.4",
+      "x.6.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def read_age(text):\n    try:\n        return int(text)\n    except ValueError:\n        print(\"bad input:\", text)\n        raise\n\ntry:\n    print(read_age(\"12\"))\n    print(read_age(\"twelve\"))\nexcept ValueError:\n    print(\"using 0\")",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "12\nbad input: twelve\nusing 0",
+        "correct": true,
+        "rationale": "The function reports the problem and re-raises it with `raise`, so the caller's `except` runs too."
+      },
+      {
+        "text": "12\nbad input: twelve\nNone",
+        "correct": false,
+        "rationale": "`raise` passes the exception on; the function doesn't return a value at all."
+      },
+      {
+        "text": "12\nusing 0",
+        "correct": false,
+        "rationale": "The function's own `except` runs first and prints `bad input: twelve` before re-raising."
+      },
+      {
+        "text": "12\nbad input: twelve",
+        "correct": false,
+        "rationale": "A bare `raise` raises the same exception again, and the caller catches it."
+      }
+    ],
+    "explanation": "`read_age(\"12\")` returns 12, which is printed. `int(\"twelve\")` raises `ValueError`. The function's `except` prints `bad input: twelve`, then the bare `raise` sends the same exception on to the caller. The caller's `except ValueError` prints `using 0`.",
+    "output": "12\nbad input: twelve\nusing 0\n"
+  },
+  {
+    "id": "x.6-05",
+    "kind": "single",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.1"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "try:\n    print(\"Saving...\")\n    raise KeyboardInterrupt\nexcept Exception:\n    print(\"caught\")\nprint(\"after\")",
+    "options": [
+      {
+        "text": "It prints `Saving...` and `after`",
+        "correct": false,
+        "rationale": "The exception is not caught, so the program stops before it gets to `print(\"after\")`."
+      },
+      {
+        "text": "It prints `Saving...`, then stops with `KeyboardInterrupt`",
+        "correct": true,
+        "rationale": "`KeyboardInterrupt` is not under `Exception`, so the `except` doesn't match and the error stops the program."
+      },
+      {
+        "text": "It prints `Saving...`, `caught` and `after`",
+        "correct": false,
+        "rationale": "`except Exception:` does not catch `KeyboardInterrupt`, which sits beside `Exception`."
+      },
+      {
+        "text": "It prints `caught` and `after`",
+        "correct": false,
+        "rationale": "`print(\"Saving...\")` runs before the exception is raised, and the `except` doesn't match anyway."
+      }
+    ],
+    "explanation": "`Saving...` is printed first. Then `KeyboardInterrupt` is raised. It is a direct child of `BaseException`, not of `Exception`, so `except Exception:` doesn't match. Nothing else handles it, so the program stops and `after` is never printed.",
+    "raises": "KeyboardInterrupt"
+  },
+  {
+    "id": "x.6-06",
+    "kind": "multi",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.1",
+      "x.6.2"
+    ],
+    "select": 3,
+    "stem": "Which `except` clauses would catch the exception raised by `[10, 20][2]`? (Select THREE)",
+    "options": [
+      {
+        "text": "`except IndexError:`",
+        "correct": true,
+        "rationale": "A list position that doesn't exist raises `IndexError`."
+      },
+      {
+        "text": "`except LookupError:`",
+        "correct": true,
+        "rationale": "`IndexError` is a concrete exception under the abstract `LookupError`."
+      },
+      {
+        "text": "`except Exception:`",
+        "correct": true,
+        "rationale": "`LookupError` and everything under it are under `Exception`."
+      },
+      {
+        "text": "`except KeyError:`",
+        "correct": false,
+        "rationale": "`KeyError` is a sibling of `IndexError` under `LookupError`, not its parent."
+      },
+      {
+        "text": "`except ArithmeticError:`",
+        "correct": false,
+        "rationale": "`ArithmeticError` groups maths errors such as `ZeroDivisionError`, not lookups."
+      },
+      {
+        "text": "`except ValueError:`",
+        "correct": false,
+        "rationale": "`ValueError` is a separate branch under `Exception`; it has nothing to do with positions."
+      }
+    ],
+    "explanation": "`[10, 20][2]` asks for position 2 of a list with only positions 0 and 1, so it raises `IndexError`. An `except` catches its own class and every class below it: `IndexError` is under `LookupError`, which is under `Exception`. `KeyError`, `ArithmeticError` and `ValueError` are on other branches of the tree."
+  },
+  {
+    "id": "x.6-07",
+    "kind": "gap",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.5"
+    ],
+    "stem": "Complete the code so that `withdraw()` reports the problem and its caller prints `30` and then `refused: not enough money`.",
+    "code": "def withdraw(balance, amount):\n    if amount > balance:\n        __BLANK1__ ValueError(\"not enough money\")\n    return balance - amount\n\ntry:\n    print(withdraw(50, 20))\n    print(withdraw(50, 80))\nexcept __BLANK2__ as e:\n    print(\"refused:\", e)",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "text",
+        "accept": [
+          "raise"
+        ],
+        "rationale": "`raise` throws the exception on purpose, leaving the caller to decide what to do."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "ValueError",
+          "TypeError",
+          "ArithmeticError"
+        ],
+        "answer": "ValueError",
+        "rationale": "The caller must catch the class that was raised (or one of its parents); `TypeError` and `ArithmeticError` are other branches."
+      }
+    ],
+    "explanation": "`withdraw()` doesn't print anything itself. When the amount is too big, it raises a `ValueError` and delegates the decision to its caller. The first call returns 30. The second raises, the exception travels to the caller's `try`, and `except ValueError as e` prints the message.",
+    "output": "30\nrefused: not enough money\n"
+  },
+  {
+    "id": "x.6-08",
+    "kind": "order",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.1",
+      "x.6.2",
+      "x.6.3"
+    ],
+    "mode": "values",
+    "stem": "Put these exception classes in the order their `except` branches should appear, from the most specific to the most general.",
+    "lines": [
+      "ZeroDivisionError",
+      "ArithmeticError",
+      "Exception",
+      "BaseException"
+    ],
+    "rationale": "Each class is a subclass of the one after it, so each branch must come before its parent's branch.",
+    "explanation": "`ZeroDivisionError` is a kind of `ArithmeticError`, which is a kind of `Exception`, which is a kind of `BaseException`. Python runs the first `except` branch that matches, so a more general branch placed earlier would make the more specific ones unreachable."
+  },
+  {
+    "id": "x.6-09",
+    "kind": "insert",
+    "objectiveId": "x.6",
+    "subpoints": [
+      "x.6.2",
+      "x.6.3"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `Index problem`?",
+    "code": "try:\n    rooms = [\"single\", \"double\"]\n    print(rooms[3])\n# >>> INSERT <<<\n    print(\"Index problem\")\nexcept LookupError:\n    print(\"Lookup problem\")",
+    "options": [
+      {
+        "text": "except KeyError:",
+        "correct": false,
+        "rationale": "`rooms[3]` raises `IndexError`, not `KeyError`, so this branch doesn't match and `except LookupError` catches it."
+      },
+      {
+        "text": "except ArithmeticError:",
+        "correct": false,
+        "rationale": "`IndexError` is not under `ArithmeticError`, so this branch is skipped."
+      },
+      {
+        "text": "except TypeError:",
+        "correct": false,
+        "rationale": "Nothing here has the wrong type; the error is a missing position, an `IndexError`."
+      },
+      {
+        "text": "except IndexError:",
+        "correct": true,
+        "rationale": "`rooms[3]` raises `IndexError`, and this specific branch comes before the general `LookupError` one."
+      }
+    ],
+    "explanation": "The list has positions 0 and 1 only, so `rooms[3]` raises `IndexError`. The branches are checked from top to bottom. Only `except IndexError:` matches before the general `except LookupError:` branch, which would otherwise print `Lookup problem`.",
+    "output": "Index problem\n"
+  }
+]

@@ -1,0 +1,319 @@
+[
+  {
+    "id": "2.1.2-01",
+    "kind": "single",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.2",
+      "2.1.2.3",
+      "2.1.2.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "minutes = 45\nif minutes < 15:\n    print(\"Quick recipe\")\nelif minutes < 60:\n    print(\"Weeknight recipe\")\nelif minutes < 30:\n    print(\"Half-hour recipe\")\nelse:\n    print(\"Weekend project\")",
+    "output": "Weeknight recipe\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Quick recipe",
+        "correct": false,
+        "rationale": "`45 < 15` is false, so the first branch is skipped."
+      },
+      {
+        "text": "Weeknight recipe\nHalf-hour recipe",
+        "correct": false,
+        "rationale": "Only one branch of an `if-elif-else` runs. (And `45 < 30` is false anyway.)"
+      },
+      {
+        "text": "Weeknight recipe",
+        "correct": true,
+        "rationale": "`45 < 60` is the first true condition, so its block runs and the rest is skipped."
+      },
+      {
+        "text": "Weekend project",
+        "correct": false,
+        "rationale": "`else` only runs when every condition above it is false, but `45 < 60` is true."
+      }
+    ],
+    "explanation": "Python checks the conditions from top to bottom: `45 < 15` is `False`, `45 < 60` is `True`, so it prints `Weeknight recipe` and leaves the structure. The `minutes < 30` branch is unreachable here: anything under 30 is also under 60."
+  },
+  {
+    "id": "2.1.2-02",
+    "kind": "single",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.5"
+    ],
+    "stem": "Which branch of this code can never run, whatever value `speed` holds?",
+    "code": "speed = 0\nif speed > 100:\n    print(\"Very fast\")\nelif speed > 50:\n    print(\"Fast\")\nelif speed > 80:\n    print(\"Quite fast\")\nelse:\n    print(\"Slow\")",
+    "options": [
+      {
+        "text": "The branch under `speed > 80`",
+        "correct": true,
+        "rationale": "Any speed above 80 is also above 50, so the `speed > 50` branch above it always catches it first."
+      },
+      {
+        "text": "The branch under `speed > 100`",
+        "correct": false,
+        "rationale": "This is the first test, so a speed such as 120 reaches it and runs it."
+      },
+      {
+        "text": "The branch under `speed > 50`",
+        "correct": false,
+        "rationale": "A speed such as 60 is not above 100 but is above 50, so this branch can run."
+      },
+      {
+        "text": "The `else` branch",
+        "correct": false,
+        "rationale": "Any speed of 50 or less, such as 0, makes every condition false and reaches `else`."
+      }
+    ],
+    "explanation": "A branch is unreachable when an earlier condition already covers it. When Python gets to `elif speed > 80`, it already knows `speed > 50` was false, so `speed` is at most 50 and can't be above 80. To fix it, test `speed > 80` before `speed > 50`."
+  },
+  {
+    "id": "2.1.2-03",
+    "kind": "single",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.3",
+      "2.1.2.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "points = 85\nif points >= 50:\n    print(\"Bronze\")\nelif points >= 70:\n    print(\"Silver\")\nif points >= 80:\n    print(\"Gold\")",
+    "output": "Bronze\nGold\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Bronze",
+        "correct": false,
+        "rationale": "The last `if` is a separate statement, not part of the chain, so it is checked too."
+      },
+      {
+        "text": "Bronze\nGold",
+        "correct": true,
+        "rationale": "The `if-elif` stops at `Bronze`, and the separate `if` below starts a new decision that is also true."
+      },
+      {
+        "text": "Bronze\nSilver\nGold",
+        "correct": false,
+        "rationale": "In an `if-elif` chain only the first true branch runs, so `Silver` is skipped."
+      },
+      {
+        "text": "Gold",
+        "correct": false,
+        "rationale": "The first chain also runs one branch: `85 >= 50` is true, so `Bronze` is printed."
+      }
+    ],
+    "explanation": "In the first structure, `85 >= 50` is the first true condition, so `Bronze` prints and the `elif` is not checked. The second `if` starts a new statement at the left edge, so it is always tested: `85 >= 80` is `True`, and `Gold` prints."
+  },
+  {
+    "id": "2.1.2-04",
+    "kind": "single",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.2"
+    ],
+    "stem": "What happens when you run this code?",
+    "code": "pet = \"cat\"\nif pet == \"dog\":\n    print(\"Woof\")\nelse:\n    print(\"Not a dog\")\nelif pet == \"cat\":\n    print(\"Meow\")",
+    "raises": "SyntaxError",
+    "options": [
+      {
+        "text": "`Not a dog` is printed",
+        "correct": false,
+        "rationale": "Python checks the whole structure before running it, and the `elif` after `else` is not allowed."
+      },
+      {
+        "text": "`Meow` is printed",
+        "correct": false,
+        "rationale": "The code never runs: `elif` can't follow `else`."
+      },
+      {
+        "text": "`Not a dog` and then `Meow` are printed",
+        "correct": false,
+        "rationale": "Even in valid code only one branch would run, and here the structure is not valid at all."
+      },
+      {
+        "text": "A `SyntaxError` is raised",
+        "correct": true,
+        "rationale": "`else` must be the last branch, so an `elif` after it is a syntax error."
+      }
+    ],
+    "explanation": "`else` closes an `if-elif-else` structure, so it must come last. Putting `elif` after it gives `SyntaxError: 'elif' block follows an 'else' block`, and nothing is printed."
+  },
+  {
+    "id": "2.1.2-05",
+    "kind": "single",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.3",
+      "2.1.2.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "weather = \"fog\"\nplan = \"stay home\"\nif weather == \"sun\":\n    plan = \"beach\"\nelif weather == \"rain\":\n    plan = \"museum\"\nprint(\"Plan:\", plan)",
+    "output": "Plan: stay home\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Plan: beach",
+        "correct": false,
+        "rationale": "`\"fog\" == \"sun\"` is false, so the first branch is skipped."
+      },
+      {
+        "text": "Plan: museum",
+        "correct": false,
+        "rationale": "`\"fog\" == \"rain\"` is false too; an `elif` is not a fallback."
+      },
+      {
+        "text": "Plan: stay home",
+        "correct": true,
+        "rationale": "Neither condition is true and there is no `else`, so `plan` keeps its first value."
+      },
+      {
+        "text": "Plan: fog",
+        "correct": false,
+        "rationale": "`plan` and `weather` are different variables; the branches never copy `weather` into `plan`."
+      }
+    ],
+    "explanation": "Both conditions are `False`. An `if-elif` without `else` can run no branch at all, so neither assignment happens and `plan` is still `\"stay home\"`."
+  },
+  {
+    "id": "2.1.2-06",
+    "kind": "multi",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.2",
+      "2.1.2.3"
+    ],
+    "stem": "Which statements about `if-elif-else` are true? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "The conditions are checked from top to bottom, and only the block of the first true one runs.",
+        "correct": true,
+        "rationale": "Python stops at the first true condition and skips the rest of the structure."
+      },
+      {
+        "text": "With an `else` at the end, exactly one branch always runs.",
+        "correct": true,
+        "rationale": "If no condition is true, the `else` block is the fallback."
+      },
+      {
+        "text": "If two conditions are true, both of their blocks run.",
+        "correct": false,
+        "rationale": "Only the first true condition counts; later ones are not even checked."
+      },
+      {
+        "text": "An `elif` can be placed after the `else`.",
+        "correct": false,
+        "rationale": "`else` must come last; an `elif` after it is a `SyntaxError`."
+      },
+      {
+        "text": "Without an `else`, at least one branch always runs.",
+        "correct": false,
+        "rationale": "Without `else`, it is possible that no condition is true and no branch runs."
+      },
+      {
+        "text": "`else if` on one line is another way to write `elif`.",
+        "correct": false,
+        "rationale": "Python has no `else if` on one line; the keyword is `elif`."
+      }
+    ],
+    "explanation": "In an `if-elif-else`, Python tests the conditions in order and runs only the first true one. The final `else` catches everything left over, so with it exactly one branch runs; without it, possibly none."
+  },
+  {
+    "id": "2.1.2-07",
+    "kind": "gap",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.2",
+      "2.1.2.4"
+    ],
+    "stem": "Complete the shipping calculator so that it prints `Cost: 3` for a 1 kg parcel.",
+    "code": "weight = 1\nif weight <= 2:\n    cost = 3\n__BLANK1__ weight <= 10:\n    cost = 6\n__BLANK2__:\n    cost = 11\nprint(\"Cost:\", cost)",
+    "output": "Cost: 3\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "elif",
+          "if",
+          "else"
+        ],
+        "answer": "elif",
+        "rationale": "`elif` keeps the second test in the same chain, so it is skipped once the first branch has run. A new `if` would also be true for 1 and change the cost to 6."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "else",
+          "elif",
+          "if"
+        ],
+        "answer": "else",
+        "rationale": "The fallback branch has no condition, so it is `else:`. `elif:` and `if:` need a condition."
+      }
+    ],
+    "explanation": "`1 <= 2` is `True`, so `cost = 3` runs and the rest of the chain is skipped. With a separate `if` in the middle, `1 <= 10` would also be checked and would overwrite the cost with 6."
+  },
+  {
+    "id": "2.1.2-08",
+    "kind": "order",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.3",
+      "2.1.2.5"
+    ],
+    "stem": "A weather app picks a label with `if-elif-elif-elif-else`, one condition per line. Put the conditions in the order they must be tested, from the `if` line down, so that every branch can be reached.",
+    "mode": "values",
+    "lines": [
+      "temp > 30",
+      "temp > 20",
+      "temp > 10",
+      "temp > 0"
+    ],
+    "rationale": "Each condition is true for every value the ones below it accept, so the strictest one must come first.",
+    "explanation": "Python runs only the first true branch. If `temp > 0` came first, it would catch 35, 25 and 15 too, and the branches below it would be unreachable. Testing from the highest bar down gives each branch its own range."
+  },
+  {
+    "id": "2.1.2-09",
+    "kind": "insert",
+    "objectiveId": "2.1.2",
+    "subpoints": [
+      "2.1.2.1",
+      "2.1.2.2",
+      "2.1.2.4"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `Good afternoon`?",
+    "code": "hour = 14\nif hour < 12:\n    print(\"Good morning\")\n# >>> INSERT <<<\n    print(\"Good afternoon\")\nelse:\n    print(\"Good evening\")",
+    "output": "Good afternoon\n",
+    "options": [
+      {
+        "text": "elif hour < 18:",
+        "correct": true,
+        "rationale": "`14 < 12` is false, so Python moves on and `14 < 18` is true."
+      },
+      {
+        "text": "elif hour > 18:",
+        "correct": false,
+        "rationale": "`14 > 18` is false, so the `else` block prints `Good evening`."
+      },
+      {
+        "text": "else hour < 18:",
+        "correct": false,
+        "rationale": "`else` never takes a condition, so this is a `SyntaxError`."
+      },
+      {
+        "text": "elif hour < 12:",
+        "correct": false,
+        "rationale": "This repeats the first test, which already failed, so the branch is redundant and `else` runs."
+      }
+    ],
+    "explanation": "The middle branch needs its own condition, so it starts with `elif`. For 14, `hour < 12` is `False` and `hour < 18` is `True`, so `Good afternoon` prints and the `else` is skipped."
+  }
+]

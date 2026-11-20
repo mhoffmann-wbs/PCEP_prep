@@ -1,0 +1,324 @@
+[
+  {
+    "id": "2.1.1-01",
+    "kind": "single",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.1",
+      "2.1.1.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "battery = 35\nif battery < 20:\n    print(\"Low battery\")\n    battery = 100\nprint(\"Battery:\", battery)",
+    "output": "Battery: 35\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Battery: 35",
+        "correct": true,
+        "rationale": "`35 < 20` is false, so the whole block is skipped, including the assignment."
+      },
+      {
+        "text": "Low battery\nBattery: 100",
+        "correct": false,
+        "rationale": "The block only runs when the condition is true, and `35 < 20` is false."
+      },
+      {
+        "text": "Low battery\nBattery: 35",
+        "correct": false,
+        "rationale": "Both indented lines belong to the block, so neither the message nor the reset runs."
+      },
+      {
+        "text": "Battery: 100",
+        "correct": false,
+        "rationale": "`battery = 100` is indented, so it is part of the skipped block and never runs."
+      }
+    ],
+    "explanation": "`35 < 20` is `False`, so Python jumps over both indented lines. `battery` keeps its old value, and only the unindented last line runs: `Battery: 35`."
+  },
+  {
+    "id": "2.1.1-02",
+    "kind": "single",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.2",
+      "2.1.1.3",
+      "2.1.1.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "basket = []\nif basket:\n    print(\"Ready to pay\")\nelse:\n    print(\"Your basket is empty\")\nprint(\"Items:\", len(basket))",
+    "output": "Your basket is empty\nItems: 0\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Ready to pay\nItems: 0",
+        "correct": false,
+        "rationale": "A list counts as true only when it has items; `[]` is falsy."
+      },
+      {
+        "text": "Items: 0",
+        "correct": false,
+        "rationale": "With `if-else`, exactly one of the two blocks always runs, so something is printed before `Items: 0`."
+      },
+      {
+        "text": "Ready to pay\nYour basket is empty\nItems: 0",
+        "correct": false,
+        "rationale": "`if` and `else` never both run; exactly one branch is chosen."
+      },
+      {
+        "text": "Your basket is empty\nItems: 0",
+        "correct": true,
+        "rationale": "An empty list is falsy, so the `else` block runs, and the last line always runs."
+      }
+    ],
+    "explanation": "The condition is the list itself. An empty list `[]` counts as false (truthiness), so the `if` block is skipped and the `else` block prints `Your basket is empty`. The last line is not indented, so it runs either way and prints `Items: 0`."
+  },
+  {
+    "id": "2.1.1-03",
+    "kind": "single",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.1"
+    ],
+    "stem": "What happens when you run this code?",
+    "code": "pages = 120\nif pages == 120\n    print(\"A short book\")",
+    "raises": "SyntaxError",
+    "options": [
+      {
+        "text": "`A short book` is printed",
+        "correct": false,
+        "rationale": "The condition is true, but Python cannot run the code at all because the `if` line has no colon."
+      },
+      {
+        "text": "Nothing is printed",
+        "correct": false,
+        "rationale": "Python checks the syntax before running anything, and the missing colon is an error."
+      },
+      {
+        "text": "A `SyntaxError` is raised",
+        "correct": true,
+        "rationale": "Every `if` line must end with a colon, and this one has none."
+      },
+      {
+        "text": "An `IndentationError` is raised",
+        "correct": false,
+        "rationale": "The indentation is fine; the problem is the missing `:` at the end of the `if` line, which is `SyntaxError: expected ':'`."
+      }
+    ],
+    "explanation": "An `if` statement is the keyword `if`, a condition and a colon. Without the colon, Python stops with `SyntaxError: expected ':'` before any line runs."
+  },
+  {
+    "id": "2.1.1-04",
+    "kind": "single",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.2",
+      "2.1.1.3",
+      "2.1.1.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "code = \"1234\"\nif code == 1234:\n    print(\"Unlocked\")\nelse:\n    print(\"Wrong code\")",
+    "output": "Wrong code\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Unlocked",
+        "correct": false,
+        "rationale": "`\"1234\"` is a string and `1234` is an int; `==` compares type as well as digits, so they are not equal."
+      },
+      {
+        "text": "Wrong code",
+        "correct": true,
+        "rationale": "A string is never equal to an int, so the condition is false and the `else` block runs."
+      },
+      {
+        "text": "Unlocked\nWrong code",
+        "correct": false,
+        "rationale": "With `if-else`, only one of the two blocks runs."
+      },
+      {
+        "text": "False",
+        "correct": false,
+        "rationale": "The condition is worked out to choose a branch; its value is not printed."
+      }
+    ],
+    "explanation": "`code` holds the string `\"1234\"`. Comparing it with the int `1234` gives `False`, because values of different types like these are never equal. The `if` block is skipped and the `else` block prints `Wrong code`."
+  },
+  {
+    "id": "2.1.1-05",
+    "kind": "single",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.2"
+    ],
+    "stem": "Which statement about an `if-else` statement is true?",
+    "options": [
+      {
+        "text": "Both blocks run when the condition is true.",
+        "correct": false,
+        "rationale": "The `else` block only runs when the condition is false."
+      },
+      {
+        "text": "The `else` line needs its own condition, such as `else x < 5:`.",
+        "correct": false,
+        "rationale": "`else` never takes a condition; it catches every case the `if` did not."
+      },
+      {
+        "text": "If the condition is false, neither block runs.",
+        "correct": false,
+        "rationale": "That is true for an `if` without `else`. With `else`, the `else` block runs when the condition is false."
+      },
+      {
+        "text": "Exactly one of its two blocks runs each time it is reached.",
+        "correct": true,
+        "rationale": "If the condition is true the `if` block runs, otherwise the `else` block runs: never both, never neither."
+      }
+    ],
+    "explanation": "`if-else` chooses between two paths. The condition is checked once: when it is `True` the `if` block runs, and when it is `False` the `else` block runs. `else` is written as `else:` with no condition."
+  },
+  {
+    "id": "2.1.1-06",
+    "kind": "multi",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.3",
+      "2.1.1.5"
+    ],
+    "stem": "Which of these `if` lines would run their indented block? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`if \"0\":`",
+        "correct": true,
+        "rationale": "`\"0\"` is a non-empty string, and every non-empty string is truthy."
+      },
+      {
+        "text": "`if not \"\":`",
+        "correct": true,
+        "rationale": "`\"\"` is falsy, so `not \"\"` is `True`."
+      },
+      {
+        "text": "`if 0:`",
+        "correct": false,
+        "rationale": "`0` is falsy, so this block is always skipped."
+      },
+      {
+        "text": "`if []:`",
+        "correct": false,
+        "rationale": "An empty list is falsy."
+      },
+      {
+        "text": "`if 3 > 2 and 2 > 5:`",
+        "correct": false,
+        "rationale": "`and` needs both sides to be true, and `2 > 5` is false."
+      },
+      {
+        "text": "`if None:`",
+        "correct": false,
+        "rationale": "`None` counts as false."
+      }
+    ],
+    "explanation": "A condition can be any value. `0`, `\"\"`, `[]` and `None` count as false, so blocks under them are skipped. A non-empty string like `\"0\"` counts as true, and `not` turns the falsy `\"\"` into `True`."
+  },
+  {
+    "id": "2.1.1-07",
+    "kind": "gap",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.1",
+      "2.1.1.2",
+      "2.1.1.3"
+    ],
+    "stem": "Complete the code so that a 15-year-old is told to wait, and the program prints `Wait until you are 16`.",
+    "code": "age = 15\nif age __BLANK1__ 16:\n    print(\"You may get a learner's permit\")\n__BLANK2__:\n    print(\"Wait until you are 16\")",
+    "output": "Wait until you are 16\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          ">=",
+          "<",
+          "<=",
+          "!="
+        ],
+        "answer": ">=",
+        "rationale": "Only people aged 16 or more may get the permit, so the test is `age >= 16`, which is false for 15."
+      },
+      {
+        "n": 2,
+        "kind": "text",
+        "accept": [
+          "else"
+        ],
+        "rationale": "The second path has no condition of its own, so it starts with `else:`."
+      }
+    ],
+    "explanation": "`15 >= 16` is `False`, so the `if` block is skipped and the `else` block runs. With `<`, `<=` or `!=`, the condition would be true for 15 and the permit message would print instead."
+  },
+  {
+    "id": "2.1.1-08",
+    "kind": "order",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.1",
+      "2.1.1.4"
+    ],
+    "stem": "Put the lines in order so the program prints `Umbrellas: 1`.",
+    "mode": "code",
+    "lines": [
+      "umbrellas = 0",
+      "rain_mm = 12",
+      "if rain_mm > 5:",
+      "    umbrellas = umbrellas + 1",
+      "print(\"Umbrellas:\", umbrellas)"
+    ],
+    "altOrders": [
+      [
+        1,
+        0,
+        2,
+        3,
+        4
+      ]
+    ],
+    "output": "Umbrellas: 1\n",
+    "rationale": "Both variables need values before the `if` uses them, the indented line must sit right under its `if`, and the result is printed last.",
+    "explanation": "The two starting values can come in either order. Then `12 > 5` is `True`, so the indented line adds 1, and the final `print()` shows `Umbrellas: 1`. If the `print()` came before the `if`, it would show 0."
+  },
+  {
+    "id": "2.1.1-09",
+    "kind": "insert",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.2",
+      "2.1.1.3",
+      "2.1.1.4"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `Sold out`?",
+    "code": "stock = 0\n# >>> INSERT <<<\n    print(\"Sold out\")\nelse:\n    print(\"In stock:\", stock)",
+    "output": "Sold out\n",
+    "options": [
+      {
+        "text": "if stock == 0:",
+        "correct": true,
+        "rationale": "`0 == 0` is `True`, so the `if` block prints `Sold out`."
+      },
+      {
+        "text": "if stock:",
+        "correct": false,
+        "rationale": "`0` is falsy, so this sends the program to the `else` block."
+      },
+      {
+        "text": "if stock > 0:",
+        "correct": false,
+        "rationale": "`0 > 0` is `False`, so the `else` block runs and prints `In stock: 0`."
+      },
+      {
+        "text": "if stock != 0:",
+        "correct": false,
+        "rationale": "`0 != 0` is `False`, which picks the `else` block."
+      }
+    ],
+    "explanation": "The `if` block must run when there is no stock. `stock == 0` is `True` for 0. The other conditions are all false for 0, so they would choose the `else` block."
+  }
+]

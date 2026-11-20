@@ -1,0 +1,319 @@
+[
+  {
+    "id": "x.3-01",
+    "kind": "single",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.1",
+      "x.3.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "tries = 0\nwhile tries < 3:\n    tries += 1\nelse:\n    tries *= 10\nprint(tries)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "3",
+        "correct": false,
+        "rationale": "The loop ends because its condition becomes false, not because of `break`, so the `else` block still runs."
+      },
+      {
+        "text": "30",
+        "correct": true,
+        "rationale": "The loop raises `tries` to 3 and stops normally; the `else` then runs once and multiplies by 10."
+      },
+      {
+        "text": "33",
+        "correct": false,
+        "rationale": "`tries *= 10` multiplies; it doesn't add 30."
+      },
+      {
+        "text": "300",
+        "correct": false,
+        "rationale": "The `else` block runs only once, after the loop, not on every round."
+      }
+    ],
+    "explanation": "The `while` loop adds 1 three times, so `tries` becomes 3, and then `tries < 3` is false. The loop ended without `break`, so its `else` block runs once: `tries *= 10` makes it 30.",
+    "output": "30\n"
+  },
+  {
+    "id": "x.3-02",
+    "kind": "single",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.2",
+      "x.3.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "basket = [\"eggs\", \"bread\", \"milk\", \"jam\"]\nfor item in basket:\n    if item == \"milk\":\n        print(\"Found milk\")\n        break\n    print(\"Skipping\", item)\nelse:\n    print(\"No milk\")\nprint(\"Checkout\")",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Skipping eggs\nSkipping bread\nFound milk\nCheckout",
+        "correct": true,
+        "rationale": "The first two items are skipped, `milk` triggers `break`, and the `else` is skipped."
+      },
+      {
+        "text": "Skipping eggs\nSkipping bread\nFound milk\nNo milk\nCheckout",
+        "correct": false,
+        "rationale": "The loop ended with `break`, so its `else` block does not run."
+      },
+      {
+        "text": "Found milk\nCheckout",
+        "correct": false,
+        "rationale": "`print(\"Skipping\", item)` runs for every item before `milk` is reached."
+      },
+      {
+        "text": "Skipping eggs\nSkipping bread\nFound milk\nSkipping jam\nCheckout",
+        "correct": false,
+        "rationale": "`break` leaves the loop at once, so `jam` is never looked at."
+      }
+    ],
+    "explanation": "Trace the loop: `eggs` and `bread` are not `milk`, so each prints a `Skipping` line. At `milk`, the program prints `Found milk` and `break` ends the loop. Because the loop ended with `break`, the `else` block is skipped. The program goes on to print `Checkout`.",
+    "output": "Skipping eggs\nSkipping bread\nFound milk\nCheckout\n"
+  },
+  {
+    "id": "x.3-03",
+    "kind": "single",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.3"
+    ],
+    "stem": "Which statement about the `else` block after a `for` or `while` loop is true?",
+    "options": [
+      {
+        "text": "It runs only when the loop body never runs",
+        "correct": false,
+        "rationale": "An empty loop does run the `else`, but so does a loop that finishes all its rounds normally."
+      },
+      {
+        "text": "It runs only when the loop ends with `break`",
+        "correct": false,
+        "rationale": "This is the opposite of the rule: `break` is what skips the `else` block."
+      },
+      {
+        "text": "It runs once each time a round of the loop finishes",
+        "correct": false,
+        "rationale": "The loop's `else` runs at most once, after the whole loop is over."
+      },
+      {
+        "text": "It runs once, unless the loop ends with `break`",
+        "correct": true,
+        "rationale": "Think of the loop's `else` as \"no break\": it runs after a normal finish, even after zero rounds."
+      }
+    ],
+    "explanation": "The loop's `else` block runs once, after the loop has finished on its own: when a `while` condition becomes false or a `for` loop runs out of items, including when there were no rounds at all. If the loop is left with `break`, the `else` is skipped."
+  },
+  {
+    "id": "x.3-04",
+    "kind": "single",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.2",
+      "x.3.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "for n in range(1, 6):\n    if n % 2 == 0:\n        continue\n    if n > 7:\n        break\nelse:\n    print(\"else\", n)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "else 6",
+        "correct": false,
+        "rationale": "`range(1, 6)` stops before 6, so the last value `n` takes is 5."
+      },
+      {
+        "text": "else 4",
+        "correct": false,
+        "rationale": "`continue` skips the rest of a round but does not change `n`; the loop still reaches 5."
+      },
+      {
+        "text": "else 5",
+        "correct": true,
+        "rationale": "`n > 7` is never true, so no `break` happens; `continue` doesn't stop the `else`, which sees the last value, 5."
+      },
+      {
+        "text": "Nothing is printed",
+        "correct": false,
+        "rationale": "`continue` only skips to the next round. Without a `break`, the `else` block runs."
+      }
+    ],
+    "explanation": "`n` takes the values 1 to 5. Even numbers hit `continue`, which only skips to the next round. `n > 7` is never true, so `break` never runs. The loop finishes normally, the `else` runs, and `n` still holds its last value, 5.",
+    "output": "else 5\n"
+  },
+  {
+    "id": "x.3-05",
+    "kind": "single",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.1",
+      "x.3.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "balance = 50\nwhile balance > 0:\n    balance -= 20\n    if balance < 0:\n        print(\"Overdrawn\")\n        break\nelse:\n    print(\"Exactly zero\")\nprint(balance)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Overdrawn\nExactly zero\n-10",
+        "correct": false,
+        "rationale": "The loop was left with `break`, so its `else` block is skipped."
+      },
+      {
+        "text": "Exactly zero\n-10",
+        "correct": false,
+        "rationale": "The balance goes below zero inside the loop, so `Overdrawn` is printed and `break` runs."
+      },
+      {
+        "text": "Overdrawn\n10",
+        "correct": false,
+        "rationale": "The balance is reduced once more, from 10 to -10, before `Overdrawn` is printed."
+      },
+      {
+        "text": "Overdrawn\n-10",
+        "correct": true,
+        "rationale": "The balance goes 30, 10, -10; at -10 the loop prints `Overdrawn` and breaks, skipping the `else`."
+      }
+    ],
+    "explanation": "Round 1: 50 - 20 = 30. Round 2: 30 - 20 = 10. Round 3: 10 - 20 = -10, which is below 0, so `Overdrawn` is printed and `break` ends the loop. A loop left with `break` skips its `else`, so `Exactly zero` is not printed. Last, `print(balance)` shows -10.",
+    "output": "Overdrawn\n-10\n"
+  },
+  {
+    "id": "x.3-06",
+    "kind": "multi",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.2",
+      "x.3.4"
+    ],
+    "select": 2,
+    "stem": "Which statements about this program are true? (Select TWO)",
+    "code": "for word in [\"sun\", \"rain\", \"snow\"]:\n    if word.startswith(\"r\"):\n        break\n    print(word)\nelse:\n    print(\"done\")",
+    "options": [
+      {
+        "text": "`sun` is printed",
+        "correct": true,
+        "rationale": "`sun` doesn't start with `r`, so the loop prints it before moving on."
+      },
+      {
+        "text": "The `else` block is skipped",
+        "correct": true,
+        "rationale": "`rain` starts with `r`, so `break` ends the loop, and a loop left with `break` skips its `else`."
+      },
+      {
+        "text": "`rain` is printed before the loop stops",
+        "correct": false,
+        "rationale": "`break` runs before `print(word)` in that round, so `rain` is never printed."
+      },
+      {
+        "text": "`snow` is printed",
+        "correct": false,
+        "rationale": "The loop stops at `rain`, so it never reaches `snow`."
+      },
+      {
+        "text": "`done` is printed once",
+        "correct": false,
+        "rationale": "`done` would only be printed if the loop finished without `break`."
+      },
+      {
+        "text": "`done` is printed after each word",
+        "correct": false,
+        "rationale": "A loop's `else` never runs once per round; and here it doesn't run at all."
+      }
+    ],
+    "explanation": "Round 1: `sun` does not start with `r`, so it is printed. Round 2: `rain` starts with `r`, so `break` ends the loop before `print(word)`. Because the loop ended with `break`, the `else` block is skipped. The only output is `sun`.",
+    "output": "sun\n"
+  },
+  {
+    "id": "x.3-07",
+    "kind": "gap",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.1",
+      "x.3.4"
+    ],
+    "stem": "Complete the code so that it stops searching once Dan is found and prints only `Dan is coming`.",
+    "code": "guests = [\"Ana\", \"Dan\", \"Cleo\"]\ni = 0\nwhile i < len(guests):\n    if guests[i] == \"Dan\":\n        print(\"Dan is coming\")\n        __BLANK1__\n    i += 1\n__BLANK2__:\n    print(\"Dan is not on the list\")",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "break",
+          "pass",
+          "return"
+        ],
+        "answer": "break",
+        "rationale": "`break` ends the loop at once, which also means its `else` block is skipped."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "else",
+          "finally",
+          "elif"
+        ],
+        "answer": "else",
+        "rationale": "An `else` lined up with `while` belongs to the loop and runs only if the loop ends without `break`."
+      }
+    ],
+    "explanation": "The search stops with `break` when Dan is found. Because the loop ended with `break`, the `else` block lined up with `while` is skipped, so `Dan is not on the list` is not printed. With `pass`, the loop would carry on to the end and the `else` would run as well.",
+    "output": "Dan is coming\n"
+  },
+  {
+    "id": "x.3-08",
+    "kind": "order",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.2",
+      "x.3.4"
+    ],
+    "mode": "code",
+    "stem": "Put the lines in order so that the program prints `Vowel found: o`.",
+    "lines": [
+      "word = \"crypto\"",
+      "for ch in word:",
+      "    if ch in \"aeiou\":",
+      "        print(\"Vowel found:\", ch)",
+      "        break",
+      "else:",
+      "    print(\"No vowels in\", word)"
+    ],
+    "rationale": "The word is set first, the `for` loop checks each letter, the message comes before `break`, and the `else` lines up with `for` after the loop body.",
+    "explanation": "The loop goes through `c`, `r`, `y`, `p` and `t` without finding a vowel. At `o`, it prints `Vowel found: o` and `break` ends the loop. The `else` block belongs to the `for` loop, so it is skipped because of the `break`. If `break` came before `print()`, nothing would be printed.",
+    "output": "Vowel found: o\n"
+  },
+  {
+    "id": "x.3-09",
+    "kind": "insert",
+    "objectiveId": "x.3",
+    "subpoints": [
+      "x.3.2",
+      "x.3.3"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print only `Too expensive: 25`?",
+    "code": "prices = [12, 8, 25, 4]\nfor p in prices:\n    if p > 20:\n        print(\"Too expensive:\", p)\n        # >>> INSERT <<<\nelse:\n    print(\"All affordable\")",
+    "options": [
+      {
+        "text": "continue",
+        "correct": false,
+        "rationale": "`continue` only skips to the next round. The loop still finishes normally, so the `else` prints `All affordable`."
+      },
+      {
+        "text": "break",
+        "correct": true,
+        "rationale": "`break` ends the loop at 25, and a loop left with `break` skips its `else`."
+      },
+      {
+        "text": "pass",
+        "correct": false,
+        "rationale": "`pass` does nothing, so the loop finishes normally and the `else` still runs."
+      },
+      {
+        "text": "print(p)",
+        "correct": false,
+        "rationale": "This prints 25 a second time, and the loop still finishes normally, so the `else` runs too."
+      }
+    ],
+    "explanation": "To keep `All affordable` from being printed, the loop must end with `break`: the `else` of a loop runs only when the loop finishes without `break`. `continue` and `pass` don't stop the loop, so the `else` would still run.",
+    "output": "Too expensive: 25\n"
+  }
+]

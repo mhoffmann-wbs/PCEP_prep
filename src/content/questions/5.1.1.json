@@ -1,0 +1,302 @@
+[
+  {
+    "id": "5.1.1-01",
+    "kind": "single",
+    "objectiveId": "5.1.1",
+    "subpoints": [
+      "5.1.1.1",
+      "5.1.1.2",
+      "5.1.1.3"
+    ],
+    "stem": "The file `notes.txt` contains these two lines:\n\n```\nbuy milk\nwalk dog\n```\n\nWhat is the output of the following code?",
+    "code": "with open(\"notes.txt\", \"a\") as f:\n    f.write(\"feed cat\\n\")\nwith open(\"notes.txt\") as f:\n    print(len(f.readlines()))",
+    "files": {
+      "notes.txt": "buy milk\nwalk dog\n"
+    },
+    "output": "3\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "3",
+        "correct": true,
+        "rationale": "Mode `\"a\"` keeps the two old lines and adds `feed cat` at the end, so `readlines()` returns a list of three lines."
+      },
+      {
+        "text": "1",
+        "correct": false,
+        "rationale": "This is what mode `\"w\"` would do: it empties the file first. Mode `\"a\"` keeps the old content."
+      },
+      {
+        "text": "2",
+        "correct": false,
+        "rationale": "The new line was written and the file was closed by `with`, so it is there when the file is read again."
+      },
+      {
+        "text": "4",
+        "correct": false,
+        "rationale": "`readlines()` gives one list item per line; the final `\\n` does not create an extra empty line."
+      }
+    ],
+    "explanation": "Mode `\"a\"` (append) keeps what is already in the file and writes new text at the end. After the first `with` block, `notes.txt` holds `buy milk`, `walk dog` and `feed cat`, each ending in `\\n`. The second `open()` uses the default mode `\"r\"`, and `readlines()` returns a list with one string per line, so `len()` gives 3."
+  },
+  {
+    "id": "5.1.1-02",
+    "kind": "single",
+    "objectiveId": "5.1.1",
+    "subpoints": [
+      "5.1.1.5",
+      "5.1.1.1"
+    ],
+    "stem": "The working directory contains one file, `recipes.txt`. What happens when this code runs?",
+    "code": "with open(\"recipe.txt\") as f:\n    print(f.read())",
+    "files": {
+      "recipes.txt": "pancakes\nomelette\n"
+    },
+    "raises": "FileNotFoundError",
+    "options": [
+      {
+        "text": "It prints `pancakes` and `omelette`",
+        "correct": false,
+        "rationale": "That would need the names to match exactly. `recipe.txt` and `recipes.txt` are different files."
+      },
+      {
+        "text": "It raises `FileNotFoundError`",
+        "correct": true,
+        "rationale": "There is no file called `recipe.txt` (the existing one has an s), and mode `\"r\"` needs an existing file."
+      },
+      {
+        "text": "It creates an empty `recipe.txt` and prints an empty line",
+        "correct": false,
+        "rationale": "Only `\"w\"` and `\"a\"` create a missing file. The default mode is `\"r\"`, which never creates one."
+      },
+      {
+        "text": "It raises `ValueError`",
+        "correct": false,
+        "rationale": "`ValueError` comes from using a file after it was closed. A missing file in `\"r\"` mode gives a different error."
+      }
+    ],
+    "explanation": "`open()` without a mode uses `\"r\"`. In `\"r\"` mode the file must already exist. The code asks for `recipe.txt`, but the file is called `recipes.txt`, so the names don't match and Python raises `FileNotFoundError` before anything is printed."
+  },
+  {
+    "id": "5.1.1-03",
+    "kind": "single",
+    "objectiveId": "5.1.1",
+    "subpoints": [
+      "5.1.1.4",
+      "5.1.1.5"
+    ],
+    "stem": "What happens when this code runs?",
+    "code": "with open(\"diary.txt\", \"w\") as f:\n    f.write(\"Rainy.\\n\")\nf.write(\"Windy.\\n\")",
+    "raises": "ValueError",
+    "options": [
+      {
+        "text": "`diary.txt` ends up with both lines",
+        "correct": false,
+        "rationale": "The second `write()` is outside the `with` block, where the file is already closed."
+      },
+      {
+        "text": "The last line raises `NameError`",
+        "correct": false,
+        "rationale": "The name `f` still exists after the block; only the file it refers to is closed."
+      },
+      {
+        "text": "The last line raises `ValueError`",
+        "correct": true,
+        "rationale": "The `with` block closed the file when it ended, and writing to a closed file raises `ValueError: I/O operation on closed file.`"
+      },
+      {
+        "text": "`diary.txt` ends up with only `Windy.`",
+        "correct": false,
+        "rationale": "Nothing is written by the last line; it fails because the file is closed."
+      }
+    ],
+    "explanation": "The `with` statement closes the file automatically when its indented block ends. The first `write()` is inside the block and works. The last line is not indented, so it runs after the file was closed. Reading from or writing to a closed file raises `ValueError`."
+  },
+  {
+    "id": "5.1.1-04",
+    "kind": "single",
+    "objectiveId": "5.1.1",
+    "subpoints": [
+      "5.1.1.2"
+    ],
+    "stem": "The file `trip.txt` contains these three lines:\n\n```\nRome\nOslo\nLima\n```\n\nWhat is the output of the following code?",
+    "code": "with open(\"trip.txt\") as f:\n    first = f.readline()\n    rest = f.read()\nprint(repr(first), len(rest))",
+    "files": {
+      "trip.txt": "Rome\nOslo\nLima\n"
+    },
+    "output": "'Rome\\n' 10\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "'Rome' 10",
+        "correct": false,
+        "rationale": "`readline()` does not remove the newline character at the end of the line."
+      },
+      {
+        "text": "'Rome\\n' 15",
+        "correct": false,
+        "rationale": "15 is the length of the whole file. `read()` starts where `readline()` stopped, so the first line is not read again."
+      },
+      {
+        "text": "'Rome' 8",
+        "correct": false,
+        "rationale": "This drops every `\\n`, but lines read from a file keep their newline characters."
+      },
+      {
+        "text": "'Rome\\n' 10",
+        "correct": true,
+        "rationale": "`readline()` keeps the line's `\\n`, and `read()` returns the remaining `\"Oslo\\nLima\\n\"`, which is 10 characters long."
+      }
+    ],
+    "explanation": "`readline()` returns the next line including its `\\n`, so `first` is `'Rome\\n'`, and `repr()` shows the `\\n`. The file object remembers its position, so `read()` returns only what is left: `\"Oslo\\nLima\\n\"`. That is 4 + 1 + 4 + 1 = 10 characters."
+  },
+  {
+    "id": "5.1.1-05",
+    "kind": "multi",
+    "objectiveId": "5.1.1",
+    "subpoints": [
+      "5.1.1.1",
+      "5.1.1.3",
+      "5.1.1.4"
+    ],
+    "stem": "A program starts with `with open(\"diary.txt\", \"w\") as f:`. Which statements are true? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "If `diary.txt` already exists, its old content is erased as soon as it is opened.",
+        "correct": true,
+        "rationale": "Mode `\"w\"` empties an existing file straight away, even before anything is written."
+      },
+      {
+        "text": "The file is closed automatically when the indented block ends.",
+        "correct": true,
+        "rationale": "That is the job of the `with` statement, and it happens even if an error occurs inside the block."
+      },
+      {
+        "text": "`f.write(\"hello\")` adds a line break after `hello` automatically.",
+        "correct": false,
+        "rationale": "Unlike `print()`, `write()` never adds `\\n`; you must include it yourself."
+      },
+      {
+        "text": "`diary.txt` must already exist, or `FileNotFoundError` is raised.",
+        "correct": false,
+        "rationale": "Only mode `\"r\"` needs an existing file. Mode `\"w\"` creates a missing file."
+      },
+      {
+        "text": "After the block, `f.read()` returns what was written.",
+        "correct": false,
+        "rationale": "After the block the file is closed, so `f.read()` raises `ValueError`. The file was also opened for writing only."
+      }
+    ],
+    "explanation": "Mode `\"w\"` creates the file if it is missing and empties it if it exists. The `with` statement closes the file when its block ends. `write()` writes exactly the string it is given, with no extra newline, and a closed file can't be read or written."
+  },
+  {
+    "id": "5.1.1-06",
+    "kind": "gap",
+    "objectiveId": "5.1.1",
+    "subpoints": [
+      "5.1.1.1",
+      "5.1.1.3"
+    ],
+    "stem": "The file `shopping.txt` contains:\n\n```\nmilk\nbread\n```\n\nFill the gaps so the program adds `eggs` as a new last line, keeping the old lines, and then prints the whole file.",
+    "code": "with open(\"shopping.txt\", __BLANK1__) as f:\n    f.__BLANK2__(\"eggs\\n\")\nwith open(\"shopping.txt\") as f:\n    print(f.read(), end=\"\")",
+    "files": {
+      "shopping.txt": "milk\nbread\n"
+    },
+    "output": "milk\nbread\neggs\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "\"r\"",
+          "\"w\"",
+          "\"a\""
+        ],
+        "answer": "\"a\"",
+        "rationale": "Mode `\"a\"` keeps the old lines and adds new text at the end. `\"w\"` would wipe `milk` and `bread`, and `\"r\"` can't write at all."
+      },
+      {
+        "n": 2,
+        "kind": "text",
+        "accept": [
+          "write"
+        ],
+        "rationale": "`write()` is the file method that writes a string to the file."
+      }
+    ],
+    "explanation": "Appending means opening with mode `\"a\"` and calling `write()`. The string ends in `\\n`, so `eggs` sits on its own line. The second `with` block reads the file back in the default `\"r\"` mode, and `print(..., end=\"\")` shows it without an extra blank line."
+  },
+  {
+    "id": "5.1.1-07",
+    "kind": "order",
+    "objectiveId": "5.1.1",
+    "subpoints": [
+      "5.1.1.2",
+      "5.1.1.3",
+      "5.1.1.4"
+    ],
+    "stem": "Put the lines in order so the program saves two numbers to `savings.txt`, reads them back and prints their total, `42`.",
+    "mode": "code",
+    "lines": [
+      "with open(\"savings.txt\", \"w\") as f:",
+      "    f.write(\"12\\n30\\n\")",
+      "total = 0",
+      "with open(\"savings.txt\") as f:",
+      "    for line in f:",
+      "        total += int(line.strip())",
+      "print(total)"
+    ],
+    "altOrders": [
+      [
+        2,
+        0,
+        1,
+        3,
+        4,
+        5,
+        6
+      ]
+    ],
+    "output": "42\n",
+    "rationale": "The file must be written before it is read, `total` must exist before the loop adds to it, and the total is printed after the loop.",
+    "explanation": "The first `with` block creates `savings.txt` with the lines `12` and `30`. The second block opens it for reading, and the `for` loop gives one line at a time. Each line is a string such as `\"12\\n\"`, so it is stripped and turned into an `int` before it is added. `total = 0` may also come first, since it doesn't depend on the file."
+  },
+  {
+    "id": "5.1.1-08",
+    "kind": "insert",
+    "objectiveId": "5.1.1",
+    "subpoints": [
+      "5.1.1.2"
+    ],
+    "stem": "The file `pets.txt` contains:\n\n```\nRex\nMia\nBo\n```\n\nWhich line, inserted at the marked spot, makes the program print `['Rex\\n', 'Mia\\n', 'Bo\\n']`?",
+    "code": "with open(\"pets.txt\") as f:\n    # >>> INSERT <<<\nprint(names)",
+    "files": {
+      "pets.txt": "Rex\nMia\nBo\n"
+    },
+    "output": "['Rex\\n', 'Mia\\n', 'Bo\\n']\n",
+    "options": [
+      {
+        "text": "names = f.readlines()",
+        "correct": true,
+        "rationale": "`readlines()` returns a list of all lines, and each line keeps its `\\n`."
+      },
+      {
+        "text": "names = f.read()",
+        "correct": false,
+        "rationale": "`read()` returns the whole file as one string, not a list."
+      },
+      {
+        "text": "names = f.readline()",
+        "correct": false,
+        "rationale": "`readline()` returns only the first line, `\"Rex\\n\"`, as a string."
+      },
+      {
+        "text": "names = f.read().split()",
+        "correct": false,
+        "rationale": "`split()` makes a list but removes the `\\n` characters, giving `['Rex', 'Mia', 'Bo']`."
+      }
+    ],
+    "explanation": "The target output is a list of strings that still end in `\\n`. That is exactly what `readlines()` returns. `read()` and `readline()` return strings, and `split()` throws the newline characters away."
+  }
+]

@@ -1,0 +1,294 @@
+[
+  {
+    "id": "5.1.2-01",
+    "kind": "single",
+    "objectiveId": "5.1.2",
+    "subpoints": [
+      "5.1.2.1",
+      "5.1.2.3",
+      "5.1.2.5"
+    ],
+    "stem": "The file `fruit.csv` contains:\n\n```\nfruit,kg\napples,3\npears,2\n```\n\nWhat is the output of the following code?",
+    "code": "import csv\nwith open(\"fruit.csv\", newline=\"\") as f:\n    rows = list(csv.reader(f))\nprint(len(rows), rows[1][1] + rows[2][1])",
+    "files": {
+      "fruit.csv": "fruit,kg\napples,3\npears,2\n"
+    },
+    "output": "3 32\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "2 5",
+        "correct": false,
+        "rationale": "This skips the header and adds numbers, but `csv.reader()` keeps the header and returns strings."
+      },
+      {
+        "text": "3 32",
+        "correct": true,
+        "rationale": "The header counts as a row, so there are 3 rows, and the values `'3'` and `'2'` are strings, so `+` joins them."
+      },
+      {
+        "text": "3 5",
+        "correct": false,
+        "rationale": "The row count is right, but `csv.reader()` never converts values to numbers, so `+` joins text."
+      },
+      {
+        "text": "2 32",
+        "correct": false,
+        "rationale": "The header line is a row too, so `list()` collects 3 rows."
+      }
+    ],
+    "explanation": "`csv.reader()` gives each line as a list of strings. `list()` collects all three rows, header included, so `len(rows)` is 3. `rows[1][1]` is `'3'` and `rows[2][1]` is `'2'`; adding two strings joins them into `'32'`. To add the numbers you would need `int()` first."
+  },
+  {
+    "id": "5.1.2-02",
+    "kind": "single",
+    "objectiveId": "5.1.2",
+    "subpoints": [
+      "5.1.2.1",
+      "5.1.2.3",
+      "5.1.2.5"
+    ],
+    "stem": "The file `trips.csv` contains:\n\n```\ncity,days\n\"Rome, Italy\",4\n```\n\nWhat is the output of the following code?",
+    "code": "import csv\nwith open(\"trips.csv\", newline=\"\") as f:\n    reader = csv.reader(f)\n    next(reader)\n    row = next(reader)\nprint(len(row), row[0])",
+    "files": {
+      "trips.csv": "city,days\n\"Rome, Italy\",4\n"
+    },
+    "output": "2 Rome, Italy\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "3 \"Rome",
+        "correct": false,
+        "rationale": "This splits at every comma, like `split(\",\")`. `csv.reader()` treats a quoted value as one value."
+      },
+      {
+        "text": "2 city",
+        "correct": false,
+        "rationale": "The first `next()` took the header row, so `row` is the second line of the file."
+      },
+      {
+        "text": "2 Rome, Italy",
+        "correct": true,
+        "rationale": "The comma inside the double quotes belongs to the value, so the row has two values and the quotes are removed."
+      },
+      {
+        "text": "3 Rome",
+        "correct": false,
+        "rationale": "The quotes protect the comma, so `Italy` is not a separate value."
+      }
+    ],
+    "explanation": "In a CSV file, a value that contains a comma is wrapped in double quotes. `csv.reader()` understands this, so `\"Rome, Italy\"` becomes the single value `Rome, Italy`. The first `next()` skips the header, the second returns `['Rome, Italy', '4']`, which has 2 values."
+  },
+  {
+    "id": "5.1.2-03",
+    "kind": "single",
+    "objectiveId": "5.1.2",
+    "subpoints": [
+      "5.1.2.2"
+    ],
+    "stem": "The file `books.csv` contains:\n\n```\ntitle,pages\nDune,412\n```\n\nWhat happens when this code runs?",
+    "code": "with open(\"books.csv\", newline=\"\") as f:\n    for row in csv.reader(f):\n        print(row)",
+    "files": {
+      "books.csv": "title,pages\nDune,412\n"
+    },
+    "raises": "NameError",
+    "options": [
+      {
+        "text": "It prints `['title', 'pages']` and `['Dune', '412']`",
+        "correct": false,
+        "rationale": "That is what happens after `import csv`. Without the import, Python doesn't know the name `csv`."
+      },
+      {
+        "text": "It raises `ModuleNotFoundError`",
+        "correct": false,
+        "rationale": "That error comes from an `import` line naming a module that doesn't exist. Here there is no `import` line at all."
+      },
+      {
+        "text": "It raises `FileNotFoundError`",
+        "correct": false,
+        "rationale": "`books.csv` exists, and the file is opened without problems before `csv` is used."
+      },
+      {
+        "text": "It raises `NameError`",
+        "correct": true,
+        "rationale": "The program never runs `import csv`, so the name `csv` is not defined."
+      }
+    ],
+    "explanation": "The `csv` module is part of Python, but its name only exists in your program after `import csv`. Here the first use of `csv` happens inside the loop, so Python raises `NameError: name 'csv' is not defined`."
+  },
+  {
+    "id": "5.1.2-04",
+    "kind": "single",
+    "objectiveId": "5.1.2",
+    "subpoints": [
+      "5.1.2.4",
+      "5.1.2.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "import csv\nwith open(\"cafe.csv\", \"w\", newline=\"\") as f:\n    w = csv.writer(f)\n    w.writerow([\"drink\", \"price\"])\n    w.writerow(\"tea\")\nwith open(\"cafe.csv\", newline=\"\") as f:\n    for row in csv.reader(f):\n        print(len(row))",
+    "output": "2\n3\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "2\n3",
+        "correct": true,
+        "rationale": "`writerow(\"tea\")` treats the string as a sequence of characters, so it writes the row `t,e,a` with three values."
+      },
+      {
+        "text": "2\n1",
+        "correct": false,
+        "rationale": "This would need `writerow([\"tea\"])`, a list with one string in it."
+      },
+      {
+        "text": "1\n1",
+        "correct": false,
+        "rationale": "`writerow()` writes each list item as a separate value, so the first row has two."
+      },
+      {
+        "text": "2\n2",
+        "correct": false,
+        "rationale": "The second call writes only what it was given. There is no price for tea."
+      }
+    ],
+    "explanation": "`writerow()` expects a list (or other sequence) of values. `[\"drink\", \"price\"]` gives a row with 2 values. A string is also a sequence, of characters, so `writerow(\"tea\")` writes `t,e,a`, and reading it back gives `['t', 'e', 'a']`, with 3 values."
+  },
+  {
+    "id": "5.1.2-05",
+    "kind": "multi",
+    "objectiveId": "5.1.2",
+    "subpoints": [
+      "5.1.2.1",
+      "5.1.2.3"
+    ],
+    "stem": "Which statements about CSV files and `csv.reader()` are true? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Each row is returned as a list of strings.",
+        "correct": true,
+        "rationale": "`csv.reader()` splits each line into values and never converts them, so even numbers come back as text."
+      },
+      {
+        "text": "A value that contains a comma is wrapped in double quotes in the file.",
+        "correct": true,
+        "rationale": "Quotes such as `\"Paris, TX\"` keep the comma inside one value."
+      },
+      {
+        "text": "Values that look like numbers are returned as `int` or `float`.",
+        "correct": false,
+        "rationale": "Everything read is a string. You must call `int()` or `float()` yourself."
+      },
+      {
+        "text": "The header row is skipped automatically.",
+        "correct": false,
+        "rationale": "The header is just the first row. Skip it with `next(reader)` or `rows[1:]`."
+      },
+      {
+        "text": "`csv.reader()` takes the file name, such as `csv.reader(\"data.csv\")`.",
+        "correct": false,
+        "rationale": "It takes a file object from `open()`. Given a string, it reads the string itself, character by character."
+      }
+    ],
+    "explanation": "A CSV file stores one row per line with commas between values, and quotes protect a comma that is part of a value. `csv.reader()` needs an open file object and gives every row, header included, as a list of strings."
+  },
+  {
+    "id": "5.1.2-06",
+    "kind": "gap",
+    "objectiveId": "5.1.2",
+    "subpoints": [
+      "5.1.2.2",
+      "5.1.2.3",
+      "5.1.2.5"
+    ],
+    "stem": "The file `grades.csv` contains:\n\n```\nname,grade\nAna,91\nBen,78\n```\n\nFill the gaps so the program prints the total of the grades, `169`.",
+    "code": "import csv\nwith open(\"grades.csv\", newline=\"\") as f:\n    reader = csv.__BLANK1__(f)\n    next(reader)\n    total = 0\n    for name, grade in reader:\n        total += __BLANK2__(grade)\nprint(total)",
+    "files": {
+      "grades.csv": "name,grade\nAna,91\nBen,78\n"
+    },
+    "output": "169\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "reader",
+          "writer",
+          "read"
+        ],
+        "answer": "reader",
+        "rationale": "`csv.reader()` reads rows from a file opened for reading. `csv.writer()` is for writing, and the module has no `read` function."
+      },
+      {
+        "n": 2,
+        "kind": "text",
+        "accept": [
+          "int"
+        ],
+        "rationale": "Each grade is a string such as `'91'`. `int()` turns it into a whole number so it can be added; `float()` would print `169.0`."
+      }
+    ],
+    "explanation": "`csv.reader(f)` gives rows as lists of strings. `next(reader)` skips the header row. Each data row unpacks into `name` and `grade`, and `int(grade)` converts the text before adding: 91 + 78 = 169."
+  },
+  {
+    "id": "5.1.2-07",
+    "kind": "order",
+    "objectiveId": "5.1.2",
+    "subpoints": [
+      "5.1.2.2",
+      "5.1.2.4",
+      "5.1.2.3"
+    ],
+    "stem": "Put the lines in order so the program writes a small CSV table and then prints `[['name', 'animal'], ['Rex', 'dog']]`.",
+    "mode": "code",
+    "lines": [
+      "import csv",
+      "with open(\"pets.csv\", \"w\", newline=\"\") as f:",
+      "    writer = csv.writer(f)",
+      "    writer.writerow([\"name\", \"animal\"])",
+      "    writer.writerow([\"Rex\", \"dog\"])",
+      "with open(\"pets.csv\", newline=\"\") as f:",
+      "    print(list(csv.reader(f)))"
+    ],
+    "output": "[['name', 'animal'], ['Rex', 'dog']]\n",
+    "rationale": "The module is imported first, the writer is created from the open file before rows are written, the header row comes before the data row, and the file is read only after it was written and closed.",
+    "explanation": "`import csv` must run before `csv.writer` or `csv.reader` is used. Inside the first `with` block, `csv.writer(f)` wraps the file and each `writerow()` writes one row. The second block reads the file again, and `list(csv.reader(f))` collects every row as a list of strings."
+  },
+  {
+    "id": "5.1.2-08",
+    "kind": "insert",
+    "objectiveId": "5.1.2",
+    "subpoints": [
+      "5.1.2.5",
+      "5.1.2.3"
+    ],
+    "stem": "The file `weather.csv` contains:\n\n```\nday,temp\nMon,18\nTue,23\nWed,25\n```\n\nWhich line, inserted at the marked spot, makes the program print the days warmer than 20 degrees, `Tue` and `Wed`?",
+    "code": "import csv\nwith open(\"weather.csv\", newline=\"\") as f:\n    reader = csv.reader(f)\n    next(reader)\n    for day, temp in reader:\n        # >>> INSERT <<<\n            print(day)",
+    "files": {
+      "weather.csv": "day,temp\nMon,18\nTue,23\nWed,25\n"
+    },
+    "output": "Tue\nWed\n",
+    "options": [
+      {
+        "text": "if int(temp) > 20:",
+        "correct": true,
+        "rationale": "`temp` is a string such as `'23'`, so it is converted with `int()` before the comparison."
+      },
+      {
+        "text": "if temp > 20:",
+        "correct": false,
+        "rationale": "`temp` is a string, and comparing a string with an `int` using `>` raises `TypeError`."
+      },
+      {
+        "text": "if int(day) > 20:",
+        "correct": false,
+        "rationale": "`day` holds text such as `'Mon'`, which `int()` can't convert, so this raises `ValueError`."
+      },
+      {
+        "text": "if int(temp) < 20:",
+        "correct": false,
+        "rationale": "This picks the cooler days, so it prints only `Mon`."
+      }
+    ],
+    "explanation": "Each data row unpacks into `day` and `temp`, both strings. To compare the temperature with the number 20, convert it first with `int(temp)`. Only 23 and 25 are greater than 20, so `Tue` and `Wed` are printed."
+  }
+]

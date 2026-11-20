@@ -9,10 +9,10 @@
     "output": "512 6 2\n",
     "outputKey": true,
     "options": [
-      { "text": "64 6 2", "correct": false, "rationale": "** groups from the right, so 3 ** 2 is worked out first." },
-      { "text": "512 6 2", "correct": true, "rationale": "2 ** 9 is 512; 7 // 2 is 3, times 2 is 6; -7 % 3 is 2." },
-      { "text": "512 7 -1", "correct": false, "rationale": "// rounds down to 3 before the multiplication, and % takes the sign of the divisor." },
-      { "text": "64 7 -1", "correct": false, "rationale": "This combines both mistakes: left-to-right ** and a negative remainder." }
+      {"text": "64 6 2", "correct": false, "rationale": "** groups from the right, so 3 ** 2 is worked out first."},
+      {"text": "512 6 2", "correct": true, "rationale": "2 ** 9 is 512; 7 // 2 is 3, times 2 is 6; -7 % 3 is 2."},
+      {"text": "512 7 -1", "correct": false, "rationale": "// rounds down to 3 before the multiplication, and % takes the sign of the divisor."},
+      {"text": "64 7 -1", "correct": false, "rationale": "This combines both mistakes: left-to-right ** and a negative remainder."}
     ],
     "explanation": "** is right-associative: 2 ** 3 ** 2 means 2 ** (3 ** 2) = 2 ** 9 = 512. // and * have the same priority and go left to right: (7 // 2) * 2 = 3 * 2 = 6. With %, the result has the sign of the divisor, so -7 % 3 is 2 (because -7 = 3 * -3 + 2)."
   },
@@ -24,12 +24,121 @@
     "stem": "Which expressions evaluate to `True`? (Select TWO)",
     "select": 2,
     "options": [
-      { "text": "`not 0`", "correct": true, "rationale": "0 is falsy, so not 0 is True." },
-      { "text": "`3 > 2 > 1`", "correct": true, "rationale": "A chained comparison means 3 > 2 and 2 > 1, which are both true." },
-      { "text": "`0 or \"\"`", "correct": false, "rationale": "or returns its last operand when all are falsy, so the result is the empty string \"\", not True." },
-      { "text": "`True + True == 3`", "correct": false, "rationale": "True counts as 1 in arithmetic, so True + True is 2." },
-      { "text": "`\"a\" < \"B\"`", "correct": false, "rationale": "Strings compare by character code, and lowercase letters come after uppercase ones." }
+      {"text": "`not 0`", "correct": true, "rationale": "0 is falsy, so not 0 is True."},
+      {"text": "`3 > 2 > 1`", "correct": true, "rationale": "A chained comparison means 3 > 2 and 2 > 1, which are both true."},
+      {"text": "`0 or \"\"`", "correct": false, "rationale": "or returns its last operand when all are falsy, so the result is the empty string \"\", not True."},
+      {"text": "`True + True == 3`", "correct": false, "rationale": "True counts as 1 in arithmetic, so True + True is 2."},
+      {"text": "`\"a\" < \"B\"`", "correct": false, "rationale": "Strings compare by character code, and lowercase letters come after uppercase ones."}
     ],
     "explanation": "not turns a falsy value into True. Comparisons can be chained: a > b > c means a > b and b > c. The other expressions give \"\", False and False."
+  },
+  {
+    "id": "1.4.1-03",
+    "kind": "single",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.1"],
+    "stem": "What is the output of the following code?",
+    "code": "print(9 / 3, 9.0 // 2, 7 % 2.0, -9 // 4)",
+    "output": "3.0 4.0 1.0 -3\n",
+    "outputKey": true,
+    "options": [
+      {"text": "3.0 4.0 1.0 -3", "correct": true, "rationale": "`/` always gives a float, a float operand makes `//` and `%` give floats, and `-9 // 4` rounds -2.25 down to -3."},
+      {"text": "3 4.0 1.0 -3", "correct": false, "rationale": "`/` always returns a float, even when the division is exact."},
+      {"text": "3.0 4 1 -2", "correct": false, "rationale": "`//` and `%` give floats when one operand is a float, and `//` rounds down, towards minus infinity."},
+      {"text": "3.0 4.5 1.0 -2", "correct": false, "rationale": "`//` is floor division, so it drops the .5, and -2.25 rounded down is -3, not -2."}
+    ],
+    "explanation": "`9 / 3` uses true division, which always gives a float: `3.0`. `9.0 // 2` is floor division, and since 9.0 is a float the result is `4.0`. `7 % 2.0` is the remainder 1, as a float: `1.0`. `-9 / 4` is -2.25, and `//` rounds down towards minus infinity, giving `-3`."
+  },
+  {
+    "id": "1.4.1-04",
+    "kind": "single",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.2", "1.4.1.5"],
+    "stem": "What is the output of the following code?",
+    "code": "dash = \"-\"\nprint(\"ab\" + \"cd\" * 2, dash * 3 + \">\")",
+    "output": "abcdcd --->\n",
+    "outputKey": true,
+    "options": [
+      {"text": "abcdabcd --->", "correct": false, "rationale": "`*` is applied before `+`, so `\"ab\"` is not part of the repetition."},
+      {"text": "abcdcd ->->->", "correct": false, "rationale": "In `dash * 3 + \">\"` the repetition happens first, so `\">\"` is added only once, at the end."},
+      {"text": "abcdcd --->", "correct": true, "rationale": "`*` binds more tightly than `+`, so only `\"cd\"` is repeated, and `dash` is repeated before `\">\"` is added."},
+      {"text": "abcdabcd ->->->", "correct": false, "rationale": "This applies `+` before `*` in both expressions; `*` always comes first unless brackets say otherwise."}
+    ],
+    "explanation": "With strings, `+` joins and `*` repeats. As with numbers, `*` comes before `+`. So `\"ab\" + \"cd\" * 2` is `\"ab\" + \"cdcd\"`, which is `abcdcd`. And `dash * 3 + \">\"` is `\"---\" + \">\"`, which is `--->`."
+  },
+  {
+    "id": "1.4.1-05",
+    "kind": "single",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.3", "1.4.1.5"],
+    "stem": "What is the output of the following code?",
+    "code": "x = 10\nx -= 2 * 3\nx **= 2\nx //= 3\nprint(x)",
+    "output": "5\n",
+    "outputKey": true,
+    "options": [
+      {"text": "192", "correct": false, "rationale": "An augmented assignment works out the whole right side first: `x -= 2 * 3` means `x = x - 6`, not `(x - 2) * 3`."},
+      {"text": "5.333333333333333", "correct": false, "rationale": "`//=` is floor division, which gives a whole number for two ints; `/=` would give the float."},
+      {"text": "5.0", "correct": false, "rationale": "`//` with two int operands gives an int, so the result is `5`, not `5.0`."},
+      {"text": "5", "correct": true, "rationale": "`x -= 2 * 3` subtracts 6, giving 4; then 4 ** 2 is 16, and 16 // 3 is 5."}
+    ],
+    "explanation": "`x -= 2 * 3` means `x = x - (2 * 3)`, so `x` becomes 10 - 6 = 4. `x **= 2` makes it 4 ** 2 = 16. `x //= 3` floor-divides: 16 // 3 is 5. All operands are ints, so the result is the int 5."
+  },
+  {
+    "id": "1.4.1-06",
+    "kind": "single",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.4", "1.4.1.5"],
+    "stem": "What is the output of the following code?",
+    "code": "n = 3\nprint(-n ** 2, (-n) ** 2, 5 - -n)",
+    "output": "-9 9 8\n",
+    "outputKey": true,
+    "options": [
+      {"text": "-9 9 8", "correct": true, "rationale": "`**` binds before the unary minus on its left, brackets change that, and `5 - -n` subtracts minus 3."},
+      {"text": "9 9 8", "correct": false, "rationale": "`-n ** 2` means `-(n ** 2)`: the power is worked out first, then the sign is flipped."},
+      {"text": "-9 9 2", "correct": false, "rationale": "In `5 - -n` the second `-` is a unary minus, so this is 5 minus (-3), which is 8."},
+      {"text": "9 -9 2", "correct": false, "rationale": "This mixes up both the power precedence and the double minus."}
+    ],
+    "explanation": "The unary minus has lower priority than `**` on its left, so `-n ** 2` is `-(3 ** 2)` = -9. With brackets, `(-n) ** 2` is (-3) ** 2 = 9. In `5 - -n`, the first `-` is binary (subtraction) and the second is unary (negation): 5 - (-3) = 8."
+  },
+  {
+    "id": "1.4.1-07",
+    "kind": "gap",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.6", "1.4.1.7", "1.4.1.8"],
+    "stem": "Fill the gaps so the program prints `True` only for days that are from 15 to 25 degrees (inclusive) and not rainy. It should print `True`, `False`, `False`.",
+    "code": "days = [(22, False), (22, True), (30, False)]\nfor temp, raining in days:\n    print(15 <= temp __BLANK1__ 25 __BLANK2__ not raining)",
+    "output": "True\nFalse\nFalse\n",
+    "blanks": [
+      {"n": 1, "kind": "choice", "choices": ["<=", ">=", "!="], "answer": "<=", "rationale": "The chained comparison `15 <= temp <= 25` means `15 <= temp and temp <= 25`."},
+      {"n": 2, "kind": "choice", "choices": ["and", "or"], "answer": "and", "rationale": "Both conditions must hold, so they are joined with `and`; `or` would accept a rainy day too."}
+    ],
+    "explanation": "A chained comparison like `15 <= temp <= 25` checks both limits at once. `not raining` is `True` only when `raining` is `False`. The comparisons are evaluated first, then `not`, then `and`. Only the first day, 22 degrees and dry, makes both sides `True`."
+  },
+  {
+    "id": "1.4.1-08",
+    "kind": "order",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.1", "1.4.1.4", "1.4.1.5"],
+    "stem": "Put the expressions in order by their value, smallest first.",
+    "mode": "values",
+    "lines": ["-3 ** 2", "-7 // 2", "2 ** -1", "-7 % 3", "2 + 3 * 2"],
+    "rationale": "The values are -9, -4, 0.5, 2 and 8.",
+    "explanation": "`-3 ** 2` is `-(3 ** 2)` = -9, because `**` binds before the unary minus on its left. `-7 // 2` rounds -3.5 down to -4. `2 ** -1` is 0.5, because a unary minus on the right of `**` belongs to the exponent. `-7 % 3` is 2, since the remainder takes the sign of the divisor. `2 + 3 * 2` is 2 + 6 = 8."
+  },
+  {
+    "id": "1.4.1-09",
+    "kind": "insert",
+    "objectiveId": "1.4.1",
+    "subpoints": ["1.4.1.1", "1.4.1.3", "1.4.1.5"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `30`?",
+    "code": "price = 12\ndiscount = 2\nqty = 3\n# >>> INSERT <<<\nprint(total)",
+    "output": "30\n",
+    "options": [
+      {"text": "total = (price - discount) * qty", "correct": true, "rationale": "The brackets make the subtraction happen first: (12 - 2) * 3 = 30."},
+      {"text": "total = price - discount * qty", "correct": false, "rationale": "`*` comes before `-`, so this is 12 - 6 = 6."},
+      {"text": "total = price * qty - discount", "correct": false, "rationale": "This takes the discount off once, after multiplying: 36 - 2 = 34."},
+      {"text": "total = (price - discount) * qty / 1", "correct": false, "rationale": "`/` always gives a float, so this prints `30.0`, not `30`."}
+    ],
+    "explanation": "Without brackets, `*` is applied before `-`. To subtract the discount from the price first, wrap that part in brackets: `(12 - 2) * 3` is 30. Dividing by 1 with `/` would turn the result into the float `30.0`."
   }
 ]

@@ -18,11 +18,12 @@ describe('question bank', () => {
     }
   })
 
-  // Every piece of code the learner sees or that runs.
+  // Every piece of code the learner sees or that runs. Options that are printed
+  // output (single items with outputKey) are not code, so they are skipped.
   const codeOf = (item: Item) =>
     [
       completeProgram(item) ?? item.code ?? '',
-      ...('options' in item && (item.kind === 'insert' || item.code) ? item.options.map((o) => o.text) : []),
+      ...(item.kind === 'insert' || (item.kind === 'single' && item.code && !item.outputKey) ? item.options.map((o) => o.text) : []),
       ...(item.kind === 'gap' ? item.blanks.flatMap((b) => (b.kind === 'text' ? b.accept : b.choices)) : []),
     ].join('\n')
 

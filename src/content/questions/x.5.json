@@ -1,0 +1,317 @@
+[
+  {
+    "id": "x.5-01",
+    "kind": "single",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.1",
+      "x.5.2"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def stack(n):\n    if n == 0:\n        return \"\"\n    return str(n) + stack(n - 1) + str(n)\n\nprint(stack(3))",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "321123",
+        "correct": true,
+        "rationale": "Each call puts its number on both sides of the result from the smaller call: `3` + `2112` + `3`."
+      },
+      {
+        "text": "123321",
+        "correct": false,
+        "rationale": "The outermost call, `stack(3)`, puts its 3 on the very outside, so the string starts with 3."
+      },
+      {
+        "text": "321",
+        "correct": false,
+        "rationale": "The number is added after the recursive result as well, so each digit appears twice."
+      },
+      {
+        "text": "3210123",
+        "correct": false,
+        "rationale": "The base case returns an empty string, not `\"0\"`, so no 0 appears."
+      }
+    ],
+    "explanation": "Work from the base case up. `stack(0)` returns `\"\"`. `stack(1)` returns `\"1\" + \"\" + \"1\"` = `\"11\"`. `stack(2)` returns `\"2\" + \"11\" + \"2\"` = `\"2112\"`. `stack(3)` returns `\"3\" + \"2112\" + \"3\"` = `\"321123\"`.",
+    "output": "321123\n"
+  },
+  {
+    "id": "x.5-02",
+    "kind": "single",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.2"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def plant(n):\n    if n > 0:\n        plant(n - 1)\n        print(\"seed\", n)\n\nplant(3)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "seed 3\nseed 2\nseed 1",
+        "correct": false,
+        "rationale": "`print()` comes after the recursive call, so it runs on the way back up, deepest call first."
+      },
+      {
+        "text": "seed 1\nseed 2\nseed 3",
+        "correct": true,
+        "rationale": "Each call first finishes the smaller call, then prints its own number, so 1 is printed first."
+      },
+      {
+        "text": "seed 0\nseed 1\nseed 2\nseed 3",
+        "correct": false,
+        "rationale": "When `n` is 0, `n > 0` is false, so that call prints nothing."
+      },
+      {
+        "text": "seed 3",
+        "correct": false,
+        "rationale": "`plant(3)` calls `plant(2)`, which calls `plant(1)`, and each of them prints too."
+      }
+    ],
+    "explanation": "`plant(3)` calls `plant(2)` before printing, which calls `plant(1)`, which calls `plant(0)`. `plant(0)` does nothing (the base case). Then the calls finish in reverse order: `plant(1)` prints `seed 1`, then `plant(2)` prints `seed 2`, and last `plant(3)` prints `seed 3`.",
+    "output": "seed 1\nseed 2\nseed 3\n"
+  },
+  {
+    "id": "x.5-03",
+    "kind": "single",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.3"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "def steps(n):\n    if n == 0:\n        return \"done\"\n    return steps(n - 2)\n\nprint(steps(5))",
+    "options": [
+      {
+        "text": "It prints `done`",
+        "correct": false,
+        "rationale": "`n` goes 5, 3, 1, -1, ...: it jumps over 0, so the base case is never reached."
+      },
+      {
+        "text": "It prints `None`",
+        "correct": false,
+        "rationale": "Every call returns the result of the next call; the problem is that the calls never end."
+      },
+      {
+        "text": "It raises `RecursionError`",
+        "correct": true,
+        "rationale": "`n` skips over 0, so the function keeps calling itself until Python stops it."
+      },
+      {
+        "text": "It runs forever without stopping",
+        "correct": false,
+        "rationale": "Python allows only about a thousand unfinished calls; then it stops the program with an error."
+      }
+    ],
+    "explanation": "Starting from 5 and subtracting 2 gives 3, 1, -1, -3 and so on. `n` is never exactly 0, so the base case never returns. The calls pile up until Python stops them with `RecursionError: maximum recursion depth exceeded`.",
+    "raises": "RecursionError"
+  },
+  {
+    "id": "x.5-04",
+    "kind": "single",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.4",
+      "x.5.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def snacks():\n    print(\"Opening bag\")\n    yield \"chips\"\n    yield \"pretzels\"\n\nbag = snacks()\nprint(\"Ready\")\nprint(next(bag))",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Opening bag\nReady\nchips",
+        "correct": false,
+        "rationale": "Calling a generator function runs none of its body; it only creates the generator."
+      },
+      {
+        "text": "Ready\nchips",
+        "correct": false,
+        "rationale": "The body starts running at the first `next()`, so `Opening bag` is printed then."
+      },
+      {
+        "text": "Ready\nOpening bag\nchips",
+        "correct": true,
+        "rationale": "`snacks()` only creates the generator. The first `next()` runs the body up to the first `yield`."
+      },
+      {
+        "text": "Ready\nOpening bag\nchips\npretzels",
+        "correct": false,
+        "rationale": "`next()` gives just one value and pauses at that `yield`."
+      }
+    ],
+    "explanation": "`bag = snacks()` creates a generator but runs nothing inside it. `Ready` is printed. `next(bag)` starts the body: it prints `Opening bag`, reaches `yield \"chips\"` and pauses there, handing out `chips`, which is printed. `pretzels` is never asked for.",
+    "output": "Ready\nOpening bag\nchips\n"
+  },
+  {
+    "id": "x.5-05",
+    "kind": "single",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.4",
+      "x.5.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "def odd_up_to(n):\n    for i in range(1, n + 1, 2):\n        yield i\n\ng = odd_up_to(7)\nnext(g)\nprint(list(g), len(list(g)))",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "[1, 3, 5, 7] 4",
+        "correct": false,
+        "rationale": "`next(g)` already took the 1, and a generator never goes back."
+      },
+      {
+        "text": "[3, 5, 7] 3",
+        "correct": false,
+        "rationale": "The first `list(g)` used up the generator, so the second `list(g)` is empty."
+      },
+      {
+        "text": "[1, 3, 5, 7] 0",
+        "correct": false,
+        "rationale": "The 1 was already taken by `next(g)` before `list()` ran."
+      },
+      {
+        "text": "[3, 5, 7] 0",
+        "correct": true,
+        "rationale": "`next(g)` takes 1, the first `list(g)` collects the rest, and the second finds the generator empty."
+      }
+    ],
+    "explanation": "The generator yields 1, 3, 5 and 7. `next(g)` takes the 1. The first `list(g)` collects what is left: `[3, 5, 7]`. A generator can only be gone through once, so the second `list(g)` is `[]`, and its length is 0.",
+    "output": "[3, 5, 7] 0\n"
+  },
+  {
+    "id": "x.5-06",
+    "kind": "multi",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.4",
+      "x.5.5"
+    ],
+    "select": 2,
+    "stem": "Which statements about generator functions are true? (Select TWO)",
+    "options": [
+      {
+        "text": "A function that contains `yield` returns a generator object when it is called",
+        "correct": true,
+        "rationale": "Even one `yield` makes the function a generator function."
+      },
+      {
+        "text": "Calling `next()` on a generator that has no values left raises `StopIteration`",
+        "correct": true,
+        "rationale": "That is how a generator signals the end; a `for` loop catches it and stops."
+      },
+      {
+        "text": "Calling a generator function runs its whole body at once",
+        "correct": false,
+        "rationale": "Generators are lazy: nothing in the body runs until a value is asked for."
+      },
+      {
+        "text": "A generator starts again from the beginning each time you loop over it",
+        "correct": false,
+        "rationale": "A generator can be gone through only once; afterwards it stays empty."
+      },
+      {
+        "text": "You can read a generator's values by index, as in `g[0]`",
+        "correct": false,
+        "rationale": "A generator is not a list; indexing it raises `TypeError`."
+      },
+      {
+        "text": "`yield` ends the function for good, just like `return`",
+        "correct": false,
+        "rationale": "`yield` pauses the function and remembers its variables; the next request continues from there."
+      }
+    ],
+    "explanation": "A function with `yield` in it is a generator function: calling it creates a generator object without running the body. Each `next()` runs the body to the next `yield` and pauses. When no values are left, `next()` raises `StopIteration`. A generator is single-use and can't be indexed."
+  },
+  {
+    "id": "x.5-07",
+    "kind": "gap",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.1",
+      "x.5.2"
+    ],
+    "stem": "Complete the recursive function so that the program prints `32`.",
+    "code": "def power(base, exp):\n    if exp == __BLANK1__:\n        return 1\n    return base * power(base, __BLANK2__)\n\nprint(power(2, 5))",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "0",
+          "1",
+          "5"
+        ],
+        "answer": "0",
+        "rationale": "Any number to the power 0 is 1, so `exp == 0` is the base case."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "exp - 1",
+          "exp + 1",
+          "exp"
+        ],
+        "answer": "exp - 1",
+        "rationale": "Each call must make the problem smaller, one step closer to the base case."
+      }
+    ],
+    "explanation": "The base case is `exp == 0`, which returns 1. The recursive case uses base to the power exp = base × base to the power (exp - 1). So `power(2, 5)` = 2 × 2 × 2 × 2 × 2 × 1 = 32. With `exp + 1` or `exp`, the base case would never be reached and Python would raise `RecursionError`.",
+    "output": "32\n"
+  },
+  {
+    "id": "x.5-08",
+    "kind": "order",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.4",
+      "x.5.5"
+    ],
+    "mode": "code",
+    "stem": "Put the lines in order so that the program prints 3, 2 and 1, each on its own line.",
+    "lines": [
+      "def countdown(n):",
+      "    while n > 0:",
+      "        yield n",
+      "        n -= 1",
+      "for x in countdown(3):",
+      "    print(x)"
+    ],
+    "rationale": "Define the generator first, yield the current value before counting down, then loop over the generator.",
+    "explanation": "`countdown(3)` creates a generator. Each round of the `for` loop runs the body to the next `yield`: it hands out 3, then continues, subtracts 1, and hands out 2, then 1. When `n` reaches 0, the `while` loop ends, the generator is finished, and the `for` loop stops. If `n -= 1` came before `yield n`, the output would be 2, 1, 0.",
+    "output": "3\n2\n1\n"
+  },
+  {
+    "id": "x.5-09",
+    "kind": "insert",
+    "objectiveId": "x.5",
+    "subpoints": [
+      "x.5.1",
+      "x.5.2"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `3`?",
+    "code": "def count_vowels(word):\n    if word == \"\":\n        return 0\n    first = 1 if word[0] in \"aeiou\" else 0\n    # >>> INSERT <<<\n\nprint(count_vowels(\"banana\"))",
+    "options": [
+      {
+        "text": "return first + count_vowels(word)",
+        "correct": false,
+        "rationale": "The word never gets shorter, so the base case is never reached: `RecursionError`."
+      },
+      {
+        "text": "return first + count_vowels(word[1:])",
+        "correct": true,
+        "rationale": "Count the first letter, then recurse on the rest of the word, which is one letter shorter each time."
+      },
+      {
+        "text": "first + count_vowels(word[1:])",
+        "correct": false,
+        "rationale": "Without `return`, the function returns `None`, and the caller then fails adding a number to `None` (`TypeError`)."
+      },
+      {
+        "text": "return count_vowels(word[1:])",
+        "correct": false,
+        "rationale": "This throws away `first`, so only the base case's 0 comes back."
+      }
+    ],
+    "explanation": "Each call checks one letter and returns that count plus the count for the rest of the word, `word[1:]`, which is one letter shorter. The empty string is the base case and returns 0. For `banana`: 0 + 1 + 0 + 1 + 0 + 1 + 0 = 3.",
+    "output": "3\n"
+  }
+]

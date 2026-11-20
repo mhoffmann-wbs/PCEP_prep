@@ -1,0 +1,327 @@
+[
+  {
+    "id": "x.4-01",
+    "kind": "single",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.2",
+      "x.4.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "temps = [3, -1, 7, 0]\nprint([t * 2 for t in temps if t > 0])",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "[6, -2, 14, 0]",
+        "correct": false,
+        "rationale": "The `if` at the end filters: items that fail `t > 0` are left out, not kept."
+      },
+      {
+        "text": "[6, 14, 0]",
+        "correct": false,
+        "rationale": "0 is not greater than 0, so it fails the test and is left out."
+      },
+      {
+        "text": "[3, 7]",
+        "correct": false,
+        "rationale": "The filter decides which items are used, but each one still goes through the expression `t * 2`."
+      },
+      {
+        "text": "[6, 14]",
+        "correct": true,
+        "rationale": "Only 3 and 7 pass `t > 0`, and each is doubled."
+      }
+    ],
+    "explanation": "Go through `temps` one item at a time. 3 passes `t > 0` and becomes 6. -1 fails and is skipped. 7 passes and becomes 14. 0 fails, because 0 is not greater than 0. The new list is `[6, 14]`.",
+    "output": "[6, 14]\n"
+  },
+  {
+    "id": "x.4-02",
+    "kind": "single",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.3",
+      "x.4.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "board = [[r + c for c in range(3)] for r in range(2)]\nprint(board)",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "[[0, 1], [1, 2], [2, 3]]",
+        "correct": false,
+        "rationale": "The outer comprehension makes the rows, and it uses `range(2)`, so there are 2 rows of 3 items, not 3 rows of 2."
+      },
+      {
+        "text": "[0, 1, 2, 1, 2, 3]",
+        "correct": false,
+        "rationale": "A comprehension inside another one gives a list of lists, not one flat list."
+      },
+      {
+        "text": "[[0, 1, 2], [1, 2, 3]]",
+        "correct": true,
+        "rationale": "Row `r = 0` holds 0 + 0, 0 + 1, 0 + 2; row `r = 1` holds 1, 2, 3."
+      },
+      {
+        "text": "[[0, 0, 0], [1, 1, 1]]",
+        "correct": false,
+        "rationale": "Each item is `r + c`, so it also grows with the column number `c`."
+      }
+    ],
+    "explanation": "The outer part, `for r in range(2)`, makes two rows. For each row, the inner comprehension runs `c` through 0, 1, 2 and computes `r + c`. Row 0 is `[0, 1, 2]` and row 1 is `[1, 2, 3]`.",
+    "output": "[[0, 1, 2], [1, 2, 3]]\n"
+  },
+  {
+    "id": "x.4-03",
+    "kind": "single",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.1",
+      "x.4.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "print([m + str(n) for m in \"xy\" for n in range(2)])",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "['x0', 'y0', 'x1', 'y1']",
+        "correct": false,
+        "rationale": "The first `for` is the outer loop, so all the `x` items come before any `y` item."
+      },
+      {
+        "text": "['x0', 'x1', 'y0', 'y1']",
+        "correct": true,
+        "rationale": "The first `for` (over `\"xy\"`) is the outer loop; for each letter, `n` runs through 0 and 1."
+      },
+      {
+        "text": "[['x0', 'x1'], ['y0', 'y1']]",
+        "correct": false,
+        "rationale": "Two `for` parts in one pair of brackets give one flat list. A list of lists needs a comprehension inside another."
+      },
+      {
+        "text": "['x0', 'y1']",
+        "correct": false,
+        "rationale": "The two `for` parts don't run side by side; every letter is paired with every number."
+      }
+    ],
+    "explanation": "Two `for` parts in one comprehension work like nested loops, with the first one on the outside. For `m = 'x'`, `n` takes 0 and 1, giving `'x0'` and `'x1'`; then the same for `'y'`. The result is one flat list of four strings.",
+    "output": "['x0', 'x1', 'y0', 'y1']\n"
+  },
+  {
+    "id": "x.4-04",
+    "kind": "single",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "marks = [55, 80, 40]\nprint([m if m >= 50 else 0 for m in marks])",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "[55, 80, 0]",
+        "correct": true,
+        "rationale": "`m if m >= 50 else 0` keeps every item but swaps the failing mark for 0."
+      },
+      {
+        "text": "[55, 80]",
+        "correct": false,
+        "rationale": "There is no filter at the end here. The `if ... else` at the front chooses a value for every item."
+      },
+      {
+        "text": "[55, 80, 40]",
+        "correct": false,
+        "rationale": "40 fails `m >= 50`, so the conditional expression gives 0 for it."
+      },
+      {
+        "text": "[True, True, False]",
+        "correct": false,
+        "rationale": "The expression is `m` or 0, not the comparison itself, so the list holds numbers."
+      }
+    ],
+    "explanation": "An `if ... else` before the `for` is a conditional expression: it is worked out for every item and decides what value goes in. 55 and 80 are at least 50, so they stay; 40 is not, so 0 goes in its place. The list keeps all three positions.",
+    "output": "[55, 80, 0]\n"
+  },
+  {
+    "id": "x.4-05",
+    "kind": "single",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.1",
+      "x.4.4"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "words = [\"kiwi\", \"fig\"]\nlengths = [len(w) for w in words]\nprint(lengths, w)",
+    "options": [
+      {
+        "text": "It prints `[4, 3] fig`",
+        "correct": false,
+        "rationale": "The variable of a comprehension doesn't keep its last value afterwards; it doesn't exist outside the brackets."
+      },
+      {
+        "text": "It prints `[4, 3] kiwi`",
+        "correct": false,
+        "rationale": "The variable `w` belongs to the comprehension only, so it can't be used on the next line."
+      },
+      {
+        "text": "It prints `[4, 3]` and then raises `NameError`",
+        "correct": false,
+        "rationale": "`print()` works out all its arguments before printing anything, so it fails before `[4, 3]` is shown."
+      },
+      {
+        "text": "It raises `NameError` and prints nothing",
+        "correct": true,
+        "rationale": "`w` only exists inside the comprehension, so `print()` can't find it."
+      }
+    ],
+    "explanation": "The comprehension builds `[4, 3]` without a problem. But its variable `w` exists only inside the brackets. On the last line, `print()` evaluates both arguments before printing, finds no `w`, and stops with `NameError: name 'w' is not defined`. Nothing is printed.",
+    "raises": "NameError"
+  },
+  {
+    "id": "x.4-06",
+    "kind": "multi",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.1",
+      "x.4.2"
+    ],
+    "select": 2,
+    "stem": "Which expressions produce the list `[0, 2, 4]`? (Select TWO)",
+    "options": [
+      {
+        "text": "`[n * 2 for n in range(3)]`",
+        "correct": true,
+        "rationale": "`n` takes 0, 1, 2, and each is doubled."
+      },
+      {
+        "text": "`[n for n in range(5) if n % 2 == 0]`",
+        "correct": true,
+        "rationale": "This keeps the even numbers from 0 to 4."
+      },
+      {
+        "text": "`[n for n in range(4) if n % 2 == 0]`",
+        "correct": false,
+        "rationale": "`range(4)` stops at 3, so 4 is never tested: this gives `[0, 2]`."
+      },
+      {
+        "text": "`[n * 2 for n in range(1, 3)]`",
+        "correct": false,
+        "rationale": "Starting the range at 1 leaves out 0: this gives `[2, 4]`."
+      },
+      {
+        "text": "`[n + 2 for n in range(3)]`",
+        "correct": false,
+        "rationale": "Adding 2 instead of doubling gives `[2, 3, 4]`."
+      },
+      {
+        "text": "`(n * 2 for n in range(3))`",
+        "correct": false,
+        "rationale": "Round brackets make a generator, not a list."
+      }
+    ],
+    "explanation": "`[n * 2 for n in range(3)]` doubles 0, 1 and 2. `[n for n in range(5) if n % 2 == 0]` goes through 0 to 4 and keeps only the even ones. Check the `range()` limits in the others: the stop value is never included."
+  },
+  {
+    "id": "x.4-07",
+    "kind": "gap",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.1",
+      "x.4.2"
+    ],
+    "stem": "Complete the code so that it prints the names of the pets older than 3, in capitals: `['REX', 'KIT']`.",
+    "code": "pets = {\"rex\": 5, \"tom\": 2, \"kit\": 7}\nold = [__BLANK1__ for name in pets __BLANK2__ pets[name] > 3]\nprint(old)",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "name.upper()",
+          "name",
+          "pets[name]"
+        ],
+        "answer": "name.upper()",
+        "rationale": "The expression at the front decides what goes into the list: the name in capitals."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "if",
+          "and",
+          "while"
+        ],
+        "answer": "if",
+        "rationale": "A filter in a comprehension is written with `if` at the end."
+      }
+    ],
+    "explanation": "Looping over a dictionary gives its keys, so `name` takes `rex`, `tom` and `kit`. The filter `if pets[name] > 3` keeps `rex` (5) and `kit` (7). The expression `name.upper()` turns each kept name into capitals.",
+    "output": "['REX', 'KIT']\n"
+  },
+  {
+    "id": "x.4-08",
+    "kind": "order",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.1",
+      "x.4.2"
+    ],
+    "mode": "code",
+    "stem": "Put the lines in order so that the program builds the same list as `[w.upper() for w in words if len(w) > 3]` and prints `['RAIN', 'SNOW']`.",
+    "lines": [
+      "words = [\"sun\", \"rain\", \"fog\", \"snow\"]",
+      "loud = []",
+      "for w in words:",
+      "    if len(w) > 3:",
+      "        loud.append(w.upper())",
+      "print(loud)"
+    ],
+    "altOrders": [
+      [
+        1,
+        0,
+        2,
+        3,
+        4,
+        5
+      ]
+    ],
+    "rationale": "Start with the data and an empty list, loop over the words, filter with `if`, append the changed word, and print once after the loop.",
+    "explanation": "A comprehension is a short form of this loop. The `for` part becomes the loop, the `if` filter goes inside it, and the expression `w.upper()` is what gets appended. The two first lines can come in either order, as long as both are before the loop.",
+    "output": "['RAIN', 'SNOW']\n"
+  },
+  {
+    "id": "x.4-09",
+    "kind": "insert",
+    "objectiveId": "x.4",
+    "subpoints": [
+      "x.4.3"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `[[1, 2], [3, 4], [5, 6]]`?",
+    "code": "# >>> INSERT <<<\nprint(pairs)",
+    "options": [
+      {
+        "text": "pairs = [2 * r + c for r in range(3) for c in range(1, 3)]",
+        "correct": false,
+        "rationale": "Two `for` parts in one comprehension give a flat list: `[1, 2, 3, 4, 5, 6]`."
+      },
+      {
+        "text": "pairs = [[2 * r + c for r in range(3)] for c in range(1, 3)]",
+        "correct": false,
+        "rationale": "Here the outer part runs over `c`, so the rows are `[1, 3, 5]` and `[2, 4, 6]`."
+      },
+      {
+        "text": "pairs = [[r, r + 1] for r in range(1, 6)]",
+        "correct": false,
+        "rationale": "This makes five overlapping pairs: `[1, 2]`, `[2, 3]` and so on."
+      },
+      {
+        "text": "pairs = [[2 * r + c for c in range(1, 3)] for r in range(3)]",
+        "correct": true,
+        "rationale": "The outer part makes three rows (`r` = 0, 1, 2), and the inner part fills each with `2 * r + 1` and `2 * r + 2`."
+      }
+    ],
+    "explanation": "To get a list of lists, put one comprehension inside another. The outer one makes the rows: `r` = 0, 1, 2. The inner one makes the items of each row: for `c` = 1 and 2 it computes `2 * r + c`. Row 0 is `[1, 2]`, row 1 is `[3, 4]` and row 2 is `[5, 6]`.",
+    "output": "[[1, 2], [3, 4], [5, 6]]\n"
+  }
+]

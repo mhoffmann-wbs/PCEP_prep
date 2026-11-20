@@ -1,0 +1,280 @@
+[
+  {
+    "id": "5.2.3-01",
+    "kind": "single",
+    "objectiveId": "5.2.3",
+    "subpoints": [
+      "5.2.3.2",
+      "5.2.3.1"
+    ],
+    "stem": "After `import random`, which values can `random.random()` return?",
+    "options": [
+      {
+        "text": "Any float from 0.0 up to, but not including, 1.0",
+        "correct": true,
+        "rationale": "The range is written `[0, 1)`: 0.0 can come out, 1.0 never does."
+      },
+      {
+        "text": "Any float from 0.0 to 1.0, with both 0.0 and 1.0 possible",
+        "correct": false,
+        "rationale": "1.0 is the one value at the edge that `random()` never returns."
+      },
+      {
+        "text": "Either the integer 0 or the integer 1, chosen like a coin toss",
+        "correct": false,
+        "rationale": "`random()` returns a float, not an int, and almost always something in between."
+      },
+      {
+        "text": "Any float from -1.0 up to 1.0, chosen with equal chances",
+        "correct": false,
+        "rationale": "`random()` never returns a negative number; the range starts at 0.0."
+      }
+    ],
+    "explanation": "`random.random()` takes no arguments and returns a pseudorandom float that is at least 0.0 and less than 1.0. To get a different range you use ordinary maths, for example `random.random() * 10` for a float from 0.0 up to, but not including, 10.0."
+  },
+  {
+    "id": "5.2.3-02",
+    "kind": "single",
+    "objectiveId": "5.2.3",
+    "subpoints": [
+      "5.2.3.3",
+      "5.2.3.4",
+      "5.2.3.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "import random\nrandom.seed(12)\na = random.choice([\"tea\", \"coffee\", \"juice\"])\nrandom.seed(12)\nb = random.choice([\"tea\", \"coffee\", \"juice\"])\nprint(a == b)",
+    "output": "True\n",
+    "options": [
+      {
+        "text": "`False`",
+        "correct": false,
+        "rationale": "Two calls to `choice()` can differ, but only when the generator is in a different state. Re-seeding with 12 resets it."
+      },
+      {
+        "text": "`True`",
+        "correct": true,
+        "rationale": "Both picks happen right after `seed(12)`, so the generator is in the same state and makes the same choice."
+      },
+      {
+        "text": "`True` on some runs and `False` on others",
+        "correct": false,
+        "rationale": "That would be the case without a seed. The same seed always gives the same results, on every run."
+      },
+      {
+        "text": "Nothing: it raises `TypeError`",
+        "correct": false,
+        "rationale": "`choice()` accepts any non-empty sequence, such as this list of strings."
+      }
+    ],
+    "explanation": "`random.seed(12)` sets the generator to a fixed starting point. The next `choice()` call then always gives the same item. Calling `seed(12)` again resets the generator to that same point, so the second `choice()` repeats the first one, and `a == b` is `True`."
+  },
+  {
+    "id": "5.2.3-03",
+    "kind": "single",
+    "objectiveId": "5.2.3",
+    "subpoints": [
+      "5.2.3.6"
+    ],
+    "stem": "What happens when this code runs?",
+    "code": "import random\nrandom.seed(4)\nguests = [\"Ana\", \"Ben\", \"Cleo\"]\nprint(random.sample(guests, 5))",
+    "raises": "ValueError",
+    "options": [
+      {
+        "text": "It prints a list of 5 names, some of them repeated",
+        "correct": false,
+        "rationale": "`sample()` never repeats a position, so it can't fill 5 places from 3 names."
+      },
+      {
+        "text": "It prints a list of all 3 names",
+        "correct": false,
+        "rationale": "`sample()` doesn't shrink `k` to fit; asking for too many is an error."
+      },
+      {
+        "text": "It raises `ValueError`",
+        "correct": true,
+        "rationale": "`sample()` picks without repeats, so it can't take 5 different items from a list of 3."
+      },
+      {
+        "text": "It raises `IndexError`",
+        "correct": false,
+        "rationale": "`IndexError` is what `choice()` raises for an empty sequence. Too large a sample is a different error."
+      }
+    ],
+    "explanation": "`random.sample(sequence, k)` returns `k` different items, like drawing names from a hat without putting them back. A list of 3 can't supply 5 different items, so Python raises `ValueError: Sample larger than population or is negative`."
+  },
+  {
+    "id": "5.2.3-04",
+    "kind": "single",
+    "objectiveId": "5.2.3",
+    "subpoints": [
+      "5.2.3.6",
+      "5.2.3.3"
+    ],
+    "stem": "A lottery program picks 6 numbers from 1 to 49. What is the output of the following code?",
+    "code": "import random\nrandom.seed(6)\npicks = random.sample(range(1, 50), 6)\nprint(len(picks), len(set(picks)))",
+    "output": "6 6\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "6 5",
+        "correct": false,
+        "rationale": "A repeat would make the set smaller, but `sample()` never picks the same position twice."
+      },
+      {
+        "text": "1 1",
+        "correct": false,
+        "rationale": "`sample()` returns a list of `k` items, not a single number."
+      },
+      {
+        "text": "49 6",
+        "correct": false,
+        "rationale": "The list holds only the 6 numbers that were picked, not the whole range."
+      },
+      {
+        "text": "6 6",
+        "correct": true,
+        "rationale": "`sample()` returns exactly 6 items, and they are all different, so the set of them also has 6 items."
+      }
+    ],
+    "explanation": "`random.sample(range(1, 50), 6)` returns a new list of 6 numbers, picked without repeats. Which 6 numbers come out depends on the seed, but the lengths don't: the list has 6 items, and turning it into a set removes nothing, because there are no duplicates."
+  },
+  {
+    "id": "5.2.3-05",
+    "kind": "multi",
+    "objectiveId": "5.2.3",
+    "subpoints": [
+      "5.2.3.5",
+      "5.2.3.6"
+    ],
+    "stem": "Which statements about `random.choice()` and `random.sample()` are true? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`random.choice(pets)` returns one item from `pets`, not a list.",
+        "correct": true,
+        "rationale": "`choice()` gives back a single element of the sequence."
+      },
+      {
+        "text": "`random.sample(pets, 2)` returns a new list of 2 items taken from different positions in `pets`.",
+        "correct": true,
+        "rationale": "`sample()` picks without repeats and builds a new list."
+      },
+      {
+        "text": "`random.choice(pets)` removes the chosen item from `pets`.",
+        "correct": false,
+        "rationale": "The list is not changed, so the same item can be picked again by a later call."
+      },
+      {
+        "text": "`random.sample(pets, 2)` reorders `pets` itself.",
+        "correct": false,
+        "rationale": "The original sequence is left as it was; only the returned list is new."
+      },
+      {
+        "text": "`random.choice([])` returns `None`.",
+        "correct": false,
+        "rationale": "An empty sequence has nothing to choose from, so `choice()` raises `IndexError`."
+      }
+    ],
+    "explanation": "`choice()` returns one item and can return the same item again on a later call. `sample()` returns a list of `k` items without repeats. Neither function changes the sequence you pass in, and `choice()` on an empty sequence raises `IndexError`."
+  },
+  {
+    "id": "5.2.3-06",
+    "kind": "gap",
+    "objectiveId": "5.2.3",
+    "subpoints": [
+      "5.2.3.3",
+      "5.2.3.4",
+      "5.2.3.2"
+    ],
+    "stem": "Fill the gap so that `first` and `second` are guaranteed to be equal, and the program prints `True True`.",
+    "code": "import random\nrandom.__BLANK1__(21)\nfirst = random.random()\nrandom.seed(21)\nsecond = random.random()\nprint(first == second, 0 <= first < 1)",
+    "output": "True True\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "seed",
+          "random",
+          "choice"
+        ],
+        "answer": "seed",
+        "rationale": "`seed(21)` sets the same starting point that is set again before `second`, so both calls return the same float. `random()` takes no argument, and `choice()` needs a sequence, not a number."
+      }
+    ],
+    "explanation": "The same seed followed by the same calls gives the same results. Both `random.random()` calls come right after `seed(21)`, so `first == second` is `True`. `random()` always returns a float from 0.0 up to, but not including, 1.0, so the second check is `True` too."
+  },
+  {
+    "id": "5.2.3-07",
+    "kind": "order",
+    "objectiveId": "5.2.3",
+    "subpoints": [
+      "5.2.3.1",
+      "5.2.3.3",
+      "5.2.3.5"
+    ],
+    "stem": "Put the lines in order so the program picks tonight's dinner repeatably: the generator must be seeded before the pick.",
+    "mode": "code",
+    "lines": [
+      "import random",
+      "random.seed(5)",
+      "menu = [\"pasta\", \"curry\", \"salad\"]",
+      "dish = random.choice(menu)",
+      "print(dish)"
+    ],
+    "altOrders": [
+      [
+        0,
+        2,
+        1,
+        3,
+        4
+      ],
+      [
+        2,
+        0,
+        1,
+        3,
+        4
+      ]
+    ],
+    "output": "salad\n",
+    "rationale": "The module is imported before it is used, `seed()` runs before `choice()`, and the dish is printed last. The `menu` list may be created at any point before the pick.",
+    "explanation": "`import random` makes the module's functions available. `random.seed(5)` fixes the starting point, so the `choice()` that follows picks the same dish on every run. If `seed()` came after `choice()`, the pick would not be repeatable."
+  },
+  {
+    "id": "5.2.3-08",
+    "kind": "insert",
+    "objectiveId": "5.2.3",
+    "subpoints": [
+      "5.2.3.2",
+      "5.2.3.1"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes `x` a float from 0.0 up to, but not including, 10.0, so that the program prints `True float`?",
+    "code": "import random\nrandom.seed(8)\n# >>> INSERT <<<\nprint(0 <= x < 10, type(x).__name__)",
+    "output": "True float\n",
+    "options": [
+      {
+        "text": "x = random.random() * 10",
+        "correct": true,
+        "rationale": "`random.random()` is in `[0, 1)`, so multiplying by 10 stretches it to `[0, 10)`, and the result is still a float."
+      },
+      {
+        "text": "x = random.choice(range(10))",
+        "correct": false,
+        "rationale": "This picks a whole number from 0 to 9, so `x` is an `int`, not a float."
+      },
+      {
+        "text": "x = random() * 10",
+        "correct": false,
+        "rationale": "After `import random`, the name `random` is the module, and calling a module raises `TypeError`."
+      },
+      {
+        "text": "x = random.random() + 10",
+        "correct": false,
+        "rationale": "Adding 10 shifts the range to `[10, 11)`, so `0 <= x < 10` is `False`."
+      }
+    ],
+    "explanation": "`random.random()` returns a float from 0.0 up to, but not including, 1.0. Multiplying by 10 gives a float from 0.0 up to, but not including, 10.0, whatever the seed. `random.random` is the function inside the `random` module, so the module name comes first."
+  }
+]

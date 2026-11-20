@@ -1,0 +1,142 @@
+[
+  {
+    "id": "3.5.1-01",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.2", "3.5.1.9"],
+    "stem": "What is the output of the following code?",
+    "code": "path = \"C:\\\\new\\\\notes\"\nprint(len(path))\nprint(path)",
+    "output": "12\nC:\\new\\notes\n",
+    "outputKey": true,
+    "options": [
+      {"text": "14\nC:\\\\new\\\\notes", "correct": false, "rationale": "An escape sequence counts as one character, and `print()` shows the backslash itself, not the escape sequence."},
+      {"text": "12\nC:\\new\\notes", "correct": true, "rationale": "Each `\\\\` is one backslash character, so the string has 12 characters and prints with single backslashes."},
+      {"text": "12\nC:\\\\new\\\\notes", "correct": false, "rationale": "The length is right, but `print()` shows the characters in the string: one backslash each time, not two."},
+      {"text": "14\nC:\\new\\notes", "correct": false, "rationale": "The printed text is right, but `\\\\` is one character, so the length is 12, not 14."}
+    ],
+    "explanation": "Inside a string, `\\\\` is an escape sequence for one backslash. So `path` holds `C:\\new\\notes`: C, colon, backslash, n, e, w, backslash, n, o, t, e, s, which is 12 characters. `print()` shows the real characters, so each backslash appears once."
+  },
+  {
+    "id": "3.5.1-02",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.5", "3.5.1.6"],
+    "stem": "What is the output of the following code?",
+    "code": "city = \"Barcelona\"\nprint(city[2], city[-3], city[1:4], city[-4:])",
+    "output": "r o arc lona\n",
+    "outputKey": true,
+    "options": [
+      {"text": "a o arc lona", "correct": false, "rationale": "Indexes start at 0, so `city[2]` is the third character, `r`, not the second."},
+      {"text": "r n arce lona", "correct": false, "rationale": "The stop index of a slice is not included, and `-3` counts back three characters from the end, landing on `o`."},
+      {"text": "r o arc lona", "correct": true, "rationale": "Index 2 is `r`, index -3 is `o`, the slice `1:4` takes indexes 1 to 3, and `-4:` takes the last four characters."},
+      {"text": "r o arc elona", "correct": false, "rationale": "`city[-4:]` starts four characters from the end, so it gives four characters, `lona`."}
+    ],
+    "explanation": "\"Barcelona\" has indexes 0 to 8: B=0, a=1, r=2, c=3, e=4, l=5, o=6, n=7, a=8. `city[2]` is `r`. Negative indexes count from the end, where -1 is the last `a`, so -3 is `o`. `city[1:4]` takes indexes 1, 2 and 3 (`arc`), because the stop is not included. `city[-4:]` takes the last four characters, `lona`."
+  },
+  {
+    "id": "3.5.1-03",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.7"],
+    "stem": "What is the output of the following code?",
+    "code": "code = \"PASSWORD42\"\nprint(code[::2], code[1:8:3], code[::-3])",
+    "output": "PSWR4 AWD 2RSP\n",
+    "outputKey": true,
+    "options": [
+      {"text": "ASOD2 AWD 2RSP", "correct": false, "rationale": "`[::2]` with no start begins at index 0, not 1."},
+      {"text": "PSWR4 AW 2RSP", "correct": false, "rationale": "Index 7 is still before the stop value 8, so `D` is included."},
+      {"text": "PSWR4 AWD PSR2", "correct": false, "rationale": "A negative step walks backwards from the end, so the characters come out in reverse order, starting with `2`."},
+      {"text": "PSWR4 AWD 2RSP", "correct": true, "rationale": "`[::2]` takes indexes 0, 2, 4, 6, 8; `[1:8:3]` takes 1, 4, 7; `[::-3]` starts at the last character and goes back 3 at a time."}
+    ],
+    "explanation": "\"PASSWORD42\" has indexes 0 to 9. `code[::2]` takes every second character from the start: P, S, W, R, 4. `code[1:8:3]` starts at index 1 and jumps 3 each time while staying below 8: indexes 1, 4, 7 give A, W, D. With step -3 the slice starts at the last character and goes backwards: indexes 9, 6, 3, 0 give 2, R, S, P."
+  },
+  {
+    "id": "3.5.1-04",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.8"],
+    "stem": "What happens when the following code runs?",
+    "code": "pet = \"cat\"\npet = pet + \"s\"\npet[0] = \"b\"\nprint(pet)",
+    "raises": "TypeError",
+    "options": [
+      {"text": "It raises a `TypeError`.", "correct": true, "rationale": "Strings are immutable, so assigning to `pet[0]` fails with `TypeError: 'str' object does not support item assignment`."},
+      {"text": "It prints `bats`.", "correct": false, "rationale": "A string can never be changed in place; you would have to build a new string such as `\"b\" + pet[1:]`."},
+      {"text": "It prints `cats`.", "correct": false, "rationale": "Python does not silently ignore the assignment to `pet[0]`; it stops with an error."},
+      {"text": "It raises an `IndexError`.", "correct": false, "rationale": "Index 0 exists in `\"cats\"`. The problem is not the index but the attempt to change a character."}
+    ],
+    "explanation": "`pet = pet + \"s\"` is fine: it builds a new string `\"cats\"` and gives it the name `pet`. But `pet[0] = \"b\"` tries to change one character of an existing string. Strings are immutable, so Python raises `TypeError: 'str' object does not support item assignment` and the `print()` never runs."
+  },
+  {
+    "id": "3.5.1-05",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.1", "3.5.1.3"],
+    "stem": "Which call prints exactly `Tom's \"big\" day`?",
+    "options": [
+      {"text": "`print('Tom's \"big\" day')`", "correct": false, "rationale": "The apostrophe ends the single-quoted string early, so this is a `SyntaxError`."},
+      {"text": "`print('''Tom's \"big\" day''')`", "correct": true, "rationale": "Inside triple quotes, both the apostrophe and the double quotes are ordinary characters."},
+      {"text": "`print(\"Tom's \"big\" day\")`", "correct": false, "rationale": "The double quote before `big` ends the double-quoted string, so this is a `SyntaxError`."},
+      {"text": "`print('Tom\\'s \"big\\' day')`", "correct": false, "rationale": "This runs, but `\\'` after `big` puts an apostrophe there, so it prints `Tom's \"big' day`."}
+    ],
+    "explanation": "A string ends at the next quote of the same kind that started it. The text contains both an apostrophe and double quotes, so single or double quotes alone fail unless every clashing quote is escaped. A triple-quoted string only ends at three quotes in a row, so `'''Tom's \"big\" day'''` holds both kinds without any escaping."
+  },
+  {
+    "id": "3.5.1-06",
+    "kind": "multi",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.5", "3.5.1.9", "3.5.1.10"],
+    "stem": "Which expressions evaluate to `True`? (Select THREE)",
+    "code": "w = \"Sunny spells\"",
+    "select": 3,
+    "options": [
+      {"text": "`\"sun\" in w`", "correct": false, "rationale": "`in` is case-sensitive: `w` contains `Sun` with a capital S, not `sun`."},
+      {"text": "`\"Sun\" in w`", "correct": true, "rationale": "`w` starts with `Sun`, so the substring is present."},
+      {"text": "`len(w) == 12`", "correct": true, "rationale": "`Sunny` (5) plus the space (1) plus `spells` (6) is 12 characters."},
+      {"text": "`w[-1] == \"s\"`", "correct": true, "rationale": "Index -1 is the last character, the `s` at the end of `spells`."},
+      {"text": "`\"spell\" not in w`", "correct": false, "rationale": "`spell` does appear inside `spells`, so `not in` gives `False`."},
+      {"text": "`w[5] == \"s\"`", "correct": false, "rationale": "Index 5 is the space after `Sunny`; the `s` of `spells` is at index 6."}
+    ],
+    "explanation": "`in` checks for a substring and is case-sensitive, so `\"Sun\" in w` is `True` but `\"sun\" in w` is `False`. Spaces count in `len()`, giving 12. `w[-1]` is the last character, `s`. `w[5]` is the space, because `Sunny` uses indexes 0 to 4."
+  },
+  {
+    "id": "3.5.1-07",
+    "kind": "gap",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.5", "3.5.1.6"],
+    "stem": "Fill the gaps so the program prints `s ght`.",
+    "code": "word = \"streetlight\"\nfirst = word[__BLANK1__]\nlast3 = word[__BLANK2__:]\nprint(first, last3)",
+    "output": "s ght\n",
+    "blanks": [
+      {"n": 1, "kind": "text", "accept": ["0", "-11"], "rationale": "The first character has index 0 (or -11, counting back from the end of an 11-character word)."},
+      {"n": 2, "kind": "choice", "choices": ["-3", "-2", "3", "-4"], "answer": "-3", "rationale": "A slice starting at -3 takes the last three characters, `ght`."}
+    ],
+    "explanation": "Positive indexes start at 0, so `word[0]` is `s`. A negative start in a slice counts from the end: `word[-3:]` goes from the third-last character to the end, giving `ght`. `-2` would give only `ht`, `-4` gives `ight`, and `3` gives `eetlight`."
+  },
+  {
+    "id": "3.5.1-08",
+    "kind": "order",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.1", "3.5.1.2", "3.5.1.3", "3.5.1.9"],
+    "stem": "Put the strings in order by their length, shortest first.",
+    "mode": "values",
+    "lines": ["\"\\n\"", "'I\\'m'", "\"C:\\\\data\"", "\"\"\"say \"hi\"!\"\"\""],
+    "rationale": "The lengths are 1, 3, 7 and 9: every escape sequence counts as one character, and the quotes that start and end a string are not counted.",
+    "explanation": "`\"\\n\"` is one new-line character. `'I\\'m'` is `I'm`, 3 characters, because `\\'` is one apostrophe. `\"C:\\\\data\"` is `C:\\data`, 7 characters, because `\\\\` is one backslash. The triple-quoted `say \"hi\"!` holds 9 characters, including the space and both inner double quotes."
+  },
+  {
+    "id": "3.5.1-09",
+    "kind": "insert",
+    "objectiveId": "3.5.1",
+    "subpoints": ["3.5.1.2", "3.5.1.4", "3.5.1.9"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `9`, then `milk` and `rice` on two separate lines?",
+    "code": "# >>> INSERT <<<\nprint(len(note))\nprint(note)",
+    "output": "9\nmilk\nrice\n",
+    "options": [
+      {"text": "note = \"milk\\nrice\"", "correct": true, "rationale": "`\\n` is one new-line character, so the string has 4 + 1 + 4 = 9 characters and prints on two lines."},
+      {"text": "note = \"milk\\\\nrice\"", "correct": false, "rationale": "`\\\\n` is a backslash followed by the letter n: the string has 10 characters and prints on one line as `milk\\nrice`."},
+      {"text": "note = \"milk rice\"", "correct": false, "rationale": "This also has 9 characters, but a space does not start a new line, so everything prints on one line."},
+      {"text": "note = \"milk/nrice\"", "correct": false, "rationale": "An escape sequence starts with a backslash `\\`, not a slash `/`, so this prints `milk/nrice` and has 10 characters."}
+    ],
+    "explanation": "The escape sequence `\\n` puts a line break inside the string. It is typed as two characters but stored as one, so `len()` counts 4 + 1 + 4 = 9. When the string is printed, the line break makes `rice` appear on its own line."
+  }
+]

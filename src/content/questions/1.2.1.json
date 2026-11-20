@@ -1,0 +1,137 @@
+[
+  {
+    "id": "1.2.1-01",
+    "kind": "single",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.1"],
+    "stem": "Which of these words can be used as a variable name?",
+    "options": [
+      { "text": "`True`", "correct": false, "rationale": "`True` is a keyword: one of the three that start with a capital letter." },
+      { "text": "`pass`", "correct": false, "rationale": "`pass` is a keyword, the statement that does nothing, so it can't be a name." },
+      { "text": "`true`", "correct": true, "rationale": "Python is case-sensitive, so `true` is an ordinary identifier, not the keyword `True`." },
+      { "text": "`global`", "correct": false, "rationale": "`global` is a keyword, so using it as a name is a `SyntaxError`." }
+    ],
+    "explanation": "Keywords are reserved for Python's grammar and can't be identifiers. `True`, `pass` and `global` are all keywords. Case matters, though: `true` with a small t is not a keyword, so Python accepts it as a name (it would be a confusing one)."
+  },
+  {
+    "id": "1.2.1-02",
+    "kind": "single",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.1"],
+    "stem": "What happens when this code is run?",
+    "code": "pass = \"1234\"\nprint(\"Saved\")",
+    "raises": "SyntaxError",
+    "options": [
+      { "text": "`Saved` is printed, and then a `SyntaxError` is reported for the first line", "correct": false, "rationale": "Syntax is checked for the whole file before anything runs, so `print(\"Saved\")` never runs." },
+      { "text": "`Saved` is printed, because any word made of letters is a valid name", "correct": false, "rationale": "Keywords are made of letters too, but they are reserved and can't be used as names." },
+      { "text": "Python reports a `NameError`, because `pass` was never given a value", "correct": false, "rationale": "A `NameError` happens while running. Here the problem is found earlier: `pass` can't be a name at all." },
+      { "text": "Nothing is printed: Python reports a `SyntaxError`, as `pass` is a keyword", "correct": true, "rationale": "`pass` is reserved for Python's grammar, so `pass = ...` breaks the syntax and nothing runs." }
+    ],
+    "explanation": "`pass` is a keyword: Python uses it to understand the structure of code, so it can't also be a variable name. Assigning to it is a `SyntaxError`. Like every syntax error, it is found before the program runs, so `Saved` is never printed."
+  },
+  {
+    "id": "1.2.1-03",
+    "kind": "single",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.2"],
+    "stem": "Which of these is an expression?",
+    "options": [
+      { "text": "`count + 1`", "correct": true, "rationale": "It produces a value, so it could stand on the right of an `=`." },
+      { "text": "`count = count + 1`", "correct": false, "rationale": "This is an assignment statement. It contains an expression, but the whole line is an instruction." },
+      { "text": "`while`", "correct": false, "rationale": "This is a keyword: a single reserved word, not something with a value." },
+      { "text": "`import keyword`", "correct": false, "rationale": "This is an import statement: an instruction that loads a module, with no value." }
+    ],
+    "explanation": "An expression is code that produces a value, such as `count + 1`. A statement is a complete instruction, such as an assignment or an `import`. A keyword is a single reserved word like `while`. A statement often contains expressions, but the statement itself is not one."
+  },
+  {
+    "id": "1.2.1-04",
+    "kind": "single",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.3"],
+    "stem": "What is the output of the following code?",
+    "code": "temperature = 28\nif temperature > 25:\n    print(\"Wear a hat\")\nprint(\"Drink water\")\nif temperature > 30:\n    print(\"Stay inside\")\n    print(\"Close the blinds\")\nprint(\"Enjoy the day\")",
+    "output": "Wear a hat\nDrink water\nEnjoy the day\n",
+    "outputKey": true,
+    "options": [
+      { "text": "Wear a hat\nDrink water\nClose the blinds\nEnjoy the day", "correct": false, "rationale": "Both indented lines below the second `if` belong to its block, so they are skipped together." },
+      { "text": "Wear a hat\nDrink water\nEnjoy the day", "correct": true, "rationale": "The first condition is true and the second is false, and the unindented lines always run." },
+      { "text": "Wear a hat\nDrink water\nStay inside\nClose the blinds\nEnjoy the day", "correct": false, "rationale": "The second block only runs when `temperature > 30`, and 28 is not above 30." },
+      { "text": "Wear a hat\nDrink water", "correct": false, "rationale": "`print(\"Enjoy the day\")` is not indented, so it is not part of the second block and always runs." }
+    ],
+    "explanation": "A line ending in a colon starts a block made of the indented lines below it. 28 > 25 is true, so `Wear a hat` is printed. `Drink water` is back at the outer level and always runs. 28 > 30 is false, so both indented lines of the second block are skipped. `Enjoy the day` is at the outer level and runs."
+  },
+  {
+    "id": "1.2.1-05",
+    "kind": "single",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.4"],
+    "stem": "What happens when this code is run?",
+    "code": "for pet in [\"cat\", \"rabbit\"]:\n    print(\"Feed the\", pet)\n      print(\"Refill the water\")",
+    "raises": "IndentationError",
+    "options": [
+      { "text": "Nothing is printed: Python reports an `IndentationError`", "correct": true, "rationale": "The third line is indented further than its block, but no new block was started. This is found before anything runs." },
+      { "text": "`Feed the cat` is printed, then an `IndentationError` is reported", "correct": false, "rationale": "Indentation errors are found before the program runs, like other syntax errors, so nothing is printed." },
+      { "text": "It prints both lines for each pet, as the deeper line is still in the loop", "correct": false, "rationale": "Every line of one block must use the same indentation. A deeper line is only allowed after a line ending in a colon." },
+      { "text": "It prints `Refill the water` once, after the loop has finished", "correct": false, "rationale": "A deeper indent can't move a line out of the loop. Here it is simply an error." }
+    ],
+    "explanation": "The body of the `for` loop is indented by 4 spaces. The third line is indented by 6, but the line above it doesn't end with a colon, so no new block starts there. Python reports `IndentationError: unexpected indent`. Like any syntax error, it is found before the program runs, so nothing is printed."
+  },
+  {
+    "id": "1.2.1-06",
+    "kind": "multi",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.5"],
+    "stem": "Which statements about comments in Python are true? (Select TWO)",
+    "select": 2,
+    "options": [
+      { "text": "A `#` inside a string is just a character, not the start of a comment", "correct": true, "rationale": "In `print(\"Room #4\")` the `#` is part of the text, and the whole text is printed." },
+      { "text": "Putting `#` at the start of a line of code stops that line from running", "correct": true, "rationale": "This is \"commenting out\": the line stays in the file but Python ignores it." },
+      { "text": "A comment counts as a statement, so it can be the only line in an `if` block", "correct": false, "rationale": "Python ignores comments completely, so such a block is empty, and that is an `IndentationError`. Use `pass`." },
+      { "text": "Text after `#` is checked for syntax errors before the program runs", "correct": false, "rationale": "Everything from `#` to the end of the line is ignored, so it is never checked." },
+      { "text": "Python has a pair of symbols that start and end a comment over many lines", "correct": false, "rationale": "Python has no multi-line comment syntax: you put a `#` at the start of every line." }
+    ],
+    "explanation": "A comment runs from `#` to the end of the line, and Python ignores it. That's useful for notes and for disabling a line while testing. A `#` inside quotes is part of the string. Because comments are ignored, they don't count as statements, and Python has no special multi-line comment symbols."
+  },
+  {
+    "id": "1.2.1-07",
+    "kind": "gap",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.3", "1.2.1.5"],
+    "stem": "Fill the gaps so the program prints `Order more flour` and then `Bake bread`. The line that prints `Stock checked` must be disabled without being deleted.",
+    "code": "stock = 3\n__BLANK1__ stock < 5:\n    print(\"Order more flour\")\n__BLANK2__ print(\"Stock checked\")\nprint(\"Bake bread\")",
+    "output": "Order more flour\nBake bread\n",
+    "blanks": [
+      { "n": 1, "kind": "text", "accept": ["if"], "rationale": "`if` starts a block that runs once when the condition is true; the indented line below the colon is its block." },
+      { "n": 2, "kind": "choice", "choices": ["#", "//", "--"], "answer": "#", "rationale": "`#` turns the rest of the line into a comment, so Python ignores it. `//` and `--` are operators, not comment markers." }
+    ],
+    "explanation": "The line `if stock < 5:` ends with a colon, so the indented line under it is its block. 3 < 5 is true, so `Order more flour` is printed. A `#` at the start of the next line comments it out: Python skips it completely. The last line is at the outer level and always runs."
+  },
+  {
+    "id": "1.2.1-08",
+    "kind": "order",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.3"],
+    "stem": "Put the lines in order so the program adds up only the prices above 5 and prints `Expensive items cost 16`.",
+    "mode": "code",
+    "lines": ["total = 0", "for price in [4, 6, 10]:", "    if price > 5:", "        total = total + price", "print(\"Expensive items cost\", total)"],
+    "output": "Expensive items cost 16\n",
+    "rationale": "`total` must exist before the loop adds to it; the `if` sits in the loop's block, the addition in the `if` block, and the `print` runs once after the loop.",
+    "explanation": "Each line ending in a colon opens a block of more deeply indented lines. The `if` is inside the `for` block, and the addition is inside the `if` block, so only 6 and 10 are added. The `print` line is back at the outer level, so it runs once, after the loop: 6 + 10 = 16."
+  },
+  {
+    "id": "1.2.1-09",
+    "kind": "insert",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.3", "1.2.1.4", "1.2.1.5"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `Morning`, `Coffee` and `Done`, one per line?",
+    "code": "hungry = True\nprint(\"Morning\")\nif hungry:\n    # >>> INSERT <<<\nprint(\"Done\")",
+    "output": "Morning\nCoffee\nDone\n",
+    "options": [
+      { "text": "# print(\"Coffee\")", "correct": false, "rationale": "A comment doesn't count as a statement, so the `if` block is empty and Python reports an `IndentationError`." },
+      { "text": "pass", "correct": false, "rationale": "`pass` makes the block valid, but it does nothing, so `Coffee` is never printed." },
+      { "text": "print(\"Coffee\")", "correct": true, "rationale": "The indented line is the `if` block. `hungry` is `True`, so it runs between the other two lines." },
+      { "text": "print(\"Coffee\"", "correct": false, "rationale": "The bracket is never closed, so Python reports a `SyntaxError` and nothing at all is printed." }
+    ],
+    "explanation": "A line ending in a colon must be followed by an indented block with at least one statement. Here that block is the inserted line. Since `hungry` is `True`, `print(\"Coffee\")` runs after `Morning`, and `Done` is at the outer level, so it runs last."
+  }
+]

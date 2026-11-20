@@ -9,10 +9,10 @@
     "output": "10 7 4 1 ",
     "outputKey": true,
     "options": [
-      { "text": "10 7 4", "correct": false, "rationale": "This stops one step too early: 1 is still greater than the stop value 0, so it is produced." },
-      { "text": "10 7 4 1", "correct": true, "rationale": "Start at 10 and subtract 3 while the value is still greater than the stop value 0." },
-      { "text": "10 7 4 1 -2", "correct": false, "rationale": "The stop value is never reached or passed: -2 is below 0, so it is not produced." },
-      { "text": "9 6 3", "correct": false, "rationale": "range() starts exactly at its start argument, 10, not one below it." }
+      {"text": "10 7 4", "correct": false, "rationale": "This stops one step too early: 1 is still greater than the stop value 0, so it is produced."},
+      {"text": "10 7 4 1", "correct": true, "rationale": "Start at 10 and subtract 3 while the value is still greater than the stop value 0."},
+      {"text": "10 7 4 1 -2", "correct": false, "rationale": "The stop value is never reached or passed: -2 is below 0, so it is not produced."},
+      {"text": "9 6 3", "correct": false, "rationale": "range() starts exactly at its start argument, 10, not one below it."}
     ],
     "explanation": "With a negative step, range(start, stop, step) counts down from start and stops before it reaches or passes stop. Here that gives 10, 7, 4 and 1. Each value is printed with end=\" \", so they appear on one line separated by spaces."
   },
@@ -24,12 +24,118 @@
     "stem": "Which calls produce exactly the numbers 0, 2 and 4? (Select TWO)",
     "select": 2,
     "options": [
-      { "text": "`range(0, 5, 2)`", "correct": true, "rationale": "0, 2, 4: the next value, 6, would pass the stop value 5." },
-      { "text": "`range(0, 6, 2)`", "correct": true, "rationale": "0, 2, 4: the stop value 6 itself is never produced." },
-      { "text": "`range(2, 6, 2)`", "correct": false, "rationale": "This starts at 2, so it produces only 2 and 4." },
-      { "text": "`range(0, 4, 2)`", "correct": false, "rationale": "The stop value 4 is excluded, so this produces only 0 and 2." },
-      { "text": "`range(4, 0, -2)`", "correct": false, "rationale": "This counts down and stops before 0: it produces 4 and 2." }
+      {"text": "`range(0, 5, 2)`", "correct": true, "rationale": "0, 2, 4: the next value, 6, would pass the stop value 5."},
+      {"text": "`range(0, 6, 2)`", "correct": true, "rationale": "0, 2, 4: the stop value 6 itself is never produced."},
+      {"text": "`range(2, 6, 2)`", "correct": false, "rationale": "This starts at 2, so it produces only 2 and 4."},
+      {"text": "`range(0, 4, 2)`", "correct": false, "rationale": "The stop value 4 is excluded, so this produces only 0 and 2."},
+      {"text": "`range(4, 0, -2)`", "correct": false, "rationale": "This counts down and stops before 0: it produces 4 and 2."}
     ],
     "explanation": "range() never includes its stop value. To reach 4 with a step of 2, the stop value must be 5 or 6: any value above 4 and up to 6 works."
+  },
+  {
+    "id": "2.2.3-03",
+    "kind": "single",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.1", "2.2.3.2"],
+    "stem": "How many times does the following code print `Stir`?",
+    "code": "for i in range(2, 11, 2):\n    print(\"Stir\")",
+    "output": "Stir\nStir\nStir\nStir\nStir\n",
+    "options": [
+      {"text": "4", "correct": false, "rationale": "This leaves out 10, but 10 is below the stop value 11, so it is included."},
+      {"text": "5", "correct": true, "rationale": "The range gives 2, 4, 6, 8 and 10: 10 is still below the stop value 11."},
+      {"text": "9", "correct": false, "rationale": "This counts every number from 2 to 10, ignoring the step of 2."},
+      {"text": "6", "correct": false, "rationale": "This also counts 12, which is past the stop value 11."}
+    ],
+    "explanation": "range(2, 11, 2) starts at 2 and adds 2 while the number is still below 11: 2, 4, 6, 8, 10. That is five numbers, so the body runs five times. The loop variable i is not used in the body, but the body still runs once per number."
+  },
+  {
+    "id": "2.2.3-04",
+    "kind": "single",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.4", "2.2.3.2"],
+    "stem": "What is the output of the following code?",
+    "code": "total = 0\nfor k in range(1, 6):\n    total = total + k\nprint(total, k)",
+    "output": "15 5\n",
+    "outputKey": true,
+    "options": [
+      {"text": "15 6", "correct": false, "rationale": "The stop value 6 is never produced, so `k` is never 6."},
+      {"text": "10 4", "correct": false, "rationale": "This stops one number early: the range still includes 5."},
+      {"text": "15 5", "correct": true, "rationale": "The range gives 1 to 5, which add up to 15, and `k` keeps the last number produced, 5."},
+      {"text": "21 6", "correct": false, "rationale": "This includes the stop value 6, which `range()` never produces."}
+    ],
+    "explanation": "range(1, 6) gives 1, 2, 3, 4 and 5. total goes 1, 3, 6, 10, 15. After the loop, k keeps the last number the range produced, which is 5, not the stop value 6."
+  },
+  {
+    "id": "2.2.3-05",
+    "kind": "single",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.3", "2.2.3.2"],
+    "stem": "What is the output of the following code?",
+    "code": "count = 0\nfor n in range(8, 2):\n    count = count + 1\nprint(count)",
+    "output": "0\n",
+    "outputKey": true,
+    "options": [
+      {"text": "6", "correct": false, "rationale": "This assumes the range counts down from 8, but counting down needs a negative step."},
+      {"text": "5", "correct": false, "rationale": "This counts 8 down to 4, but no numbers are produced without a negative step."},
+      {"text": "-6", "correct": false, "rationale": "`range()` never produces a negative count; the range is simply empty."},
+      {"text": "0", "correct": true, "rationale": "With the default step of +1 you cannot count up from 8 to 2, so the range is empty and the body never runs."}
+    ],
+    "explanation": "With two arguments, the step is +1. Starting at 8 and counting up never gets below the stop value 2, so the range is empty. An empty range raises no error: the loop body runs zero times and count stays 0. To count down you need a negative step, such as range(8, 2, -1)."
+  },
+  {
+    "id": "2.2.3-06",
+    "kind": "single",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.2"],
+    "stem": "What happens when the following code runs?",
+    "code": "for cup in range(0, 3, 0):\n    print(cup)",
+    "raises": "ValueError",
+    "options": [
+      {"text": "It raises a `ValueError`.", "correct": true, "rationale": "A step of 0 would never move towards the stop, so `range()` refuses it."},
+      {"text": "It prints `0` over and over, forever.", "correct": false, "rationale": "`range()` checks the step before the loop starts, so the loop never runs at all."},
+      {"text": "It prints `0`, `1` and `2`.", "correct": false, "rationale": "A step of 0 is not replaced by the default step of 1."},
+      {"text": "It prints nothing, because the range is empty.", "correct": false, "rationale": "An empty range raises no error, but a step of 0 is not allowed, so there is no range at all."}
+    ],
+    "explanation": "The third argument of range() is the step. A step of 0 would never get any closer to the stop value, so Python stops with ValueError: range() arg 3 must not be zero, before the loop prints anything."
+  },
+  {
+    "id": "2.2.3-07",
+    "kind": "gap",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.2", "2.2.3.3"],
+    "stem": "Complete the `range()` call so the program prints `3 2 1 0 Go!`.",
+    "code": "for n in range(__BLANK1__):\n    print(n, end=\" \")\nprint(\"Go!\")",
+    "output": "3 2 1 0 Go!\n",
+    "blanks": [
+      {"n": 1, "kind": "text", "accept": ["3, -1, -1", "3,-1,-1", "3 ,-1 ,-1", "3, -1,-1", "3,-1, -1"], "rationale": "Start at 3, count down with a step of -1, and use -1 as the stop so that 0 is still produced."}
+    ],
+    "explanation": "To count down, the step must be negative. The stop value is never produced, so to include 0 the stop must be one below it: -1. range(3, -1, -1) gives 3, 2, 1, 0, each printed with a space after it, and then Go! is printed on the same line."
+  },
+  {
+    "id": "2.2.3-08",
+    "kind": "order",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.2", "2.2.3.3", "2.2.3.4"],
+    "stem": "Put these ranges in order from the one that produces the fewest numbers to the one that produces the most.",
+    "mode": "values",
+    "lines": ["`range(5, 0)`", "`range(3)`", "`range(1, 10, 2)`", "`range(10, 0, -1)`"],
+    "rationale": "`range(5, 0)` is empty (0 numbers), `range(3)` gives 0, 1, 2 (3 numbers), `range(1, 10, 2)` gives 1, 3, 5, 7, 9 (5 numbers) and `range(10, 0, -1)` gives 10 down to 1 (10 numbers).",
+    "explanation": "Write out each range. range(5, 0) uses the default step +1 and cannot count up from 5 to 0, so it is empty. range(3) is 0, 1, 2. range(1, 10, 2) is 1, 3, 5, 7, 9. range(10, 0, -1) counts down from 10 and stops before 0, giving ten numbers."
+  },
+  {
+    "id": "2.2.3-09",
+    "kind": "insert",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.1", "2.2.3.2"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `5 10 15 20`?",
+    "code": "# >>> INSERT <<<\n    print(n, end=\" \")\nprint()",
+    "output": "5 10 15 20 \n",
+    "options": [
+      {"text": "for n in range(5, 21, 5):", "correct": true, "rationale": "Start at 5 and add 5 while the number is below 21: 5, 10, 15, 20."},
+      {"text": "for n in range(5, 20, 5):", "correct": false, "rationale": "The stop value 20 is never produced, so this prints only 5 10 15."},
+      {"text": "for n in range(0, 20, 5):", "correct": false, "rationale": "This starts at 0, so it prints 0 5 10 15."},
+      {"text": "for n in range(5, 25):", "correct": false, "rationale": "Without a step argument the step is 1, so this prints every number from 5 to 24."}
+    ],
+    "explanation": "The numbers go up in fives, so the step is 5, and the first number is 5, so the start is 5. The stop value is excluded, so it must be above 20 (and no more than 25): range(5, 21, 5) gives 5, 10, 15, 20."
   }
 ]

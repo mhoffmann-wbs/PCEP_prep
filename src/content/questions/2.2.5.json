@@ -9,11 +9,136 @@
     "output": "9\n",
     "outputKey": true,
     "options": [
-      { "text": "25", "correct": false, "rationale": "This adds every odd number up to 9, ignoring the break." },
-      { "text": "16", "correct": false, "rationale": "This adds 7 as well, but the loop breaks before 7 is added." },
-      { "text": "4", "correct": false, "rationale": "This stops after the first two odd numbers; 5 is still added." },
-      { "text": "9", "correct": true, "rationale": "Only 1, 3 and 5 are added before 7 triggers the break." }
+      {"text": "25", "correct": false, "rationale": "This adds every odd number up to 9, ignoring the break."},
+      {"text": "16", "correct": false, "rationale": "This adds 7 as well, but the loop breaks before 7 is added."},
+      {"text": "4", "correct": false, "rationale": "This stops after the first two odd numbers; 5 is still added."},
+      {"text": "9", "correct": true, "rationale": "Only 1, 3 and 5 are added before 7 triggers the break."}
     ],
     "explanation": "continue skips the rest of the loop body for even numbers. The odd numbers 1, 3 and 5 are added. When n is 7, the condition n > 6 is true and break ends the loop before 7 is added, so the total is 1 + 3 + 5 = 9."
+  },
+  {
+    "id": "2.2.5-02",
+    "kind": "single",
+    "objectiveId": "2.2.5",
+    "subpoints": ["2.2.5.1", "2.2.5.4"],
+    "stem": "What is the output of the following code?",
+    "code": "bags = [3, 7, 12, 5]\nfor weight in bags:\n    if weight > 10:\n        break\nprint(weight)",
+    "output": "12\n",
+    "outputKey": true,
+    "options": [
+      {"text": "5", "correct": false, "rationale": "The loop never reaches the last bag, because `break` ends it at 12."},
+      {"text": "7", "correct": false, "rationale": "`break` runs after `weight` has already been set to 12, the first value above 10."},
+      {"text": "3", "correct": false, "rationale": "The loop variable is not reset when the loop ends; it keeps the value it had at the `break`."},
+      {"text": "12", "correct": true, "rationale": "`break` ends the loop while `weight` is 12, and the loop variable keeps that value."}
+    ],
+    "explanation": "The loop checks 3 and 7, which are not greater than 10. At 12 the condition is true and break ends the loop at once, so 5 is never reached. After a break, the loop variable keeps the value it had at that moment, so print(weight) shows 12."
+  },
+  {
+    "id": "2.2.5-03",
+    "kind": "single",
+    "objectiveId": "2.2.5",
+    "subpoints": ["2.2.5.3", "2.2.5.4"],
+    "stem": "What is the output of the following code?",
+    "code": "for fruit in [\"apple\", \"kiwi\", \"pear\"]:\n    if fruit == \"kiwi\":\n        pass\n    print(fruit, end=\" \")",
+    "output": "apple kiwi pear ",
+    "outputKey": true,
+    "options": [
+      {"text": "apple kiwi pear", "correct": true, "rationale": "`pass` does nothing, so every fruit is printed, including kiwi."},
+      {"text": "apple pear", "correct": false, "rationale": "That would happen with `continue`; `pass` does not skip the rest of the round."},
+      {"text": "apple", "correct": false, "rationale": "That would happen with `break`; `pass` does not end the loop."},
+      {"text": "kiwi", "correct": false, "rationale": "The print is not inside the `if`, so it runs in every round."}
+    ],
+    "explanation": "pass is only a placeholder: it does nothing at all. When fruit is \"kiwi\", the if runs pass and then the program carries on with the print as usual. So all three fruits are printed on one line, each followed by a space."
+  },
+  {
+    "id": "2.2.5-04",
+    "kind": "single",
+    "objectiveId": "2.2.5",
+    "subpoints": ["2.2.5.1", "2.2.5.4"],
+    "stem": "What is the output of the following code?",
+    "code": "count = 0\nfor day in range(3):\n    for hour in range(5):\n        if hour == 2:\n            break\n        count = count + 1\nprint(count)",
+    "output": "6\n",
+    "outputKey": true,
+    "options": [
+      {"text": "2", "correct": false, "rationale": "`break` leaves only the inner loop, so the outer loop goes on to the other days."},
+      {"text": "6", "correct": true, "rationale": "In each of the 3 days, the inner loop counts hours 0 and 1, then breaks: 3 × 2 = 6."},
+      {"text": "15", "correct": false, "rationale": "This ignores the `break`; the inner loop never gets past hour 2."},
+      {"text": "9", "correct": false, "rationale": "The `break` runs before `count` is increased, so hour 2 is not counted."}
+    ],
+    "explanation": "For each day, the inner loop counts hour 0 and hour 1. When hour is 2, break ends the inner loop before the count line runs. break only leaves the innermost loop, so the outer loop continues with the next day. 3 days × 2 hours = 6."
+  },
+  {
+    "id": "2.2.5-05",
+    "kind": "single",
+    "objectiveId": "2.2.5",
+    "subpoints": ["2.2.5.1"],
+    "stem": "What happens when the following code runs?",
+    "code": "stock = 0\nif stock == 0:\n    print(\"Sold out\")\n    break",
+    "raises": "SyntaxError",
+    "options": [
+      {"text": "It prints `Sold out` and then the program ends normally.", "correct": false, "rationale": "An `if` is not a loop, so there is nothing for `break` to leave."},
+      {"text": "It prints `Sold out`, then stops with an error on the last line.", "correct": false, "rationale": "The error is found while Python reads the program, before anything runs, so nothing is printed."},
+      {"text": "Python reports a `SyntaxError` and prints nothing.", "correct": true, "rationale": "`break` is only allowed inside a loop, and Python checks this before it runs any line."},
+      {"text": "It prints nothing and finishes without raising any error at all.", "correct": false, "rationale": "`break` outside a loop is not ignored; it is an error."}
+    ],
+    "explanation": "break can only be used inside a for or while loop. Here it is inside an if, which is not a loop. Python checks the whole program before running it, finds SyntaxError: 'break' outside loop, and runs nothing, so Sold out is never printed."
+  },
+  {
+    "id": "2.2.5-06",
+    "kind": "multi",
+    "objectiveId": "2.2.5",
+    "subpoints": ["2.2.5.2", "2.2.5.3"],
+    "stem": "Which statements are true? (Select TWO)",
+    "select": 2,
+    "options": [
+      {"text": "`continue` skips the rest of the current round and goes on to the next round.", "correct": true, "rationale": "This is exactly what `continue` does; the loop itself keeps running."},
+      {"text": "`pass` does nothing, and the lines after it in the same block still run.", "correct": true, "rationale": "`pass` is only a placeholder for a place that needs a statement."},
+      {"text": "`pass` ends the loop at once.", "correct": false, "rationale": "Ending the loop is what `break` does; `pass` has no effect at all."},
+      {"text": "`continue` ends the loop at once.", "correct": false, "rationale": "`continue` only skips the rest of this round; the next round still runs."},
+      {"text": "In nested loops, `break` leaves all the loops at once.", "correct": false, "rationale": "`break` leaves only the innermost loop it is in."},
+      {"text": "A loop body may be left empty if it does nothing.", "correct": false, "rationale": "An empty block is an `IndentationError`; you need at least one line, such as `pass`."}
+    ],
+    "explanation": "continue jumps to the next round, skipping the lines below it. pass does nothing: it fills a place where Python needs at least one statement, and the lines after it still run. Only break ends a loop early, and only the innermost one."
+  },
+  {
+    "id": "2.2.5-07",
+    "kind": "gap",
+    "objectiveId": "2.2.5",
+    "subpoints": ["2.2.5.2"],
+    "stem": "Choose the keyword that makes the program print only the positive prices, `4`, `9` and `6`, each on its own line.",
+    "code": "for n in [4, -2, 9, 0, 6]:\n    if n <= 0:\n        __BLANK1__\n    print(n)",
+    "output": "4\n9\n6\n",
+    "blanks": [
+      {"n": 1, "kind": "choice", "choices": ["continue", "break", "pass"], "answer": "continue", "rationale": "`continue` skips the print for -2 and 0 but lets the loop carry on. `break` would stop at -2 after printing only 4, and `pass` would print every number."}
+    ],
+    "explanation": "For -2 and 0 the condition n <= 0 is true, and continue skips the rest of that round, so the print does not run. The loop then goes on with the next number, so 4, 9 and 6 are printed."
+  },
+  {
+    "id": "2.2.5-08",
+    "kind": "order",
+    "objectiveId": "2.2.5",
+    "subpoints": ["2.2.5.1", "2.2.5.4"],
+    "stem": "Put the lines in order so the program prints `Not Mia`, `Not Tom` and `Found Ada`, each on its own line.",
+    "mode": "code",
+    "lines": ["guests = [\"Mia\", \"Tom\", \"Ada\", \"Leo\"]", "for name in guests:", "    if name == \"Ada\":", "        print(\"Found\", name)", "        break", "    print(\"Not\", name)"],
+    "output": "Not Mia\nNot Tom\nFound Ada\n",
+    "rationale": "The check comes first in the loop body; inside it, the program prints Found and then breaks. `print(\"Not\", name)` comes after the `if`, so it runs only for names that are not Ada.",
+    "explanation": "For Mia and Tom the if is false, so only print(\"Not\", name) runs. For Ada the if is true: Found Ada is printed and break ends the loop, so Not Ada is never printed and Leo is never checked."
+  },
+  {
+    "id": "2.2.5-09",
+    "kind": "insert",
+    "objectiveId": "2.2.5",
+    "subpoints": ["2.2.5.2", "2.2.5.1", "2.2.5.4"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `1 3 5`?",
+    "code": "for n in range(1, 10):\n    if n % 2 == 0:\n        # >>> INSERT <<<\n    if n > 5:\n        break\n    print(n, end=\" \")",
+    "output": "1 3 5 ",
+    "options": [
+      {"text": "continue", "correct": true, "rationale": "Even numbers skip the rest of the round, odd numbers up to 5 are printed, and 7 triggers the `break`."},
+      {"text": "pass", "correct": false, "rationale": "`pass` does nothing, so the even numbers 2 and 4 are printed too."},
+      {"text": "break", "correct": false, "rationale": "This ends the whole loop at 2, so only 1 is printed."},
+      {"text": "print(\"even\")", "correct": false, "rationale": "This prints an extra line for each even number, and the even numbers themselves are still printed."}
+    ],
+    "explanation": "With continue, the even numbers skip the rest of their round. The odd numbers 1, 3 and 5 reach the print. At 7, n > 5 is true and break ends the loop. Note that 6 is even, so continue skips it before the break check."
   }
 ]

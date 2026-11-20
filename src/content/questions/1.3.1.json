@@ -1,0 +1,141 @@
+[
+  {
+    "id": "1.3.1-01",
+    "kind": "single",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.1", "1.3.1.2", "1.3.1.3"],
+    "stem": "What is the output of the following code?",
+    "code": "print(type(.5), type(\"False\"), type(False))",
+    "output": "<class 'float'> <class 'str'> <class 'bool'>\n",
+    "outputKey": true,
+    "options": [
+      {"text": "<class 'float'> <class 'bool'> <class 'bool'>", "correct": false, "rationale": "Anything in quotes is a string, even if the text looks like a Boolean."},
+      {"text": "<class 'int'> <class 'str'> <class 'bool'>", "correct": false, "rationale": "A decimal point makes a float even with nothing in front of it."},
+      {"text": "<class 'float'> <class 'str'> <class 'str'>", "correct": false, "rationale": "`False` with a capital F and no quotes is the Boolean literal, not text."},
+      {"text": "<class 'float'> <class 'str'> <class 'bool'>", "correct": true, "rationale": "`.5` has a decimal point, `\"False\"` is in quotes, and `False` without quotes is a Boolean literal."}
+    ],
+    "explanation": "Python decides the type from how the literal is written. .5 has a decimal point, so it is a float. \"False\" is in quotes, so it is a str. False without quotes and with a capital F is a bool."
+  },
+  {
+    "id": "1.3.1-02",
+    "kind": "single",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.4"],
+    "stem": "What is the output of the following code?",
+    "code": "total = 0.2 + 0.4\nprint(total, total == 0.6)",
+    "output": "0.6000000000000001 False\n",
+    "outputKey": true,
+    "options": [
+      {"text": "0.6 True", "correct": false, "rationale": "Floats are stored in binary with tiny rounding errors, so the sum is not exactly 0.6."},
+      {"text": "0.6000000000000001 False", "correct": true, "rationale": "Neither 0.2 nor 0.4 can be stored exactly, so their sum is a tiny bit off and not equal to `0.6`."},
+      {"text": "0.6 False", "correct": false, "rationale": "Python prints the stored value as it is; the tiny error shows up in the printed number too."},
+      {"text": "0.6000000000000001 True", "correct": false, "rationale": "`==` compares the exact stored values, and 0.6000000000000001 is not the same float as 0.6."}
+    ],
+    "explanation": "Most decimal fractions cannot be stored exactly as binary floats. 0.2 + 0.4 gives 0.6000000000000001, and comparing it with 0.6 using == gives False. To compare floats, round them first, for example round(total, 2) == 0.6."
+  },
+  {
+    "id": "1.3.1-03",
+    "kind": "single",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.3", "1.3.1.1"],
+    "stem": "Which of these literals has the type `float`?",
+    "options": [
+      {"text": "`5.`", "correct": true, "rationale": "A decimal point makes a float, even with no digits after it."},
+      {"text": "`\"5.5\"`", "correct": false, "rationale": "The quotes make this a string, whatever the text inside looks like."},
+      {"text": "`55`", "correct": false, "rationale": "With no decimal point, this is an `int`."},
+      {"text": "`5,5`", "correct": false, "rationale": "A comma does not make a decimal point in Python; this is two separate values, 5 and 5."}
+    ],
+    "explanation": "A float literal is a number written with a decimal point. A point on its own is enough, so 5. is the float 5.0. Quotes make a string, a number without a point is an int, and a comma separates two values."
+  },
+  {
+    "id": "1.3.1-04",
+    "kind": "single",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.2"],
+    "stem": "What happens when the following code runs?",
+    "code": "is_open = true\nprint(is_open)",
+    "raises": "NameError",
+    "options": [
+      {"text": "It prints `True`.", "correct": false, "rationale": "Python does not fix the capital letter for you; Boolean literals are case-sensitive."},
+      {"text": "It prints `true`.", "correct": false, "rationale": "Without quotes, `true` is not text, so there is nothing to print."},
+      {"text": "It raises a `NameError`.", "correct": true, "rationale": "Only `True` with a capital T is a Boolean literal; `true` is read as the name of a variable that does not exist."},
+      {"text": "It raises a `SyntaxError`.", "correct": false, "rationale": "`true` is a valid name, so the line is correct syntax; the problem only shows up when Python looks the name up."}
+    ],
+    "explanation": "The Boolean literals are exactly True and False, with a capital first letter. Python reads true as a variable name, and since no variable called true exists, it stops with NameError: name 'true' is not defined."
+  },
+  {
+    "id": "1.3.1-05",
+    "kind": "single",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.5"],
+    "stem": "What is the output of the following code?",
+    "code": "print('Tom said \"yes\"', \"it's\", 'ok\\'d')",
+    "output": "Tom said \"yes\" it's ok'd\n",
+    "outputKey": true,
+    "options": [
+      {"text": "'Tom said \"yes\"' \"it's\" 'ok\\'d'", "correct": false, "rationale": "`print()` shows the text of a string, not the quotes around it."},
+      {"text": "Tom said yes its okd", "correct": false, "rationale": "Quotes of the other kind, and escaped quotes, are part of the text and are printed."},
+      {"text": "Tom said \"yes\" it's ok\\'d", "correct": false, "rationale": "The backslash is an escape character; it is not printed itself."},
+      {"text": "Tom said \"yes\" it's ok'd", "correct": true, "rationale": "The outer quotes are not printed, and `\\'` puts a plain apostrophe into the text."}
+    ],
+    "explanation": "Each string uses quotes of the other kind on the outside, or a backslash, so the inner quote is part of the text. 'Tom said \"yes\"' contains double quotes, \"it's\" contains an apostrophe, and in 'ok\\'d' the backslash escapes the apostrophe. print() shows the three texts separated by spaces, without the outer quotes or the backslash."
+  },
+  {
+    "id": "1.3.1-06",
+    "kind": "multi",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.5"],
+    "stem": "Which of the following are valid string literals? (Select THREE)",
+    "select": 3,
+    "options": [
+      {"text": "`\"It's late\"`", "correct": true, "rationale": "Double quotes on the outside let the apostrophe sit inside the text."},
+      {"text": "`'It\\'s late'`", "correct": true, "rationale": "The backslash escapes the apostrophe, so it does not end the string."},
+      {"text": "`\"\"\"It's late\"\"\"`", "correct": true, "rationale": "Triple quotes make a string too, and an apostrophe inside is fine."},
+      {"text": "`'It's late'`", "correct": false, "rationale": "The apostrophe ends the string early after `It`, which is a `SyntaxError`."},
+      {"text": "`\"It's late'`", "correct": false, "rationale": "The start and end quotes must match; this string never finds its closing double quote."},
+      {"text": "`It's late`", "correct": false, "rationale": "Text without quotes around it is not a string literal at all."}
+    ],
+    "explanation": "A string starts and ends with the same kind of quote. To put an apostrophe in the text, use double quotes or triple quotes on the outside, or escape the apostrophe with a backslash. A string that is closed by its own apostrophe, or never closed, is a SyntaxError."
+  },
+  {
+    "id": "1.3.1-07",
+    "kind": "gap",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.1", "1.3.1.2", "1.3.1.3"],
+    "stem": "Choose the literals so the program prints `<class 'float'> 7.0 <class 'bool'> False`.",
+    "code": "price = __BLANK1__\nraining = __BLANK2__\nprint(type(price), price * 2, type(raining), raining)",
+    "output": "<class 'float'> 7.0 <class 'bool'> False\n",
+    "blanks": [
+      {"n": 1, "kind": "choice", "choices": ["3.5", "\"3.5\"", "35", "3,5"], "answer": "3.5", "rationale": "`3.5` is a float literal, and 3.5 * 2 is 7.0. In quotes it would be a string (repeated, not doubled), `35` is an int, and `3,5` is two values."},
+      {"n": 2, "kind": "choice", "choices": ["False", "\"False\"", "false", "0"], "answer": "False", "rationale": "`False` with a capital F and no quotes is the Boolean literal. `\"False\"` is a string, `false` is an unknown name, and `0` is an int."}
+    ],
+    "explanation": "The type comes from how the literal is written. 3.5 has a decimal point, so it is a float, and doubling it gives 7.0. False, written exactly like that, is a bool."
+  },
+  {
+    "id": "1.3.1-08",
+    "kind": "order",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.3", "1.3.1.4"],
+    "stem": "Put these values in order from smallest to largest.",
+    "mode": "values",
+    "lines": ["`.25`", "`0.3`", "`0.1 + 0.2`", "`1 / 3`"],
+    "rationale": "`.25` is 0.25. `0.1 + 0.2` is 0.30000000000000004, a tiny bit more than `0.3`. `1 / 3` is 0.3333333333333333, the largest.",
+    "explanation": ".25 is the float 0.25. Because floats carry tiny rounding errors, 0.1 + 0.2 is 0.30000000000000004, which is slightly larger than 0.3. 1 / 3 is 0.3333333333333333, larger than both."
+  },
+  {
+    "id": "1.3.1-09",
+    "kind": "insert",
+    "objectiveId": "1.3.1",
+    "subpoints": ["1.3.1.5"],
+    "stem": "Which line, inserted at the marked spot, makes the program print `It's 18.5 degrees`?",
+    "code": "temp = 18.5\n# >>> INSERT <<<\nprint(msg, temp, \"degrees\")",
+    "output": "It's 18.5 degrees\n",
+    "options": [
+      {"text": "msg = \"It's\"", "correct": true, "rationale": "Double quotes on the outside let the apostrophe be part of the text."},
+      {"text": "msg = 'It's'", "correct": false, "rationale": "The apostrophe closes the string after `It`, so this is a `SyntaxError`."},
+      {"text": "msg = 'It\"s'", "correct": false, "rationale": "This is a valid string, but it contains a double quote, not an apostrophe, so it prints `It\"s`."},
+      {"text": "msg = \"It\"s\"", "correct": false, "rationale": "The second double quote closes the string after `It`, so this is a `SyntaxError`."}
+    ],
+    "explanation": "The text contains an apostrophe, so the string needs double quotes on the outside (or a backslash before the apostrophe). Then print() shows It's, the float 18.5 and degrees, separated by spaces."
+  }
+]
