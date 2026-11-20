@@ -33,6 +33,17 @@ export default function HomePage() {
           </Link>
         ))}
       </section>
+      <p className="text-sm text-slate-600">
+        Before the exam: the printable{' '}
+        <Link to="/guides/cheat-sheet" className="text-brand-dark underline">
+          cheat sheet
+        </Link>{' '}
+        and the{' '}
+        <Link to="/guides/exam-day" className="text-brand-dark underline">
+          exam-day guide
+        </Link>
+        .
+      </p>
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">The syllabus</h2>
         <p className="text-sm text-slate-600">

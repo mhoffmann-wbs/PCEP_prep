@@ -9,6 +9,8 @@ const NAV = [
   { to: '/exercises', label: 'Exercises' },
   { to: '/playground', label: 'Playground' },
   { to: '/progress', label: 'Progress' },
+  { to: '/guides/cheat-sheet', label: 'Cheat sheet' },
+  { to: '/guides/exam-day', label: 'Exam day' },
 ]
 
 export function Layout() {

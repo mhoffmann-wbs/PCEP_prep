@@ -1,0 +1,335 @@
+export const meta = {
+  slug: 'cheat-sheet',
+  title: 'Cheat sheet',
+  updated: '2026-11-20',
+  summary:
+    'The facts PCEP questions rely on, one part per syllabus section, with a last part for the PCEP-30-02 extras. Every printed output below was checked by running the code. Read it the night before; each topic has a full lesson.',
+}
+
+## 1. Fundamentals
+
+- Python is **interpreted**: the interpreter reads the source and runs it line by line, stopping at the first error. A **compiler** translates the whole program to machine code before it runs. **Lexis** = the words allowed, **syntax** = how they combine, **semantics** = what it means.
+- **Indentation** defines blocks (4 spaces by convention). A line ending in `:` must be followed by an indented block. `#` starts a comment.
+- **Keywords** can't be names: `False None True and as assert async await break class continue def del elif else except finally for from global if import in is lambda nonlocal not or pass raise return try while with yield`.
+- **Names:** letters, digits and `_`, not starting with a digit, case-sensitive. PEP 8: `snake_case` for variables and functions, `UPPER_CASE` for constants.
+- **Literals:** `42` int, `4.2` and `4.` float, `"hi"` or `'hi'` str, `True`/`False` bool, `None`. Floats are approximate.
+
+```python
+print(0.1 + 0.2 == 0.3, round(0.1 + 0.2, 2) == 0.3)
+print(type(7), type(7.0), type("7"), type(True))
+```
+
+```output
+False True
+<class 'int'> <class 'float'> <class 'str'> <class 'bool'>
+```
+
+**Operators**, highest priority first (same row = same priority):
+
+| Operators | Note |
+|---|---|
+| `**` | right to left: `2 ** 3 ** 2` is `2 ** 9` |
+| unary `-`, `+` | `-2 ** 2` is `-(2 ** 2)` |
+| `*` `/` `//` `%` | left to right |
+| `+` `-` | |
+| `<` `<=` `>` `>=` `==` `!=` `in` `not in` `is` `is not` | comparisons chain: `1 < x < 5` |
+| `not` | |
+| `and` | |
+| `or` | |
+
+```python
+print(7 / 2, 7 // 2, -7 // 2, 7 % 3, -7 % 3)
+print(2 ** 3 ** 2, -2 ** 2, 2 + 3 * 4, (2 + 3) * 4)
+print(7 // 2.0, 6 / 3, 2 ** -1)
+print("ab" * 3, "ab" + "cd", 3 * [0])
+print(True + True, 10 > 5 > 1, not 0)
+```
+
+```output
+3.5 3 -4 1 2
+512 -4 14 20
+3.0 2.0 0.5
+ababab abcd [0, 0, 0]
+2 True True
+```
+
+- `//` floors (rounds **down**, towards minus infinity). `/` always gives a float. With one float operand, the result is a float.
+- `and` / `or` return one of their operands; `0`, `0.0`, `""`, `[]`, `{}` and `None` are false.
+
+**`print()` and `input()`:**
+
+```python
+print("a", "b", "c")
+print("a", "b", sep="-", end="!\n")
+print(int("12") + 1, float("2"), str(3) + "4", int(3.99))
+```
+
+```output
+a b c
+a-b!
+13 2.0 34 3
+```
+
+- `input()` always returns a **string**; convert with `int()` or `float()`. `int("3.5")` raises `ValueError`. `int(3.99)` cuts off the decimals.
+
+## 2. Control flow
+
+- `if` / `elif` / `else`: only the **first** true branch runs. Each `if` starts a new chain.
+- `while` repeats while the condition is true; make sure something changes, or it loops forever. A **sentinel** is a special value that ends input (e.g. `"done"`).
+- `for x in sequence` walks any list, tuple, string, dict (its keys) or `range`.
+- `break` leaves the innermost loop, `continue` skips to the next pass, `pass` does nothing (a placeholder).
+
+```python
+print(list(range(4)), list(range(2, 5)), list(range(10, 0, -3)), list(range(5, 1)))
+for i in range(5):
+    if i == 1:
+        continue
+    if i == 4:
+        break
+    print(i)
+```
+
+```output
+[0, 1, 2, 3] [2, 3, 4] [10, 7, 4, 1] []
+0
+2
+3
+```
+
+- `range(stop)`, `range(start, stop)`, `range(start, stop, step)`: **stop is never included**. A step can't be `0`.
+- PCEP-30-03 only: the walrus `:=` assigns inside an expression, e.g. `while (line := input()) != "done":`.
+
+## 3. Collections
+
+| | List | Tuple | Dict | Set (30-03) | String |
+|---|---|---|---|---|---|
+| Literal | `[1, 2]` | `(1, 2)` or `1, 2` | `{"a": 1}` | `{1, 2}` | `"ab"` |
+| Empty | `[]` | `()` | `{}` | `set()` | `""` |
+| One item | `[1]` | `(1,)` | `{"a": 1}` | `{1}` | `"a"` |
+| Mutable | yes | no | yes | yes | no |
+| Ordered, indexable | yes | yes | insertion order, by key | no | yes |
+
+**Indexing and slicing** (`[start:stop:step]`, stop not included):
+
+```python
+pets = ["cat", "dog", "fish", "bird", "frog"]
+print(pets[0], pets[-1], pets[1:3], pets[:2], pets[3:])
+print(pets[::2], pets[::-1], pets[10:])
+word = "python"
+print(word[1], word[-2], word[1:4], word[::-1])
+```
+
+```output
+cat frog ['dog', 'fish'] ['cat', 'dog'] ['bird', 'frog']
+['cat', 'fish', 'frog'] ['frog', 'bird', 'fish', 'dog', 'cat'] []
+y o yth nohtyp
+```
+
+- An index out of range raises `IndexError`; a slice out of range just gives fewer items.
+- `b = a` makes a second name for the **same** list; `b = a[:]` (or `list(a)`, `a.copy()`) makes a copy.
+
+```python
+a = [1, 2, 3]
+b = a
+c = a[:]
+b.append(4)
+print(a, c)
+```
+
+```output
+[1, 2, 3, 4] [1, 2, 3]
+```
+
+**List methods:** `append(x)`, `insert(i, x)`, `extend(list)`, `remove(x)` (first match, `ValueError` if missing), `pop()` / `pop(i)` (returns the item), `index(x)`, `count(x)`, `sort()`, `reverse()`. `del a[i]` removes by index. `sort()` changes the list and returns `None`; `sorted(a)` returns a new list.
+
+```python
+nums = [3, 1, 2]
+print(nums.sort(), nums, sorted([9, 7, 8], reverse=True))
+print(len(nums), 2 in nums, nums.pop(), nums)
+grid = [[1, 2], [3, 4]]
+print(grid[1][0], len(grid))
+```
+
+```output
+None [1, 2, 3] [9, 8, 7]
+3 True 3 [1, 2]
+3 2
+```
+
+**Tuples** can't be changed (`TypeError` on assignment) but can be unpacked: `x, y = (1, 2)`. **Dicts:** `d[key]` raises `KeyError` if missing, `d.get(key, default)` doesn't; `keys()`, `values()`, `items()`, `pop(key)`, `in` checks keys.
+
+```python
+stock = {"apples": 4, "pears": 0}
+stock["plums"] = 7
+print(stock.get("kiwis", 0), "pears" in stock, len(stock))
+for name, count in stock.items():
+    print(name, count)
+```
+
+```output
+0 True 3
+apples 4
+pears 0
+plums 7
+```
+
+**Strings** are immutable: `s[0] = "x"` raises `TypeError`. Escapes: `\n` newline, `\t` tab, `\\` backslash, `\'` and `\"` quotes.
+
+```python
+s = "  Hello, World  "
+print(s.strip(), s.lower().strip(), s.strip().upper())
+print("a,b,c".split(","), "-".join(["x", "y"]), "banana".count("a"))
+print("banana".find("n"), "banana".find("z"), "banana".replace("a", "o"))
+print("hi".startswith("h"), "42".isdigit(), "Ab".isalpha(), "ab cd".title())
+```
+
+```output
+Hello, World hello, world HELLO, WORLD
+['a', 'b', 'c'] x-y 3
+2 -1 bonono
+True True True Ab Cd
+```
+
+PCEP-30-03 only: **formatting** with f-strings, `format()` and `%`.
+
+```python
+price = 3.5
+print(f"Total: {price:.2f}", "{} and {}".format(1, 2), "%d items" % 3)
+```
+
+```output
+Total: 3.50 1 and 2 3 items
+```
+
+## 4. Functions and exceptions
+
+- `def name(params):` defines; the body runs only when called. Without `return` (or with a bare `return`), a call gives `None`.
+- **Positional** arguments come before **keyword** arguments. Parameters with **defaults** come after those without.
+- A name assigned inside a function is **local**, unless declared `global`. Reading a global without assigning to it works.
+
+```python
+def order(item, qty=1, note=""):
+    return item + " x" + str(qty) + note
+
+print(order("tea"), order("tea", 3), order("tea", note="!"))
+count = 0
+def bump():
+    global count
+    count += 1
+bump()
+print(count, bump())
+```
+
+```output
+tea x1 tea x3 tea x1!
+1 None
+```
+
+- PCEP-30-03 only: `*args` collects extra positional arguments into a **tuple**, `**kwargs` collects extra keyword arguments into a **dict**.
+
+**Exceptions** stop the program at the failing line unless caught:
+
+| Exception | Typical cause |
+|---|---|
+| `ValueError` | right type, wrong value: `int("abc")` |
+| `TypeError` | wrong type: `"a" + 1`, `len(5)` |
+| `ZeroDivisionError` | `/`, `//` or `%` by zero |
+| `IndexError` | list or string index out of range |
+| `KeyError` | missing dictionary key |
+| `NameError` | a name that was never assigned |
+| `SyntaxError` / `IndentationError` | the code can't be read at all, so nothing runs |
+
+```python
+try:
+    print("start")
+    x = 1 / 0
+    print("never printed")
+except ValueError:
+    print("value")
+except ZeroDivisionError:
+    print("zero")
+else:
+    print("no error")
+finally:
+    print("always")
+```
+
+```output
+start
+zero
+always
+```
+
+- Only the **first** matching `except` runs; `else` runs only when nothing was raised; `finally` always runs.
+
+## 5. Files and modules (PCEP-30-03 only)
+
+| Mode | Meaning |
+|---|---|
+| `"r"` | read (default); `FileNotFoundError` if missing |
+| `"w"` | write; creates the file or **empties** it |
+| `"a"` | append to the end; creates the file if missing |
+
+```python
+with open("notes.txt", "w") as f:
+    f.write("one\ntwo\n")
+with open("notes.txt") as f:
+    print(f.readlines())
+with open("notes.txt") as f:
+    for line in f:
+        print(line.strip())
+```
+
+```output
+['one\n', 'two\n']
+one
+two
+```
+
+- `with` closes the file automatically. `read()` gives one string, `readline()` one line, `readlines()` a list of lines (each ending in `\n`).
+- `csv.reader(f)` gives each row as a list of strings; `csv.writer(f).writerow([...])` writes one row.
+
+```python
+import math
+from random import seed, randint
+print(math.ceil(2.1), math.floor(2.9), math.trunc(-2.7), math.sqrt(16))
+seed(1)
+first = randint(1, 6)
+seed(1)
+print(first == randint(1, 6))
+```
+
+```output
+3 2 -2 4.0
+True
+```
+
+- `import math` → use `math.sqrt`; `from math import sqrt` → use `sqrt`; `import math as m` → use `m.sqrt`.
+- `random.random()` gives a float in `[0, 1)`, `randint(a, b)` includes **both** ends, `choice(seq)` picks one item, `sample(seq, k)` picks `k` different items. The same `seed()` gives the same sequence.
+
+## PCEP-30-02 extras
+
+```python
+print(0b101, 0o17, 0x1F, 1e3, 1_000_000)
+print(bin(5), oct(8), hex(255))
+print(6 & 3, 6 | 3, 6 ^ 3, ~6, 1 << 3, 16 >> 2)
+print([n * n for n in range(5) if n % 2 == 0])
+for n in [1, 3, 5]:
+    if n % 2 == 0:
+        break
+else:
+    print("no even number")
+```
+
+```output
+5 15 31 1000.0 1000000
+0b101 0o10 0xff
+2 7 5 -7 8 4
+[0, 4, 16]
+no even number
+```
+
+- Bitwise precedence: `~` (with unary minus), then shifts `<<` `>>` below `+` `-`, then `&`, `^`, `|`, all above comparisons.
+- A loop's `else` runs when the loop ends **without** `break`.
+- A **generator** function uses `yield` and produces values one at a time; a **recursive** function calls itself and needs a base case.
+- **Exception hierarchy:** `BaseException` → `Exception` (and `SystemExit`, `KeyboardInterrupt`); `ArithmeticError` → `ZeroDivisionError`; `LookupError` → `IndexError`, `KeyError`. Put specific `except` branches before general ones. An uncaught exception travels up through the calling functions.

@@ -4,12 +4,14 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import type { PyodideAPI } from 'pyodide'
 import { beforeAll, describe, expect, it } from 'vitest'
-import { runPython } from '../python/runtime'
 import { PYODIDE_LOAD_MS, getPyodidePair } from '../test/pyodide'
 import { EXAM_IDS, OBJECTIVE_BY_ID, objectiveInExam } from './blueprint'
 import { FEATURE_HOME, foreignFeatures } from './features'
 import { LESSONS, REQUIRED_SECTIONS } from './lessons'
+import { checkSnippet as checkIn } from './snippetCheck'
 import { type Snippet, extractSnippets } from './snippets'
+
+const checkSnippet = (s: Snippet) => checkIn(s, pys)
 
 // Read the raw MDX from disk: the MDX plugin would compile a `?raw` import.
 const dir = join(import.meta.dirname, 'lessons')
@@ -23,26 +25,6 @@ let pys: [PyodideAPI, PyodideAPI]
 beforeAll(async () => {
   pys = await getPyodidePair()
 }, PYODIDE_LOAD_MS)
-
-const lastLine = (s: string) => s.trimEnd().split('\n').at(-1) ?? ''
-
-/** Problems with one snippet: its claim must match real Python, in both hash seeds. */
-function checkSnippet(s: Snippet): string[] {
-  const [a, b] = pys.map((py) => runPython(py, { code: s.code, stdin: s.stdin }))
-  const where = `snippet at line ${s.line}`
-  const problems: string[] = []
-  const errorLine = a!.error ? lastLine(a!.error.traceback) : null
-  if (a!.stdout !== b!.stdout || errorLine !== (b!.error ? lastLine(b!.error.traceback) : null))
-    problems.push(`${where}: output is not deterministic`)
-  if (s.error !== undefined) {
-    if (errorLine !== s.error.trim()) problems.push(`${where}: raises ${JSON.stringify(errorLine)}, lesson says ${JSON.stringify(s.error.trim())}`)
-  } else {
-    if (errorLine) problems.push(`${where}: unexpected error ${JSON.stringify(errorLine)}`)
-    if (s.output !== undefined && a!.stdout.replace(/\n$/, '') !== s.output)
-      problems.push(`${where}: prints ${JSON.stringify(a!.stdout)}, lesson says ${JSON.stringify(s.output)}`)
-  }
-  return problems
-}
 
 it('every objective has a lesson', () => {
   expect([...OBJECTIVE_BY_ID.keys()].filter((id) => !LESSONS.has(id))).toEqual([])

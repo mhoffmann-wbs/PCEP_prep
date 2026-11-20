@@ -18,7 +18,7 @@
  * inverted, "white" cards become dark surfaces, and brand-dark (link text)
  * becomes a light blue.
  */
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
     --color-page: #0e1520;
@@ -88,4 +88,31 @@ pre {
 .prose table {
   display: block;
   overflow-x: auto;
+}
+
+/*
+ * Print (guides, lessons): dark mode only applies on screen, so paper always gets
+ * the light tokens. Browsers drop background colours when printing, so code
+ * blocks switch to dark text on white with a border.
+ */
+@media print {
+  .bg-code {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #94a3b8;
+  }
+  .bg-code * {
+    color: #000 !important;
+  }
+  main {
+    padding-top: 0;
+  }
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  table,
+  pre {
+    break-inside: avoid;
+  }
 }

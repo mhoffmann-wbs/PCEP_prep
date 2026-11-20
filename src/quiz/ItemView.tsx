@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from 'react'
+import { type ReactNode, useEffect, useRef, useState } from 'react'
 import { OBJECTIVE_BY_ID } from '../content/blueprint'
 import { BLANK_RE, INSERT_MARKER, type Item } from '../content/schema'
 import { CodeBlock, Inline } from '../components/Inline'
@@ -196,21 +196,44 @@ function Gaps({ item, response, onChange, revealed }: { item: Of<'gap'> } & Omit
 function Order({ item, response, onChange, revealed }: { item: Of<'order'> } & Omit<Props, 'item' | 'keyboard'>) {
   const order = response.kind === 'order' ? response.order : item.lines.map((_, i) => i)
   const [dragging, setDragging] = useState<number | null>(null)
+  // Read out by screen readers after each move, since the list changes silently.
+  const [announcement, setAnnouncement] = useState('')
+  // After a button move, focus follows the moved line (to the same button, or the other one at an edge).
+  const list = useRef<HTMLOListElement>(null)
+  const [refocus, setRefocus] = useState<{ line: number; dir: 'up' | 'down' } | null>(null)
+  useEffect(() => {
+    if (!refocus || !list.current) return
+    const row = list.current.querySelector(`[data-line="${refocus.line}"]`)
+    const wanted = row?.querySelector<HTMLButtonElement>(`[data-dir="${refocus.dir}"]:not(:disabled)`)
+    ;(wanted ?? row?.querySelector<HTMLButtonElement>('button:not(:disabled)'))?.focus()
+    setRefocus(null)
+  }, [refocus])
+  const mono = item.mode === 'code'
+  const noun = mono ? 'line' : 'value'
+  const text = (lineIndex: number) => item.lines[lineIndex]!.trim()
   const move = (from: number, to: number) => {
     if (revealed || to < 0 || to >= order.length || from === to) return
     const next = [...order]
     const [line] = next.splice(from, 1)
     next.splice(to, 0, line!)
     onChange({ kind: 'order', order: next })
+    setAnnouncement(`${text(line!)} moved to position ${to + 1} of ${order.length}.`)
+    return line!
   }
-  const mono = item.mode === 'code'
+  const step = (pos: number, dir: 'up' | 'down') => {
+    const line = move(pos, dir === 'up' ? pos - 1 : pos + 1)
+    if (line !== undefined) setRefocus({ line, dir })
+  }
   return (
     <div className="space-y-3">
-      <p className="text-sm font-medium text-slate-600">Drag the {mono ? 'lines' : 'values'} into order, or use the arrow buttons.</p>
-      <ol className="space-y-1">
+      <p className="text-sm font-medium text-slate-600">
+        Drag the {noun}s into order, or use the arrow buttons.
+      </p>
+      <ol ref={list} className="space-y-1" aria-label={`${noun[0]!.toUpperCase()}${noun.slice(1)}s in your order`}>
         {order.map((lineIndex, pos) => (
           <li
             key={lineIndex}
+            data-line={lineIndex}
             draggable={!revealed}
             onDragStart={() => setDragging(pos)}
             onDragOver={(e) => e.preventDefault()}
@@ -222,27 +245,33 @@ function Order({ item, response, onChange, revealed }: { item: Of<'order'> } & O
               revealed ? 'border-slate-200' : 'cursor-grab border-slate-200 hover:border-slate-400'
             } ${dragging === pos ? 'opacity-50' : ''}`}
           >
-            <span className="w-5 text-right text-xs text-slate-500">{pos + 1}</span>
-            <span className={`flex-1 whitespace-pre ${mono ? 'font-mono text-sm' : ''}`}>{item.lines[lineIndex]}</span>
+            <span className="w-5 shrink-0 text-right text-xs text-slate-500" aria-hidden="true">
+              {pos + 1}
+            </span>
+            <span className={`min-w-0 flex-1 overflow-x-auto whitespace-pre ${mono ? 'font-mono text-sm' : ''}`}>{item.lines[lineIndex]}</span>
             {!revealed && (
-              <span className="flex gap-1">
-                <button type="button" aria-label={`Move line ${pos + 1} up`} disabled={pos === 0} onClick={() => move(pos, pos - 1)} className="rounded border px-2 disabled:opacity-30">
-                  ↑
-                </button>
-                <button
-                  type="button"
-                  aria-label={`Move line ${pos + 1} down`}
-                  disabled={pos === order.length - 1}
-                  onClick={() => move(pos, pos + 1)}
-                  className="rounded border px-2 disabled:opacity-30"
-                >
-                  ↓
-                </button>
+              <span className="flex shrink-0 gap-1">
+                {(['up', 'down'] as const).map((dir) => (
+                  <button
+                    key={dir}
+                    type="button"
+                    data-dir={dir}
+                    aria-label={`Move ${noun} ${text(lineIndex)} ${dir}`}
+                    disabled={dir === 'up' ? pos === 0 : pos === order.length - 1}
+                    onClick={() => step(pos, dir)}
+                    className="h-9 w-9 rounded border disabled:opacity-30"
+                  >
+                    {dir === 'up' ? '↑' : '↓'}
+                  </button>
+                ))}
               </span>
             )}
           </li>
         ))}
       </ol>
+      <p className="sr-only" aria-live="polite">
+        {announcement}
+      </p>
       {revealed && (
         <div className="space-y-1 text-sm">
           <p className="font-semibold">Correct order:</p>

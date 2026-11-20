@@ -119,3 +119,16 @@ function A({ href = '', ...props }: ComponentProps<'a'>) {
 }
 
 export const lessonComponents = { pre: Pre, a: A, Predict }
+
+/** Overrides <pre> for print-first pages: Python stays static; output, error and input blocks get labels. */
+function StaticPre(props: ComponentProps<'pre'>) {
+  const fence = fenceOf(<pre {...props} />)
+  if (fence && fence.lang in LABELS) return <LabelledBlock {...fence} />
+  return (
+    <div className="not-prose my-3 break-inside-avoid">
+      <CodeBlock code={fence?.text ?? ''} />
+    </div>
+  )
+}
+
+export const guideComponents = { pre: StaticPre, a: A }

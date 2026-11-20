@@ -1,0 +1,80 @@
+import { EXAM_PROFILES, PCEP_30_02_SUNSET } from '../blueprint'
+
+export const meta = {
+  slug: 'exam-day',
+  title: 'Exam day',
+  updated: '2026-11-20',
+  summary:
+    'The format of both PCEP exams, how to pace yourself, how to read code questions without notes, and what to sort out before the day. Facts come from the Python Institute pages linked at the end.',
+}
+
+## The format
+
+| | PCEP-30-03 | PCEP-30-02 |
+|---|---|---|
+| Questions | {EXAM_PROFILES['30-03'].items} | {EXAM_PROFILES['30-02'].items} |
+| Time | {EXAM_PROFILES['30-03'].minutes} minutes | {EXAM_PROFILES['30-02'].minutes} minutes, plus 5 minutes for the NDA and tutorial |
+| Pass mark | {EXAM_PROFILES['30-03'].passPercent}% | {EXAM_PROFILES['30-02'].passPercent}% (average across all blocks) |
+| Question types | single-select, multiple-select, interactive and scenario-based | single- and multiple-select, drag and drop, gap fill, sort, code fill, code insertion |
+| Credential valid for | 5 years | lifetime |
+| On sale until | no end date announced | {PCEP_30_02_SUNSET} |
+
+- Most questions show a short program and ask what it prints, which line completes it, or which statement is true about it.
+- The section weights on the syllabus are **scoring weights**, not exact question counts, so don't skip a topic because it looks small.
+- The exam doesn't publish whether wrong answers cost points, and no penalty is documented. **Answer every question**: a blank can't be right.
+- For multiple-select questions, read how many answers the question asks for before you look at the options.
+
+## Pacing
+
+{EXAM_PROFILES['30-03'].minutes} minutes for {EXAM_PROFILES['30-03'].items} questions is about **1 minute 25 seconds per question** on PCEP-30-03 ({EXAM_PROFILES['30-02'].minutes} for {EXAM_PROFILES['30-02'].items} is 1 minute 20 seconds on PCEP-30-02). Aim for about 1 minute 15 seconds, which leaves a few minutes at the end for questions you flagged.
+
+| PCEP-30-03: by minute | you should be past question |
+|---|---|
+| 15 | 12 |
+| 30 | 24 |
+| 44 | 35, then review your flags |
+
+| PCEP-30-02: by minute | you should be past question |
+|---|---|
+| 13 | 10 |
+| 26 | 20 |
+| 36 | 30, then review your flags |
+
+- **If a question takes more than 2 minutes, pick your best answer, flag it and move on.** A hard question is worth the same as an easy one.
+- The mock exam in this app uses the real time limit, so take at least two under exam conditions: no Playground, no lessons, no notes.
+
+## Reading code without notes
+
+The testing policies forbid notes and "making notes of any kind", so plan to trace code in your head.
+
+1. **Read the last line first.** Know what is printed before you read how it is computed.
+2. **Keep a mental table of variables.** For a loop, track only the variables that change, one pass at a time. Most loops on the exam run three to five times.
+3. **Check the type of every value.** `input()` always returns a string, `/` always gives a float, and `"3" + 4` is a `TypeError`, not `7`.
+4. **Look for the trap before you calculate.** Common ones: `range()` stops before its end value; a slice copies, an assignment doesn't; `print()` ends with a newline unless `end=` says otherwise; a function without `return` gives `None`; an exception stops the program at that line, so later lines never run.
+5. **If an option says the code raises an error**, look for the exact line that would raise it. If you can't find one, it's probably a distractor.
+6. **Eliminate first.** Rule out options with the wrong type (a list where a string is printed, quotes in printed output), then compare the rest.
+
+The [cheat sheet](/guides/cheat-sheet) collects the facts these traps rely on.
+
+## Before the day
+
+- **Buy a voucher** from the Python Institute store. The exam runs on OpenEDG's TestNow service. Online proctoring is the default; some schools and training centres also run proctored sessions.
+- **Equipment for online proctoring:** a desktop or laptop with a keyboard (touchscreens, phones and tablets aren't supported), a webcam that stays on with your face and shoulders visible, and one monitor only. The browser must stay in full screen.
+- **The room:** alone, quiet and well lit, with no notes, books or other devices within reach.
+- **Bring ID:** at least one valid government-issued photo ID.
+- **No breaks.** The exam has no scheduled breaks, so start rested.
+- **The NDA** appears when the session starts and must be accepted before the questions begin.
+- At a test centre, arrive 15 minutes before your appointment.
+
+## If you don't pass
+
+- You can **retake after 7 days**, and there is no limit on the number of retakes. Depending on your voucher, a retake may need a new one.
+- Use the time: open [Progress](/progress), drill your weak spots, and take another mock exam before rebooking.
+
+## Sources
+
+- [PCEP-30-03 overview](https://pythoninstitute.org/pcep) and [syllabus](https://pythoninstitute.org/pcep-exam-syllabus)
+- [PCEP-30-02 overview](https://pythoninstitute.org/pcep-30-02) and [syllabus](https://pythoninstitute.org/pcep-30-02-exam-syllabus)
+- [PCEP testing policies](https://pythoninstitute.org/pcep-testing-policies)
+
+If anything here disagrees with those pages, they win. Rules can change, so check the testing policies again in the week before your exam.

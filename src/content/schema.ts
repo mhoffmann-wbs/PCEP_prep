@@ -274,3 +274,14 @@ export const exerciseSchema = z.discriminatedUnion('kind', [functionExercise, io
 export const exerciseFileSchema = z.array(exerciseSchema)
 
 export type Exercise = z.infer<typeof exerciseSchema>
+
+/** `export const meta` of each guides/<slug>.mdx file (cheat sheet, exam-day guide). */
+export const guideMetaSchema = z.object({
+  slug: z.string().regex(/^[a-z-]+$/),
+  title: nonEmpty,
+  /** Date the guide was last checked against the syllabus and exam pages. */
+  updated: z.iso.date(),
+  summary: nonEmpty,
+})
+
+export type GuideMeta = z.infer<typeof guideMetaSchema>

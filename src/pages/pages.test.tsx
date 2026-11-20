@@ -121,7 +121,13 @@ describe('item kinds', () => {
     for (let target = 0; target < order.lines.length; target++) {
       const rows = screen.getAllByRole('listitem')
       const from = rows.findIndex((r) => r.textContent?.includes(order.lines[target]!))
-      for (let pos = from; pos > target; pos--) await user.click(screen.getByRole('button', { name: `Move line ${pos + 1} up` }))
+      for (let pos = from; pos > target; pos--) {
+        const up = within(screen.getAllByRole('listitem')[pos]!).getByRole('button', { name: /up$/ })
+        await user.click(up)
+        // Focus follows the moved line, and the move is announced.
+        expect(document.activeElement?.closest('li')?.textContent).toContain(order.lines[target]!.trim())
+        expect(screen.getByText(`${order.lines[target]!.trim()} moved to position ${pos} of ${order.lines.length}.`)).toBeInTheDocument()
+      }
     }
     await user.click(screen.getByRole('button', { name: 'Check answer' }))
     expect(screen.getByRole('status')).toHaveTextContent('Correct')
@@ -262,5 +268,22 @@ describe('playground', () => {
   it('opens the code from a permalink', async () => {
     await renderAt(`/playground${encodeCode('print("from a link")')}`)
     expect(document.querySelector('.cm-content')?.textContent).toBe('print("from a link")')
+  })
+})
+
+describe('guides', () => {
+  it('renders the cheat sheet with static code and a print button', async () => {
+    await renderAt('/guides/cheat-sheet')
+    expect(screen.getByRole('heading', { level: 1, name: 'Cheat sheet' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Print' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Run and edit/ })).not.toBeInTheDocument()
+    expect(screen.getAllByText('Output').length).toBeGreaterThan(0)
+  })
+
+  it('fills the exam facts from the exam profiles', async () => {
+    await renderAt('/guides/exam-day')
+    const table = screen.getAllByRole('table')[0]!
+    expect(within(table).getByText('50 minutes')).toBeInTheDocument()
+    expect(within(table).getByText('35')).toBeInTheDocument()
   })
 })
