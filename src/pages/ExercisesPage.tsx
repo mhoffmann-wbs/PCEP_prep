@@ -81,12 +81,22 @@ function ExerciseIndex() {
   )
 }
 
-/** Prompt text: paragraphs split by blank lines; paragraphs of "1. " or "- " lines become lists. */
+/**
+ * Prompt text: paragraphs split by blank lines; paragraphs of "1. " or "- " lines
+ * become lists, and a paragraph fenced with ``` is shown as a block (an example
+ * run or output; it may not contain blank lines).
+ */
 function Prompt({ text }: { text: string }) {
   return (
     <div className="space-y-3">
       {text.split(/\n\s*\n/).map((para, i) => {
         const lines = para.split('\n')
+        if (para.startsWith('```'))
+          return (
+            <pre key={i} className="rounded border border-slate-300 bg-slate-50 p-3 font-mono text-sm">
+              {lines.slice(1, lines.at(-1) === '```' ? -1 : undefined).join('\n')}
+            </pre>
+          )
         if (lines.every((l) => /^\d+\. /.test(l)))
           return (
             <ol key={i} className="list-decimal space-y-1 pl-6">
