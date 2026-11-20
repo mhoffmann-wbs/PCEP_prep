@@ -23,10 +23,13 @@ describe('item schema', () => {
   })
 
   it('single: needs exactly one correct option and a matching output key', () => {
-    const two = SINGLE.kind === 'single' && { ...SINGLE, options: SINGLE.options.map((o) => ({ ...o, correct: true })) }
+    const two = { ...SINGLE, options: SINGLE.options.map((o) => ({ ...o, correct: true })) }
     expect(errors(two)).toContain('single needs exactly 1 correct option')
     expect(errors({ ...SINGLE, output: '1 3 5 7' })).toContain('correct option must equal output')
     expect(errors({ ...SINGLE, output: undefined })).toContain('outputKey needs output')
+    expect(errors({ ...SINGLE, output: undefined, outputKey: false })).toContain(
+      'stem asks for the output: set output or raises so it is checked in Pyodide',
+    )
     expect(errors({ ...SINGLE, raises: 'TypeError' })).toContain('use either output or raises, not both')
   })
 
@@ -40,7 +43,7 @@ describe('item schema', () => {
   it('gap: blanks in code must match declared blanks', () => {
     expect(errors({ ...GAP, code: 'x = __BLANK2__' })).toContain('blanks in code (2) do not match blanks (1)')
     expect(errors({ ...GAP, code: '__BLANK1__ = __BLANK1__' })).toContain('each blank may appear only once in code')
-    const bad = GAP.kind === 'gap' && { ...GAP, blanks: [{ ...GAP.blanks[0]!, answer: 'pairs' }] }
+    const bad = { ...GAP, blanks: [{ ...GAP.blanks[0]!, answer: 'pairs' }] }
     expect(errors(bad)).toContain('answer must be one of choices')
   })
 
@@ -59,7 +62,7 @@ describe('completeProgram', () => {
   it('fills gaps, inserts at the marker indent and joins ordered lines', () => {
     expect(completeProgram(GAP)).toContain('ages.items():')
     expect(completeProgram(INSERT)).toBe('def area(w, h):\n    return w * h\n\nprint(area(3, 4))')
-    expect(completeProgram(ORDER)).toBe('n = 3\nwhile n > 0:\n    print(n)\n    n -= 1')
+    expect(completeProgram(ORDER)).toBe('price = 4\nqty = 3\ntotal = price * qty\nprint(total)')
     expect(completeProgram(MULTI)).toBeNull()
   })
 })

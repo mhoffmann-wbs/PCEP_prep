@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Phase 0 (scaffold) is done; next is phase 1 (Pyodide spike). **`PLAN.md` is the build plan and sets the order of work**: it records the decisions made, the content map, the item kinds and the phases. As parts get built, replace the plan-level notes below with what actually exists (commands, file layout, gotchas).
+Phases 0 (scaffold) and 1 (Pyodide runner) are done; next is phase 2 (quiz engine). **`PLAN.md` is the build plan and sets the order of work**: it records the decisions made, the content map, the item kinds and the phases. As parts get built, replace the plan-level notes below with what actually exists (commands, file layout, gotchas).
 
 ## Commands
 
 - `npm run dev` / `npm run build` / `npm test`: each first runs `scripts/setup-pyodide.mjs`, which copies the pinned `pyodide` package (exact version in `package.json`) into `public/pyodide/`.
 - `npm run lint` (oxlint, config in `.oxlintrc.json`), `npm run typecheck`.
-- Run one test file: `npx vitest run src/content/schema.test.ts`. Tests run in Node by default; component tests start with `// @vitest-environment jsdom`.
+- Run one test file: `npx vitest run src/content/schema.test.ts`. Tests run in Node by default; component tests start with `// @vitest-environment jsdom`. Tests that need Python use `getPyodide()` / `getPyodidePair()` from `src/test/pyodide.ts` (real Pyodide in Node, about 1 s to load).
 - `BASE_PATH=/PCEP101/ npm run build` builds for Pages. `.github/workflows/deploy.yml` lints, tests, builds, copies `index.html` to `404.html` and deploys on push to `main`.
 
 ## Layout
@@ -19,6 +19,9 @@ Phase 0 (scaffold) is done; next is phase 1 (Pyodide spike). **`PLAN.md` is the 
 - `src/content/schema.ts`: Zod item schema (`single`, `multi`, `gap`, `order`, `insert`). Item ids are `<objectiveId>-NN`. Gap blanks are `__BLANK1__`, `__BLANK2__`… in `code`. `output`/`raises` hold what the complete program prints or raises; `completeProgram()` builds that program with the answer filled in, for the Pyodide output check (phase 1).
 - `src/content/questions/<objectiveId>.json`: a JSON array of items per objective, loaded by `src/content/bank.ts` (`ITEMS`, `itemInExam`).
 - `src/content/quality.ts`: the anti-giveaway checks, run over the real bank by `bank.test.ts`.
+- `src/python/`: the runner. `harness.py` + `runtime.ts` (`runPython`) have no browser dependencies and are shared by the worker and the Node tests; each run gets fresh globals, fresh stdin and a fresh `/home/pyodide/work` seeded with `files`, and errors come back trimmed to `main.py`. `worker.ts` loads Pyodide from `public/pyodide/` at runtime (not bundled). `client.ts` (`pythonRunner`) creates the worker on first run, queues runs, and on a 5 s timeout terminates the worker (error type `Timeout`) so the next run gets a fresh one. `explain.ts` maps errors to a beginner explanation and a lesson id.
+- `src/content/verify.ts` (`verifyItem`) + `verify.test.ts`: the output check. Every item's `output`/`raises` is compared with real Python in two Pyodide instances with different `PYTHONHASHSEED`s (catches set-order dependence); wrong `insert` options and wrong `gap` choices must not behave like the key; `altOrders` must print the same. A stem that says "output" must set `output` or `raises`.
+- `src/components/RunnerPanel.tsx`: textarea-based code/stdin/output panel used on `/do` until CodeMirror arrives (phase 5).
 - `src/app/` (router shell and layout with the non-affiliation footer), `src/pages/`, `src/test/` (setup and one fixture item per kind).
 
 ## Purpose
@@ -44,3 +47,9 @@ It has three parts:
 - **Running item code** is allowed in practice mode only after the answer has been checked. The mock exam never exposes Run or Open-in-editor.
 - Pyodide is self-hosted. It's copied from the `pyodide` npm package into the git-ignored `public/pyodide/` before `dev`, `build` and `test`, and there's no CDN at runtime. It runs in a Web Worker and loads lazily, so keep it out of the initial bundle.
 - Write every question for this app. Never copy from the live exam or from the Python Institute's practice tests.
+
+## Gotchas
+
+- Pyodide randomises string hashing per instance, so set and dict-of-set ordering can change between runs; the output check uses two fixed hash seeds to catch it.
+- Python error messages change between versions (Pyodide 314 = Python 3.14). Tests of error handling take messages from real Pyodide runs, never typed from memory.
+- The in-memory FS can't remove the current directory; the harness `chdir`s out before resetting the work dir.

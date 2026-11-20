@@ -4,7 +4,7 @@ import type { Item } from './schema'
 import { duplicateStems, keyIsLongest, keyLetterBalance, letterReferences } from './quality'
 
 type Single = Extract<Item, { kind: 'single' }>
-const base = SINGLE as Single
+const base: Single = SINGLE
 
 // n single items whose key sits at `keyAt`, with distinct stems.
 const pool = (n: number, keyAt: (i: number) => number, keyText = 'k'): Single[] =>

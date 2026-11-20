@@ -111,6 +111,8 @@ export const itemSchema = z
       if (!s.startsWith(`${item.objectiveId}.`)) issue(`sub-point ${s} is not under ${item.objectiveId}`, ['subpoints', i])
     }
     if (item.output !== undefined && item.raises !== undefined) issue('use either output or raises, not both')
+    if (/\boutput\b/i.test(item.stem) && item.output === undefined && item.raises === undefined)
+      issue('stem asks for the output: set output or raises so it is checked in Pyodide', ['output'])
 
     switch (item.kind) {
       case 'single': {

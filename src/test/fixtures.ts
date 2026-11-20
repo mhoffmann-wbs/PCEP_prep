@@ -1,9 +1,11 @@
 // One valid item of each kind, used by schema and quality tests.
 import type { Item } from '../content/schema'
 
+type Of<K extends Item['kind']> = Extract<Item, { kind: K }>
+
 const opt = (text: string, correct = false) => ({ text, correct, rationale: `Because of ${text}.` })
 
-export const SINGLE: Item = {
+export const SINGLE: Of<'single'> = {
   id: '2.2.3-01',
   kind: 'single',
   objectiveId: '2.2.3',
@@ -16,7 +18,7 @@ export const SINGLE: Item = {
   explanation: 'range(1, 7, 2) starts at 1 and steps by 2, stopping before 7.',
 }
 
-export const MULTI: Item = {
+export const MULTI: Of<'multi'> = {
   id: '1.3.2-01',
   kind: 'multi',
   objectiveId: '1.3.2',
@@ -27,7 +29,7 @@ export const MULTI: Item = {
   explanation: 'Identifiers start with a letter or underscore and cannot be keywords.',
 }
 
-export const GAP: Item = {
+export const GAP: Of<'gap'> = {
   id: '3.4.1-01',
   kind: 'gap',
   objectiveId: '3.4.1',
@@ -39,21 +41,21 @@ export const GAP: Item = {
   explanation: 'items() gives key-value pairs that unpack into name and age.',
 }
 
-export const ORDER: Item = {
-  id: '2.2.1-01',
+export const ORDER: Of<'order'> = {
+  id: '1.4.1-01',
   kind: 'order',
-  objectiveId: '2.2.1',
-  subpoints: ['2.2.1.2'],
-  stem: 'Put the lines in order so the program counts down from 3.',
+  objectiveId: '1.4.1',
+  subpoints: ['1.4.1.1'],
+  stem: 'Put the lines in order so the program prints the total price.',
   mode: 'code',
-  lines: ['n = 3', 'while n > 0:', '    print(n)', '    n -= 1'],
-  altOrders: [[0, 1, 3, 2]],
-  output: '3\n2\n1\n',
-  rationale: 'The counter is set before the loop and updated inside it.',
-  explanation: 'Initialise the loop-control variable, test it, then update it in the body.',
+  lines: ['price = 4', 'qty = 3', 'total = price * qty', 'print(total)'],
+  altOrders: [[1, 0, 2, 3]],
+  output: '12\n',
+  rationale: 'Both variables must exist before total is computed, and total before it is printed.',
+  explanation: 'A name must be assigned before a later line uses it; price and qty can come in either order.',
 }
 
-export const INSERT: Item = {
+export const INSERT: Of<'insert'> = {
   id: '4.1.2-01',
   kind: 'insert',
   objectiveId: '4.1.2',
