@@ -7,7 +7,7 @@ import { type Item, completeProgram } from '../content/schema'
 export const itemProgram = (item: Item) => completeProgram(item) ?? item.code ?? null
 
 /**
- * Run / Open-in-Playground for an item's code. Practice shows this only after the
+ * Run / Open-in-Playground / Step through for an item's code. Practice shows this only after the
  * answer has been checked; the mock exam never shows it.
  */
 export function ItemRun({ item }: { item: Item }) {
@@ -30,6 +30,13 @@ export function ItemRun({ item }: { item: Item }) {
           className="rounded border border-slate-300 px-3 py-1.5 text-sm"
         >
           Open in Playground
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate('/step', { state: { code: program, files: item.files } })}
+          className="rounded border border-slate-300 px-3 py-1.5 text-sm"
+        >
+          Step through
         </button>
       </div>
       {open && <RunnerPanel key={item.id} initialCode={program} files={item.files} autoRun />}

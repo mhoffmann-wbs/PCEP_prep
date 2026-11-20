@@ -18,7 +18,7 @@ interface Props {
   /** Show the box for input() lines. */
   showStdin?: boolean
   /** Extra buttons next to Run, e.g. an exercise's Check. */
-  renderActions?: (code: string) => ReactNode
+  renderActions?: (code: string, stdin: string) => ReactNode
 }
 
 /** Code box, input box, Run button and output with error explanations. */
@@ -72,7 +72,7 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRu
         >
           Run
         </button>
-        {renderActions?.(code)}
+        {renderActions?.(code, stdin)}
         <span className="text-sm text-slate-500">{STATUS_TEXT[status] || 'Ctrl+Enter to run'}</span>
       </div>
       {loadError && <p className="text-red-700">{loadError}</p>}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { RunnerPanel } from '../components/RunnerPanel'
 import { getProgress, setPlaygroundCode } from '../progress/store'
 import { decodeCode, encodeCode } from './playgroundLink'
@@ -22,6 +22,7 @@ type FromItem = { code?: string; files?: Record<string, string> } | null
 export default function PlaygroundPage() {
   // "Open in Playground" passes an item's code (and files) in the navigation state.
   const location = useLocation()
+  const navigate = useNavigate()
   const fromItem = location.state as FromItem
   // A permalink's code wins over the stored code, but not over an item just opened.
   const fromLink = decodeCode(location.hash)
@@ -59,8 +60,15 @@ export default function PlaygroundPage() {
           setPlaygroundCode(next)
           setCopied(null)
         }}
-        renderActions={(current) => (
+        renderActions={(current, stdin) => (
           <>
+            <button
+              type="button"
+              onClick={() => navigate('/step', { state: { code: current, files, stdin } })}
+              className="rounded border border-slate-300 px-3 py-2 text-sm"
+            >
+              Step through
+            </button>
             <button type="button" onClick={() => copyLink(current)} className="rounded border border-slate-300 px-3 py-2 text-sm">
               Copy link to this code
             </button>

@@ -256,6 +256,7 @@ describe('exercises', () => {
       stdout: '',
       stderr: '',
       error: null,
+      trace: null,
       files: {},
       timedOut: false,
       checks: (req.checks ?? []).map((c) => ({ call: c.call, passed: true, got: null, want: null, printed: '', error: null })),
@@ -279,6 +280,44 @@ describe('playground', () => {
   it('opens the code from a permalink', async () => {
     await renderAt(`/playground${encodeCode('print("from a link")')}`)
     expect(document.querySelector('.cm-content')?.textContent).toBe('print("from a link")')
+  })
+})
+
+describe('step through', () => {
+  it('traces the code and steps through it with buttons and arrow keys', async () => {
+    const user = userEvent.setup()
+    const frames = (vars: { name: string; value: string }[]) => [{ name: 'Global', vars: vars.map((v) => ({ ...v, type: 'list', ref: 1 })) }]
+    const run = vi.spyOn(pythonRunner, 'run').mockImplementation(async () => ({
+      stdout: '[1]\n',
+      stderr: '',
+      error: null,
+      files: {},
+      checks: [],
+      timedOut: false,
+      trace: {
+        truncated: false,
+        steps: [
+          { event: 'line', line: 1, frames: frames([]), out: '', detail: null },
+          { event: 'line', line: 2, frames: frames([{ name: 'nums', value: '[1]' }]), out: '', detail: null },
+          { event: 'end', line: null, frames: frames([{ name: 'nums', value: '[1]' }]), out: '[1]\n', detail: null },
+        ],
+      },
+    }))
+    await renderAt(`/step${encodeCode('nums = [1]\nprint(nums)')}`)
+    await user.click(screen.getByRole('button', { name: 'Step through' }))
+    expect(run).toHaveBeenCalledWith(expect.objectContaining({ code: 'nums = [1]\nprint(nums)', trace: true }), expect.anything())
+    expect(await screen.findByText('Step 1 of 3')).toBeInTheDocument()
+    const code = screen.getByRole('list', { name: 'Code' })
+    expect(within(code).getAllByRole('listitem')[0]).toHaveAttribute('aria-current', 'step')
+    await user.click(screen.getByRole('button', { name: 'Next →' }))
+    expect(screen.getByRole('rowheader', { name: 'nums' })).toBeInTheDocument()
+    expect(within(code).getAllByRole('listitem')[1]).toHaveAttribute('aria-current', 'step')
+    await user.keyboard('{End}')
+    expect(screen.getByText('The program finished.')).toBeInTheDocument()
+    expect(within(screen.getByRole('region', { name: 'Output so far' })).getByText('[1]')).toBeInTheDocument()
+    await user.keyboard('{ArrowLeft}')
+    expect(screen.getByText('Step 2 of 3')).toBeInTheDocument()
+    run.mockRestore()
   })
 })
 

@@ -1,5 +1,5 @@
 import { Children, type ComponentProps, type ReactNode, isValidElement, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { CodeBlock } from '../components/Inline'
 import { RunnerPanel } from '../components/RunnerPanel'
 import { normaliseOutput } from './normalise'
@@ -31,10 +31,24 @@ function LabelledBlock({ lang, text }: { lang: string; text: string }) {
 /** A Python snippet with a Run button that opens an editable runner. */
 export function Runnable({ code }: { code: string }) {
   const [open, setOpen] = useState(false)
+  const navigate = useNavigate()
   return (
     <div className="not-prose my-4 space-y-2">
       {open ? (
-        <RunnerPanel initialCode={code} autoRun minLines={3} />
+        <RunnerPanel
+          initialCode={code}
+          autoRun
+          minLines={3}
+          renderActions={(current, stdin) => (
+            <button
+              type="button"
+              onClick={() => navigate('/step', { state: { code: current, stdin } })}
+              className="rounded border border-slate-300 px-3 py-2 text-sm"
+            >
+              Step through
+            </button>
+          )}
+        />
       ) : (
         <>
           <CodeBlock code={code} />

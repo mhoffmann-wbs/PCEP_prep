@@ -13,6 +13,8 @@ export interface RunRequest {
   checks?: FunctionCheck[]
   /** input() doesn't print its prompt (exercise checks compare output exactly). */
   quietInput?: boolean
+  /** Record a step before every line for the step-through visualizer (checks are ignored). */
+  trace?: boolean
 }
 
 /**
@@ -49,6 +51,41 @@ export interface PyError {
   traceback: string
 }
 
+/** A value as the visualizer shows it. */
+export interface TraceValue {
+  /** repr(), shortened; "function f" or "module math" for those. */
+  value: string
+  type: string
+  /** For lists, dicts and sets: a number per object, so equal numbers mean one shared object. */
+  ref: number | null
+}
+
+export interface TraceFrame {
+  /** "Global", or the function's name. */
+  name: string
+  vars: (TraceValue & { name: string })[]
+}
+
+export interface TraceStep {
+  /**
+   * line: the line is about to run; return: a function returns `detail`;
+   * exception: `detail` was raised on the line; end / error: the program finished or stopped.
+   */
+  event: 'line' | 'return' | 'exception' | 'end' | 'error'
+  line: number | null
+  /** Outermost first: Global, then each active function call. */
+  frames: TraceFrame[]
+  /** Text printed since the previous step. */
+  out: string
+  detail: string | null
+}
+
+export interface Trace {
+  steps: TraceStep[]
+  /** The program reached the step limit and was stopped. */
+  truncated: boolean
+}
+
 export interface RunResult {
   stdout: string
   stderr: string
@@ -57,6 +94,8 @@ export interface RunResult {
   files: Record<string, string | null>
   /** Results of the request's checks; empty when there are none or the program raised. */
   checks: CheckResult[]
+  /** The recorded steps, for a run with `trace`. */
+  trace: Trace | null
 }
 
 export interface RunHooks {
@@ -64,7 +103,12 @@ export interface RunHooks {
   onStderr?: (text: string) => void
 }
 
-type Harness = { reset: (files: string) => void; run: (src: string, checks: string, quietInput: boolean) => string; files: () => string }
+type Harness = {
+  reset: (files: string) => void
+  run: (src: string, checks: string, quietInput: boolean) => string
+  trace: (src: string) => string
+  files: () => string
+}
 
 const harnesses = new WeakMap<PyodideAPI, Harness>()
 
@@ -73,7 +117,7 @@ function harnessFor(py: PyodideAPI): Harness {
   if (!h) {
     const ns = py.globals.get('dict')()
     py.runPython(harness, { globals: ns })
-    h = { reset: ns.get('pcep_reset'), run: ns.get('pcep_run'), files: ns.get('pcep_files') }
+    h = { reset: ns.get('pcep_reset'), run: ns.get('pcep_run'), trace: ns.get('pcep_trace'), files: ns.get('pcep_files') }
     harnesses.set(py, h)
   }
   return h
@@ -103,6 +147,11 @@ export function runPython(py: PyodideAPI, req: RunRequest, hooks: RunHooks = {})
   py.setStderr({ write: err.write })
   py.setStdin({ stdin: () => lines.shift() })
   h.reset(JSON.stringify(req.files ?? {}))
+  const files = () => JSON.parse(h.files()) as RunResult['files']
+  if (req.trace) {
+    const { error, steps, truncated } = JSON.parse(h.trace(req.code)) as Trace & Pick<RunResult, 'error'>
+    return { stdout: out.text(), stderr: err.text(), error, files: files(), checks: [], trace: { steps, truncated } }
+  }
   const { error, checks } = JSON.parse(h.run(req.code, JSON.stringify(req.checks ?? []), req.quietInput ?? false)) as Pick<RunResult, 'error' | 'checks'>
-  return { stdout: out.text(), stderr: err.text(), error, files: JSON.parse(h.files()), checks }
+  return { stdout: out.text(), stderr: err.text(), error, files: files(), checks, trace: null }
 }

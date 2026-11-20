@@ -8,6 +8,7 @@ const NAV = [
   { to: '/mock', label: 'Mock exam' },
   { to: '/exercises', label: 'Exercises' },
   { to: '/playground', label: 'Playground' },
+  { to: '/step', label: 'Step through' },
   { to: '/progress', label: 'Progress' },
   { to: '/guides/cheat-sheet', label: 'Cheat sheet' },
   { to: '/guides/exam-day', label: 'Exam day' },
