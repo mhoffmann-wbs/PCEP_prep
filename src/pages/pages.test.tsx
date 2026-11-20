@@ -16,7 +16,8 @@ async function renderAt(path: string) {
 }
 
 /** The item whose stem is on screen (sessions are shuffled). */
-const shownItem = (pool: Item[]) => pool.find((i) => screen.queryAllByText((_, el) => el?.tagName === 'P' && el.textContent === i.stem).length > 0)!
+const shownItem = (pool: Item[]) =>
+  pool.find((i) => screen.queryAllByText((_, el) => el?.tagName === 'P' && el.textContent === i.stem.replaceAll('`', '')).length > 0)!
 
 beforeEach(() => {
   localStorage.clear()
@@ -145,6 +146,20 @@ describe('mock exam', () => {
 })
 
 describe('learn and progress', () => {
+  it('renders a lesson: predict needs a guess before the reveal, and it can be marked as read', async () => {
+    const user = userEvent.setup()
+    await renderAt('/learn/3.1.1')
+    expect(screen.getByRole('heading', { name: 'Big idea' })).toBeInTheDocument()
+    const reveal = screen.getAllByRole('button', { name: 'Reveal the answer' })[0]!
+    expect(reveal).toBeDisabled()
+    await user.type(screen.getAllByLabelText('Your guess')[0]!, 'something')
+    await user.click(reveal)
+    expect(screen.getByText('Compare your guess with the real result:')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Mark as read' }))
+    expect(getProgress().lessonsRead).toEqual(['3.1.1'])
+    expect(screen.getByRole('navigation', { name: 'Lesson navigation' })).toBeInTheDocument()
+  })
+
   it('shows an objective with its syllabus sub-points', async () => {
     await renderAt('/learn/2.2.1')
     expect(screen.getByText(/walrus operator/)).toBeInTheDocument()

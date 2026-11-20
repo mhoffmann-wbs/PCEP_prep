@@ -1,0 +1,230 @@
+export const meta = {
+  objectiveId: '3.1.1',
+  updated: '2026-11-20',
+  tldr: 'A list keeps values in order under one name. Count positions from 0 at the front or from -1 at the back, and use slices `[start:stop:step]` to take parts of a list or a full copy.',
+  subpointsCovered: ['3.1.1.1', '3.1.1.2', '3.1.1.3', '3.1.1.4', '3.1.1.5', '3.1.1.6'],
+  links: [
+    { title: 'Python tutorial: Lists', url: 'https://docs.python.org/3/tutorial/introduction.html#lists' },
+    { title: 'Common sequence operations', url: 'https://docs.python.org/3/library/stdtypes.html#common-sequence-operations' },
+  ],
+}
+
+## Big idea
+
+A **list** is a row of values kept in order under one name, like a shopping list on paper. You write it with square brackets and separate the values with commas:
+
+```python
+shopping = ["milk", "eggs", "bread"]
+print(shopping)
+```
+
+```output
+['milk', 'eggs', 'bread']
+```
+
+Every value in the list sits at a numbered **position**, called its **index**. Python starts counting at **0**, not 1. So `shopping[0]` is `"milk"` and `shopping[2]` is `"bread"`.
+
+## Walkthrough
+
+### Creating lists
+
+A list can be empty, and it can hold values of any type, even mixed together:
+
+```python
+empty = []
+also_empty = list()
+temperatures = [21.5, 19.0, 23.2]
+mixed = ["Rex", 3, True, 4.5]
+print(len(empty), len(also_empty), len(temperatures), len(mixed))
+```
+
+```output
+0 0 3 4
+```
+
+`len()` tells you how many items a list holds. The last valid index is always `len(...) - 1`.
+
+### Positive and negative indexes
+
+Positive indexes count from the front, starting at 0. Negative indexes count from the back, starting at -1:
+
+```python
+pets = ["cat", "dog", "parrot", "hamster"]
+print(pets[0], pets[1])
+print(pets[-1], pets[-2])
+```
+
+```output
+cat dog
+hamster parrot
+```
+
+| Item | `"cat"` | `"dog"` | `"parrot"` | `"hamster"` |
+|---|---|---|---|---|
+| Positive index | 0 | 1 | 2 | 3 |
+| Negative index | -4 | -3 | -2 | -1 |
+
+You can also change an item by assigning to its index:
+
+```python
+pets = ["cat", "dog", "parrot"]
+pets[1] = "rabbit"
+print(pets)
+```
+
+```output
+['cat', 'rabbit', 'parrot']
+```
+
+### Slicing: taking part of a list
+
+A **slice** `list[start:stop]` makes a new list from `start` up to, but **not including**, `stop`:
+
+```python
+days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+print(days[1:3])
+print(days[:2])
+print(days[3:])
+print(days[-2:])
+```
+
+```output
+['Tue', 'Wed']
+['Mon', 'Tue']
+['Thu', 'Fri']
+['Thu', 'Fri']
+```
+
+Leave out `start` to begin at the front, and leave out `stop` to go to the end. A slice never fails because an index is too big: it just stops at the end of the list.
+
+### Steps
+
+A third number, the **step**, says how far to jump each time. A negative step walks backwards:
+
+```python
+numbers = [0, 10, 20, 30, 40, 50, 60]
+print(numbers[::2])
+print(numbers[1:6:2])
+print(numbers[::-1])
+```
+
+```output
+[0, 20, 40, 60]
+[10, 30, 50]
+[60, 50, 40, 30, 20, 10, 0]
+```
+
+`[::-1]` is a short way to get a reversed copy of a list.
+
+### Copying a list
+
+Assigning a list to a second name does **not** copy it. Both names then refer to the **same** list:
+
+```python
+original = [1, 2, 3]
+same = original
+same.append(4)
+print(original)
+```
+
+```output
+[1, 2, 3, 4]
+```
+
+A full slice `[:]` builds a **new** list with the same items, so changing the copy leaves the original alone:
+
+```python
+original = [1, 2, 3]
+copy = original[:]
+copy.append(4)
+print(original, copy)
+```
+
+```output
+[1, 2, 3] [1, 2, 3, 4]
+```
+
+## Predict the output
+
+<Predict>
+
+```python
+colors = ["red", "green", "blue", "yellow"]
+print(colors[-1], colors[1:2])
+```
+
+```output
+yellow ['green']
+```
+
+</Predict>
+
+<Predict>
+
+```python
+scores = [5, 8, 2, 9, 4]
+print(scores[1:4:2], scores[::-2])
+```
+
+```output
+[8, 9] [4, 2, 5]
+```
+
+</Predict>
+
+<Predict>
+
+```python
+a = ["x", "y"]
+b = a
+c = a[:]
+b[0] = "z"
+print(a, c)
+```
+
+```output
+['z', 'y'] ['x', 'y']
+```
+
+</Predict>
+
+## Common mistakes
+
+**Counting from 1.** A list with 3 items has the indexes 0, 1 and 2. Asking for index 3 fails:
+
+```python
+cities = ["Rome", "Oslo", "Lima"]
+print(cities[3])
+```
+
+```error
+IndexError: list index out of range
+```
+
+**Expecting the stop index to be included.** `days[1:3]` gives two items, the ones at indexes 1 and 2, not three.
+
+**Thinking `=` makes a copy.** After `b = a`, changing `b` also changes `a`, because there is only one list. Use `a[:]` when you need a separate copy.
+
+**Using round brackets or forgetting the commas.** `("a", "b")` is a tuple, not a list, and `["a" "b"]` is a list with one item: Python glues the two strings together into `"ab"`.
+
+```python
+words = ["a" "b"]
+print(words, len(words))
+```
+
+```output
+['ab'] 1
+```
+
+## Exam traps
+
+- **Index vs. slice errors.** A bad index raises `IndexError`, but a slice with indexes past the end quietly returns fewer items (or `[]`).
+- **Negative steps.** With a negative step, `start` must be to the right of `stop`, otherwise the slice is empty: `[1, 2, 3][0:2:-1]` is `[]`.
+- **Aliasing.** Questions often assign a list to a second name, change one of them, and ask what the other one prints.
+- **`len()` vs. the last index.** The last index is `len(lst) - 1`, and `lst[len(lst)]` raises an error.
+
+## Try it
+
+In the [Playground](/playground), make a list of five things you did this week. Print the first and the last item, the middle three items with one slice, and the whole list backwards. Then make a copy with `[:]`, change the copy, and check that the original stayed the same.
+
+When you're ready, [practise this objective](/practice?objective=3.1.1).

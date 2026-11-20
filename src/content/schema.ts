@@ -191,3 +191,18 @@ export function completeProgram(item: Item): string | null {
       return item.code ?? null
   }
 }
+
+/** `export const meta` of each lessons/<objectiveId>.mdx file. Titles come from the blueprint. */
+export const lessonMetaSchema = z.object({
+  objectiveId: z.string().regex(OBJECTIVE_ID),
+  /** Date the lesson was last checked against the syllabus. */
+  updated: z.iso.date(),
+  /** One or two sentences: what the learner must take away. */
+  tldr: nonEmpty,
+  /** Sub-point ids the lesson teaches; a content test requires all of the objective's. */
+  subpointsCovered: z.array(z.string()).min(1),
+  /** Optional links to the official Python documentation. */
+  links: z.array(z.object({ title: nonEmpty, url: z.url().startsWith('https://docs.python.org/') })).default([]),
+})
+
+export type LessonMeta = z.infer<typeof lessonMetaSchema>
