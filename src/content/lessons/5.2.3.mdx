@@ -76,9 +76,9 @@ print(round(temperature, 1))
 import random
 
 random.seed(42)
-first = [random.random() for _ in range(3)]
+first = (random.random(), random.random(), random.random())
 random.seed(42)
-second = [random.random() for _ in range(3)]
+second = (random.random(), random.random(), random.random())
 print(first == second)
 ```
 

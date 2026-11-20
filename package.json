@@ -2,7 +2,7 @@
   "name": "pcep101",
   "private": true,
   "version": "0.0.0",
-  "description": "PCEP101 — Python Certification Made Simple. Self-study web app for the PCEP exam.",
+  "description": "PCEP101 \u2014 Python Certification Made Simple. Self-study web app for the PCEP exam.",
   "type": "module",
   "scripts": {
     "setup:pyodide": "node scripts/setup-pyodide.mjs",
@@ -15,7 +15,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -b",
-    "lint": "oxlint"
+    "lint": "oxlint",
+    "content:status": "node scripts/content-status.ts",
+    "content:quality": "node scripts/content-quality.ts"
   },
   "dependencies": {
     "pyodide": "314.0.8",

@@ -653,6 +653,9 @@ export const EXAM_PROFILES: Record<ExamId, ExamProfile> = {
   },
 }
 
+/** Question-bank target per objective: 9 (8 in section 5, the lightest). */
+export const questionTarget = (o: Objective) => (o.sectionId === '5' ? 8 : 9)
+
 /** Retirement date of PCEP-30-02 (last day it can be taken). */
 export const PCEP_30_02_SUNSET = '2027-11-30'
 

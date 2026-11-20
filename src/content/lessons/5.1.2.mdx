@@ -153,7 +153,10 @@ with open("temps.csv", newline="") as f:
 
 print(len(rows))
 print(rows[2][0], rows[-1][1])
-warm = [r[0] for r in rows[1:] if int(r[1]) > 10]
+warm = []
+for r in rows[1:]:
+    if int(r[1]) > 10:
+        warm.append(r[0])
 print(warm)
 ```
 

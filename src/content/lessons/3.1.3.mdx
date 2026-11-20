@@ -4,7 +4,6 @@ export const meta = {
   tldr: 'A list can hold other lists. A list of lists is a grid with rows and columns, and one more level of nesting gives a cube. Use one index per level, like `grid[row][col]`, to read or change a value.',
   subpointsCovered: ['3.1.3.1', '3.1.3.2', '3.1.3.3', '3.1.3.4'],
   links: [
-    { title: 'Python tutorial: Nested list comprehensions', url: 'https://docs.python.org/3/tutorial/datastructures.html#nested-list-comprehensions' },
     { title: 'Programming FAQ: How do I create a multidimensional list?', url: 'https://docs.python.org/3/faq/programming.html#how-do-i-create-a-multidimensional-list' },
   ],
 }
@@ -52,10 +51,12 @@ print(len(matrix[0]))
 
 `len(matrix)` counts the rows. `len(matrix[0])` counts the items in the first row, which is the number of columns.
 
-You can also build a grid with a loop, or with a **list comprehension** (a short way of writing a loop that builds a list inside square brackets):
+You can also build a grid with loops: make each row as a new list, then append it to the grid:
 
 ```python
-board = [[0 for col in range(4)] for row in range(3)]
+board = []
+for row in range(3):
+    board.append([0] * 4)
 print(board)
 ```
 
@@ -203,10 +204,12 @@ print(grid)
 [[9, 0, 0], [9, 0, 0]]
 ```
 
-Build each row separately instead, with a comprehension: `[[0] * 3 for _ in range(2)]`.
+Build each row as a separate new list instead, for example in a loop:
 
 ```python
-grid = [[0] * 3 for _ in range(2)]
+grid = []
+for row in range(2):
+    grid.append([0] * 3)
 grid[0][0] = 9
 print(grid)
 ```

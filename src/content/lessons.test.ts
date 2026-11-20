@@ -6,7 +6,8 @@ import type { PyodideAPI } from 'pyodide'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { runPython } from '../python/runtime'
 import { PYODIDE_LOAD_MS, getPyodidePair } from '../test/pyodide'
-import { OBJECTIVE_BY_ID } from './blueprint'
+import { EXAM_IDS, OBJECTIVE_BY_ID, objectiveInExam } from './blueprint'
+import { FEATURE_HOME, foreignFeatures } from './features'
 import { LESSONS, REQUIRED_SECTIONS } from './lessons'
 import { type Snippet, extractSnippets } from './snippets'
 
@@ -77,6 +78,18 @@ describe.each(Object.entries(SOURCES))('lesson %s', (fileId, source) => {
       const snippet = extractSnippets(block.split('</Predict>')[0]!)[0]
       expect(snippet?.output ?? snippet?.error, 'each Predict needs a ```python block and an ```output or ```error block').toBeDefined()
     }
+  })
+
+  it('uses only features that every exam the objective is on teaches', () => {
+    const objective = OBJECTIVE_BY_ID.get(fileId)!
+    const problems = EXAM_IDS.filter((exam) => objectiveInExam(objective, exam)).flatMap((exam) =>
+      extractSnippets(source).flatMap((s) =>
+        foreignFeatures(s.code, exam)
+          .filter((f) => !FEATURE_HOME[f].includes(fileId))
+          .map((f) => `line ${s.line}: ${f} is not on PCEP-${exam}`),
+      ),
+    )
+    expect(problems).toEqual([])
   })
 
   it('every code snippet does what the lesson says', () => {
