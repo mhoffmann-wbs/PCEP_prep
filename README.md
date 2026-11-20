@@ -6,7 +6,7 @@ A free, self-study web app for the **PCEP™ – Certified Entry-Level Python Pr
 - **Check**: practice questions in five formats, plus a timed mock exam.
 - **Do**: real Python in the browser through [Pyodide](https://pyodide.org), with a playground and auto-graded exercises.
 
-Live site: https://mhoffmann-wbs.github.io/PCEP101/
+Live site: https://mhoffmann-wbs.github.io/PCEP_prep/
 
 ## Develop
 

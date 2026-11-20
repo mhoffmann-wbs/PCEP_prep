@@ -11,7 +11,7 @@ Phases 0–4 are done: scaffold, Pyodide runner, quiz engine, lessons (35 object
 - `npm run dev` / `npm run build` / `npm test`: each first runs `scripts/setup-pyodide.mjs`, which copies the pinned `pyodide` package (exact version in `package.json`) into `public/pyodide/`.
 - `npm run lint` (oxlint, config in `.oxlintrc.json`), `npm run typecheck`.
 - Run one test file: `npx vitest run src/content/schema.test.ts`. Tests run in Node by default; component tests start with `// @vitest-environment jsdom`. Tests that need Python use `getPyodide()` / `getPyodidePair()` from `src/test/pyodide.ts` (real Pyodide in Node, about 1 s to load).
-- `BASE_PATH=/PCEP101/ npm run build` builds for Pages. `.github/workflows/deploy.yml` lints, tests, builds, copies `index.html` to `404.html` and deploys on push to `main`.
+- `BASE_PATH=/PCEP_prep/ npm run build` builds for Pages. `.github/workflows/deploy.yml` lints, tests, builds, copies `index.html` to `404.html` and deploys on push to `main`.
 
 ## Layout
 

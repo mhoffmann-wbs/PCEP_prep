@@ -27,7 +27,7 @@ Authoritative sources (where they disagree with this plan, they win):
 | Item types | Single-select, multi-select, gap fill, ordering/drag-and-drop, and code insertion. |
 | Bank size | About 310 items (§4). |
 | Editor | CodeMirror 6 |
-| Deploy | GitHub Pages: `github.com/mhoffmann-wbs/PCEP101` → `https://mhoffmann-wbs.github.io/PCEP101/` |
+| Deploy | GitHub Pages: `github.com/mhoffmann-wbs/PCEP_prep` → `https://mhoffmann-wbs.github.io/PCEP_prep/` |
 | Pyodide | **Self-hosted.** `pyodide` is an npm dependency. A `scripts/setup-pyodide.mjs` that runs before `dev`, `build` and `test` copies the runtime (`pyodide.asm.mjs`, `pyodide.asm.wasm`, `python_stdlib.zip`, `pyodide-lock.json`) into `public/pyodide/`, which is git-ignored. The deploy build ships it to Pages, and Python runs in the learner's browser. Only the stdlib is needed, with no extra packages (about 10 MB). One runtime module with no browser dependencies is shared by the worker and Vitest (Pyodide in Node). |
 | Extras | Error explainer and printable cheat sheet with exam-day guide in v1. Step-through visualizer and flashcards with spaced review come in later phases. |
 
@@ -138,7 +138,7 @@ A test checks that every solution passes its own tests in Pyodide. Target: 1–3
 
 ## 7. Architecture
 
-The stack: Vite, React, TS, Tailwind v4, React Router, Zod, MDX, Vitest + RTL and oxlint. It's a static SPA with no backend, deployed to GitHub Pages. Because Pages serves the app under `/PCEP101/`, Vite's `base` and the router's `basename` come from `BASE_PATH`. The deploy copies `index.html` to `404.html` so deep links work.
+The stack: Vite, React, TS, Tailwind v4, React Router, Zod, MDX, Vitest + RTL and oxlint. It's a static SPA with no backend, deployed to GitHub Pages. Because Pages serves the app under `/PCEP_prep/`, Vite's `base` and the router's `basename` come from `BASE_PATH`. The deploy copies `index.html` to `404.html` so deep links work.
 
 App features:
 - a versioned `localStorage` progress store with export/import, which also records exercise results, playground code, the exam track and the 30-02 toggles
