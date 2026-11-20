@@ -330,5 +330,35 @@
       {"text": "Lexis is only checked after the whole program has finished running", "correct": false, "rationale": "Tokens are recognised before anything runs, so a lexical error stops the program before its first line."}
     ],
     "explanation": "A line passes through the layers in turn: its tokens must exist (lexis), they must be arranged by the grammar (syntax), and only then does the meaning matter (semantics). So valid tokens can still break the grammar, and a grammatically perfect line can still mean the wrong thing."
+  },
+  {
+    "id": "1.1.1-12",
+    "kind": "single",
+    "objectiveId": "1.1.1",
+    "subpoints": ["1.1.1.3"],
+    "stem": "Which statement correctly describes the role of an interpreter?",
+    "options": [
+      {"text": "It translates the whole program into a separate machine-code file before anything is run", "correct": false, "rationale": "This describes a compiler. An interpreter does not produce a separate executable file first."},
+      {"text": "It checks the spelling of keywords and leaves the rest of the work to the programmer", "correct": false, "rationale": "An interpreter does more than check spelling: it carries out what the code says."},
+      {"text": "It reads the source code and carries out its instructions directly, without a separate executable", "correct": true, "rationale": "An interpreter works through the source and performs each instruction itself, so no standalone program is produced."},
+      {"text": "It stores the finished program on disk so it can be shipped without its source", "correct": false, "rationale": "Storing or shipping a program is not what an interpreter does. Producing a distributable file is a compiler's job."}
+    ],
+    "explanation": "An interpreter and a compiler both turn source code into something the computer can act on, but in different ways. A compiler translates the whole program once and produces an executable file. An interpreter reads the source and performs the instructions itself each time the program is run."
+  },
+  {
+    "id": "1.1.1-13",
+    "kind": "multi",
+    "objectiveId": "1.1.1",
+    "subpoints": ["1.1.1.3", "1.1.1.4"],
+    "stem": "Which statements about compiled and interpreted execution are true? (Select TWO)",
+    "select": 2,
+    "options": [
+      {"text": "Once a program has been compiled, the executable can be run again without the compiler", "correct": true, "rationale": "The compiler's job is done after translation, so the result runs on its own."},
+      {"text": "An interpreted program needs an interpreter on the machine every time it is run", "correct": true, "rationale": "The interpreter performs the instructions, so it must be present whenever the program runs."},
+      {"text": "An interpreted program cannot contain mistakes, because each line is checked as it runs", "correct": false, "rationale": "Checking a line as it runs does not make it correct. Mistakes simply show up later, when that line is reached."},
+      {"text": "A compiled program is always slower to start than an interpreted one", "correct": false, "rationale": "Speed depends on many things. Compiled programs usually start fast because the translation is already finished."},
+      {"text": "Compiling a program deletes its source code so it cannot be edited", "correct": false, "rationale": "Compiling leaves the source file alone. The translation is a new file."}
+    ],
+    "explanation": "Compiled execution translates the source once into an executable, which then runs by itself. Interpreted execution keeps the source and needs the interpreter present each time, because the interpreter carries out the instructions. Neither model makes mistakes impossible, and neither deletes the source."
   }
 ]

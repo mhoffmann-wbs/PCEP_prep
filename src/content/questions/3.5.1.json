@@ -264,5 +264,114 @@
       {"text": "if \".\" not in email:", "correct": false, "rationale": "The address contains a dot, so this test is false and nothing is printed."}
     ],
     "explanation": "`part in whole` is true when `part` occurs inside `whole`. The substring goes on the left, the string being searched on the right."
+  },
+  {
+    "id": "3.5.1-18",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "a = 'tea'\nb = \"tea\"\nc = \"\"\"tea\"\"\"\nprint(a == b, b == c, len(c))",
+    "output": "True True 3\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "True False 3",
+        "correct": false,
+        "rationale": "Triple quotes only change how the literal is written; the string is the same text."
+      },
+      {
+        "text": "False False 3",
+        "correct": false,
+        "rationale": "Single and double quotes make equal strings, so the first comparison is `True`."
+      },
+      {
+        "text": "True True 5",
+        "correct": false,
+        "rationale": "The quotes are not part of the string, so the length is 3."
+      },
+      {
+        "text": "True True 3",
+        "correct": true,
+        "rationale": "All three literals make the same string `tea`, which has 3 characters."
+      }
+    ],
+    "explanation": "Single, double and triple quotes all create ordinary strings, and the quotes are not stored. All three variables hold `tea`, so they are equal and the length is 3."
+  },
+  {
+    "id": "3.5.1-19",
+    "kind": "single",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.6"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "code = \"PCEP-30-03\"\nprint(code[:4], code[5:7], code[-2:])",
+    "output": "PCEP 30 03\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "PCE 30 03",
+        "correct": false,
+        "rationale": "`code[:4]` stops before index 4, so it holds four characters, `PCEP`."
+      },
+      {
+        "text": "PCEP 30 03",
+        "correct": true,
+        "rationale": "`PCEP`, then `30` (indexes 5 and 6), then the last two characters `03`."
+      },
+      {
+        "text": "PCEP -3 03",
+        "correct": false,
+        "rationale": "The slice `[5:7]` starts at index 5, which is `3`, after the hyphen at index 4."
+      },
+      {
+        "text": "PCEP 30 30",
+        "correct": false,
+        "rationale": "`[-2:]` starts two characters from the end, which gives `03`."
+      }
+    ],
+    "explanation": "`code[:4]` is the first four characters, `PCEP`. The hyphen is at index 4, so `code[5:7]` is `30`. `code[-2:]` starts two from the end and runs to the end, giving `03`."
+  },
+  {
+    "id": "3.5.1-20",
+    "kind": "multi",
+    "objectiveId": "3.5.1",
+    "subpoints": [
+      "3.5.1.3",
+      "3.5.1.2"
+    ],
+    "stem": "Which statements print `It's \"ok\"` exactly as shown? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`print(\"It's \\\"ok\\\"\")`",
+        "correct": true,
+        "rationale": "Inside double quotes the apostrophe is fine, and `\\\"` is an escaped double quote."
+      },
+      {
+        "text": "`print('It\\'s \"ok\"')`",
+        "correct": true,
+        "rationale": "Inside single quotes the apostrophe is escaped, and the double quotes need no escape."
+      },
+      {
+        "text": "`print(\"It's \"ok\"\")`",
+        "correct": false,
+        "rationale": "The second double quote ends the string early, which causes a syntax error."
+      },
+      {
+        "text": "`print('It's \"ok\"')`",
+        "correct": false,
+        "rationale": "The apostrophe ends the single-quoted string early, which causes a syntax error."
+      },
+      {
+        "text": "`print(\"It's \\\"ok\\\"\" + 1)`",
+        "correct": false,
+        "rationale": "Adding a number to a string raises a `TypeError`."
+      }
+    ],
+    "explanation": "A quote of the same kind that opened a string ends it, unless a backslash escapes it. Quotes of the other kind are ordinary characters, so double quotes can hold apostrophes and single quotes can hold double quotes."
   }
 ]

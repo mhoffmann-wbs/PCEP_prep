@@ -310,5 +310,22 @@
     ],
     "explanation": "`2.5e3` means 2.5 × 10³ = 2500, and any literal written with `e` is a float, so `print()` shows `2500.0`. `2_500` has the right value but is an integer, so it prints without `.0`.",
     "output": "2500.0\n"
+  },
+  {
+    "id": "x.1-10",
+    "kind": "single",
+    "objectiveId": "x.1",
+    "subpoints": ["x.1.2"],
+    "stem": "What is the output of the following code?",
+    "code": "print(oct(64), hex(64), bin(4))",
+    "output": "0o100 0x40 0b100\n",
+    "outputKey": true,
+    "options": [
+      {"text": "0b100 0x40 0o100", "correct": false, "rationale": "The prefixes belong to different systems: `oct()` gives `0o`, and `bin()` gives `0b`."},
+      {"text": "100 40 4", "correct": false, "rationale": "These are not the strings the functions return; all three start with a prefix."},
+      {"text": "0o100 0x40 0b100", "correct": true, "rationale": "64 is 100 in base 8 (1 * 64), 40 in base 16 (4 * 16), and 4 is 100 in base 2. Each result is a string with its prefix."},
+      {"text": "0o64 0x64 0b100", "correct": false, "rationale": "The functions convert the number; they do not copy the digits `64` into another base."}
+    ],
+    "explanation": "`oct()`, `hex()` and `bin()` return strings that start with the prefix `0o`, `0x` and `0b`. 64 is 1 * 8 * 8 in octal (`0o100`), 4 * 16 in hexadecimal (`0x40`), and 4 is one 4 and two zeros in binary (`0b100`)."
   }
 ]

@@ -375,5 +375,75 @@
       }
     ],
     "explanation": "A list literal uses square brackets with items separated by commas, and the items need not share a type. Round brackets build a tuple, and `list()` takes one iterable rather than a series of values."
+  },
+  {
+    "id": "3.1.1-12",
+    "kind": "single",
+    "objectiveId": "3.1.1",
+    "subpoints": [
+      "3.1.1.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "a = []\nb = list()\nc = [[]]\nprint(len(a), len(b), len(c))",
+    "output": "0 0 1\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "0 0 0",
+        "correct": false,
+        "rationale": "The inner `[]` is an item of `c`, so `c` holds one element even though that element is empty."
+      },
+      {
+        "text": "1 1 1",
+        "correct": false,
+        "rationale": "The first two lists are empty, so their length is 0, not 1."
+      },
+      {
+        "text": "0 0 1",
+        "correct": true,
+        "rationale": "`[]` and `list()` are empty (length 0), and `[[]]` holds one empty list, so the lengths are 0, 0 and 1."
+      },
+      {
+        "text": "0 1 1",
+        "correct": false,
+        "rationale": "`list()` with no arguments builds an empty list, so `b` has length 0."
+      }
+    ],
+    "explanation": "`[]` and `list()` both create an empty list with length 0. `[[]]` is a list holding one item, which happens to be an empty list, so its length is 1."
+  },
+  {
+    "id": "3.1.1-13",
+    "kind": "single",
+    "objectiveId": "3.1.1",
+    "subpoints": [
+      "3.1.1.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "letters = [\"a\", \"b\", \"c\", \"d\", \"e\", \"f\", \"g\"]\nprint(letters[1:6:2])",
+    "output": "['b', 'd', 'f']\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "['b', 'd', 'f']",
+        "correct": true,
+        "rationale": "Indexes 1, 3 and 5 hold `b`, `d` and `f`; the stop value 6 is never reached."
+      },
+      {
+        "text": "['b', 'd']",
+        "correct": false,
+        "rationale": "The stop index 6 is excluded, but index 5 (`f`) is still reached with step 2, so `f` is included."
+      },
+      {
+        "text": "['a', 'c', 'e']",
+        "correct": false,
+        "rationale": "The slice starts at index 1, not 0, so it begins with `b`."
+      },
+      {
+        "text": "['c', 'e', 'g']",
+        "correct": false,
+        "rationale": "The slice starts at index 1 (`b`); `c` is index 2."
+      }
+    ],
+    "explanation": "The slice starts at index 1 and moves in steps of 2: indexes 1, 3 and 5, which hold `b`, `d` and `f`. It would reach index 7 next, but the stop value 6 ends it first."
   }
 ]

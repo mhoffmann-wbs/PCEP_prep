@@ -341,6 +341,40 @@
       }
     ],
     "explanation": "`None` is a special value that stands for the absence of a result. Functions return it when they have no `return` or a bare `return`. It is not 0, not an empty string and not the text that `print()` displayed."
+  },
+  {
+    "id": "4.1.2-16",
+    "kind": "single",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.3"],
+    "stem": "What is the output of the following code?",
+    "code": "def double(n):\n    return n * 2\n\nprint(double(double(3)) + double(1))",
+    "output": "14\n",
+    "outputKey": true,
+    "options": [
+      {"text": "8", "correct": false, "rationale": "This is `double(double(3))` with nothing added; the `+ double(1)` part is also evaluated."},
+      {"text": "14", "correct": true, "rationale": "`double(3)` returns 6, which becomes the argument of the outer call, giving 12. Then `double(1)` returns 2, and 12 + 2 is 14."},
+      {"text": "12", "correct": false, "rationale": "This is `double(double(3))` alone. The sum also includes the returned value of `double(1)`."},
+      {"text": "7", "correct": false, "rationale": "The returned values are numbers that get doubled and added; they are not joined as text or used as a count."}
+    ],
+    "explanation": "A call that returns a value can be used anywhere that value could be used: as an argument to another call or as an operand in an expression. Python evaluates the inner call first (`double(3)` gives 6), then the outer call (12), then the second call (2), and finally adds the two results."
+  },
+  {
+    "id": "4.1.2-17",
+    "kind": "single",
+    "objectiveId": "4.1.2",
+    "subpoints": ["4.1.2.7", "4.1.2.4"],
+    "stem": "What is the output of the following code?",
+    "code": "def shout(word):\n    word.upper()\n\nprint(shout(\"hey\"))",
+    "output": "None\n",
+    "outputKey": true,
+    "options": [
+      {"text": "HEY", "correct": false, "rationale": "The call computes `\"HEY\"` but the function never returns it, so the caller gets nothing back."},
+      {"text": "hey", "correct": false, "rationale": "`upper()` makes a new string and `shout` does not return anything, so `print` does not receive the original word either."},
+      {"text": "an error", "correct": false, "rationale": "Calling a function without a `return` is perfectly valid. It just hands back a default value."},
+      {"text": "None", "correct": true, "rationale": "The function body has no `return` statement, so the call returns `None`, and `print()` shows that value."}
+    ],
+    "explanation": "`word.upper()` creates a new uppercase string, but the result is thrown away because nothing stores or returns it. A function that finishes without reaching a `return` statement returns `None`, so `print(shout(\"hey\"))` prints `None`."
   }
 
 ]

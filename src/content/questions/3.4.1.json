@@ -323,5 +323,40 @@
       }
     ],
     "explanation": "To remove a key-value pair, use `del d[key]` (or `d.pop(key)`). After `del trips[\"Oslo\"]`, the loop over the dict sees only the keys `\"Paris\"` and `\"Rome\"`, and `trips[city]` gives each value."
+  },
+  {
+    "id": "3.4.1-10",
+    "kind": "single",
+    "objectiveId": "3.4.1",
+    "subpoints": [
+      "3.4.1.2"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "stock = {\"apples\": 5, \"pears\": 0}\nprint(\"pears\" in stock, stock[\"pears\"], 5 in stock)",
+    "output": "True 0 False\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "True 0 False",
+        "correct": true,
+        "rationale": "`in` checks keys, `pears` is a key whose value is 0, and 5 is not a key."
+      },
+      {
+        "text": "True 0 True",
+        "correct": false,
+        "rationale": "`in` checks keys only, and 5 is a value, not a key."
+      },
+      {
+        "text": "False 0 False",
+        "correct": false,
+        "rationale": "`pears` is a key, even though its value is 0, so the first test is `True`."
+      },
+      {
+        "text": "True 5 False",
+        "correct": false,
+        "rationale": "`stock[\"pears\"]` looks up the value of the key `pears`, which is 0."
+      }
+    ],
+    "explanation": "`in` tests whether a key exists, whatever its value, so `\"pears\" in stock` is `True`. `stock[\"pears\"]` returns the value 0. The number 5 is a value and not a key, so `5 in stock` is `False`."
   }
 ]

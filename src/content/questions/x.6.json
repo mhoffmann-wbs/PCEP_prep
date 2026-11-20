@@ -304,5 +304,39 @@
     ],
     "explanation": "The list has positions 0 and 1 only, so `rooms[3]` raises `IndexError`. The branches are checked from top to bottom. Only `except IndexError:` matches before the general `except LookupError:` branch, which would otherwise print `Lookup problem`.",
     "output": "Index problem\n"
+  },
+  {
+    "id": "x.6-10",
+    "kind": "single",
+    "objectiveId": "x.6",
+    "subpoints": ["x.6.4"],
+    "stem": "What is the output of the following code?",
+    "code": "def inner():\n    print(\"inner\", end=\" \")\n    return 1 / 0\n    print(\"never\", end=\" \")\n\ndef outer():\n    inner()\n    print(\"outer\", end=\" \")\n\ntry:\n    outer()\nexcept ZeroDivisionError:\n    print(\"caught\", end=\" \")\nprint(\"done\")",
+    "output": "inner caught done\n",
+    "outputKey": true,
+    "options": [
+      {"text": "inner outer caught done", "correct": false, "rationale": "`outer` never reaches its `print`; the exception leaves it right after `inner()` fails."},
+      {"text": "inner never caught done", "correct": false, "rationale": "Code after the failing `return` line in `inner` is not run."},
+      {"text": "inner caught done", "correct": true, "rationale": "`inner` prints and then raises. Nothing in `inner` or `outer` handles the error, so it propagates up to the `try` block, whose `except` prints `caught`. The rest of both functions is skipped."},
+      {"text": "inner caught outer done", "correct": false, "rationale": "Once the exception propagates, the rest of `outer` does not run; the program continues after the `try` statement."}
+    ],
+    "explanation": "When an exception is not handled in a function, it passes to the code that called it, then to that function's caller, until some `except` matches. Here `inner` raises, `outer` has no handler, and the handler around the call to `outer` runs. The unfinished lines in `inner` and `outer` are skipped."
+  },
+  {
+    "id": "x.6-11",
+    "kind": "single",
+    "objectiveId": "x.6",
+    "subpoints": ["x.6.5"],
+    "stem": "What is the output of the following code?",
+    "code": "def check(n):\n    try:\n        return 10 // n\n    except ZeroDivisionError:\n        print(\"log\", end=\" \")\n        raise\n\ntry:\n    check(0)\nexcept ZeroDivisionError:\n    print(\"caller\")",
+    "output": "log caller\n",
+    "outputKey": true,
+    "options": [
+      {"text": "log", "correct": false, "rationale": "The caller's handler runs as well, so something more is printed."},
+      {"text": "log caller", "correct": true, "rationale": "The inner handler prints `log`, then a bare `raise` sends the same exception on to the caller, whose handler prints `caller`."},
+      {"text": "caller", "correct": false, "rationale": "The `except` in `check` runs first, so `log` is printed before the caller sees anything."},
+      {"text": "log caller caller", "correct": false, "rationale": "The exception is raised only once; the caller's handler runs once."}
+    ],
+    "explanation": "A bare `raise` inside an `except` block re-raises the exception being handled. `check` handles the error partly (it logs it) and then delegates the rest to its caller. If the `raise` were missing, the error would be swallowed and `caller` would never be printed."
   }
 ]

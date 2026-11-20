@@ -455,5 +455,39 @@
     "output": "10\n",
     "rationale": "`result` must be set before the loop adds to it, the loop must come before `return`, and the function must be defined before the call.",
     "explanation": "The loop visits every value in the tuple `nums` and adds it to `result`: 2 + 3 + 5. The `return` is indented one level only, so it runs after the loop has finished."
+  },
+  {
+    "id": "4.1.4-14",
+    "kind": "single",
+    "objectiveId": "4.1.4",
+    "subpoints": ["4.1.4.4", "4.1.4.5"],
+    "stem": "What is the output of the following code?",
+    "code": "def show(**info):\n    print(type(info).__name__, len(info))\n\nshow(city=\"Oslo\", year=2024)",
+    "output": "dict 2\n",
+    "outputKey": true,
+    "options": [
+      {"text": "tuple 2", "correct": false, "rationale": "A tuple is what `*args` collects. `**info` collects keyword arguments."},
+      {"text": "list 2", "correct": false, "rationale": "`**info` never creates a list; it creates a dictionary."},
+      {"text": "dict 2", "correct": true, "rationale": "`**info` gathers keyword arguments into a dictionary with one key-value pair per argument: `city` and `year`."},
+      {"text": "dict 4", "correct": false, "rationale": "The dictionary has two entries; `len()` counts pairs, not keys plus values."}
+    ],
+    "explanation": "The `**` in a parameter list collects every extra keyword argument into a dictionary named `info`. Each argument name becomes a key, so the dictionary has the two keys `city` and `year`, and `len()` counts those pairs."
+  },
+  {
+    "id": "4.1.4-15",
+    "kind": "single",
+    "objectiveId": "4.1.4",
+    "subpoints": ["4.1.4.6"],
+    "stem": "What is the output of the following code?",
+    "code": "def cheapest(**prices):\n    best = None\n    for item in prices:\n        if best is None or prices[item] < prices[best]:\n            best = item\n    return best\n\nprint(cheapest(tea=4, jam=2, milk=3))",
+    "output": "jam\n",
+    "outputKey": true,
+    "options": [
+      {"text": "2", "correct": false, "rationale": "This is the lowest price. The loop looks at keys, and `best` holds a key, not a price."},
+      {"text": "tea", "correct": false, "rationale": "`tea` is the first key, but its price 4 is the highest of the three."},
+      {"text": "milk", "correct": false, "rationale": "`milk` costs 3, which is neither the lowest nor the highest price."},
+      {"text": "jam", "correct": true, "rationale": "Looping over the dictionary visits the keys, and `prices[item]` looks up each price. `jam` has the lowest price, 2, so it ends up in `best`."}
+    ],
+    "explanation": "`prices` is a dictionary such as `{\"tea\": 4, \"jam\": 2, \"milk\": 3}`. A `for` loop over a dictionary visits its keys, and `prices[item]` gets the matching value. The function remembers the key with the smallest value and returns that key."
   }
 ]

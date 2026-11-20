@@ -142,5 +142,132 @@
       {"text": "name = name.rstrip().capitalize()", "correct": false, "rationale": "`rstrip()` trims only the right end, so the two leading spaces remain and the `o` is not the first character."}
     ],
     "explanation": "String methods return new strings, so the result must be assigned to keep it. Methods in a chain run left to right: `strip()` returns `\"olivia\"`, and `capitalize()` on that returns `\"Olivia\"`. In the other order, `capitalize()` sees a space as the first character, so no letter becomes a capital."
+  },
+  {
+    "id": "3.5.2-10",
+    "kind": "single",
+    "objectiveId": "3.5.2",
+    "subpoints": [
+      "3.5.2.4"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "parts = [\"2024\", \"05\", \"17\"]\nprint(\"/\".join(parts), len(\"\".join(parts)))",
+    "output": "2024/05/17 8\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "2024/05/17 8",
+        "correct": true,
+        "rationale": "The slash goes between the parts, and the joined text without a separator has 8 characters."
+      },
+      {
+        "text": "2024/05/17 10",
+        "correct": false,
+        "rationale": "The empty separator adds no characters, so the joined text has only 8."
+      },
+      {
+        "text": "2024/05/17 3",
+        "correct": false,
+        "rationale": "`len()` is applied to the joined string, not to the list of parts."
+      },
+      {
+        "text": "2024 05 17 8",
+        "correct": false,
+        "rationale": "The separator is a slash, not a space."
+      }
+    ],
+    "explanation": "`join()` puts the separator between the items, giving `2024/05/17`. Joining with an empty string glues them directly together: `20240517`, which has 8 characters."
+  },
+  {
+    "id": "3.5.2-11",
+    "kind": "single",
+    "objectiveId": "3.5.2",
+    "subpoints": [
+      "3.5.2.6"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "print(\"moon\".replace(\"o\", \"oo\"), \"aaa\".replace(\"aa\", \"b\"))",
+    "output": "moooon ba\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "moon ba",
+        "correct": false,
+        "rationale": "Every `o` is replaced, so the word grows."
+      },
+      {
+        "text": "moooon ba",
+        "correct": true,
+        "rationale": "Each `o` becomes `oo`, and in `aaa` only the first two letters are replaced, giving `moooon ba`."
+      },
+      {
+        "text": "mooon bb",
+        "correct": false,
+        "rationale": "`moon` has two `o` characters, each becoming `oo`, so there are four in the result."
+      },
+      {
+        "text": "moooon b",
+        "correct": false,
+        "rationale": "`replace()` scans left to right without overlapping, so `aaa` becomes `b` followed by the leftover `a`."
+      }
+    ],
+    "explanation": "`replace()` swaps every match. Both `o` letters in `moon` become `oo`, giving `moooon`. In `aaa` the first two letters match and are replaced by `b`; the remaining `a` stays, giving `ba`."
+  },
+  {
+    "id": "3.5.2-12",
+    "kind": "single",
+    "objectiveId": "3.5.2",
+    "subpoints": [
+      "3.5.2.7",
+      "3.5.2.5",
+      "3.5.2.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "name = \"  Ola  \"\nname.strip()\nname.upper()\nprint(len(name))",
+    "output": "7\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "3",
+        "correct": false,
+        "rationale": "The results of `strip()` and `upper()` were thrown away, so the spaces are still there."
+      },
+      {
+        "text": "5",
+        "correct": false,
+        "rationale": "`strip()` returned a new string but `name` was not reassigned, so nothing changed."
+      },
+      {
+        "text": "6",
+        "correct": false,
+        "rationale": "The string has two spaces on each side plus three letters: 7 characters."
+      },
+      {
+        "text": "7",
+        "correct": true,
+        "rationale": "The original string is unchanged, so its seven characters are all still there."
+      }
+    ],
+    "explanation": "String methods return new strings and never change the original. The two calls above are not assigned to anything, so `name` still holds the original text with its four spaces, giving a length of 7."
+  },
+  {
+    "id": "3.5.2-13",
+    "kind": "order",
+    "objectiveId": "3.5.2",
+    "subpoints": [
+      "3.5.2.2"
+    ],
+    "stem": "Put the lines in order so the program prints the text before the word `the`.",
+    "mode": "code",
+    "lines": [
+      "sentence = \"pack the bags\"",
+      "pos = sentence.find(\"the\")",
+      "before = sentence[:pos]",
+      "print(before)"
+    ],
+    "altOrders": [],
+    "output": "pack \n",
+    "rationale": "The string must exist before `find()` is called, `pos` before it is used in the slice, and `before` before it is printed.",
+    "explanation": "`find()` returns the index where `the` starts (5). The slice `sentence[:pos]` takes everything before that index, `pack ` with its trailing space."
   }
 ]

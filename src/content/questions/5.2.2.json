@@ -277,5 +277,18 @@
       }
     ],
     "explanation": "Removing the fractional part of -3.8 leaves -3. That is what `math.trunc()` does: it moves towards zero. `math.floor()` and `//` round down to -4 instead, and `round()` picks the nearest whole number, also -4."
+  },
+  {
+    "id": "5.2.2-09",
+    "kind": "order",
+    "objectiveId": "5.2.2",
+    "subpoints": ["5.2.2.1"],
+    "stem": "Put the lines in order so the program prints the area of a circle, `28.27`.",
+    "mode": "code",
+    "lines": ["import math", "radius = 3", "area = math.pi * radius ** 2", "print(round(area, 2))"],
+    "altOrders": [[1, 0, 2, 3]],
+    "output": "28.27\n",
+    "rationale": "`math` must be imported before `math.pi` is used, and `radius` must exist before `area` uses it. The `import` and `radius` lines can swap places.",
+    "explanation": "A module has to be imported before its names can be used. `import math` makes `math.pi` available, so the area line must come after it (and after `radius`), and `print` comes last."
   }
 ]

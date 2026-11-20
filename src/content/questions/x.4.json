@@ -323,5 +323,22 @@
     ],
     "explanation": "To get a list of lists, put one comprehension inside another. The outer one makes the rows: `r` = 0, 1, 2. The inner one makes the items of each row: for `c` = 1 and 2 it computes `2 * r + c`. Row 0 is `[1, 2]`, row 1 is `[3, 4]` and row 2 is `[5, 6]`.",
     "output": "[[1, 2], [3, 4], [5, 6]]\n"
+  },
+  {
+    "id": "x.4-10",
+    "kind": "single",
+    "objectiveId": "x.4",
+    "subpoints": ["x.4.3", "x.4.4"],
+    "stem": "What is the output of the following code?",
+    "code": "table = [[r + c for c in range(3)] for r in range(3)]\nprint(table[1])",
+    "output": "[1, 2, 3]\n",
+    "outputKey": true,
+    "options": [
+      {"text": "[0, 1, 2]", "correct": false, "rationale": "This is the first row, `table[0]`. Index 1 is the second row."},
+      {"text": "[1, 1, 1]", "correct": false, "rationale": "The inner loop changes `c` while `r` stays fixed, so a row has different values."},
+      {"text": "[1, 2, 3, 4]", "correct": false, "rationale": "Each row has three entries, one per value of `c`."},
+      {"text": "[1, 2, 3]", "correct": true, "rationale": "The outer comprehension makes one inner list per `r`. For `r = 1` the inner list adds `c` = 0, 1, 2 to 1, giving `[1, 2, 3]`."}
+    ],
+    "explanation": "In a nested list comprehension the inner one builds each row, and the outer one repeats it for every `r`. The grid is `[[0, 1, 2], [1, 2, 3], [2, 3, 4]]`, so `table[1]` is the second row."
   }
 ]

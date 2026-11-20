@@ -310,5 +310,22 @@
     ],
     "explanation": "`x << n` is the same as `x * 2**n`. To turn 3 into 24 you multiply by 8, which is 2³, so you shift left by 3 places. `>>` would divide, `<< 8` multiplies by 256, and `^` is xor, not power.",
     "output": "24\n"
+  },
+  {
+    "id": "x.2-10",
+    "kind": "single",
+    "objectiveId": "x.2",
+    "subpoints": ["x.2.4", "x.2.1"],
+    "stem": "What is the output of the following code?",
+    "code": "print(5 & 2, 5 and 2, 5 | 2, 5 or 2)",
+    "output": "0 2 7 5\n",
+    "outputKey": true,
+    "options": [
+      {"text": "0 2 7 5", "correct": true, "rationale": "`5 & 2` compares bits (101 and 010 share none), giving 0. `5 and 2` returns the second value, 2. `5 | 2` combines the bits to 7, and `5 or 2` returns the first truthy value, 5."},
+      {"text": "0 0 7 7", "correct": false, "rationale": "`and` and `or` do not work on bits; they return one of their operands."},
+      {"text": "2 2 5 5", "correct": false, "rationale": "The bitwise operators on 5 and 2 do not return one operand; they build a new number from the bits."},
+      {"text": "0 2 5 7", "correct": false, "rationale": "`5 | 2` sets every bit that is set in either number (101 and 010 give 111), which is 7, and `5 or 2` returns 5."}
+    ],
+    "explanation": "`&` and `|` work on the binary digits of two integers: 101 AND 010 is 000 (0), and 101 OR 010 is 111 (7). `and` and `or` work on truth values and return one of their operands: `and` returns the second value when the first is truthy (2), and `or` returns the first truthy value (5)."
   }
 ]

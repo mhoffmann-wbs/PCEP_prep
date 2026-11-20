@@ -165,5 +165,21 @@
       {"text": "An expression", "correct": true, "rationale": "It combines names, numbers and operators into one value, so it is an expression."}
     ],
     "explanation": "An expression produces a value, and `price * 3 + fee` works one out. The complete line `total = price * 3 + fee` is an assignment statement, and `total` is a variable name. No keyword appears in this line at all."
+  },
+  {
+    "id": "1.2.1-12",
+    "kind": "single",
+    "objectiveId": "1.2.1",
+    "subpoints": ["1.2.1.4"],
+    "stem": "What happens when this code is run?",
+    "code": "temperature = 31\nif temperature > 30:\nprint(\"Hot\")",
+    "raises": "IndentationError",
+    "options": [
+      { "text": "`Hot` is printed, since the condition is true", "correct": false, "rationale": "Python never gets as far as testing the condition: the layout of the code is rejected first." },
+      { "text": "Nothing is printed: Python reports an `IndentationError`", "correct": true, "rationale": "A line that follows a colon must start an indented block. The `print` line is not indented, so Python stops before running anything." },
+      { "text": "Python skips the `print` line, because it is not part of the `if` block, and ends without an error", "correct": false, "rationale": "That would work if the `if` already had an indented body. Here the colon promises a block, so an empty one is an error." },
+      { "text": "A warning is shown, and then `Hot` is printed anyway", "correct": false, "rationale": "Python has no warning for this. Missing indentation is an error and the program does not run." }
+    ],
+    "explanation": "A line ending in a colon, such as the `if` line, must be followed by at least one line indented further. Here the next line starts at the left edge, so Python reports `IndentationError: expected an indented block after 'if' statement`. As with other syntax errors, it is found before the program runs."
   }
 ]

@@ -307,5 +307,111 @@
       }
     ],
     "explanation": "A tuple can't change, but you can build a new one and reuse the name. days += (\"Wed\",) is short for days = days + (\"Wed\",). The trailing comma matters: it makes (\"Wed\",) a tuple."
+  },
+  {
+    "id": "3.2.1-10",
+    "kind": "single",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.2"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "days = (\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\")\nprint(days[-2], days[1:3], days[::-1][0])",
+    "output": "Thu ('Tue', 'Wed') Fri\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Thu ('Tue', 'Wed') Mon",
+        "correct": false,
+        "rationale": "`days[::-1]` reverses the tuple, so its first item is `Fri`; `Mon` is the first item of the original."
+      },
+      {
+        "text": "Wed ('Tue', 'Wed') Fri",
+        "correct": false,
+        "rationale": "`-2` counts from the end, so it is `Thu`; `Wed` is the middle item."
+      },
+      {
+        "text": "Thu ('Tue', 'Wed') Fri",
+        "correct": true,
+        "rationale": "`days[-2]` is `Thu`, `days[1:3]` is the tuple `('Tue', 'Wed')` and the reversed tuple starts with `Fri`."
+      },
+      {
+        "text": "Thu ('Mon', 'Tue') Fri",
+        "correct": false,
+        "rationale": "The slice `[1:3]` starts at index 1, which is `Tue`, not `Mon`."
+      }
+    ],
+    "explanation": "`days[-2]` is the second item from the end, `Thu`. `days[1:3]` is a tuple made of indexes 1 and 2, and slicing a tuple gives a tuple. `days[::-1]` reverses the tuple, so index 0 of the result is `Fri`."
+  },
+  {
+    "id": "3.2.1-11",
+    "kind": "single",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.4",
+      "3.2.1.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "box = (\"pen\", [\"red\", \"blue\"])\nbox[1].append(\"green\")\nprint(len(box), len(box[1]))",
+    "output": "2 3\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "3 2",
+        "correct": false,
+        "rationale": "`append()` changed the inner list, not the tuple, so the tuple still has two items."
+      },
+      {
+        "text": "2 2",
+        "correct": false,
+        "rationale": "The inner list received a third colour, so its length is 3."
+      },
+      {
+        "text": "3 3",
+        "correct": false,
+        "rationale": "The tuple itself did not grow, so its length stays 2."
+      },
+      {
+        "text": "2 3",
+        "correct": true,
+        "rationale": "The tuple keeps two items, while the list inside it grew to three."
+      }
+    ],
+    "explanation": "The tuple holds a string and a list. A tuple cannot be changed, but the list inside it can, so `append()` works and makes the list three items long. The tuple still has two items."
+  },
+  {
+    "id": "3.2.1-12",
+    "kind": "insert",
+    "objectiveId": "3.2.1",
+    "subpoints": [
+      "3.2.1.5",
+      "3.2.1.4"
+    ],
+    "stem": "Which line, inserted at the marked spot, makes the program print `6`?",
+    "code": "menu = ((\"soup\", 4), (\"pie\", 6), (\"tea\", 2))\n# >>> INSERT <<<\nprint(price)",
+    "output": "6\n",
+    "options": [
+      {
+        "text": "price = menu[2][1]",
+        "correct": false,
+        "rationale": "`menu[2]` is `(\"tea\", 2)`, so this gives 2."
+      },
+      {
+        "text": "price = menu[1][1]",
+        "correct": true,
+        "rationale": "`menu[1]` is `(\"pie\", 6)` and its index 1 is the price 6."
+      },
+      {
+        "text": "price = menu[1][0]",
+        "correct": false,
+        "rationale": "This is the name `pie`, not the price."
+      },
+      {
+        "text": "price = menu[1, 1]",
+        "correct": false,
+        "rationale": "A tuple index must be one integer; two comma-separated numbers raise a `TypeError`."
+      }
+    ],
+    "explanation": "Nested tuples are read with one index per level: the first picks the inner tuple, the second picks an item inside it. Each index goes in its own square brackets."
   }
 ]

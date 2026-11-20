@@ -310,5 +310,93 @@
       }
     ],
     "explanation": "Values from `input()` are strings, so they must be converted before doing maths. `int(\"7\") + int(\"5\")` is `12`. Without conversion, `+` joins text; with `float()`, the result is `12.0`."
+  },
+  {
+    "id": "1.4.2-10",
+    "kind": "single",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "print(\"a\", \"b\", sep=\"-\", end=\"!\")\nprint(\"c\")",
+    "output": "a-b!c\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "a b!c",
+        "correct": false,
+        "rationale": "The `sep` argument replaces the space between the values, so a hyphen is printed instead."
+      },
+      {
+        "text": "a-b c",
+        "correct": false,
+        "rationale": "The `end` argument replaces the newline after the first call, so `c` follows directly after the exclamation mark."
+      },
+      {
+        "text": "a-b!c",
+        "correct": true,
+        "rationale": "`sep=\"-\"` joins `a` and `b` with a hyphen, and `end=\"!\"` stops a newline being added, so `c` follows on the same line."
+      },
+      {
+        "text": "a-b-c!",
+        "correct": false,
+        "rationale": "`sep` only applies between values in one call. The second call has a single value, and it prints `c` without an exclamation mark."
+      }
+    ],
+    "explanation": "`print()` puts `sep` between its values (a space by default) and `end` after the last one (a newline by default). The first call prints `a-b!` with no newline, and the second call prints `c` and then a newline."
+  },
+  {
+    "id": "1.4.2-11",
+    "kind": "single",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.2",
+      "1.4.2.3"
+    ],
+    "stem": "A program runs `age = input(\"Age: \")` and the user types `15` and presses Enter. Which statement is true afterwards?",
+    "options": [
+      {
+        "text": "`age` refers to the string `\"15\"`",
+        "correct": true,
+        "rationale": "`input()` always gives back text, even when the user types digits."
+      },
+      {
+        "text": "`age` refers to the integer `15`, because the user typed digits",
+        "correct": false,
+        "rationale": "Python does not guess types for typed text. The conversion has to be asked for with `int()`."
+      },
+      {
+        "text": "`age` refers to the float `15.0`, because input is read as a number",
+        "correct": false,
+        "rationale": "`input()` does not read numbers at all, only text."
+      },
+      {
+        "text": "`age` is empty until `print(age)` is called",
+        "correct": false,
+        "rationale": "The text is stored in `age` as soon as the user presses Enter."
+      }
+    ],
+    "explanation": "The `input()` function returns what the user typed as a string. To calculate with it you must convert it, for example with `int(age)`. Without the conversion, `age + 1` would raise a `TypeError`."
+  },
+  {
+    "id": "1.4.2-12",
+    "kind": "order",
+    "objectiveId": "1.4.2",
+    "subpoints": [
+      "1.4.2.4",
+      "1.4.2.6"
+    ],
+    "stem": "Put the lines in order so the program turns the text into a number, doubles it and prints `Doubled: 24`.",
+    "mode": "code",
+    "lines": [
+      "price_text = \"12\"",
+      "price = int(price_text)",
+      "doubled = price * 2",
+      "print(\"Doubled:\", doubled)"
+    ],
+    "output": "Doubled: 24\n",
+    "rationale": "The text must exist before it is converted, the number must exist before it is doubled, and the result must exist before it is printed.",
+    "explanation": "A typical console program reads text, converts it, calculates and then prints. Each step uses the name made by the step before it, so only one order works."
   }
 ]

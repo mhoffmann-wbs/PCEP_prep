@@ -298,5 +298,22 @@
       }
     ],
     "explanation": "The target output is a list of strings that still end in `\\n`. That is exactly what `readlines()` returns. `read()` and `readline()` return strings, and `split()` throws the newline characters away."
+  },
+  {
+    "id": "5.1.1-09",
+    "kind": "multi",
+    "objectiveId": "5.1.1",
+    "subpoints": ["5.1.1.5", "5.1.1.1"],
+    "stem": "The working directory contains one file, `notes.txt`. Which statements raise an exception when they run? (Select TWO)",
+    "files": {"notes.txt": "buy milk\n"},
+    "select": 2,
+    "options": [
+      {"text": "`open(\"notes.txt\").read()`", "correct": false, "rationale": "`notes.txt` exists and the default mode is `\"r\"`, so opening and reading both work."},
+      {"text": "`open(\"notes.txt\", \"a\").write(\"x\")`", "correct": false, "rationale": "Append mode can write, and the file exists anyway, so this adds `x` at the end without any error."},
+      {"text": "`open(\"note.txt\")`", "correct": true, "rationale": "The file name is misspelled (`note.txt`, not `notes.txt`), so no such file exists and Python raises `FileNotFoundError`."},
+      {"text": "`open(\"notes.txt\").write(\"x\")`", "correct": true, "rationale": "The default mode is read-only, so calling `write()` raises an error (`io.UnsupportedOperation: not writable`)."},
+      {"text": "`open(\"notes.txt\", \"r\").readline()`", "correct": false, "rationale": "Reading one line from a file opened for reading is allowed."}
+    ],
+    "explanation": "Opening a file that does not exist in the default read mode raises `FileNotFoundError`, so a misspelled name fails at once. A file opened with `open(name)` is read-only, so writing to it fails too. Reading from a file in `\"r\"` mode and writing in `\"a\"` mode are both fine."
   }
 ]

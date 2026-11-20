@@ -327,5 +327,150 @@
       }
     ],
     "explanation": "append() changes the list in place. After it, shopping is ['milk', 'bread', 'eggs'], and sort() puts the strings in alphabetical order: ['bread', 'eggs', 'milk']."
+  },
+  {
+    "id": "3.1.2-10",
+    "kind": "single",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.2"
+    ],
+    "stem": "Given `colors = [\"red\", \"green\", \"blue\"]`, which call raises a `ValueError`?",
+    "options": [
+      {
+        "text": "`colors.index(\"green\")`",
+        "correct": false,
+        "rationale": "`green` is in the list, so `index()` returns 1."
+      },
+      {
+        "text": "`colors.index(\"Red\")`",
+        "correct": true,
+        "rationale": "`index()` compares exactly, so `\"Red\"` does not match `\"red\"` and no item is found."
+      },
+      {
+        "text": "`colors.index(\"blue\")`",
+        "correct": false,
+        "rationale": "`blue` is the last item, so `index()` returns 2."
+      },
+      {
+        "text": "`colors.index(\"red\")`",
+        "correct": false,
+        "rationale": "`red` is the first item, so `index()` returns 0."
+      }
+    ],
+    "explanation": "`index()` returns the position of the first equal item and raises `ValueError` when there is none. Text is compared exactly, including capital letters, so `\"Red\"` is not found."
+  },
+  {
+    "id": "3.1.2-11",
+    "kind": "single",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.8",
+      "3.1.2.1"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "data = [[1, 2], [3], []]\nprint(len(data), len(data[0]), len(data[2]))",
+    "output": "3 2 0\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "2 2 0",
+        "correct": false,
+        "rationale": "The outer list has three items; an empty list still counts as an item."
+      },
+      {
+        "text": "6 2 0",
+        "correct": false,
+        "rationale": "`len()` counts the items of the outer list, not all the numbers inside the inner lists."
+      },
+      {
+        "text": "3 2 1",
+        "correct": false,
+        "rationale": "The last inner list is empty, so its length is 0."
+      },
+      {
+        "text": "3 2 0",
+        "correct": true,
+        "rationale": "`len(data)` counts three inner lists, and the inner lists have 2 and 0 items."
+      }
+    ],
+    "explanation": "`len(data)` counts the three inner lists, including the empty one. `data[0]` is `[1, 2]` with two items, and `data[2]` is `[]` with none."
+  },
+  {
+    "id": "3.1.2-12",
+    "kind": "multi",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.7"
+    ],
+    "stem": "With `pets = [\"cat\", \"dog\", \"fish\"]`, which conditions are `True`? (Select TWO)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`\"dog\" in pets`",
+        "correct": true,
+        "rationale": "`dog` is one of the items."
+      },
+      {
+        "text": "`\"bird\" not in pets`",
+        "correct": true,
+        "rationale": "`bird` is not an item, so `not in` is true."
+      },
+      {
+        "text": "`\"do\" in pets`",
+        "correct": false,
+        "rationale": "`in` looks for a whole item, not a piece of one; `do` is not an item."
+      },
+      {
+        "text": "`\"fish\" not in pets`",
+        "correct": false,
+        "rationale": "`fish` is an item, so `not in` is false."
+      },
+      {
+        "text": "`[\"cat\", \"dog\"] in pets`",
+        "correct": false,
+        "rationale": "The list `[\"cat\", \"dog\"]` is not itself an item of `pets`."
+      }
+    ],
+    "explanation": "`in` asks whether a value equals one of the items, and `not in` is the opposite. The test is for whole items: a part of an item, or a smaller list, does not count."
+  },
+  {
+    "id": "3.1.2-13",
+    "kind": "gap",
+    "objectiveId": "3.1.2",
+    "subpoints": [
+      "3.1.2.6",
+      "3.1.2.5"
+    ],
+    "stem": "Complete the code so that it prints how many words have more than three letters.",
+    "code": "words = [\"tea\", \"cake\", \"jam\", \"bread\"]\ncount = __BLANK1__\nfor w in words:\n    if len(w) > 3:\n        count __BLANK2__ 1\nprint(count)",
+    "output": "2\n",
+    "blanks": [
+      {
+        "n": 1,
+        "kind": "choice",
+        "choices": [
+          "0",
+          "1",
+          "None",
+          "words"
+        ],
+        "answer": "0",
+        "rationale": "A counter starts at 0 before anything has been counted."
+      },
+      {
+        "n": 2,
+        "kind": "choice",
+        "choices": [
+          "+=",
+          "=",
+          "==",
+          "-="
+        ],
+        "answer": "+=",
+        "rationale": "`+=` adds 1 to the counter each time a long word is found."
+      }
+    ],
+    "explanation": "Initialize the counter before the loop, then update it inside the `if`. `=` would reset it to 1 every time, `==` only compares, and `-=` would count downwards. Starting at 1 would overcount, and `None` cannot be added to."
   }
 ]

@@ -276,5 +276,22 @@
       }
     ],
     "explanation": "`random.random()` returns a float from 0.0 up to, but not including, 1.0. Multiplying by 10 gives a float from 0.0 up to, but not including, 10.0, whatever the seed. `random.random` is the function inside the `random` module, so the module name comes first."
+  },
+  {
+    "id": "5.2.3-09",
+    "kind": "single",
+    "objectiveId": "5.2.3",
+    "subpoints": ["5.2.3.4", "5.2.3.3"],
+    "stem": "What is the output of the following code?",
+    "code": "import random\n\nrandom.seed(7)\na = random.randint(1, 100)\nrandom.seed(7)\nb = random.randint(1, 100)\nc = random.randint(1, 100)\nprint(a == b, a == c)",
+    "output": "True False\n",
+    "outputKey": true,
+    "options": [
+      {"text": "True True", "correct": false, "rationale": "The third draw continues the sequence after `b`; it does not restart it, so `c` is a new value."},
+      {"text": "True False", "correct": true, "rationale": "Reseeding with 7 restarts the sequence, so `b` repeats `a`. `c` is the next number in that sequence, which here differs from `a`."},
+      {"text": "False True", "correct": false, "rationale": "Seeding twice with the same value makes the generator repeat itself, so `a` and `b` match."},
+      {"text": "False False", "correct": false, "rationale": "The same seed always produces the same sequence, so the first two draws are equal."}
+    ],
+    "explanation": "`random.seed(7)` puts the generator into a known state, so the numbers that follow are always the same. Seeding again with 7 resets it, so `b` repeats `a`. `c` is drawn without reseeding, so it is the next number of the sequence and here it differs from `a`."
   }
 ]

@@ -339,5 +339,73 @@
       }
     ],
     "explanation": "The walrus operator `:=` stores a value and gives it back, so `(n := orders[i]) != 0` reads an order, keeps it in `n`, and compares it with 0. The brackets make the assignment happen before the comparison. The loop prints 3, 1 and 4 and stops at the 0."
+  },
+  {
+    "id": "2.2.1-10",
+    "kind": "single",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.4"
+    ],
+    "stem": "Which of these loops stops on its own?",
+    "options": [
+      {
+        "text": "Start with `n = 1` and run `while n != 10:` adding 2 to `n` each time",
+        "correct": false,
+        "rationale": "`n` takes the values 1, 3, 5, 7, 9, 11 and so on. It jumps over 10, so the condition stays true forever."
+      },
+      {
+        "text": "Start with `n = 5` and run `while n > 0:` adding 1 to `n` each time",
+        "correct": false,
+        "rationale": "`n` moves away from zero, so `n > 0` stays true forever."
+      },
+      {
+        "text": "Start with `n = 10` and run `while n > 0:` subtracting 3 from `n` each time",
+        "correct": true,
+        "rationale": "`n` takes the values 10, 7, 4, 1 and then -2, which makes the condition false."
+      },
+      {
+        "text": "Start with `n = 0` and run `while n < 3:` with only a `print(n)` in the body",
+        "correct": false,
+        "rationale": "Nothing changes `n`, so `n < 3` never becomes false."
+      }
+    ],
+    "explanation": "A `while` loop ends only when its condition becomes false, so the body must move the loop variable towards that point. Watch out for `!=` conditions: if the variable steps over the target value, the loop never stops."
+  },
+  {
+    "id": "2.2.1-11",
+    "kind": "single",
+    "objectiveId": "2.2.1",
+    "subpoints": [
+      "2.2.1.5",
+      "2.2.1.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "n = 4\nwhile (n := n - 1) > 0:\n    print(n, end=\" \")\nprint(\"| n is\", n)",
+    "output": "3 2 1 | n is 0\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "3 2 1 | n is 0",
+        "correct": true,
+        "rationale": "`n := n - 1` updates `n` and gives the new value to the condition. The loop stops when that value reaches 0, which is also what `n` holds afterwards."
+      },
+      {
+        "text": "4 3 2 1 | n is 0",
+        "correct": false,
+        "rationale": "The walrus subtracts before the body runs, so `4` is never printed."
+      },
+      {
+        "text": "3 2 1 | n is 1",
+        "correct": false,
+        "rationale": "`n` is also updated in the test that ends the loop, so it finishes at 0."
+      },
+      {
+        "text": "3 2 1 0 | n is 0",
+        "correct": false,
+        "rationale": "When the value becomes 0 the condition `0 > 0` is false, so the body does not run for 0."
+      }
+    ],
+    "explanation": "The walrus operator `:=` assigns a value inside an expression. In the condition, `n := n - 1` lowers `n` and compares the new value with 0. The body therefore sees 3, 2 and 1. On the next test `n` becomes 0, the condition is false, and `n` stays 0 after the loop."
   }
 ]

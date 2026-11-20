@@ -137,5 +137,21 @@
       {"text": "for n in range(5, 25):", "correct": false, "rationale": "Without a step argument the step is 1, so this prints every number from 5 to 24."}
     ],
     "explanation": "The numbers go up in fives, so the step is 5, and the first number is 5, so the start is 5. The stop value is excluded, so it must be above 20 (and no more than 25): range(5, 21, 5) gives 5, 10, 15, 20."
+  },
+  {
+    "id": "2.2.3-10",
+    "kind": "multi",
+    "objectiveId": "2.2.3",
+    "subpoints": ["2.2.3.1", "2.2.3.2"],
+    "stem": "Which calls generate exactly the five integers 0, 1, 2, 3 and 4? (Select TWO)",
+    "select": 2,
+    "options": [
+      {"text": "`range(5)`", "correct": true, "rationale": "With one argument, `range` starts at 0 and stops before 5."},
+      {"text": "`range(0, 5)`", "correct": true, "rationale": "The start is 0 and the stop is 5, which is not included."},
+      {"text": "`range(1, 5)`", "correct": false, "rationale": "This starts at 1, so it gives 1, 2, 3 and 4."},
+      {"text": "`range(4)`", "correct": false, "rationale": "This stops before 4, so it gives only four numbers: 0, 1, 2 and 3."},
+      {"text": "`range(0, 5, 2)`", "correct": false, "rationale": "A step of 2 gives 0, 2 and 4."}
+    ],
+    "explanation": "`range(stop)` counts from 0 up to, but not including, the stop value. `range(start, stop)` does the same from a chosen start. The number of values is stop minus start, so five values starting at 0 need a stop of 5."
   }
 ]

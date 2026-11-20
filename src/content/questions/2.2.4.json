@@ -316,5 +316,41 @@
       }
     ],
     "explanation": "The outer loop takes each shelf (a list), and the inner loop takes each item on that shelf. The if inside the inner loop decides which items to count. \"tea\" is on the first shelf once and on the third shelf twice, so count ends at 3."
+  },
+  {
+    "id": "2.2.4-10",
+    "kind": "single",
+    "objectiveId": "2.2.4",
+    "subpoints": [
+      "2.2.4.2",
+      "2.2.4.3"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "for row in range(1, 4):\n    for col in range(1, 4):\n        if row == col:\n            print(row * col, end=\" \")\nprint()",
+    "output": "1 4 9 \n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "1 2 3",
+        "correct": false,
+        "rationale": "The loops use `row * col`, not only `row`, so the printed values are products."
+      },
+      {
+        "text": "1 2 3 2 4 6 3 6 9",
+        "correct": false,
+        "rationale": "This would be printed with no `if`. The condition lets only the matching pairs through."
+      },
+      {
+        "text": "2 4 6",
+        "correct": false,
+        "rationale": "The matching pairs are multiplied, not added."
+      },
+      {
+        "text": "1 4 9",
+        "correct": true,
+        "rationale": "Only the pairs (1, 1), (2, 2) and (3, 3) pass the `if`, and their products are 1, 4 and 9."
+      }
+    ],
+    "explanation": "For each row, the inner loop tries col = 1, 2 and 3. The `if` lets only the pair with `row == col` through, so three of the nine pairs print `row * col`: 1, 4 and 9. The last `print()` ends the line."
   }
 ]

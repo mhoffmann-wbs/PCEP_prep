@@ -320,5 +320,41 @@
       }
     ],
     "explanation": "The `if` block must run when there is no stock. `stock == 0` is `True` for 0. The other conditions are all false for 0, so they would choose the `else` block."
+  },
+  {
+    "id": "2.1.1-10",
+    "kind": "single",
+    "objectiveId": "2.1.1",
+    "subpoints": [
+      "2.1.1.1",
+      "2.1.1.5"
+    ],
+    "stem": "What is the output of the following code?",
+    "code": "tickets = 0\nif tickets > 0:\n    print(\"Booked\")\nif tickets == 0:\n    print(\"Sold out\")\nprint(\"Closed\")",
+    "output": "Sold out\nClosed\n",
+    "outputKey": true,
+    "options": [
+      {
+        "text": "Booked\nClosed",
+        "correct": false,
+        "rationale": "`tickets > 0` is false, so the first block is skipped."
+      },
+      {
+        "text": "Sold out",
+        "correct": false,
+        "rationale": "The last `print` is not indented, so it is outside both blocks and always runs."
+      },
+      {
+        "text": "Booked\nSold out\nClosed",
+        "correct": false,
+        "rationale": "Only one of the conditions is true, so only one message appears."
+      },
+      {
+        "text": "Sold out\nClosed",
+        "correct": true,
+        "rationale": "The first block is skipped because `0 > 0` is false. The second condition is true, and `Closed` is printed regardless."
+      }
+    ],
+    "explanation": "Each `if` is tested on its own. The first test fails, so its indented line is skipped. The second test passes, so `Sold out` is printed. The final `print` has no indentation, so it does not belong to any `if` and always runs."
   }
 ]

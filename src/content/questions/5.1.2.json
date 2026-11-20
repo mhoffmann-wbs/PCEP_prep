@@ -290,5 +290,21 @@
       }
     ],
     "explanation": "Each data row unpacks into `day` and `temp`, both strings. To compare the temperature with the number 20, convert it first with `int(temp)`. Only 23 and 25 are greater than 20, so `Tue` and `Wed` are printed."
+  },
+  {
+    "id": "5.1.2-09",
+    "kind": "insert",
+    "objectiveId": "5.1.2",
+    "subpoints": ["5.1.2.4"],
+    "stem": "Which line, inserted at the marked spot, makes the program print the two rows `tea,3` and `jam,12` on separate lines?",
+    "code": "import csv\n\nwith open(\"out.csv\", \"w\", newline=\"\") as f:\n    writer = csv.writer(f)\n    # >>> INSERT <<<\n\nwith open(\"out.csv\") as f:\n    print(f.read(), end=\"\")",
+    "output": "tea,3\njam,12\n",
+    "options": [
+      {"text": "writer.writerow([[\"tea\", 3], [\"jam\", 12]])", "correct": false, "rationale": "`writerow()` writes one row, and here its single cell list contains two lists, so the file gets one line with two odd text cells."},
+      {"text": "writer.writerow([\"tea\", 3], [\"jam\", 12])", "correct": false, "rationale": "`writerow()` accepts exactly one argument, so passing two lists raises a `TypeError`."},
+      {"text": "writer.writerows([[\"tea\", 3], [\"jam\", 12]])", "correct": true, "rationale": "`writerows()` takes a list of rows and writes each inner list as one line, with the values separated by commas."},
+      {"text": "writer.writerows([\"tea\", 3, \"jam\", 12])", "correct": false, "rationale": "Every item passed to `writerows()` must itself be a row (an iterable). The number 3 is not, so this raises an error."}
+    ],
+    "explanation": "`csv.writer(f)` turns lists into comma-separated lines. `writerow()` writes one row from one list, and `writerows()` writes many rows from a list of lists. The program then reopens the file and prints it, so each row appears on its own line."
   }
 ]

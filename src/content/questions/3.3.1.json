@@ -334,5 +334,39 @@
       }
     ],
     "explanation": "To take an item out of a set, name the item itself: discard(\"shellfish\") or remove(\"shellfish\"). Sets have no indexes, so del with a position does not work. sorted() then prints the remaining items in alphabetical order."
+  },
+  {
+    "id": "3.3.1-10",
+    "kind": "single",
+    "objectiveId": "3.3.1",
+    "subpoints": [
+      "3.3.1.3"
+    ],
+    "stem": "What happens when the following code runs?",
+    "code": "colors = {\"red\", \"green\", \"blue\"}\nprint(colors[0])",
+    "raises": "TypeError",
+    "options": [
+      {
+        "text": "It prints `red`, the first item written in the braces",
+        "correct": false,
+        "rationale": "A set does not remember the order in which items were written, and it has no index 0."
+      },
+      {
+        "text": "It prints the item that sorts first alphabetically",
+        "correct": false,
+        "rationale": "Sets do not sort their items; they cannot be indexed at all."
+      },
+      {
+        "text": "It raises a `TypeError`: sets have no index",
+        "correct": true,
+        "rationale": "A set cannot be indexed, so the square brackets raise a `TypeError`."
+      },
+      {
+        "text": "It raises a `KeyError` because 0 is not an item",
+        "correct": false,
+        "rationale": "`KeyError` belongs to dictionaries; indexing a set is a `TypeError`."
+      }
+    ],
+    "explanation": "A set has no positions, so there is no first item to ask for. The square-bracket index fails with a `TypeError` saying the set object is not subscriptable. To look at the items, loop over the set or test membership with `in`."
   }
 ]
