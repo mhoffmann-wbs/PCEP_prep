@@ -1,0 +1,6 @@
+node_modules/
+dist/
+public/pyodide/
+*.tsbuildinfo
+.DS_Store
+coverage/
