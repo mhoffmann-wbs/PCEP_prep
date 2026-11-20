@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { RunnerPanel } from '../components/RunnerPanel'
 import { getProgress, setPlaygroundCode } from '../progress/store'
+import { pythonRunner } from '../python/client'
 import { decodeCode, encodeCode } from './playgroundLink'
 
 const SAMPLE = `name = input("What is your name? ")
@@ -44,7 +45,7 @@ export default function PlaygroundPage() {
       <h1 className="text-2xl font-semibold">Playground</h1>
       <p className="text-slate-700">
         Python runs in your browser. The first run loads it, which takes a few seconds. A program that runs longer than 5 seconds is
-        stopped. Your code is kept in this browser.
+        stopped (time spent waiting for you to type input doesn't count). Your code is kept in this browser.
       </p>
       {files && Object.keys(files).length > 0 && (
         <p className="text-sm text-slate-600">
@@ -54,7 +55,7 @@ export default function PlaygroundPage() {
       <RunnerPanel
         key={location.key}
         initialCode={code}
-        initialStdin={fromItem?.code ? '' : 'Sam'}
+        initialStdin={fromItem?.code || pythonRunner.interactive ? '' : 'Sam'}
         files={files}
         onCodeChange={(next) => {
           setPlaygroundCode(next)

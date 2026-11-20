@@ -1,15 +1,24 @@
 // Main-thread side of the Python runner. The worker (and with it Pyodide) is
 // created on the first run, so none of it is in the initial bundle. Runs are
 // queued one at a time; a run that exceeds the time limit terminates the
-// worker, and the next run starts a fresh one.
+// worker, and the next run starts a fresh one. The clock stops while the
+// program waits for the learner to type a line for input().
 import { TIMEOUT_TYPE } from './explain'
+import { canShareMemory, createInputBuffer, sendLine } from './inputChannel'
 import type { FromWorker, ToWorker } from './protocol'
-import type { RunHooks, RunRequest, RunResult } from './runtime'
+import type { RunRequest, RunResult } from './runtime'
 
 export type RunnerStatus = 'idle' | 'loading' | 'ready' | 'running'
 
 export interface RunOutcome extends RunResult {
   timedOut: boolean
+}
+
+export interface ClientHooks {
+  onStdout?: (text: string) => void
+  onStderr?: (text: string) => void
+  /** The program waits in input(); answer with `provideInput`. */
+  onInputRequest?: () => void
 }
 
 /** The parts of Worker the client uses, so tests can pass a fake. */
@@ -31,10 +40,15 @@ export class PythonRunner {
   private nextId = 1
   private queue: Promise<unknown> = Promise.resolve()
   private listeners = new Set<(status: RunnerStatus) => void>()
+  private inputBuffer: SharedArrayBuffer | null = null
+  /** Restarts the clock of the run that waits for input, once it is answered. */
+  private resumeAfterInput: (() => void) | null = null
 
   constructor(
     private readonly create: () => WorkerLike = createWorker,
     readonly timeoutMs = DEFAULT_TIMEOUT_MS,
+    /** input() can ask the learner while a program runs (needs cross-origin isolation). */
+    readonly interactive = canShareMemory(),
   ) {}
 
   subscribe(listener: (status: RunnerStatus) => void) {
@@ -53,6 +67,10 @@ export class PythonRunner {
       this.setStatus('loading')
       const worker = this.create()
       this.worker = worker
+      if (this.interactive) {
+        this.inputBuffer = createInputBuffer()
+        worker.postMessage({ type: 'init', inputBuffer: this.inputBuffer })
+      }
       this.ready = new Promise((resolve, reject) => {
         worker.onmessage = ({ data }) => {
           if (data.type === 'ready') {
@@ -68,21 +86,37 @@ export class PythonRunner {
     return this.ready
   }
 
+  /** Whether a running program waits for a line from the learner. */
+  get waitingForInput() {
+    return this.resumeAfterInput !== null
+  }
+
+  /** Answers the program waiting in input(): a line, or null to end the input (EOFError). */
+  provideInput(line: string | null) {
+    const resume = this.resumeAfterInput
+    if (!resume || !this.inputBuffer) return
+    this.resumeAfterInput = null
+    sendLine(this.inputBuffer, line)
+    resume()
+  }
+
   private reset() {
     this.worker?.terminate()
     this.worker = null
+    this.inputBuffer = null
+    this.resumeAfterInput = null
     this.ready = null
     this.handlers.clear()
     this.setStatus('idle')
   }
 
-  run(req: RunRequest, hooks: RunHooks = {}): Promise<RunOutcome> {
+  run(req: RunRequest, hooks: ClientHooks = {}): Promise<RunOutcome> {
     const next = this.queue.then(() => this.runNow(req, hooks))
     this.queue = next.catch(() => {})
     return next
   }
 
-  private async runNow(req: RunRequest, hooks: RunHooks): Promise<RunOutcome> {
+  private async runNow(req: RunRequest, hooks: ClientHooks): Promise<RunOutcome> {
     await this.warmUp()
     const id = this.nextId++
     const stdout: string[] = []
@@ -92,26 +126,33 @@ export class PythonRunner {
       let timer: ReturnType<typeof setTimeout> | undefined
       const finish = (outcome: RunOutcome) => {
         clearTimeout(timer)
+        this.resumeAfterInput = null
         this.handlers.delete(id)
         if (this.worker) this.setStatus('ready')
         resolve(outcome)
       }
+      const startClock = () => {
+        timer = setTimeout(() => {
+          this.reset()
+          const seconds = this.timeoutMs / 1000
+          finish({
+            stdout: stdout.join(''),
+            stderr: stderr.join(''),
+            error: { type: TIMEOUT_TYPE, message: `The program ran for more than ${seconds} seconds and was stopped.`, line: null, traceback: '' },
+            files: {},
+            checks: [],
+            trace: null,
+            timedOut: true,
+          })
+        }, this.timeoutMs)
+      }
       this.handlers.set(id, (msg) => {
-        if (msg.type === 'start') {
-          // The clock starts when the program starts, not while Pyodide loads.
-          timer = setTimeout(() => {
-            this.reset()
-            const seconds = this.timeoutMs / 1000
-            finish({
-              stdout: stdout.join(''),
-              stderr: stderr.join(''),
-              error: { type: TIMEOUT_TYPE, message: `The program ran for more than ${seconds} seconds and was stopped.`, line: null, traceback: '' },
-              files: {},
-              checks: [],
-              trace: null,
-              timedOut: true,
-            })
-          }, this.timeoutMs)
+        // The clock starts when the program starts, not while Pyodide loads.
+        if (msg.type === 'start') startClock()
+        else if (msg.type === 'input') {
+          clearTimeout(timer)
+          this.resumeAfterInput = startClock
+          hooks.onInputRequest?.()
         } else if (msg.type === 'stdout') {
           stdout.push(msg.text)
           hooks.onStdout?.(msg.text)

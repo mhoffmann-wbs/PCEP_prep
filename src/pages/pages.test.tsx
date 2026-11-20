@@ -277,6 +277,37 @@ describe('exercises', () => {
 })
 
 describe('playground', () => {
+  it('asks for input while the program runs and echoes the line', async () => {
+    const user = userEvent.setup()
+    Object.assign(pythonRunner, { interactive: true })
+    let answer: (line: string | null) => void = () => {}
+    const provide = vi.spyOn(pythonRunner, 'provideInput').mockImplementation((line) => answer(line))
+    const run = vi.spyOn(pythonRunner, 'run').mockImplementation(async (_, hooks) => {
+      hooks?.onStdout?.('Which city? ')
+      const line = await new Promise<string | null>((resolve) => {
+        answer = resolve
+        hooks?.onInputRequest?.()
+      })
+      hooks?.onStdout?.(`Weather for ${line}\n`)
+      return { stdout: '', stderr: '', error: null, files: {}, checks: [], trace: null, timedOut: false }
+    })
+    try {
+      await renderAt(`/playground${encodeCode('city = input("Which city? ")\nprint("Weather for", city)')}`)
+      expect(screen.getByText('Give input in advance (optional)')).toBeInTheDocument()
+      await user.click(screen.getByRole('button', { name: 'Run' }))
+      expect(run).toHaveBeenCalledWith(expect.objectContaining({ interactive: true }), expect.anything())
+      await user.type(await screen.findByRole('textbox', { name: 'The program waits for input:' }), 'Oslo{Enter}')
+      expect(provide).toHaveBeenCalledWith('Oslo')
+      const output = within(screen.getByRole('region', { name: 'Output' }))
+      expect(await output.findByText(/Which city\? Oslo\s+Weather for Oslo/)).toBeInTheDocument()
+      expect(screen.queryByRole('textbox', { name: 'The program waits for input:' })).not.toBeInTheDocument()
+    } finally {
+      run.mockRestore()
+      provide.mockRestore()
+      Object.assign(pythonRunner, { interactive: false })
+    }
+  })
+
   it('opens the code from a permalink', async () => {
     await renderAt(`/playground${encodeCode('print("from a link")')}`)
     expect(document.querySelector('.cm-content')?.textContent).toBe('print("from a link")')

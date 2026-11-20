@@ -25,7 +25,7 @@ interface Props {
 export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRun = false, onCodeChange, minLines = 10, showStdin = true, renderActions }: Props) {
   const [code, setCode] = useState(initialCode)
   const [stdin, setStdin] = useState(initialStdin)
-  const { status, output, outcome, loadError, run } = usePythonRunner()
+  const { status, output, outcome, loadError, run, waiting, sendInput, interactive } = usePythonRunner()
   const busy = status === 'loading' || status === 'running'
   const start = () => !busy && run({ code, stdin, files })
   const edit = (next: string) => {
@@ -53,15 +53,7 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRu
         </div>
       </div>
       {showStdin && (
-        <label className="block">
-          <span className="text-sm font-medium text-slate-700">Input (one line per input() call)</span>
-          <textarea
-            className="mt-1 block h-16 w-full rounded border border-slate-300 bg-white p-2 font-mono text-sm"
-            value={stdin}
-            spellCheck={false}
-            onChange={(e) => setStdin(e.target.value)}
-          />
-        </label>
+        <StdinBox value={stdin} onChange={setStdin} interactive={interactive} />
       )}
       <div className="flex items-center gap-3">
         <button
@@ -82,6 +74,7 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRu
           {output}
           {error && <span className="text-[#ff9b9b]">{error.traceback || `${error.type}: ${error.message}`}</span>}
         </pre>
+        {waiting && <InputLine onSend={sendInput} />}
       </section>
       {error && <ErrorHelp error={error} />}
       {written.length > 0 && (
@@ -96,6 +89,68 @@ export function RunnerPanel({ initialCode = '', initialStdin = '', files, autoRu
         </section>
       )}
     </div>
+  )
+}
+
+/**
+ * The box for input() lines given before the run. When input() can ask while
+ * the program runs, the box is optional and folded away unless it has lines.
+ */
+export function StdinBox({ value, onChange, interactive }: { value: string; onChange: (v: string) => void; interactive: boolean }) {
+  const box = (
+    <textarea
+      aria-label={interactive ? 'Input given in advance' : undefined}
+      className="mt-1 block h-16 w-full rounded border border-slate-300 bg-white p-2 font-mono text-sm"
+      value={value}
+      spellCheck={false}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  )
+  if (!interactive) {
+    return (
+      <label className="block">
+        <span className="text-sm font-medium text-slate-700">Input (one line per input() call)</span>
+        {box}
+      </label>
+    )
+  }
+  return (
+    <details open={value !== ''} className="text-sm">
+      <summary className="cursor-pointer font-medium text-slate-700">Give input in advance (optional)</summary>
+      <p className="mt-1 text-slate-600">One line per input() call. When these lines run out, the program asks you while it runs.</p>
+      {box}
+    </details>
+  )
+}
+
+/** Where the learner types a line for a program waiting in input(). */
+export function InputLine({ onSend }: { onSend: (line: string | null) => void }) {
+  const [line, setLine] = useState('')
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        onSend(line)
+      }}
+      className="mt-2 flex flex-wrap items-center gap-2"
+    >
+      <label className="flex min-w-48 flex-1 items-center gap-2">
+        <span className="text-sm font-medium text-slate-700">The program waits for input:</span>
+        <input
+          autoFocus
+          value={line}
+          onChange={(e) => setLine(e.target.value)}
+          spellCheck={false}
+          className="min-w-32 flex-1 rounded border border-brand bg-white px-2 py-1 font-mono text-sm"
+        />
+      </label>
+      <button type="submit" className="rounded bg-brand px-3 py-1 text-sm text-chalk">
+        Enter
+      </button>
+      <button type="button" onClick={() => onSend(null)} className="rounded border border-slate-300 px-3 py-1 text-sm">
+        End input
+      </button>
+    </form>
   )
 }
 

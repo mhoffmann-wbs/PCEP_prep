@@ -146,9 +146,9 @@ describe('runPython with trace', () => {
     expect(steps[0]).toMatchObject({ event: 'error', line: 1 })
   })
 
-  it('reads input() from stdin and keeps the prompt in the output', () => {
+  it('reads input() from stdin and shows the prompt and the line read, like a terminal', () => {
     const { steps } = trace('name = input("Name? ")\nprint("Hi", name)', 'Ana')
-    expect(steps.map((s) => s.out).join('')).toBe('Name? Hi Ana\n')
+    expect(steps.map((s) => s.out).join('')).toBe('Name? Ana\nHi Ana\n')
     expect(vars(steps.at(-1)!).Global!.name).toBe("'Ana'")
   })
 
@@ -166,5 +166,20 @@ describe('runPython with trace', () => {
 
   it('leaves normal runs untraced', () => {
     expect(run('print(1)').trace).toBeNull()
+  })
+})
+
+describe('runPython with interactive input', () => {
+  it('asks the input hook once the stdin lines run out, and ends input on null', () => {
+    const asked: string[] = []
+    const answers = ['Bo', null]
+    const r = runPython(
+      py,
+      { code: 'a = input("A? ")\nb = input("B? ")\nprint(a, b)\ninput("C? ")', stdin: 'Al' },
+      { onInput: () => (asked.push('ask'), answers.shift() ?? null) },
+    )
+    expect(asked).toHaveLength(2)
+    expect(r.stdout).toBe('A? B? Al Bo\nC? ')
+    expect(r.error?.type).toBe('EOFError')
   })
 })

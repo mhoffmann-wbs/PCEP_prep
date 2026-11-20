@@ -8,9 +8,15 @@ import { defineConfig } from 'vite'
 // GitHub Pages serves the app under /PCEP_prep/; the deploy workflow sets BASE_PATH.
 const base = process.env.BASE_PATH ?? '/'
 
+// Cross-origin isolation, so input() can ask while a program runs (SharedArrayBuffer).
+// GitHub Pages can't send headers; public/coi-sw.js adds them there.
+const isolation = { 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Embedder-Policy': 'require-corp' }
+
 export default defineConfig({
   base,
   plugins: [{ enforce: 'pre', ...mdx({ remarkPlugins: [remarkGfm] }) }, react({ include: /\.(mdx|tsx?)$/ }), tailwindcss()],
+  server: { headers: isolation },
+  preview: { headers: isolation },
   build: {
     // The lessons are one ~670 kB chunk (~125 kB gzipped), loaded only on Learn
     // pages, because the lesson index needs every lesson's meta.

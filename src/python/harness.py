@@ -188,8 +188,15 @@ class _Values:
         return [
             {"name": name, **self.describe(value)}
             for name, value in names.items()
-            if not (name.startswith("__") and name.endswith("__")) and value is not _exit
+            if not (name.startswith("__") and name.endswith("__")) and value is not _exit and value is not _echo_input
         ]
+
+
+def _echo_input(prompt=""):
+    """input() for traces: shows the line read in the output, as a terminal does."""
+    line = builtins.input(prompt)
+    sys.stdout.write(line + "\n")
+    return line
 
 
 def pcep_trace(src):
@@ -198,6 +205,7 @@ def pcep_trace(src):
     {"error": null or the error, "steps": [...], "truncated": bool}."""
     linecache.cache[FILENAME] = (len(src), None, src.splitlines(True), FILENAME)
     scope = _scope()
+    scope["input"] = _echo_input
     values = _Values()
     tee = _Tee(sys.stdout)
     steps = []

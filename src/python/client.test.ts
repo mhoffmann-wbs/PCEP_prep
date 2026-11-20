@@ -2,11 +2,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PythonRunner, type RunnerStatus, type WorkerLike } from './client'
 import type { FromWorker, ToWorker } from './protocol'
 
-// A fake worker: echoes the code as stdout, or hangs when the code is "hang".
+// A fake worker: echoes the code as stdout, hangs when the code is "hang", and
+// asks for input when the code is "ask" (finish it with `answer()`).
 class FakeWorker implements WorkerLike {
   static created: FakeWorker[] = []
   onmessage: ((e: MessageEvent<FromWorker>) => void) | null = null
   terminated = false
+  inputBuffer: SharedArrayBuffer | null = null
+  asking: number | null = null
   constructor() {
     FakeWorker.created.push(this)
     queueMicrotask(() => this.emit({ type: 'ready' }))
@@ -14,14 +17,31 @@ class FakeWorker implements WorkerLike {
   emit(data: FromWorker) {
     if (!this.terminated) this.onmessage?.({ data } as MessageEvent<FromWorker>)
   }
-  postMessage({ id, req }: ToWorker) {
+  postMessage(msg: ToWorker) {
+    if (msg.type === 'init') {
+      this.inputBuffer = msg.inputBuffer
+      return
+    }
+    const { id, req } = msg
     this.emit({ type: 'start', id })
+    if (req.code === 'ask') {
+      this.asking = id
+      this.emit({ type: 'input', id })
+      return
+    }
     if (req.code === 'hang') {
       this.emit({ type: 'stdout', id, text: 'partial\n' })
       return
     }
     this.emit({ type: 'stdout', id, text: req.code })
     this.emit({ type: 'done', id, result: { stdout: req.code, stderr: '', error: null, files: {}, checks: [], trace: null } })
+  }
+  /** Reads the page's answer from the shared buffer and finishes the run with it. */
+  answer() {
+    const buffer = this.inputBuffer!
+    const length = new Int32Array(buffer, 0, 2)[1]!
+    const out = `got ${length < 0 ? null : new TextDecoder().decode(new Uint8Array(buffer, 8, length).slice())}`
+    this.emit({ type: 'done', id: this.asking!, result: { stdout: out, stderr: '', error: null, files: {}, checks: [], trace: null } })
   }
   terminate() {
     this.terminated = true
@@ -65,6 +85,36 @@ describe('PythonRunner', () => {
     expect(r.status).toBe('idle')
     expect((await r.run({ code: 'ok' })).stdout).toBe('ok')
     expect(FakeWorker.created).toHaveLength(2)
+  })
+
+  it('pauses the clock while the program waits for input, then resumes it', async () => {
+    const r = new PythonRunner(() => new FakeWorker(), 5000, true)
+    let asked = 0
+    const pending = r.run({ code: 'ask', interactive: true }, { onInputRequest: () => asked++ })
+    await vi.advanceTimersByTimeAsync(60_000)
+    expect(asked).toBe(1)
+    expect(r.waitingForInput).toBe(true)
+    r.provideInput('Ana')
+    expect(r.waitingForInput).toBe(false)
+    FakeWorker.created[0]!.answer()
+    expect((await pending).stdout).toBe('got Ana')
+  })
+
+  it('times out again once the input is answered, and ignores answers nobody asked for', async () => {
+    const r = new PythonRunner(() => new FakeWorker(), 5000, true)
+    r.provideInput('early')
+    const pending = r.run({ code: 'ask', interactive: true })
+    await vi.advanceTimersByTimeAsync(0)
+    r.provideInput(null)
+    await vi.advanceTimersByTimeAsync(5000)
+    expect(await pending).toMatchObject({ timedOut: true })
+  })
+
+  it('sends no shared memory when the page is not cross-origin isolated', async () => {
+    const r = runner()
+    expect(r.interactive).toBe(false)
+    await r.run({ code: 'a' })
+    expect(FakeWorker.created[0]!.inputBuffer).toBeNull()
   })
 
   it('runs queued requests one at a time, in order', async () => {

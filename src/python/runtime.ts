@@ -15,6 +15,8 @@ export interface RunRequest {
   quietInput?: boolean
   /** Record a step before every line for the step-through visualizer (checks are ignored). */
   trace?: boolean
+  /** When the stdin lines run out, input() asks the learner (if the page can share memory with the worker). */
+  interactive?: boolean
 }
 
 /**
@@ -101,6 +103,8 @@ export interface RunResult {
 export interface RunHooks {
   onStdout?: (text: string) => void
   onStderr?: (text: string) => void
+  /** Called (and may block) when input() has no stdin lines left: a line, or null to end the input. */
+  onInput?: () => string | null
 }
 
 type Harness = {
@@ -145,7 +149,7 @@ export function runPython(py: PyodideAPI, req: RunRequest, hooks: RunHooks = {})
   const lines = req.stdin ? req.stdin.replace(/\r\n/g, '\n').replace(/\n$/, '').split('\n') : []
   py.setStdout({ write: out.write })
   py.setStderr({ write: err.write })
-  py.setStdin({ stdin: () => lines.shift() })
+  py.setStdin({ stdin: () => (lines.length ? lines.shift() : (hooks.onInput?.() ?? undefined)) })
   h.reset(JSON.stringify(req.files ?? {}))
   const files = () => JSON.parse(h.files()) as RunResult['files']
   if (req.trace) {

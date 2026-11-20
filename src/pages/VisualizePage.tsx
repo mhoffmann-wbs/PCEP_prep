@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { CodeEditor } from '../components/CodeEditor'
-import { ErrorHelp } from '../components/RunnerPanel'
+import { ErrorHelp, InputLine, StdinBox } from '../components/RunnerPanel'
 import { usePythonRunner } from '../python/usePythonRunner'
 import { TraceView } from '../visualizer/TraceView'
 import { decodeCode } from './playgroundLink'
@@ -30,7 +30,7 @@ export default function VisualizePage() {
   const [stdin, setStdin] = useState(from?.stdin ?? '')
   // The code the current trace belongs to; editing the code hides a stale trace.
   const [traced, setTraced] = useState<string | null>(null)
-  const { status, outcome, loadError, run } = usePythonRunner()
+  const { status, output, outcome, loadError, run, waiting, sendInput, interactive } = usePythonRunner()
   const busy = status === 'loading' || status === 'running'
   const start = () => {
     if (busy) return
@@ -64,15 +64,7 @@ export default function VisualizePage() {
         </p>
       )}
       <CodeEditor value={code} onChange={setCode} onRun={start} label="Code" minLines={6} />
-      <label className="block">
-        <span className="text-sm font-medium text-slate-700">Input (one line per input() call)</span>
-        <textarea
-          className="mt-1 block h-14 w-full rounded border border-slate-300 bg-white p-2 font-mono text-sm"
-          value={stdin}
-          spellCheck={false}
-          onChange={(e) => setStdin(e.target.value)}
-        />
-      </label>
+      <StdinBox value={stdin} onChange={setStdin} interactive={interactive} />
       <div className="flex items-center gap-3">
         <button type="button" onClick={start} disabled={busy} className="rounded bg-brand px-4 py-2 font-medium text-chalk disabled:opacity-50">
           Step through
@@ -80,6 +72,12 @@ export default function VisualizePage() {
         <span className="text-sm text-slate-500">{status === 'loading' ? 'Loading Python…' : status === 'running' ? 'Running…' : ''}</span>
       </div>
       {loadError && <p className="text-red-700">{loadError}</p>}
+      {waiting && (
+        <section aria-label="Program output">
+          <pre className="min-h-12 whitespace-pre-wrap rounded bg-code p-3 font-mono text-sm text-[#e6edf3]">{output}</pre>
+          <InputLine onSend={sendInput} />
+        </section>
+      )}
       {failed && <p className="text-red-700">{failed.message}</p>}
       {traced !== null && traced !== code && <p className="text-sm text-slate-600">The code changed. Press Step through to trace it again.</p>}
       {trace && <TraceView code={code} trace={trace} />}
