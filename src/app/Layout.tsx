@@ -145,7 +145,7 @@ export function Layout() {
         <p>Not affiliated with or endorsed by the Python Institute. PCEP is a trademark of the Python Institute.</p>
         <p>
           Free extra course:{' '}
-          <a className="underline" href="https://edube.org/study/pe1">
+          <a className="underline" href="https://edube.org/study/pe1" target="_blank" rel="noreferrer">
             Python Essentials 1
           </a>
         </p>

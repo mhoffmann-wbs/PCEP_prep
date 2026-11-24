@@ -48,7 +48,7 @@ export default function HomePage() {
         <h2 className="text-xl font-semibold">The syllabus</h2>
         <p className="text-sm text-slate-600">
           Weights are the official scoring weights.{' '}
-          <a href={exam.syllabusUrl} className="underline">
+          <a href={exam.syllabusUrl} target="_blank" rel="noreferrer" className="underline">
             Official {exam.name} syllabus
           </a>
         </p>

@@ -35,7 +35,7 @@ function LessonIndex() {
       <p className="text-slate-600">
         One lesson per syllabus objective: the big idea, worked examples you can run, quick predict-the-output checks, common mistakes and
         exam traps. {lessonsRead.length} of {LESSONS.size} marked as read. Free extra course:{' '}
-        <a href={PE1_URL} className="text-brand-dark underline">
+        <a href={PE1_URL} target="_blank" rel="noreferrer" className="text-brand-dark underline">
           Python Essentials 1
         </a>
         .
