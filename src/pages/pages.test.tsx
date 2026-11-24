@@ -60,6 +60,24 @@ describe('shell', () => {
     expect(await screen.findByRole('heading', { name: 'Exercises' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Menu' })).toHaveAttribute('aria-expanded', 'false')
   })
+
+  it('opens one nav group at a time and closes it with Escape or a link', async () => {
+    const user = userEvent.setup()
+    await renderAt('/')
+    const quiz = screen.getByRole('button', { name: /^Quiz/ })
+    const code = screen.getByRole('button', { name: /^Code/ })
+    await user.click(quiz)
+    expect(quiz).toHaveAttribute('aria-expanded', 'true')
+    await user.click(code)
+    expect(quiz).toHaveAttribute('aria-expanded', 'false')
+    expect(code).toHaveAttribute('aria-expanded', 'true')
+    await user.keyboard('{Escape}')
+    expect(code).toHaveAttribute('aria-expanded', 'false')
+    expect(code).toHaveFocus()
+    await user.click(quiz)
+    await user.click(within(document.getElementById('nav-quiz')!).getByRole('link', { name: 'Mock exam' }))
+    expect(screen.getByRole('button', { name: /^Quiz/ })).toHaveAttribute('aria-expanded', 'false')
+  })
 })
 
 describe('practice', () => {

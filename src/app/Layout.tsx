@@ -1,31 +1,85 @@
-import { Suspense, useState } from 'react'
-import { Link, NavLink, Outlet } from 'react-router'
+import { Suspense, useEffect, useRef, useState } from 'react'
+import { Link, NavLink, Outlet, useLocation } from 'react-router'
 
-const NAV = [
-  { to: '/learn', label: 'Learn' },
-  { to: '/practice', label: 'Practice' },
-  { to: '/questions', label: 'Questions' },
-  { to: '/flashcards', label: 'Flashcards' },
-  { to: '/mock', label: 'Mock exam' },
-  { to: '/exercises', label: 'Exercises' },
-  { to: '/playground', label: 'Playground' },
-  { to: '/step', label: 'Step through' },
-  { to: '/progress', label: 'Progress' },
-  { to: '/guides/cheat-sheet', label: 'Cheat sheet' },
-  { to: '/guides/exam-day', label: 'Exam day' },
+type NavEntry = { to: string; label: string }
+
+/** The main nav groups pages by what the learner does; Progress stands on its own. */
+const NAV_GROUPS: { id: string; label: string; links: NavEntry[] }[] = [
+  {
+    id: 'learn',
+    label: 'Learn',
+    links: [
+      { to: '/learn', label: 'Lessons' },
+      { to: '/guides/cheat-sheet', label: 'Cheat sheet' },
+      { to: '/guides/exam-day', label: 'Exam day' },
+    ],
+  },
+  {
+    id: 'quiz',
+    label: 'Quiz',
+    links: [
+      { to: '/practice', label: 'Practice' },
+      { to: '/questions', label: 'Questions' },
+      { to: '/flashcards', label: 'Flashcards' },
+      { to: '/mock', label: 'Mock exam' },
+    ],
+  },
+  {
+    id: 'code',
+    label: 'Code',
+    links: [
+      { to: '/exercises', label: 'Exercises' },
+      { to: '/playground', label: 'Playground' },
+      { to: '/step', label: 'Step through' },
+    ],
+  },
 ]
+
+const isUnder = (pathname: string, to: string) => pathname === to || pathname.startsWith(`${to}/`)
+
+const linkClass = ({ isActive }: { isActive: boolean }) =>
+  `block py-1 ${isActive ? 'font-semibold underline underline-offset-4' : 'text-chalk/80 hover:text-chalk'}`
 
 export function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
+  // The desktop dropdown that is open, if any (phones show every group in the menu).
+  const [openGroup, setOpenGroup] = useState<string | null>(null)
+  const navRef = useRef<HTMLElement>(null)
+  const { pathname } = useLocation()
+
+  const closeAll = () => {
+    setMenuOpen(false)
+    setOpenGroup(null)
+  }
+
+  // A click outside the nav or Escape closes the dropdown; Escape returns focus to its button.
+  useEffect(() => {
+    if (!openGroup) return
+    const onPointer = (e: PointerEvent) => {
+      if (!navRef.current?.contains(e.target as Node)) setOpenGroup(null)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      document.getElementById(`nav-${openGroup}-button`)?.focus()
+      setOpenGroup(null)
+    }
+    document.addEventListener('pointerdown', onPointer)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onPointer)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [openGroup])
+
   return (
     <div className="flex min-h-screen flex-col bg-page text-slate-900">
       <header className="bg-header text-chalk print:hidden">
-        <nav aria-label="Main" className="mx-auto max-w-5xl px-4 py-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-2 sm:text-sm">
+        <nav ref={navRef} aria-label="Main" className="mx-auto max-w-5xl px-4 py-3 sm:flex sm:items-center sm:gap-x-8 sm:text-sm">
           <div className="flex items-center justify-between">
-            <Link to="/" onClick={() => setMenuOpen(false)} className="text-lg font-bold tracking-tight">
+            <Link to="/" onClick={closeAll} className="text-lg font-bold tracking-tight">
               PCEP<span className="text-accent">101</span>
             </Link>
-            {/* Phones get a menu button instead of three rows of links. */}
+            {/* Phones get a menu button instead of rows of links. */}
             <button
               type="button"
               aria-expanded={menuOpen}
@@ -36,18 +90,49 @@ export function Layout() {
               {menuOpen ? 'Close' : 'Menu'}
             </button>
           </div>
-          <ul id="main-links" className={`${menuOpen ? 'mt-3 grid grid-cols-2 gap-2' : 'hidden'} sm:contents`}>
-            {NAV.map(({ to, label }) => (
-              <li key={to}>
-                <NavLink
-                  to={to}
-                  onClick={() => setMenuOpen(false)}
-                  className={({ isActive }) => `block py-1 sm:py-0 ${isActive ? 'font-semibold underline underline-offset-4' : 'text-chalk/80'}`}
-                >
-                  {label}
-                </NavLink>
-              </li>
-            ))}
+          <ul
+            id="main-links"
+            className={`${menuOpen ? 'mt-3 grid grid-cols-2 gap-x-4 gap-y-4' : 'hidden'} sm:mt-0 sm:flex sm:items-center sm:gap-x-6`}
+          >
+            {NAV_GROUPS.map((group) => {
+              const open = openGroup === group.id
+              const active = group.links.some((l) => isUnder(pathname, l.to))
+              return (
+                <li key={group.id} className="sm:relative">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-chalk/60 sm:hidden">{group.label}</span>
+                  <button
+                    type="button"
+                    id={`nav-${group.id}-button`}
+                    aria-expanded={open}
+                    aria-controls={`nav-${group.id}`}
+                    onClick={() => setOpenGroup(open ? null : group.id)}
+                    className={`hidden items-center gap-1 sm:inline-flex ${active ? 'font-semibold' : 'text-chalk/80 hover:text-chalk'}`}
+                  >
+                    {group.label}
+                    <span aria-hidden="true" className="text-xs">
+                      {open ? '▴' : '▾'}
+                    </span>
+                  </button>
+                  <ul
+                    id={`nav-${group.id}`}
+                    className={`mt-1 sm:absolute sm:left-0 sm:top-full sm:z-20 sm:mt-2 sm:min-w-40 sm:rounded sm:bg-header sm:px-4 sm:py-2 sm:shadow-lg ${open ? 'sm:block' : 'sm:hidden'}`}
+                  >
+                    {group.links.map(({ to, label }) => (
+                      <li key={to}>
+                        <NavLink to={to} onClick={closeAll} className={linkClass}>
+                          {label}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              )
+            })}
+            <li>
+              <NavLink to="/progress" onClick={closeAll} className={linkClass}>
+                Progress
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </header>
